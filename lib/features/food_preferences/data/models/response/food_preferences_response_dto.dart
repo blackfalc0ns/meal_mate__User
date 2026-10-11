@@ -24,6 +24,8 @@ class FoodPreferencesResponseDto {
     this.hasNextPage,
     this.hasPreviousPage,
     this.notes,
+    this.allergiesCompletedAtUtc,
+    this.dietaryPreferencesCompletedAtUtc,
   });
 
   final FoodPreferenceItemResponseDto? noneOption;
@@ -45,16 +47,51 @@ class FoodPreferencesResponseDto {
   final bool? hasNextPage;
   final bool? hasPreviousPage;
   final String? notes;
+  final String? allergiesCompletedAtUtc;
+  final String? dietaryPreferencesCompletedAtUtc;
 
   factory FoodPreferencesResponseDto.fromJson(Map<String, dynamic> json) {
     final parsed = _$FoodPreferencesResponseDtoFromJson(json);
+    final allergiesUtc =
+        (json['allergiesCompletedAtUtc'] ?? json['AllergiesCompletedAtUtc'])
+            as String? ??
+        parsed.allergiesCompletedAtUtc;
+    final dietaryUtc =
+        (json['dietaryPreferencesCompletedAtUtc'] ??
+                json['DietaryPreferencesCompletedAtUtc'])
+            as String? ??
+        parsed.dietaryPreferencesCompletedAtUtc;
     final itemsList = (json['items'] as List<dynamic>?)
         ?.map(
           (e) =>
               FoodPreferenceItemResponseDto.fromJson(e as Map<String, dynamic>),
         )
         .toList();
-    if (itemsList == null || itemsList.isEmpty) return parsed;
+    if (itemsList == null || itemsList.isEmpty) {
+      return FoodPreferencesResponseDto(
+        noneOption: parsed.noneOption,
+        dietaryPattern: parsed.dietaryPattern,
+        dietaryPreferences: parsed.dietaryPreferences,
+        ingredients: parsed.ingredients,
+        allergens: parsed.allergens,
+        allergies: parsed.allergies,
+        dislikedFoods: parsed.dislikedFoods,
+        items: parsed.items,
+        selectedCount: parsed.selectedCount,
+        eatsEverything: parsed.eatsEverything,
+        hasNoAllergies: parsed.hasNoAllergies,
+        hasNoDietaryRestriction: parsed.hasNoDietaryRestriction,
+        page: parsed.page,
+        pageSize: parsed.pageSize,
+        totalCount: parsed.totalCount,
+        totalPages: parsed.totalPages,
+        hasNextPage: parsed.hasNextPage,
+        hasPreviousPage: parsed.hasPreviousPage,
+        notes: parsed.notes,
+        allergiesCompletedAtUtc: allergiesUtc,
+        dietaryPreferencesCompletedAtUtc: dietaryUtc,
+      );
+    }
     return FoodPreferencesResponseDto(
       noneOption: parsed.noneOption,
       dietaryPattern: parsed.dietaryPattern,
@@ -75,6 +112,8 @@ class FoodPreferencesResponseDto {
       hasNextPage: parsed.hasNextPage,
       hasPreviousPage: parsed.hasPreviousPage,
       notes: parsed.notes,
+      allergiesCompletedAtUtc: allergiesUtc,
+      dietaryPreferencesCompletedAtUtc: dietaryUtc,
     );
   }
 }

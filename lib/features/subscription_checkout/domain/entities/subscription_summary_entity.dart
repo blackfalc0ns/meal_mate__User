@@ -3,7 +3,6 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/entities/su
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_coupon_entity.dart';
 
 class SubscriptionSummaryEntity {
-
   const SubscriptionSummaryEntity({
     required this.programId,
     required this.programNameAr,
@@ -168,7 +167,6 @@ class SubscriptionSummaryEntity {
   }
 }
 
-
 class SubscriptionSummaryRestaurantRepetitionEntity {
   const SubscriptionSummaryRestaurantRepetitionEntity({
     required this.limit,
@@ -217,27 +215,27 @@ class SubscriptionSummaryAddressEntity {
 
     final gov = isAr
         ? (governorateNameAr?.trim().isNotEmpty == true
-            ? governorateNameAr!.trim()
-            : (governorate?.trim() ?? ''))
+              ? governorateNameAr!.trim()
+              : (governorate?.trim() ?? ''))
         : (governorateNameEn?.trim().isNotEmpty == true
-            ? governorateNameEn!.trim()
-            : (governorate?.trim() ?? ''));
+              ? governorateNameEn!.trim()
+              : (governorate?.trim() ?? ''));
 
     final ar = isAr
         ? (areaNameAr?.trim().isNotEmpty == true
-            ? areaNameAr!.trim()
-            : (area?.trim() ?? ''))
+              ? areaNameAr!.trim()
+              : (area?.trim() ?? ''))
         : (areaNameEn?.trim().isNotEmpty == true
-            ? areaNameEn!.trim()
-            : (area?.trim() ?? ''));
+              ? areaNameEn!.trim()
+              : (area?.trim() ?? ''));
 
     final blk = isAr
         ? (blockNameAr?.trim().isNotEmpty == true
-            ? blockNameAr!.trim()
-            : (block?.trim() ?? ''))
+              ? blockNameAr!.trim()
+              : (block?.trim() ?? ''))
         : (blockNameEn?.trim().isNotEmpty == true
-            ? blockNameEn!.trim()
-            : (block?.trim() ?? ''));
+              ? blockNameEn!.trim()
+              : (block?.trim() ?? ''));
 
     return [gov, ar, blk].where((part) => part.isNotEmpty).join(' - ');
   }
@@ -253,8 +251,6 @@ class SubscriptionSummaryAddressEntity {
     ].whereType<String>().where((value) => value.trim().isNotEmpty).join(' - ');
   }
 }
-
-
 
 class SubscriptionSummaryRestaurantEntity {
   const SubscriptionSummaryRestaurantEntity({

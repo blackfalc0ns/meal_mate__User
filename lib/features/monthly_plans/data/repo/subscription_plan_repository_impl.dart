@@ -78,6 +78,9 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
     required int page,
     required int pageSize,
     String? addressId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getTierRestaurantsPage(
@@ -87,6 +90,9 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
         page: page,
         pageSize: pageSize,
         addressId: addressId,
+        durationDays: durationDays,
+        startDate: startDate,
+        includeFriday: includeFriday,
       );
       return response.toEntity();
     });

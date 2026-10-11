@@ -61,7 +61,6 @@ extension SubscriptionReadinessAddressResponseDtoMapper
   }
 }
 
-
 extension SubscriptionReadinessItemResponseDtoMapper
     on SubscriptionReadinessItemResponseDto {
   SubscriptionReadinessItemEntity toEntity() {
@@ -94,20 +93,20 @@ extension SubscriptionSummaryResponseDtoMapper
   SubscriptionSummaryEntity toEntity() {
     return SubscriptionSummaryEntity(
       programId: programId ?? '',
-      programNameAr: programNameAr ?? '',
-      programNameEn: programNameEn ?? '',
+      programNameAr: programNameAr ?? programName ?? '',
+      programNameEn: programNameEn ?? programName ?? '',
       programImageUrl: programImageUrl,
       bundleId: bundleId ?? '',
-      bundleNameAr: bundleNameAr ?? '',
-      bundleNameEn: bundleNameEn ?? '',
+      bundleNameAr: bundleNameAr ?? bundleName ?? '',
+      bundleNameEn: bundleNameEn ?? bundleName ?? '',
       imageUrl: imageUrl,
       restaurantId: restaurantId,
       restaurantNameAr: restaurantNameAr,
       restaurantNameEn: restaurantNameEn,
       restaurantCount: restaurantCount ?? 0,
       tier: tier ?? '',
-      tierNameAr: tierNameAr ?? '',
-      tierNameEn: tierNameEn ?? '',
+      tierNameAr: tierNameAr ?? tierName ?? '',
+      tierNameEn: tierNameEn ?? tierName ?? '',
       durationDays: durationDays ?? 0,
       chosenStartDate: chosenStartDate ?? '',
       startDate: startDate ?? '',
@@ -171,24 +170,23 @@ extension SubscriptionSummaryAddressResponseDtoMapper
       area: area,
       block: block,
       regionId: regionId,
-      governorateNameAr: governorateNameAr,
-      governorateNameEn: governorateNameEn,
-      areaNameAr: areaNameAr,
-      areaNameEn: areaNameEn,
-      blockNameAr: blockNameAr,
-      blockNameEn: blockNameEn,
+      governorateNameAr: governorateNameAr ?? governorateName,
+      governorateNameEn: governorateNameEn ?? governorateName,
+      areaNameAr: areaNameAr ?? areaName,
+      areaNameEn: areaNameEn ?? areaName,
+      blockNameAr: blockNameAr ?? blockName,
+      blockNameEn: blockNameEn ?? blockName,
     );
   }
 }
-
 
 extension SubscriptionSummaryRestaurantResponseDtoMapper
     on SubscriptionSummaryRestaurantResponseDto {
   SubscriptionSummaryRestaurantEntity toEntity() {
     return SubscriptionSummaryRestaurantEntity(
       restaurantId: restaurantId ?? '',
-      nameAr: nameAr ?? '',
-      nameEn: nameEn ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
       logoUrl: logoUrl,
       tier: tier ?? '',
     );
@@ -200,8 +198,8 @@ extension SubscriptionSummarySlotRequirementResponseDtoMapper
   SubscriptionSummarySlotRequirementEntity toEntity() {
     return SubscriptionSummarySlotRequirementEntity(
       slot: slot ?? '',
-      nameAr: nameAr ?? '',
-      nameEn: nameEn ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
       count: count ?? 0,
     );
   }
@@ -211,8 +209,8 @@ extension SubscriptionSummaryIncludesResponseDtoMapper
     on SubscriptionSummaryIncludesResponseDto {
   SubscriptionSummaryIncludesEntity toEntity() {
     return SubscriptionSummaryIncludesEntity(
-      titleAr: titleAr ?? '',
-      titleEn: titleEn ?? '',
+      titleAr: titleAr ?? title ?? '',
+      titleEn: titleEn ?? title ?? '',
       items: (items ?? const []).map((item) => item.toEntity()).toList(),
     );
   }
@@ -223,8 +221,8 @@ extension SubscriptionSummaryIncludeItemResponseDtoMapper
   SubscriptionSummaryIncludeItemEntity toEntity() {
     return SubscriptionSummaryIncludeItemEntity(
       code: code ?? '',
-      textAr: textAr ?? '',
-      textEn: textEn ?? '',
+      textAr: textAr ?? text ?? '',
+      textEn: textEn ?? text ?? '',
     );
   }
 }

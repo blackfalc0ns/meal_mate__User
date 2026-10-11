@@ -16,10 +16,7 @@ Future<bool> requestFreezeConsent(BuildContext context, String notice) async {
 }
 
 class SubscriptionFreezeNoticeSheet extends StatelessWidget {
-  const SubscriptionFreezeNoticeSheet({
-    required this.notice,
-    super.key,
-  });
+  const SubscriptionFreezeNoticeSheet({required this.notice, super.key});
 
   final String notice;
 

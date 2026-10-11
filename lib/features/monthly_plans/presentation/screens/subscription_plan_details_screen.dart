@@ -124,16 +124,26 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
               context: context,
               readiness: readiness,
               request: request,
-              onRequirementFulfilled: () =>
-                  context.read<SubscriptionPlanViewModel>().doIntent(
-                    CheckSubscriptionReadinessEvent(
-                      programId: request.programId,
-                      bundleId: request.bundleId,
-                      tier: request.tier,
-                      durationDays: request.durationDays,
-                      includeFriday: request.includeFriday,
-                    ),
+              onRequirementFulfilled: () {
+                final vm = context.read<SubscriptionPlanViewModel>();
+                vm.doIntent(const InvalidateSubscriptionPlanContextEvent());
+                vm.doIntent(
+                  GetSubscriptionDurationsEvent(
+                    programId: request.programId,
+                    bundleId: request.bundleId,
+                    includeFriday: request.includeFriday,
                   ),
+                );
+                vm.doIntent(
+                  CheckSubscriptionReadinessEvent(
+                    programId: request.programId,
+                    bundleId: request.bundleId,
+                    tier: request.tier,
+                    durationDays: request.durationDays,
+                    includeFriday: request.includeFriday,
+                  ),
+                );
+              },
             ),
           );
         },
@@ -161,8 +171,8 @@ class SubscriptionPlanDetailsScreen extends StatelessWidget {
                           onNotification: (notification) {
                             if (notification.metrics.pixels >=
                                 notification.metrics.maxScrollExtent - 240) {
-                              final vm =
-                                  context.read<SubscriptionPlanViewModel>();
+                              final vm = context
+                                  .read<SubscriptionPlanViewModel>();
                               if (vm.state.isBrowsingRestaurants) {
                                 vm.doIntent(
                                   const LoadMoreSubscriptionTierRestaurantsEvent(),

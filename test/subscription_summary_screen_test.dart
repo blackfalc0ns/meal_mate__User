@@ -119,7 +119,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(SubscriptionPlanSummaryCard), findsOneWidget);
-      expect(find.byType(SubscriptionParticipatingRestaurantsCard), findsOneWidget);
+      expect(
+        find.byType(SubscriptionParticipatingRestaurantsCard),
+        findsOneWidget,
+      );
       expect(find.byType(SubscriptionRestaurantRepetitionCard), findsOneWidget);
       expect(find.byType(SubscriptionDeliveryAddressCard), findsOneWidget);
       expect(find.byType(SubscriptionTotalPriceCard), findsOneWidget);

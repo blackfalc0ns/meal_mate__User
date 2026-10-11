@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -8,6 +9,8 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/restaurant_plan/subscription_restaurant_logo.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_restaurant_details_args.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_event.dart';
+import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subscription_plan_view_model.dart';
 
 class SubscriptionRestaurantGridCard extends StatefulWidget {
   const SubscriptionRestaurantGridCard({super.key, required this.restaurant});
@@ -27,6 +30,37 @@ class _SubscriptionRestaurantGridCardState
 
   Future<void> _openRestaurantDetails() async {
     if (_isOpening || _isPushingRestaurantDetails) return;
+
+    SubscriptionPlanViewModel? viewModel;
+    try {
+      viewModel = context.read<SubscriptionPlanViewModel>();
+    } catch (_) {
+      viewModel = null;
+    }
+
+    if (viewModel != null) {
+      final isStillPresent = viewModel.state.browseRestaurants.any(
+        (r) => r.restaurantId == widget.restaurant.restaurantId,
+      );
+      final isReady =
+          viewModel.state.browseAvailability == null ||
+          viewModel.state.browseAvailability!.isAvailable;
+
+      if (!isStillPresent || !isReady) {
+        final browsedTierIndex = viewModel.state.browsedTierIndex;
+        if (browsedTierIndex != null) {
+          viewModel.doIntent(
+            BrowseSubscriptionTierRestaurantsEvent(
+              programId: widget.restaurant.programId,
+              bundleId: widget.restaurant.bundleId,
+              tierIndex: browsedTierIndex,
+              startDate: viewModel.state.selectedStartDate,
+            ),
+          );
+        }
+        return;
+      }
+    }
 
     _isPushingRestaurantDetails = true;
     setState(() => _isOpening = true);
@@ -106,8 +140,9 @@ class _SubscriptionRestaurantGridCardState
                         textAlign: TextAlign.center,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize:
-                              isCompact ? FontSize.size9 : FontSize.size10,
+                          fontSize: isCompact
+                              ? FontSize.size9
+                              : FontSize.size10,
                           color: color.onSurface,
                         ).copyWith(height: 1.15),
                       ),
@@ -121,8 +156,7 @@ class _SubscriptionRestaurantGridCardState
                       textAlign: TextAlign.center,
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize:
-                            isCompact ? FontSize.size10 : FontSize.size12,
+                        fontSize: isCompact ? FontSize.size10 : FontSize.size12,
                         color: color.onSurfaceVariant,
                       ),
                     ),

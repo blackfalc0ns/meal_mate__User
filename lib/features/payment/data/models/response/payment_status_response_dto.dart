@@ -10,6 +10,8 @@ class PaymentStatusResponseDto {
     this.isFailed,
     this.amount,
     this.currencyCode,
+    this.isFulfillmentReady,
+    this.fulfillmentStatus,
   });
 
   final String? paymentStatus;
@@ -17,6 +19,8 @@ class PaymentStatusResponseDto {
   final bool? isFailed;
   final double? amount;
   final String? currencyCode;
+  final bool? isFulfillmentReady;
+  final String? fulfillmentStatus;
 
   factory PaymentStatusResponseDto.fromJson(Map<String, dynamic> json) =>
       _$PaymentStatusResponseDtoFromJson(json);

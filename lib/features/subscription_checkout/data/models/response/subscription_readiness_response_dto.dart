@@ -89,7 +89,6 @@ class SubscriptionReadinessAddressResponseDto {
   factory SubscriptionReadinessAddressResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionReadinessAddressResponseDtoFromJson(json);
-
 }
 
 @JsonSerializable(createToJson: false)

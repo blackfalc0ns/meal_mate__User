@@ -4,10 +4,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 
 class SubscriptionRestaurantCircleAvatar extends StatelessWidget {
-  const SubscriptionRestaurantCircleAvatar({
-    super.key,
-    required this.logoUrl,
-  });
+  const SubscriptionRestaurantCircleAvatar({super.key, required this.logoUrl});
 
   final String? logoUrl;
 
@@ -30,10 +27,7 @@ class SubscriptionRestaurantCircleAvatar extends StatelessWidget {
       padding: const EdgeInsets.all(Spacing.xs),
       child: ClipOval(
         child: hasLogo
-            ? AppCachedNetworkImage(
-                imageUrl: logoUrl!,
-                fit: BoxFit.cover,
-              )
+            ? AppCachedNetworkImage(imageUrl: logoUrl!, fit: BoxFit.cover)
             : Icon(
                 Icons.restaurant_rounded,
                 color: color.primary,

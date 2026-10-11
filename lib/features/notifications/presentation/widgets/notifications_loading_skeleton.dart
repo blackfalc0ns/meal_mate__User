@@ -11,10 +11,7 @@ class NotificationsLoadingSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.only(
-        top: Spacing.xs,
-        bottom: Spacing.xxxl,
-      ),
+      padding: const EdgeInsets.only(top: Spacing.xs, bottom: Spacing.xxxl),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (_, index) => const _NotificationCardSkeleton(),
@@ -31,9 +28,7 @@ class NotificationsLoadMoreSkeleton extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: Spacing.xs),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          _NotificationCardSkeleton(),
-        ],
+        children: [_NotificationCardSkeleton()],
       ),
     );
   }
@@ -55,9 +50,7 @@ class _NotificationCardSkeleton extends StatelessWidget {
         color: color.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          side: BorderSide(
-            color: color.outlineVariant.withValues(alpha: 0.5),
-          ),
+          side: BorderSide(color: color.outlineVariant.withValues(alpha: 0.5)),
         ),
         child: const Padding(
           padding: EdgeInsets.symmetric(

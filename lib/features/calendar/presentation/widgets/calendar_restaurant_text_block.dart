@@ -12,12 +12,9 @@ class CalendarRestaurantTextBlock extends StatelessWidget {
         ? restaurant.name
         : 'DIET HOUSE';
     final ratingStr = restaurant.rating;
-    final ratingDouble =
-        ratingStr != null ? double.tryParse(ratingStr) : null;
+    final ratingDouble = ratingStr != null ? double.tryParse(ratingStr) : null;
     final hasValidRating =
-        ratingDouble != null &&
-        ratingDouble > 0 &&
-        restaurant.ratingCount > 0;
+        ratingDouble != null && ratingDouble > 0 && restaurant.ratingCount > 0;
     final locale = context.localization;
 
     return Column(

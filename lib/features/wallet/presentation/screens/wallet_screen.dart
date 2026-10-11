@@ -46,7 +46,6 @@ class WalletScreen extends StatelessWidget {
                 const SizedBox(height: Spacing.lg),
                 Row(
                   children: [
-                   
                     Expanded(
                       child: WalletActionButton(
                         label: locale.wallet_refund_to_card,
@@ -57,7 +56,7 @@ class WalletScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.walletActionGap),
 
-                     Expanded(
+                    Expanded(
                       child: WalletActionButton(
                         label: locale.wallet_transactions_history,
                         icon: Icons.description_rounded,

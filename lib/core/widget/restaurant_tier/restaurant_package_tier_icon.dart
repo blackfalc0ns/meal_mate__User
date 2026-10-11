@@ -21,8 +21,7 @@ class RestaurantPackageTierIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final fallbackColor =
-        usesLightForeground ? color.surface : color.primary;
+    final fallbackColor = usesLightForeground ? color.surface : color.primary;
 
     return SizedBox(
       width: Spacing.monthlyPlanPackageIconSize,
@@ -43,4 +42,3 @@ class RestaurantPackageTierIcon extends StatelessWidget {
     );
   }
 }
-

@@ -99,11 +99,6 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
     ClearLogoutFeedbackEvent event,
     Emitter<LogoutState> emit,
   ) {
-    emit(
-      state.copyWith(
-        outcome: LogoutOutcome.idle,
-        failure: () => null,
-      ),
-    );
+    emit(state.copyWith(outcome: LogoutOutcome.idle, failure: () => null));
   }
 }

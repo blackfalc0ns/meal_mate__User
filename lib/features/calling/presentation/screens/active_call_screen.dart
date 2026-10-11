@@ -90,9 +90,7 @@ class _ActiveCallScreenState extends State<ActiveCallScreen> {
           const CallingBackgroundDecoration(),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.md,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
               child: Column(
                 children: [
                   const SizedBox(height: Spacing.xs),
@@ -126,9 +124,7 @@ class _ActiveCallScreenState extends State<ActiveCallScreen> {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: Spacing.xs),
-                            CallingDriverRoleBadge(
-                              role: widget.driver.role,
-                            ),
+                            CallingDriverRoleBadge(role: widget.driver.role),
                           ],
                         ),
                         const SizedBox(height: Spacing.xs),

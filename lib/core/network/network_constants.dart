@@ -53,16 +53,24 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/abandon-draft';
   static const String subscriptionPrograms =
       '/api/v1/customer/subscription-flow/programs';
+  static const String subscriptionCatalogPrograms =
+      '/api/v1/customer/subscription-flow/catalog/programs';
   static const String subscriptionProgramBundles =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles';
+  static const String subscriptionCatalogProgramBundles =
+      '/api/v1/customer/subscription-flow/catalog/programs/{programId}/bundles';
   static const String subscriptionDurations =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/durations';
   static const String subscriptionTiers =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/tiers';
+  static const String subscriptionCatalogTiers =
+      '/api/v1/customer/subscription-flow/catalog/programs/{programId}/bundles/{bundleId}/tiers';
   static const String subscriptionPrerequisites =
       '/api/v1/customer/subscription-flow/prerequisites';
   static const String subscriptionTierRestaurants =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/tiers/{tier}/restaurants';
+  static const String subscriptionProgramTierRestaurants =
+      '/api/v1/customer/subscription-flow/programs/{programId}/tiers/{tier}/restaurants';
   static const String subscriptionRestaurantDetails =
       '/api/v1/customer/subscription-flow/programs/{programId}/bundles/{bundleId}/restaurants/{restaurantId}/details';
   static const String subscriptionMealDetails =

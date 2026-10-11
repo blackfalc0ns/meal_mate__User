@@ -72,18 +72,9 @@ void main() {
     test('drops items without id but preserves totalCount', () {
       final dto = NotificationsPageResponseDto(
         items: [
-          NotificationItemResponseDto(
-            id: null,
-            titleEn: 'Corrupted item',
-          ),
-          NotificationItemResponseDto(
-            id: '',
-            titleEn: 'Empty id item',
-          ),
-          NotificationItemResponseDto(
-            id: 'valid-id',
-            titleEn: 'Valid item',
-          ),
+          NotificationItemResponseDto(id: null, titleEn: 'Corrupted item'),
+          NotificationItemResponseDto(id: '', titleEn: 'Empty id item'),
+          NotificationItemResponseDto(id: 'valid-id', titleEn: 'Valid item'),
         ],
         totalCount: 15,
         page: 1,
@@ -102,12 +93,7 @@ void main() {
 
     test('handles null metadata defensively with fallbacks', () {
       final dto = NotificationsPageResponseDto(
-        items: [
-          NotificationItemResponseDto(
-            id: 'n1',
-            titleEn: 'Only item',
-          ),
-        ],
+        items: [NotificationItemResponseDto(id: 'n1', titleEn: 'Only item')],
       );
 
       final entity = NotificationsMapper.toEntity(dto);

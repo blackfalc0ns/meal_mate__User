@@ -41,10 +41,7 @@ class InfluencerWalletScreen extends StatelessWidget {
             current.wallet != null,
         listener: (context, state) => CustomSnackbar.showError(
           context: context,
-          message: ErrorMessagePresenter.fromFailure(
-            context,
-            state.failure!,
-          ),
+          message: ErrorMessagePresenter.fromFailure(context, state.failure!),
         ),
         buildWhen: (previous, current) =>
             previous.isLoading != current.isLoading ||

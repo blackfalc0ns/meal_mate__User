@@ -137,12 +137,12 @@ class _FamilyReviewMemberMealsScreenState
 
     final programFromApi =
         state.availableMeals?.restaurant?.category.isNotEmpty == true
-            ? state.availableMeals!.restaurant!.category
-            : (state.selectedDay?.restaurant?.category.isNotEmpty == true
-                  ? state.selectedDay!.restaurant!.category
-                  : (state.currentMember?.programName.isNotEmpty == true
-                        ? state.currentMember!.programName
-                        : ''));
+        ? state.availableMeals!.restaurant!.category
+        : (state.selectedDay?.restaurant?.category.isNotEmpty == true
+              ? state.selectedDay!.restaurant!.category
+              : (state.currentMember?.programName.isNotEmpty == true
+                    ? state.currentMember!.programName
+                    : ''));
 
     final goalLabel = programFromApi.isNotEmpty
         ? programFromApi
@@ -260,7 +260,8 @@ class _FamilyReviewMemberMealsScreenState
                         if (meals.isEmpty)
                           EmptyStateWidget(
                             title: locale.calendar_empty_meals_title,
-                            description: locale.calendar_empty_meals_description,
+                            description:
+                                locale.calendar_empty_meals_description,
                             icon: Icons.restaurant_menu_rounded,
                           ),
                         const SizedBox(height: Spacing.md),
@@ -288,9 +289,7 @@ class _FamilyReviewMemberMealsScreenState
             child: AbsorbPointer(
               child: Container(
                 color: color.scrim.withValues(alpha: 0.35),
-                child: const Center(
-                  child: CustomProgressIndicator(),
-                ),
+                child: const Center(child: CustomProgressIndicator()),
               ),
             ),
           ),

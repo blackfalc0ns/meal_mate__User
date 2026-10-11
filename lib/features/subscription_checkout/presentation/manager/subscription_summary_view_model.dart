@@ -86,8 +86,9 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
     switch (result) {
       case ApiSuccessResult():
         final coupon = result.data.coupon;
-        final approvedPromoCode =
-            coupon != null && coupon.isValid ? coupon.code : null;
+        final approvedPromoCode = coupon != null && coupon.isValid
+            ? coupon.code
+            : null;
 
         final activeRequest = request.copyWith(
           promoCode: approvedPromoCode,
@@ -170,12 +171,7 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
           ),
         );
       case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isApplyingCoupon: false,
-            failure: result.failure,
-          ),
-        );
+        emit(state.copyWith(isApplyingCoupon: false, failure: result.failure));
     }
   }
 
@@ -218,12 +214,7 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
           ),
         );
       case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isApplyingCoupon: false,
-            failure: result.failure,
-          ),
-        );
+        emit(state.copyWith(isApplyingCoupon: false, failure: result.failure));
     }
   }
 
@@ -255,10 +246,7 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
     );
 
     emit(
-      state.copyWith(
-        isLoadingMoreRestaurants: true,
-        clearAppendFailure: true,
-      ),
+      state.copyWith(isLoadingMoreRestaurants: true, clearAppendFailure: true),
     );
 
     final result = await _getSubscriptionSummaryUseCase(appendRequest);
@@ -283,7 +271,9 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
           );
         } else {
           // Merge restaurants without duplicates
-          final existingIds = summary.restaurants.map((r) => r.restaurantId).toSet();
+          final existingIds = summary.restaurants
+              .map((r) => r.restaurantId)
+              .toSet();
           final newRestaurants = result.data.restaurants
               .where((r) => !existingIds.contains(r.restaurantId))
               .toList();

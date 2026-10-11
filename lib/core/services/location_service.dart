@@ -53,10 +53,7 @@ class LocationService {
       return ApiSuccessResult(data: position);
     } catch (e) {
       return ApiErrorResult(
-        failure: Failure(
-          errorMessage: e.toString(),
-          code: 'location_error',
-        ),
+        failure: Failure(errorMessage: e.toString(), code: 'location_error'),
       );
     }
   }

@@ -116,10 +116,7 @@ class RegisterViewModel extends Cubit<RegisterState> {
     } catch (_) {
       if (!isClosed) {
         emit(
-          state.copyWith(
-            isLoading: false,
-            outcome: RegisterOutcome.failure,
-          ),
+          state.copyWith(isLoading: false, outcome: RegisterOutcome.failure),
         );
       }
     } finally {
@@ -187,10 +184,7 @@ class RegisterViewModel extends Cubit<RegisterState> {
     } catch (_) {
       if (!isClosed) {
         emit(
-          state.copyWith(
-            isLoading: false,
-            outcome: RegisterOutcome.failure,
-          ),
+          state.copyWith(isLoading: false, outcome: RegisterOutcome.failure),
         );
       }
     } finally {
@@ -244,25 +238,18 @@ class RegisterViewModel extends Cubit<RegisterState> {
               resendOtpSent: result.data.otpSent,
               retryAvailableAtUtc: result.data.otpSent
                   ? () =>
-                      DateTime.now().toUtc().add(const Duration(seconds: 60))
+                        DateTime.now().toUtc().add(const Duration(seconds: 60))
                   : null,
             ),
           );
         case ApiErrorResult():
           emit(
-            state.copyWith(
-              isResending: false,
-              failure: () => result.failure,
-            ),
+            state.copyWith(isResending: false, failure: () => result.failure),
           );
       }
     } catch (_) {
       if (!isClosed) {
-        emit(
-          state.copyWith(
-            isResending: false,
-          ),
-        );
+        emit(state.copyWith(isResending: false));
       }
     } finally {
       _inFlight = false;

@@ -1,10 +1,7 @@
 part of 'calendar_restaurant_picker_sheet.dart';
 
 class CalendarRestaurantPickerEmpty extends StatelessWidget {
-  const CalendarRestaurantPickerEmpty({
-    super.key,
-    this.onClear,
-  });
+  const CalendarRestaurantPickerEmpty({super.key, this.onClear});
 
   final VoidCallback? onClear;
 

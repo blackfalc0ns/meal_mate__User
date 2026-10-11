@@ -17,6 +17,9 @@ class GetSubscriptionTierRestaurantsPageUseCase {
     required int page,
     required int pageSize,
     String? addressId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) {
     return _repository.getTierRestaurantsPage(
       programId: programId,
@@ -25,6 +28,9 @@ class GetSubscriptionTierRestaurantsPageUseCase {
       page: page,
       pageSize: pageSize,
       addressId: addressId,
+      durationDays: durationDays,
+      startDate: startDate,
+      includeFriday: includeFriday,
     );
   }
 }

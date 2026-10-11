@@ -19,8 +19,9 @@ class FakeAuthRepositoryForLogout extends Fake implements AuthRepository {
   int logoutCalls = 0;
   LogoutRequestEntity? lastRequest;
   Completer<ApiResult<LogoutEntity>>? completer;
-  ApiResult<LogoutEntity> stubResult =
-      const ApiSuccessResult(data: LogoutEntity(isLoggedOut: true));
+  ApiResult<LogoutEntity> stubResult = const ApiSuccessResult(
+    data: LogoutEntity(isLoggedOut: true),
+  );
 
   @override
   Future<ApiResult<LogoutEntity>> logout(LogoutRequestEntity request) {
@@ -78,75 +79,83 @@ void main() {
     await viewModel.close();
   });
 
-  test('RequestLogoutEvent calls use case, clears session, and emits success',
-      () async {
-    final expectedStates = <LogoutState>[];
-    final sub = viewModel.stream.listen(expectedStates.add);
+  test(
+    'RequestLogoutEvent calls use case, clears session, and emits success',
+    () async {
+      final expectedStates = <LogoutState>[];
+      final sub = viewModel.stream.listen(expectedStates.add);
 
-    viewModel.add(const RequestLogoutEvent());
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+      viewModel.add(const RequestLogoutEvent());
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(fakeRepo.logoutCalls, 1);
-    expect(fakeRepo.lastRequest?.refreshToken, 'mock-refresh-token');
-    expect(fakeTokenService.clearSessionCalls, 1);
-    expect(fakeBiometricService.disableBiometricCalls, 0);
+      expect(fakeRepo.logoutCalls, 1);
+      expect(fakeRepo.lastRequest?.refreshToken, 'mock-refresh-token');
+      expect(fakeTokenService.clearSessionCalls, 1);
+      expect(fakeBiometricService.disableBiometricCalls, 0);
 
-    expect(expectedStates.length, 2);
-    expect(expectedStates[0].isLoading, isTrue);
-    expect(expectedStates[1].isLoading, isFalse);
-    expect(expectedStates[1].outcome, LogoutOutcome.success);
-    expect(expectedStates[1].isServerRevoked, isTrue);
+      expect(expectedStates.length, 2);
+      expect(expectedStates[0].isLoading, isTrue);
+      expect(expectedStates[1].isLoading, isFalse);
+      expect(expectedStates[1].outcome, LogoutOutcome.success);
+      expect(expectedStates[1].isServerRevoked, isTrue);
 
-    await sub.cancel();
-  });
+      await sub.cancel();
+    },
+  );
 
-  test('RequestLogoutEvent with invalidateBiometrics: true disables biometric',
-      () async {
-    viewModel.add(const RequestLogoutEvent(invalidateBiometrics: true));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+  test(
+    'RequestLogoutEvent with invalidateBiometrics: true disables biometric',
+    () async {
+      viewModel.add(const RequestLogoutEvent(invalidateBiometrics: true));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(fakeBiometricService.disableBiometricCalls, 1);
-    expect(fakeTokenService.clearSessionCalls, 1);
-  });
+      expect(fakeBiometricService.disableBiometricCalls, 1);
+      expect(fakeTokenService.clearSessionCalls, 1);
+    },
+  );
 
-  test('Concurrent duplicate RequestLogoutEvent only executes one network call',
-      () async {
-    final completer = Completer<ApiResult<LogoutEntity>>();
-    fakeRepo.completer = completer;
+  test(
+    'Concurrent duplicate RequestLogoutEvent only executes one network call',
+    () async {
+      final completer = Completer<ApiResult<LogoutEntity>>();
+      fakeRepo.completer = completer;
 
-    viewModel.add(const RequestLogoutEvent());
-    viewModel.add(const RequestLogoutEvent());
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      viewModel.add(const RequestLogoutEvent());
+      viewModel.add(const RequestLogoutEvent());
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(fakeRepo.logoutCalls, 1);
+      expect(fakeRepo.logoutCalls, 1);
 
-    completer.complete(
-      const ApiSuccessResult(data: LogoutEntity(isLoggedOut: true)),
-    );
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      completer.complete(
+        const ApiSuccessResult(data: LogoutEntity(isLoggedOut: true)),
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(fakeRepo.logoutCalls, 1);
-  });
+      expect(fakeRepo.logoutCalls, 1);
+    },
+  );
 
-  test('RequestLogoutEvent when server fails still guarantees local session clear',
-      () async {
-    final failure = ServerFailure(
-      errorMessage: 'Network timeout',
-      exception: const ApiException(
-        errorType: ApiErrorType.connectionTimeout,
-        message: 'Network timeout',
-      ),
-    );
-    fakeRepo.stubResult = ApiErrorResult(failure: failure);
+  test(
+    'RequestLogoutEvent when server fails still guarantees local session clear',
+    () async {
+      final failure = ServerFailure(
+        errorMessage: 'Network timeout',
+        exception: const ApiException(
+          errorType: ApiErrorType.connectionTimeout,
+          message: 'Network timeout',
+        ),
+      );
+      fakeRepo.stubResult = ApiErrorResult(failure: failure);
 
-    viewModel.add(const RequestLogoutEvent());
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+      viewModel.add(const RequestLogoutEvent());
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(fakeTokenService.clearSessionCalls, 1);
-    expect(viewModel.state.outcome, LogoutOutcome.success);
-    expect(viewModel.state.isServerRevoked, isFalse);
-    expect(viewModel.state.failure, failure);
-  });
+      expect(fakeTokenService.clearSessionCalls, 1);
+      expect(viewModel.state.outcome, LogoutOutcome.success);
+      expect(viewModel.state.isServerRevoked, isFalse);
+      expect(viewModel.state.failure, failure);
+    },
+  );
 
   test('ClearLogoutFeedbackEvent clears outcome and failure', () async {
     fakeRepo.stubResult = ApiErrorResult(

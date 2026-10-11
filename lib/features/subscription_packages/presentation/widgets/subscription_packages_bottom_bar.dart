@@ -27,29 +27,30 @@ class SubscriptionPackagesBottomBar extends StatelessWidget {
       start: Spacing.subscriptionProgramsHorizontalPadding,
       end: Spacing.subscriptionProgramsHorizontalPadding,
       bottom: Spacing.lg,
-      child: SafeArea(
-        top: false,
-        child: ValueListenableBuilder<int?>(
-          valueListenable: selectedPackageNotifier,
-          builder: (context, selectedIndex, _) {
-            final isEnabled = selectedIndex != null && hasBundles;
+      child:
+          SafeArea(
+                top: false,
+                child: ValueListenableBuilder<int?>(
+                  valueListenable: selectedPackageNotifier,
+                  builder: (context, selectedIndex, _) {
+                    final isEnabled = selectedIndex != null && hasBundles;
 
-            return AppSubscriptionButton.next(
-              text: locale.subscription_choose_plan_button,
-              onPressed: isEnabled ? onContinue : null,
-              isLoading: isLoading,
-            );
-          },
-        ),
-      )
-          .animate()
-          .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-          .slideY(
-            begin: 0.15,
-            end: 0,
-            duration: 350.ms,
-            curve: Curves.easeOutCubic,
-          ),
+                    return AppSubscriptionButton.next(
+                      text: locale.subscription_choose_plan_button,
+                      onPressed: isEnabled ? onContinue : null,
+                      isLoading: isLoading,
+                    );
+                  },
+                ),
+              )
+              .animate()
+              .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+              .slideY(
+                begin: 0.15,
+                end: 0,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
     );
   }
 }

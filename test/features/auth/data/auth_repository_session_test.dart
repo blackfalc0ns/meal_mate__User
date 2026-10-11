@@ -105,80 +105,89 @@ void main() {
   });
 
   group('AuthRepositoryImpl - Session & remember persistence', () {
-    test('successful authenticated login saves session with specified persistence', () async {
-      remoteDataSource.loginResponse = const LoginResponseDto(
-        userId: 'user_1',
-        accessToken: 'access_1',
-        refreshToken: 'refresh_1',
-        accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
-        refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
-        isAuthenticated: true,
-      );
+    test(
+      'successful authenticated login saves session with specified persistence',
+      () async {
+        remoteDataSource.loginResponse = const LoginResponseDto(
+          userId: 'user_1',
+          accessToken: 'access_1',
+          refreshToken: 'refresh_1',
+          accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
+          refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
+          isAuthenticated: true,
+        );
 
-      final result = await repository.login(
-        const LoginRequestEntity(
-          phone: '12345678',
-          password: 'secret_password',
-          countryCode: '+965',
-        ),
-        persistence: SessionPersistence.remembered,
-      );
+        final result = await repository.login(
+          const LoginRequestEntity(
+            phone: '12345678',
+            password: 'secret_password',
+            countryCode: '+965',
+          ),
+          persistence: SessionPersistence.remembered,
+        );
 
-      expect(result, isA<ApiSuccessResult>());
-      expect(tokenService.saveSessionCallCount, 1);
-      expect(tokenService.savedUserId, 'user_1');
-      expect(tokenService.savedAccessToken, 'access_1');
-      expect(tokenService.savedRefreshToken, 'refresh_1');
-      expect(tokenService.savedPersistence, SessionPersistence.remembered);
-      expect(
-        tokenService.savedAccessExpiresAtUtc,
-        DateTime.utc(2026, 12, 1, 10, 0),
-      );
-    });
+        expect(result, isA<ApiSuccessResult>());
+        expect(tokenService.saveSessionCallCount, 1);
+        expect(tokenService.savedUserId, 'user_1');
+        expect(tokenService.savedAccessToken, 'access_1');
+        expect(tokenService.savedRefreshToken, 'refresh_1');
+        expect(tokenService.savedPersistence, SessionPersistence.remembered);
+        expect(
+          tokenService.savedAccessExpiresAtUtc,
+          DateTime.utc(2026, 12, 1, 10, 0),
+        );
+      },
+    );
 
-    test('login with isAuthenticated=false (challenge) does NOT save session', () async {
-      remoteDataSource.loginResponse = const LoginResponseDto(
-        userId: 'user_1',
-        accessToken: '',
-        refreshToken: '',
-        nextStep: 'otp_verification',
-        loginChallengeToken: 'challenge_token',
-        isAuthenticated: false,
-      );
+    test(
+      'login with isAuthenticated=false (challenge) does NOT save session',
+      () async {
+        remoteDataSource.loginResponse = const LoginResponseDto(
+          userId: 'user_1',
+          accessToken: '',
+          refreshToken: '',
+          nextStep: 'otp_verification',
+          loginChallengeToken: 'challenge_token',
+          isAuthenticated: false,
+        );
 
-      final result = await repository.login(
-        const LoginRequestEntity(
-          phone: '12345678',
-          password: 'secret_password',
-          countryCode: '+965',
-        ),
-        persistence: SessionPersistence.remembered,
-      );
+        final result = await repository.login(
+          const LoginRequestEntity(
+            phone: '12345678',
+            password: 'secret_password',
+            countryCode: '+965',
+          ),
+          persistence: SessionPersistence.remembered,
+        );
 
-      expect(result, isA<ApiSuccessResult>());
-      expect(tokenService.saveSessionCallCount, 0);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        expect(tokenService.saveSessionCallCount, 0);
+      },
+    );
 
-    test('login with empty tokens does NOT save session even if isAuthenticated is true', () async {
-      remoteDataSource.loginResponse = const LoginResponseDto(
-        userId: 'user_1',
-        accessToken: '',
-        refreshToken: '',
-        isAuthenticated: true,
-      );
+    test(
+      'login with empty tokens does NOT save session even if isAuthenticated is true',
+      () async {
+        remoteDataSource.loginResponse = const LoginResponseDto(
+          userId: 'user_1',
+          accessToken: '',
+          refreshToken: '',
+          isAuthenticated: true,
+        );
 
-      final result = await repository.login(
-        const LoginRequestEntity(
-          phone: '12345678',
-          password: 'secret_password',
-          countryCode: '+965',
-        ),
-        persistence: SessionPersistence.remembered,
-      );
+        final result = await repository.login(
+          const LoginRequestEntity(
+            phone: '12345678',
+            password: 'secret_password',
+            countryCode: '+965',
+          ),
+          persistence: SessionPersistence.remembered,
+        );
 
-      expect(result, isA<ApiSuccessResult>());
-      expect(tokenService.saveSessionCallCount, 0);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        expect(tokenService.saveSessionCallCount, 0);
+      },
+    );
 
     test('verifyPhone saves session with currentRun persistence', () async {
       remoteDataSource.verifyPhoneResponse = const VerifyPhoneResponseDto(

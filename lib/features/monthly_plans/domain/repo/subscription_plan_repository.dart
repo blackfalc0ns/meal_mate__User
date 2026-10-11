@@ -34,6 +34,9 @@ abstract interface class SubscriptionPlanRepository {
     required int page,
     required int pageSize,
     String? addressId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   });
 
   Future<ApiResult<SubscriptionRestaurantDetailsEntity>> getRestaurantDetails({

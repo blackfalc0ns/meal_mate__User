@@ -33,101 +33,107 @@ void main() {
       servingRestaurants: [],
     );
 
-    test('CustomerAddressEditorOperations supports add, update, setDefault and delegates correctly', () async {
-      var previewNewCalled = false;
-      var previewExistingCalled = false;
-      var addCalled = false;
-      var updateCalled = false;
-      var setDefaultCalled = false;
+    test(
+      'CustomerAddressEditorOperations supports add, update, setDefault and delegates correctly',
+      () async {
+        var previewNewCalled = false;
+        var previewExistingCalled = false;
+        var addCalled = false;
+        var updateCalled = false;
+        var setDefaultCalled = false;
 
-      final ops = CustomerAddressEditorOperations(
-        previewNewAddressCoverage: (req, {page, pageSize}) async {
-          previewNewCalled = true;
-          return const ApiSuccessResult(data: dummyPreview);
-        },
-        previewExistingAddressCoverage: (id, {page, pageSize}) async {
-          previewExistingCalled = true;
-          return const ApiSuccessResult(data: dummyPreview);
-        },
-        addCustomerAddress: (req) async {
-          addCalled = true;
-          return const ApiSuccessResult(data: dummyAddress);
-        },
-        updateCustomerAddress: (id, req) async {
-          updateCalled = true;
-          return const ApiSuccessResult(data: dummyAddress);
-        },
-        confirmSetDefaultAddress: (id) async {
-          setDefaultCalled = true;
-          return const ApiSuccessResult(data: dummyAddress);
-        },
-      );
+        final ops = CustomerAddressEditorOperations(
+          previewNewAddressCoverage: (req, {page, pageSize}) async {
+            previewNewCalled = true;
+            return const ApiSuccessResult(data: dummyPreview);
+          },
+          previewExistingAddressCoverage: (id, {page, pageSize}) async {
+            previewExistingCalled = true;
+            return const ApiSuccessResult(data: dummyPreview);
+          },
+          addCustomerAddress: (req) async {
+            addCalled = true;
+            return const ApiSuccessResult(data: dummyAddress);
+          },
+          updateCustomerAddress: (id, req) async {
+            updateCalled = true;
+            return const ApiSuccessResult(data: dummyAddress);
+          },
+          confirmSetDefaultAddress: (id) async {
+            setDefaultCalled = true;
+            return const ApiSuccessResult(data: dummyAddress);
+          },
+        );
 
-      expect(
-        ops.supportedActions,
-        containsAll([
-          AddressEditorAction.add,
-          AddressEditorAction.update,
-          AddressEditorAction.setDefault,
-        ]),
-      );
+        expect(
+          ops.supportedActions,
+          containsAll([
+            AddressEditorAction.add,
+            AddressEditorAction.update,
+            AddressEditorAction.setDefault,
+          ]),
+        );
 
-      final prevNewRes = await ops.previewNew(dummyRequest);
-      expect(prevNewRes.isSuccess, isTrue);
-      expect(previewNewCalled, isTrue);
+        final prevNewRes = await ops.previewNew(dummyRequest);
+        expect(prevNewRes.isSuccess, isTrue);
+        expect(previewNewCalled, isTrue);
 
-      final prevExistRes = await ops.previewExisting('addr-1');
-      expect(prevExistRes.isSuccess, isTrue);
-      expect(previewExistingCalled, isTrue);
+        final prevExistRes = await ops.previewExisting('addr-1');
+        expect(prevExistRes.isSuccess, isTrue);
+        expect(previewExistingCalled, isTrue);
 
-      final addRes = await ops.add(dummyRequest);
-      expect(addRes.isSuccess, isTrue);
-      expect(addCalled, isTrue);
+        final addRes = await ops.add(dummyRequest);
+        expect(addRes.isSuccess, isTrue);
+        expect(addCalled, isTrue);
 
-      final updateRes = await ops.update('addr-1', dummyRequest);
-      expect(updateRes.isSuccess, isTrue);
-      expect(updateCalled, isTrue);
+        final updateRes = await ops.update('addr-1', dummyRequest);
+        expect(updateRes.isSuccess, isTrue);
+        expect(updateCalled, isTrue);
 
-      final setDefaultRes = await ops.setDefault('addr-1');
-      expect(setDefaultRes.isSuccess, isTrue);
-      expect(setDefaultCalled, isTrue);
-    });
+        final setDefaultRes = await ops.setDefault('addr-1');
+        expect(setDefaultRes.isSuccess, isTrue);
+        expect(setDefaultCalled, isTrue);
+      },
+    );
 
-    test('FamilyAddressEditorOperations delegates with memberId and rejects unsupported actions without fallback', () async {
-      String? previewMemberId;
-      String? addMemberId;
+    test(
+      'FamilyAddressEditorOperations delegates with memberId and rejects unsupported actions without fallback',
+      () async {
+        String? previewMemberId;
+        String? addMemberId;
 
-      final ops = FamilyAddressEditorOperations(
-        memberId: 'member-123',
-        previewFamilyMemberAddress: (mId, req, {page, pageSize}) async {
-          previewMemberId = mId;
-          return const ApiSuccessResult(data: dummyPreview);
-        },
-        addFamilyMemberAddress: (mId, req) async {
-          addMemberId = mId;
-          return const ApiSuccessResult(data: dummyAddress);
-        },
-      );
+        final ops = FamilyAddressEditorOperations(
+          memberId: 'member-123',
+          previewFamilyMemberAddress: (mId, req, {page, pageSize}) async {
+            previewMemberId = mId;
+            return const ApiSuccessResult(data: dummyPreview);
+          },
+          addFamilyMemberAddress: (mId, req) async {
+            addMemberId = mId;
+            return const ApiSuccessResult(data: dummyAddress);
+          },
+        );
 
-      expect(ops.supportedActions, equals({AddressEditorAction.add}));
+        expect(ops.supportedActions, equals({AddressEditorAction.add}));
 
-      final previewRes = await ops.previewNew(dummyRequest);
-      expect(previewRes.isSuccess, isTrue);
-      expect(previewMemberId, 'member-123');
+        final previewRes = await ops.previewNew(dummyRequest);
+        expect(previewRes.isSuccess, isTrue);
+        expect(previewMemberId, 'member-123');
 
-      final addRes = await ops.add(dummyRequest);
-      expect(addRes.isSuccess, isTrue);
-      expect(addMemberId, 'member-123');
+        final addRes = await ops.add(dummyRequest);
+        expect(addRes.isSuccess, isTrue);
+        expect(addMemberId, 'member-123');
 
-      // Unsupported operations MUST return failure and NOT call any fallback
-      final updateRes = await ops.update('addr-1', dummyRequest);
-      expect(updateRes.isError, isTrue);
+        // Unsupported operations MUST return failure and NOT call any fallback
+        final updateRes = await ops.update('addr-1', dummyRequest);
+        expect(updateRes.isError, isTrue);
 
-      final setDefaultRes = await ops.setDefault('addr-1');
-      expect(setDefaultRes.isError, isTrue);
+        final setDefaultRes = await ops.setDefault('addr-1');
+        expect(setDefaultRes.isError, isTrue);
 
-      final prevExistingRes = await ops.previewExisting('addr-1');
-      expect(prevExistingRes.isError, isTrue);
-    });
+        final prevExistingRes = await ops.previewExisting('addr-1');
+        expect(prevExistingRes.isError, isTrue);
+      },
+    );
   });
 }

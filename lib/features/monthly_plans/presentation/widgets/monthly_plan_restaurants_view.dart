@@ -147,6 +147,5 @@ class MonthlyPlanRestaurantsView extends StatelessWidget {
         ],
       ),
     );
-
   }
 }

@@ -39,7 +39,8 @@ class RecordingSummaryRepo implements SubscriptionSummaryRepository {
     if (nextCompleter != null) {
       return nextCompleter!.future;
     }
-    return immediateResult ?? ApiSuccessResult(data: _buildSummary(canCheckout: true));
+    return immediateResult ??
+        ApiSuccessResult(data: _buildSummary(canCheckout: true));
   }
 
   @override
@@ -61,7 +62,9 @@ class FakeCheckoutSubscriptionUseCase extends CheckoutSubscriptionUseCase {
   int checkoutCallCount = 0;
 
   @override
-  Future<ApiResult<PaymentCheckoutEntity>> call(PaymentCheckoutRequestEntity request) async {
+  Future<ApiResult<PaymentCheckoutEntity>> call(
+    PaymentCheckoutRequestEntity request,
+  ) async {
     checkoutCallCount++;
     return const ApiSuccessResult(
       data: PaymentCheckoutEntity(
@@ -169,142 +172,156 @@ void main() {
       startDate: '2026-10-08',
     );
 
-    test('canCheckout=false with non-empty restaurants disables checkout permission', () async {
-      repo.immediateResult = ApiSuccessResult(
-        data: _buildSummary(
-          canCheckout: false,
-          checkoutBlockReason: 'checkout.address_required',
-        ),
-      );
+    test(
+      'canCheckout=false with non-empty restaurants disables checkout permission',
+      () async {
+        repo.immediateResult = ApiSuccessResult(
+          data: _buildSummary(
+            canCheckout: false,
+            checkoutBlockReason: 'checkout.address_required',
+          ),
+        );
 
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
 
-      expect(viewModel.state.summary, isNotNull);
-      expect(viewModel.state.summary!.restaurants.isNotEmpty, isTrue);
-      expect(viewModel.state.canCheckout, isFalse);
-    });
+        expect(viewModel.state.summary, isNotNull);
+        expect(viewModel.state.summary!.restaurants.isNotEmpty, isTrue);
+        expect(viewModel.state.canCheckout, isFalse);
+      },
+    );
 
-    test('isSummaryRefreshing=true disables checkout during active refresh of approved summary', () async {
-      // First load succeeds with canCheckout=true
-      repo.immediateResult = ApiSuccessResult(
-        data: _buildSummary(canCheckout: true),
-      );
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
+    test(
+      'isSummaryRefreshing=true disables checkout during active refresh of approved summary',
+      () async {
+        // First load succeeds with canCheckout=true
+        repo.immediateResult = ApiSuccessResult(
+          data: _buildSummary(canCheckout: true),
+        );
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
 
-      expect(viewModel.state.canCheckout, isTrue);
+        expect(viewModel.state.canCheckout, isTrue);
 
-      // Now start a new refresh request that is pending
-      final refreshCompleter = Completer<ApiResult<SubscriptionSummaryEntity>>();
-      repo.nextCompleter = refreshCompleter;
+        // Now start a new refresh request that is pending
+        final refreshCompleter =
+            Completer<ApiResult<SubscriptionSummaryEntity>>();
+        repo.nextCompleter = refreshCompleter;
 
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
 
-      expect(viewModel.state.isSummaryRefreshing, isTrue);
-      // While refreshing, canCheckout must be false
-      expect(viewModel.state.canCheckout, isFalse);
+        expect(viewModel.state.isSummaryRefreshing, isTrue);
+        // While refreshing, canCheckout must be false
+        expect(viewModel.state.canCheckout, isFalse);
 
-      // Complete refresh
-      refreshCompleter.complete(
-        ApiSuccessResult(data: _buildSummary(canCheckout: true)),
-      );
-      await pumpEventQueue();
+        // Complete refresh
+        refreshCompleter.complete(
+          ApiSuccessResult(data: _buildSummary(canCheckout: true)),
+        );
+        await pumpEventQueue();
 
-      expect(viewModel.state.isSummaryRefreshing, isFalse);
-      expect(viewModel.state.canCheckout, isTrue);
-    });
+        expect(viewModel.state.isSummaryRefreshing, isFalse);
+        expect(viewModel.state.canCheckout, isTrue);
+      },
+    );
 
-    test('Failure on refresh does not restore approval of old summary', () async {
-      // Initial success
-      repo.immediateResult = ApiSuccessResult(
-        data: _buildSummary(canCheckout: true),
-      );
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
-      expect(viewModel.state.canCheckout, isTrue);
+    test(
+      'Failure on refresh does not restore approval of old summary',
+      () async {
+        // Initial success
+        repo.immediateResult = ApiSuccessResult(
+          data: _buildSummary(canCheckout: true),
+        );
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
+        expect(viewModel.state.canCheckout, isTrue);
 
-      // Refresh fails
-      repo.nextCompleter = null;
-      repo.immediateResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Network timeout', code: 'timeout'),
-      );
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
+        // Refresh fails
+        repo.nextCompleter = null;
+        repo.immediateResult = ApiErrorResult(
+          failure: Failure(errorMessage: 'Network timeout', code: 'timeout'),
+        );
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
 
-      expect(viewModel.state.failure, isNotNull);
-      expect(viewModel.state.canCheckout, isFalse);
-    });
+        expect(viewModel.state.failure, isNotNull);
+        expect(viewModel.state.canCheckout, isFalse);
+      },
+    );
 
-    test('Display finalPrice directly from server without re-calculating discounts', () async {
-      repo.immediateResult = ApiSuccessResult(
-        data: _buildSummary(
-          canCheckout: true,
-          basePrice: 100.0,
-          campaignDiscount: 10.0,
-          promoDiscount: 5.0,
-          finalPrice: 85.0,
-        ),
-      );
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
-      await pumpEventQueue();
+    test(
+      'Display finalPrice directly from server without re-calculating discounts',
+      () async {
+        repo.immediateResult = ApiSuccessResult(
+          data: _buildSummary(
+            canCheckout: true,
+            basePrice: 100.0,
+            campaignDiscount: 10.0,
+            promoDiscount: 5.0,
+            finalPrice: 85.0,
+          ),
+        );
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(testRequest));
+        await pumpEventQueue();
 
-      final summary = viewModel.state.summary!;
-      expect(summary.finalPrice, equals(85.0));
-      expect(summary.basePrice, equals(100.0));
-      expect(summary.campaignDiscount, equals(10.0));
-      expect(summary.promoDiscount, equals(5.0));
-    });
+        final summary = viewModel.state.summary!;
+        expect(summary.finalPrice, equals(85.0));
+        expect(summary.basePrice, equals(100.0));
+        expect(summary.campaignDiscount, equals(10.0));
+        expect(summary.promoDiscount, equals(5.0));
+      },
+    );
 
-    test('PaymentViewModel guards against checkout when canCheckout is false', () async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      final prefHelper = SharedPrefHelper(prefs);
+    test(
+      'PaymentViewModel guards against checkout when canCheckout is false',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final prefHelper = SharedPrefHelper(prefs);
 
-      final fakeCheckout = FakeCheckoutSubscriptionUseCase();
-      final fakeMethods = _FakeGetPaymentMethodsUseCase();
+        final fakeCheckout = FakeCheckoutSubscriptionUseCase();
+        final fakeMethods = _FakeGetPaymentMethodsUseCase();
 
-      final paymentVm = PaymentViewModel(
-        fakeMethods,
-        fakeCheckout,
-        _FakeGetPaymentStatusUseCase(),
-        _FakeGetCalendarUseCase(),
-        _FakeGetCurrentSubscriptionUseCase(),
-        prefHelper,
-      );
+        final paymentVm = PaymentViewModel(
+          fakeMethods,
+          fakeCheckout,
+          _FakeGetPaymentStatusUseCase(),
+          _FakeGetCalendarUseCase(),
+          _FakeGetCurrentSubscriptionUseCase(),
+          prefHelper,
+        );
 
-      // Load methods to select a valid payment method
-      final validMethod = const PaymentMethodEntity(
-        id: 1,
-        type: PaymentMethodType.payzah,
-        title: 'KNet',
-        subtitle: '',
-        code: 'knet',
-        integrationType: 'hosted',
-        currencyCode: 'KWD',
-        isAvailable: true,
-      );
-      fakeMethods.methodsToReturn = [validMethod];
+        // Load methods to select a valid payment method
+        final validMethod = const PaymentMethodEntity(
+          id: 1,
+          type: PaymentMethodType.payzah,
+          title: 'KNet',
+          subtitle: '',
+          code: 'knet',
+          integrationType: 'hosted',
+          currencyCode: 'KWD',
+          isAvailable: true,
+        );
+        fakeMethods.methodsToReturn = [validMethod];
 
-      paymentVm.doIntent(
-        SelectPaymentMethodEvent(validMethod),
-      );
-      await pumpEventQueue();
+        paymentVm.doIntent(SelectPaymentMethodEvent(validMethod));
+        await pumpEventQueue();
 
-      final blockedSummary = _buildSummary(canCheckout: false);
-      final paymentArgs = PaymentArgs(
-        summary: blockedSummary,
-        summaryRequest: testRequest,
-        restaurantId: 'rest-1',
-      );
+        final blockedSummary = _buildSummary(canCheckout: false);
+        final paymentArgs = PaymentArgs(
+          summary: blockedSummary,
+          summaryRequest: testRequest,
+          restaurantId: 'rest-1',
+        );
 
-      paymentVm.doIntent(CheckoutPaymentEvent(paymentArgs));
-      await pumpEventQueue();
+        paymentVm.doIntent(CheckoutPaymentEvent(paymentArgs));
+        await pumpEventQueue();
 
-      expect(fakeCheckout.checkoutCallCount, equals(0));
-      paymentVm.close();
-    });
+        expect(fakeCheckout.checkoutCallCount, equals(0));
+        paymentVm.close();
+      },
+    );
   });
 }
 
@@ -313,8 +330,9 @@ class _FakeGetPaymentMethodsUseCase extends GetPaymentMethodsUseCase {
   List<PaymentMethodEntity> methodsToReturn = [];
 
   @override
-  Future<ApiResult<List<PaymentMethodEntity>>> call({required double amount}) async =>
-      ApiSuccessResult(data: methodsToReturn);
+  Future<ApiResult<List<PaymentMethodEntity>>> call({
+    required double amount,
+  }) async => ApiSuccessResult(data: methodsToReturn);
 }
 
 class _FakeGetPaymentStatusUseCase extends GetSubscriptionPaymentStatusUseCase {
@@ -329,7 +347,8 @@ class _FakeGetCalendarUseCase extends GetSubscriptionCalendarUseCase {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _FakeGetCurrentSubscriptionUseCase extends GetCurrentCustomerSubscriptionUseCase {
+class _FakeGetCurrentSubscriptionUseCase
+    extends GetCurrentCustomerSubscriptionUseCase {
   _FakeGetCurrentSubscriptionUseCase() : super(_NoopBillingRepo());
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

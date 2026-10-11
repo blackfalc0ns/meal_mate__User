@@ -40,9 +40,9 @@ class MonthlyPlanHeroSection extends StatelessWidget {
           height: isBrowsingRestaurants
               ? Spacing.monthlyPlanDurationCardTop
               : (durationSelector == null
-                  ? (Spacing.monthlyPlanHeroSummaryTop + 72.0)
-                  : Spacing.monthlyPlanDurationCardTop +
-                      Spacing.monthlyPlanDurationHeight),
+                    ? (Spacing.monthlyPlanHeroSummaryTop + 72.0)
+                    : Spacing.monthlyPlanDurationCardTop +
+                          Spacing.monthlyPlanDurationHeight),
           child: Stack(
             clipBehavior: Clip.hardEdge,
             children: [

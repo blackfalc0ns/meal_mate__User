@@ -9,9 +9,8 @@ import 'subscription_packages_state.dart';
 
 @injectable
 class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
-  SubscriptionPackagesViewModel(
-    this._getSubscriptionPackagesUseCase,
-  ) : super(const SubscriptionPackagesState());
+  SubscriptionPackagesViewModel(this._getSubscriptionPackagesUseCase)
+    : super(const SubscriptionPackagesState());
 
   final GetSubscriptionPackagesUseCase _getSubscriptionPackagesUseCase;
 
@@ -22,10 +21,7 @@ class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
     switch (event) {
       case GetSubscriptionPackagesEvent():
         unawaited(
-          _getSubscriptionPackages(
-            event.programId,
-            isRefresh: event.isRefresh,
-          ),
+          _getSubscriptionPackages(event.programId, isRefresh: event.isRefresh),
         );
       case LoadMoreSubscriptionPackagesEvent():
         unawaited(_loadMoreSubscriptionPackages());
@@ -118,12 +114,7 @@ class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
     final targetPage = state.pagination!.page + 1;
     final generation = _packagesGeneration;
 
-    emit(
-      state.copyWith(
-        isLoadingMore: true,
-        clearLoadMoreFailure: true,
-      ),
-    );
+    emit(state.copyWith(isLoadingMore: true, clearLoadMoreFailure: true));
 
     final result = await _getSubscriptionPackagesUseCase(
       state.programId,
@@ -137,7 +128,9 @@ class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
       case ApiSuccessResult():
         final existingIds = state.bundles.map((b) => b.bundleId).toSet();
         final newItems = result.data.bundles
-            .where((b) => b.bundleId.isNotEmpty && !existingIds.contains(b.bundleId))
+            .where(
+              (b) => b.bundleId.isNotEmpty && !existingIds.contains(b.bundleId),
+            )
             .toList();
 
         emit(
@@ -154,10 +147,7 @@ class SubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState> {
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isLoadingMore: false,
-            loadMoreFailure: result.failure,
-          ),
+          state.copyWith(isLoadingMore: false, loadMoreFailure: result.failure),
         );
     }
   }

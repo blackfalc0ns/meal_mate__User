@@ -8,10 +8,7 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/widge
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_tile.dart';
 
 class SubscriptionPlanSummaryCard extends StatelessWidget {
-  const SubscriptionPlanSummaryCard({
-    super.key,
-    required this.summary,
-  });
+  const SubscriptionPlanSummaryCard({super.key, required this.summary});
 
   final SubscriptionSummaryEntity summary;
 

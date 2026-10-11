@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/entities/paged_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -25,33 +26,49 @@ class SubscriptionProgramsRepositoryImpl
 
   @override
   Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>>
-  getSubscriptionProgramsPage({
-    required int page,
-    required int pageSize,
-  }) {
+  getSubscriptionProgramsPage({required int page, required int pageSize}) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getSubscriptionProgramsPage(
-        page: page,
-        pageSize: pageSize,
-      );
-      return response.toEntity();
+      try {
+        final catalogResponse = await _remoteDataSource
+            .getSubscriptionCatalogProgramsPage(page: page, pageSize: pageSize);
+        return catalogResponse.toEntity();
+      } on DioException catch (e) {
+        if (e.response?.statusCode == 404 || e.response?.statusCode == 405) {
+          final response = await _remoteDataSource.getSubscriptionProgramsPage(
+            page: page,
+            pageSize: pageSize,
+          );
+          return response.toEntity();
+        }
+        rethrow;
+      }
     });
   }
 
   @override
   Future<ApiResult<SubscriptionProgramBundlesEntity>>
-  getSubscriptionProgramBundles(
-    String programId, {
-    int? page,
-    int? pageSize,
-  }) {
+  getSubscriptionProgramBundles(String programId, {int? page, int? pageSize}) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getSubscriptionProgramBundles(
-        programId,
-        page: page,
-        pageSize: pageSize,
-      );
-      return response.toProgramBundlesEntity();
+      try {
+        final catalogResponse = await _remoteDataSource
+            .getSubscriptionCatalogProgramBundles(
+              programId,
+              page: page,
+              pageSize: pageSize,
+            );
+        return catalogResponse.toProgramBundlesEntity();
+      } on DioException catch (e) {
+        if (e.response?.statusCode == 404 || e.response?.statusCode == 405) {
+          final response = await _remoteDataSource
+              .getSubscriptionProgramBundles(
+                programId,
+                page: page,
+                pageSize: pageSize,
+              );
+          return response.toProgramBundlesEntity();
+        }
+        rethrow;
+      }
     });
   }
 }

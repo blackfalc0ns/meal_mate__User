@@ -21,9 +21,7 @@ class SubscriptionPackageProgramHeaderSection extends StatelessWidget {
         end: Spacing.lg,
       ),
       sliver: SliverToBoxAdapter(
-        child: SubscriptionSelectedProgramCard(
-          program: program,
-        )
+        child: SubscriptionSelectedProgramCard(program: program)
             .animate()
             .fadeIn(duration: 350.ms, curve: Curves.easeOut)
             .slideY(

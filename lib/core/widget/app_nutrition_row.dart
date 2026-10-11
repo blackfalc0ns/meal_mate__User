@@ -3,10 +3,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_nutrition_item.dart';
 
-enum NutritionOrder {
-  caloriesProteinCarbsFat,
-  caloriesCarbsProteinFat,
-}
+enum NutritionOrder { caloriesProteinCarbsFat, caloriesCarbsProteinFat }
 
 class AppNutritionRow extends StatelessWidget {
   const AppNutritionRow({
@@ -77,17 +74,17 @@ class AppNutritionRow extends StatelessWidget {
 
     final items = switch (order) {
       NutritionOrder.caloriesProteinCarbsFat => [
-          caloriesItem,
-          proteinItem,
-          carbsItem,
-          fatItem,
-        ],
+        caloriesItem,
+        proteinItem,
+        carbsItem,
+        fatItem,
+      ],
       NutritionOrder.caloriesCarbsProteinFat => [
-          caloriesItem,
-          carbsItem,
-          proteinItem,
-          fatItem,
-        ],
+        caloriesItem,
+        carbsItem,
+        proteinItem,
+        fatItem,
+      ],
     };
 
     return SizedBox(

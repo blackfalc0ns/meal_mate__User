@@ -121,7 +121,9 @@ class _InfluencerSocialConnectionsScreenState
             listenWhen: (previous, current) {
               if (!_initialized && current.profile != null) return true;
               if (!previous.isSuccess && current.isSuccess) return true;
-              if (previous.failure != current.failure && current.failure != null) return true;
+              if (previous.failure != current.failure &&
+                  current.failure != null)
+                return true;
               return false;
             },
             listener: (context, state) {
@@ -135,7 +137,8 @@ class _InfluencerSocialConnectionsScreenState
                 _snapchatHandle.value = links.snapchat;
                 _initialized = true;
               }
-              if (state.failure != null && (state.profile != null || !state.isSaving)) {
+              if (state.failure != null &&
+                  (state.profile != null || !state.isSaving)) {
                 CustomSnackbar.showError(
                   context: context,
                   message: ErrorMessagePresenter.fromFailure(

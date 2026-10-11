@@ -84,10 +84,7 @@ Widget _wrap(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('en'),
-      Locale('ar'),
-    ],
+    supportedLocales: const [Locale('en'), Locale('ar')],
     locale: const Locale('en'),
     onGenerateRoute: (settings) =>
         MaterialPageRoute(builder: (_) => const SizedBox()),
@@ -129,16 +126,16 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(
-        _wrap(NotificationsScreen(viewModel: viewModel)),
-      );
+      await tester.pumpWidget(_wrap(NotificationsScreen(viewModel: viewModel)));
 
       // In initial frame before load completes
       expect(find.byType(NotificationsScreen), findsOneWidget);
       await tester.pumpAndSettle();
     });
 
-    testWidgets('renders empty view when notifications list is empty', (tester) async {
+    testWidgets('renders empty view when notifications list is empty', (
+      tester,
+    ) async {
       fakeGetNotifications.result = ApiSuccessResult(
         data: const NotificationsPageEntity(
           items: [],
@@ -151,15 +148,15 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(
-        _wrap(NotificationsScreen(viewModel: viewModel)),
-      );
+      await tester.pumpWidget(_wrap(NotificationsScreen(viewModel: viewModel)));
       await tester.pumpAndSettle();
 
       expect(find.byType(NotificationEmptyView), findsOneWidget);
     });
 
-    testWidgets('renders notification cards and groups when items present', (tester) async {
+    testWidgets('renders notification cards and groups when items present', (
+      tester,
+    ) async {
       final now = DateTime.now().toUtc();
       fakeGetNotifications.result = ApiSuccessResult(
         data: NotificationsPageEntity(
@@ -182,9 +179,7 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(
-        _wrap(NotificationsScreen(viewModel: viewModel)),
-      );
+      await tester.pumpWidget(_wrap(NotificationsScreen(viewModel: viewModel)));
       await tester.pumpAndSettle();
 
       expect(find.byType(NotificationCard), findsOneWidget);
@@ -199,7 +194,9 @@ void main() {
       expect(fakeMarkRead.markedId, 'n1');
     });
 
-    testWidgets('tapping mark all as read dispatches markAllRead', (tester) async {
+    testWidgets('tapping mark all as read dispatches markAllRead', (
+      tester,
+    ) async {
       final now = DateTime.now().toUtc();
       fakeGetNotifications.result = ApiSuccessResult(
         data: NotificationsPageEntity(
@@ -220,9 +217,7 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(
-        _wrap(NotificationsScreen(viewModel: viewModel)),
-      );
+      await tester.pumpWidget(_wrap(NotificationsScreen(viewModel: viewModel)));
       await tester.pumpAndSettle();
 
       final markAllFinder = find.text('Mark all as read');

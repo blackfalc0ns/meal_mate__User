@@ -79,42 +79,48 @@ void main() {
   });
 
   group('BiometricService - Capabilities', () {
-    test('hardware and enrolled fingerprint yields correct capabilities',
-        () async {
-      fakeLocalAuth.stubCanCheckBiometrics = true;
-      fakeLocalAuth.stubBiometrics = [BiometricType.fingerprint];
+    test(
+      'hardware and enrolled fingerprint yields correct capabilities',
+      () async {
+        fakeLocalAuth.stubCanCheckBiometrics = true;
+        fakeLocalAuth.stubBiometrics = [BiometricType.fingerprint];
 
-      final caps = await biometricService.getCapabilities();
+        final caps = await biometricService.getCapabilities();
 
-      expect(caps.supportsBiometrics, isTrue);
-      expect(caps.hasEnrollment, isTrue);
-      expect(caps.presentationType, BiometricTypeEnum.fingerprint);
-    });
+        expect(caps.supportsBiometrics, isTrue);
+        expect(caps.hasEnrollment, isTrue);
+        expect(caps.presentationType, BiometricTypeEnum.fingerprint);
+      },
+    );
 
-    test('device PIN support alone without biometrics is not biometric enrollment',
-        () async {
-      fakeLocalAuth.stubDeviceSupported = true;
-      fakeLocalAuth.stubCanCheckBiometrics = false;
-      fakeLocalAuth.stubBiometrics = [];
+    test(
+      'device PIN support alone without biometrics is not biometric enrollment',
+      () async {
+        fakeLocalAuth.stubDeviceSupported = true;
+        fakeLocalAuth.stubCanCheckBiometrics = false;
+        fakeLocalAuth.stubBiometrics = [];
 
-      final caps = await biometricService.getCapabilities();
+        final caps = await biometricService.getCapabilities();
 
-      expect(caps.supportsBiometrics, isFalse);
-      expect(caps.hasEnrollment, isFalse);
-      expect(caps.presentationType, BiometricTypeEnum.none);
-    });
+        expect(caps.supportsBiometrics, isFalse);
+        expect(caps.hasEnrollment, isFalse);
+        expect(caps.presentationType, BiometricTypeEnum.none);
+      },
+    );
 
-    test('strong/weak biometrics map to generic, not falling back to fingerprint',
-        () async {
-      fakeLocalAuth.stubCanCheckBiometrics = true;
-      fakeLocalAuth.stubBiometrics = [BiometricType.strong];
+    test(
+      'strong/weak biometrics map to generic, not falling back to fingerprint',
+      () async {
+        fakeLocalAuth.stubCanCheckBiometrics = true;
+        fakeLocalAuth.stubBiometrics = [BiometricType.strong];
 
-      final caps = await biometricService.getCapabilities();
+        final caps = await biometricService.getCapabilities();
 
-      expect(caps.supportsBiometrics, isTrue);
-      expect(caps.hasEnrollment, isTrue);
-      expect(caps.presentationType, BiometricTypeEnum.generic);
-    });
+        expect(caps.supportsBiometrics, isTrue);
+        expect(caps.hasEnrollment, isTrue);
+        expect(caps.presentationType, BiometricTypeEnum.generic);
+      },
+    );
 
     test('face biometric maps to face presentation', () async {
       fakeLocalAuth.stubCanCheckBiometrics = true;
@@ -133,7 +139,9 @@ void main() {
 
       // First call in progress
       final future1 = biometricService.authenticate(localizedReason: 'Test');
-      final result2 = await biometricService.authenticate(localizedReason: 'Test 2');
+      final result2 = await biometricService.authenticate(
+        localizedReason: 'Test 2',
+      );
 
       expect(result2.status, BiometricAuthStatus.busy);
       final result1 = await future1;
@@ -148,32 +156,40 @@ void main() {
         message: 'Authentication in progress',
       );
 
-      final result = await biometricService.authenticate(localizedReason: 'Test');
+      final result = await biometricService.authenticate(
+        localizedReason: 'Test',
+      );
 
       expect(result.status, BiometricAuthStatus.busy);
     });
 
-    test('maps native cancellation to canceled status without error message',
-        () async {
-      fakeLocalAuth.stubCanCheckBiometrics = true;
-      fakeLocalAuth.stubBiometrics = [BiometricType.fingerprint];
-      fakeLocalAuth.stubPlatformException = PlatformException(
-        code: 'UserCanceled',
-      );
+    test(
+      'maps native cancellation to canceled status without error message',
+      () async {
+        fakeLocalAuth.stubCanCheckBiometrics = true;
+        fakeLocalAuth.stubBiometrics = [BiometricType.fingerprint];
+        fakeLocalAuth.stubPlatformException = PlatformException(
+          code: 'UserCanceled',
+        );
 
-      final result = await biometricService.authenticate(localizedReason: 'Test');
+        final result = await biometricService.authenticate(
+          localizedReason: 'Test',
+        );
 
-      expect(result.status, BiometricAuthStatus.canceled);
-      expect(result.isCanceled, isTrue);
-    });
+        expect(result.status, BiometricAuthStatus.canceled);
+        expect(result.isCanceled, isTrue);
+      },
+    );
 
-    test('cancelAuthentication stops native prompt and clears authenticating guard',
-        () async {
-      final stopped = await biometricService.cancelAuthentication();
+    test(
+      'cancelAuthentication stops native prompt and clears authenticating guard',
+      () async {
+        final stopped = await biometricService.cancelAuthentication();
 
-      expect(stopped, isTrue);
-      expect(fakeLocalAuth.stopAuthenticationCalled, isTrue);
-    });
+        expect(stopped, isTrue);
+        expect(fakeLocalAuth.stopAuthenticationCalled, isTrue);
+      },
+    );
   });
 
   group('BiometricService - canOfferBiometricLogin matrix', () {

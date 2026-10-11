@@ -151,10 +151,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
     secureStorage = _FakeSecureStorage();
-    tokenService = TokenService(
-      prefs: secureStorage,
-      sharedPreferences: prefs,
-    );
+    tokenService = TokenService(prefs: secureStorage, sharedPreferences: prefs);
     fakeUseCase = _FakeRefreshTokenUseCase();
     refreshService = AuthRefreshService(
       tokenService: tokenService,
@@ -163,85 +160,94 @@ void main() {
   });
 
   group('Startup routing matrix', () {
-    test('remembered=true, access future expiry -> route Home directly, no refresh', () async {
-      await tokenService.saveSession(
-        userId: 'user_1',
-        accessToken: 'valid_access',
-        refreshToken: 'valid_refresh',
-        accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 13, 0),
-        refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
-        persistence: SessionPersistence.remembered,
-      );
-
-      final dest = await simulateStartupFlow(
-        tokenService: tokenService,
-        refreshService: refreshService,
-        nowUtc: now,
-      );
-
-      expect(dest, StartupDestination.home);
-      expect(fakeUseCase.callCount, 0);
-    });
-
-    test('remembered=true, access past expiry, refresh valid -> refresh call, Home after success', () async {
-      await tokenService.saveSession(
-        userId: 'user_1',
-        accessToken: 'expired_access',
-        refreshToken: 'valid_refresh',
-        accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 11, 0),
-        refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
-        persistence: SessionPersistence.remembered,
-      );
-
-      fakeUseCase.cannedResult = const ApiSuccessResult(
-        data: RefreshTokenEntity(
+    test(
+      'remembered=true, access future expiry -> route Home directly, no refresh',
+      () async {
+        await tokenService.saveSession(
           userId: 'user_1',
-          email: null,
-          phoneNumber: '12345678',
-          fullName: 'Test User',
-          userType: 'customer',
-          accountStatus: 'active',
-          restaurantId: null,
-          roles: [],
-          permissions: [],
-          accessToken: 'fresh_access',
-          accessTokenExpiresAtUtc: '2026-10-07T14:00:00.000Z',
-          refreshToken: 'fresh_refresh',
-          refreshTokenExpiresAtUtc: '2026-10-14T12:00:00.000Z',
-          nextStep: null,
-        ),
-      );
+          accessToken: 'valid_access',
+          refreshToken: 'valid_refresh',
+          accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 13, 0),
+          refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
+          persistence: SessionPersistence.remembered,
+        );
 
-      final dest = await simulateStartupFlow(
-        tokenService: tokenService,
-        refreshService: refreshService,
-        nowUtc: now,
-      );
+        final dest = await simulateStartupFlow(
+          tokenService: tokenService,
+          refreshService: refreshService,
+          nowUtc: now,
+        );
 
-      expect(fakeUseCase.callCount, 1);
-      expect(dest, StartupDestination.home);
-    });
+        expect(dest, StartupDestination.home);
+        expect(fakeUseCase.callCount, 0);
+      },
+    );
 
-    test('remembered=false, previous run tokens -> route Login, no refresh', () async {
-      await tokenService.saveSession(
-        userId: 'user_1',
-        accessToken: 'access_1',
-        refreshToken: 'refresh_1',
-        accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 13, 0),
-        refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
-        persistence: SessionPersistence.currentRun,
-      );
+    test(
+      'remembered=true, access past expiry, refresh valid -> refresh call, Home after success',
+      () async {
+        await tokenService.saveSession(
+          userId: 'user_1',
+          accessToken: 'expired_access',
+          refreshToken: 'valid_refresh',
+          accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 11, 0),
+          refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
+          persistence: SessionPersistence.remembered,
+        );
 
-      final dest = await simulateStartupFlow(
-        tokenService: tokenService,
-        refreshService: refreshService,
-        nowUtc: now,
-      );
+        fakeUseCase.cannedResult = const ApiSuccessResult(
+          data: RefreshTokenEntity(
+            userId: 'user_1',
+            email: null,
+            phoneNumber: '12345678',
+            fullName: 'Test User',
+            userType: 'customer',
+            accountStatus: 'active',
+            restaurantId: null,
+            roles: [],
+            permissions: [],
+            accessToken: 'fresh_access',
+            accessTokenExpiresAtUtc: '2026-10-07T14:00:00.000Z',
+            refreshToken: 'fresh_refresh',
+            refreshTokenExpiresAtUtc: '2026-10-14T12:00:00.000Z',
+            nextStep: null,
+          ),
+        );
 
-      expect(dest, StartupDestination.login);
-      expect(fakeUseCase.callCount, 0);
-      expect(await tokenService.getToken(), isNull);
-    });
+        final dest = await simulateStartupFlow(
+          tokenService: tokenService,
+          refreshService: refreshService,
+          nowUtc: now,
+        );
+
+        expect(fakeUseCase.callCount, 1);
+        expect(dest, StartupDestination.home);
+      },
+    );
+
+    test(
+      'remembered=false, previous run tokens -> route Login, no refresh',
+      () async {
+        await tokenService.saveSession(
+          userId: 'user_1',
+          accessToken: 'access_1',
+          refreshToken: 'refresh_1',
+          accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 13, 0),
+          refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
+          persistence: SessionPersistence.currentRun,
+        );
+
+        final dest = await simulateStartupFlow(
+          tokenService: tokenService,
+          refreshService: refreshService,
+          nowUtc: now,
+        );
+
+        expect(dest, StartupDestination.login);
+        expect(fakeUseCase.callCount, 0);
+        expect(await tokenService.getToken(), isNull);
+      },
+    );
 
     test('refresh timeout / offline -> tokens intact, retryRequired', () async {
       await tokenService.saveSession(
@@ -273,35 +279,38 @@ void main() {
       expect(await tokenService.getRefreshToken(), 'valid_refresh');
     });
 
-    test('refresh permanently rejected -> clears session, route Login', () async {
-      await tokenService.saveSession(
-        userId: 'user_1',
-        accessToken: 'expired_access',
-        refreshToken: 'revoked_refresh',
-        accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 11, 0),
-        refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
-        persistence: SessionPersistence.remembered,
-      );
+    test(
+      'refresh permanently rejected -> clears session, route Login',
+      () async {
+        await tokenService.saveSession(
+          userId: 'user_1',
+          accessToken: 'expired_access',
+          refreshToken: 'revoked_refresh',
+          accessExpiresAtUtc: DateTime.utc(2026, 10, 7, 11, 0),
+          refreshExpiresAtUtc: DateTime.utc(2026, 10, 14, 12, 0),
+          persistence: SessionPersistence.remembered,
+        );
 
-      fakeUseCase.cannedResult = ApiErrorResult(
-        failure: Failure.fromException(
-          const ApiException(
-            errorType: ApiErrorType.unauthorized,
-            message: 'Refresh token invalid or expired',
-            statusCode: 401,
+        fakeUseCase.cannedResult = ApiErrorResult(
+          failure: Failure.fromException(
+            const ApiException(
+              errorType: ApiErrorType.unauthorized,
+              message: 'Refresh token invalid or expired',
+              statusCode: 401,
+            ),
           ),
-        ),
-      );
+        );
 
-      final dest = await simulateStartupFlow(
-        tokenService: tokenService,
-        refreshService: refreshService,
-        nowUtc: now,
-      );
+        final dest = await simulateStartupFlow(
+          tokenService: tokenService,
+          refreshService: refreshService,
+          nowUtc: now,
+        );
 
-      expect(dest, StartupDestination.login);
-      expect(await tokenService.getToken(), isNull);
-      expect(await tokenService.getRefreshToken(), isNull);
-    });
+        expect(dest, StartupDestination.login);
+        expect(await tokenService.getToken(), isNull);
+        expect(await tokenService.getRefreshToken(), isNull);
+      },
+    );
   });
 }

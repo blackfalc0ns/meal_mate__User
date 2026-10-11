@@ -54,11 +54,6 @@ class RestaurantTierOptionViewData {
           optionType == other.optionType;
 
   @override
-  int get hashCode => Object.hash(
-        option,
-        index,
-        badgeAsset,
-        imageUrl,
-        optionType,
-      );
+  int get hashCode =>
+      Object.hash(option, index, badgeAsset, imageUrl, optionType);
 }

@@ -15,98 +15,100 @@ import 'package:meal_meat_user/features/subscription_upgrade/presentation/manage
 
 void main() {
   group('Upgrade Fulfillment and Zero-Payment Security Tests', () {
-    test('missing paymentUrl and unpaid status does NOT trigger immediate success', () async {
-      final fakeRepo = _UpgradeRepoFake();
-      // Server returns empty paymentUrl and isPaid = false
-      fakeRepo.createResult = const ApiSuccessResult(
-        data: SubscriptionUpgradeRequestResultEntity(
-          upgradeId: 'up-1',
-          subscriptionId: 'sub-1',
-          fromTier: 'Basic',
-          toTier: 'Platinum',
-          amount: 15.0,
-          currencyCode: 'KWD',
-          paymentUrl: '',
-          isPaid: false,
-          status: 'Pending',
-          remainingServiceDays: 12,
-        ),
-      );
-
-      final viewModel = RestaurantTierUpgradeViewModel(
-        GetSubscriptionUpgradeOptionsUseCase(fakeRepo),
-        GetSubscriptionUpgradeSummaryUseCase(fakeRepo),
-        CreateSubscriptionUpgradeRequestUseCase(fakeRepo),
-        GetSubscriptionUpgradeStatusUseCase(fakeRepo),
-        GetCurrentCustomerSubscriptionUseCase(_BillingRepoFake()),
-      );
-      addTearDown(viewModel.close);
-
-      viewModel.doIntent(
-        const InitUpgradeConfirmationEvent(
-          RestaurantTierUpgradeConfirmationArgs(
+    test(
+      'missing paymentUrl and unpaid status does NOT trigger immediate success',
+      () async {
+        final fakeRepo = _UpgradeRepoFake();
+        // Server returns empty paymentUrl and isPaid = false
+        fakeRepo.createResult = const ApiSuccessResult(
+          data: SubscriptionUpgradeRequestResultEntity(
+            upgradeId: 'up-1',
             subscriptionId: 'sub-1',
-            selectedOption: _testOption,
-            optionsEntity: _testOptionsEntity,
+            fromTier: 'Basic',
+            toTier: 'Platinum',
+            amount: 15.0,
+            currencyCode: 'KWD',
+            paymentUrl: '',
+            isPaid: false,
+            status: 'Pending',
+            remainingServiceDays: 12,
           ),
-        ),
-      );
-      viewModel.doIntent(
-        const SelectUpgradePaymentMethodEvent(_testMethod),
-      );
+        );
 
-      viewModel.doIntent(const SubmitUpgradeRequestEvent());
-      await Future<void>.delayed(Duration.zero);
+        final viewModel = RestaurantTierUpgradeViewModel(
+          GetSubscriptionUpgradeOptionsUseCase(fakeRepo),
+          GetSubscriptionUpgradeSummaryUseCase(fakeRepo),
+          CreateSubscriptionUpgradeRequestUseCase(fakeRepo),
+          GetSubscriptionUpgradeStatusUseCase(fakeRepo),
+          GetCurrentCustomerSubscriptionUseCase(_BillingRepoFake()),
+        );
+        addTearDown(viewModel.close);
 
-      // Must NOT be successful when paymentUrl is empty and isPaid is false!
-      expect(viewModel.state.isUpgradeSuccess, isFalse);
-    });
+        viewModel.doIntent(
+          const InitUpgradeConfirmationEvent(
+            RestaurantTierUpgradeConfirmationArgs(
+              subscriptionId: 'sub-1',
+              selectedOption: _testOption,
+              optionsEntity: _testOptionsEntity,
+            ),
+          ),
+        );
+        viewModel.doIntent(const SelectUpgradePaymentMethodEvent(_testMethod));
 
-    test('legitimate zero-payment upgrade with explicit isPaid: true succeeds', () async {
-      final fakeRepo = _UpgradeRepoFake();
-      fakeRepo.createResult = const ApiSuccessResult(
-        data: SubscriptionUpgradeRequestResultEntity(
-          upgradeId: 'up-free',
-          subscriptionId: 'sub-1',
-          fromTier: 'Basic',
-          toTier: 'Gold',
-          amount: 0.0,
-          currencyCode: 'KWD',
-          paymentUrl: '',
-          isPaid: true,
-          status: 'Applied',
-          remainingServiceDays: 12,
-        ),
-      );
+        viewModel.doIntent(const SubmitUpgradeRequestEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      final viewModel = RestaurantTierUpgradeViewModel(
-        GetSubscriptionUpgradeOptionsUseCase(fakeRepo),
-        GetSubscriptionUpgradeSummaryUseCase(fakeRepo),
-        CreateSubscriptionUpgradeRequestUseCase(fakeRepo),
-        GetSubscriptionUpgradeStatusUseCase(fakeRepo),
-        GetCurrentCustomerSubscriptionUseCase(_BillingRepoFake()),
-      );
-      addTearDown(viewModel.close);
+        // Must NOT be successful when paymentUrl is empty and isPaid is false!
+        expect(viewModel.state.isUpgradeSuccess, isFalse);
+      },
+    );
 
-      viewModel.doIntent(
-        const InitUpgradeConfirmationEvent(
-          RestaurantTierUpgradeConfirmationArgs(
+    test(
+      'legitimate zero-payment upgrade with explicit isPaid: true succeeds',
+      () async {
+        final fakeRepo = _UpgradeRepoFake();
+        fakeRepo.createResult = const ApiSuccessResult(
+          data: SubscriptionUpgradeRequestResultEntity(
+            upgradeId: 'up-free',
             subscriptionId: 'sub-1',
-            selectedOption: _testOption,
-            optionsEntity: _testOptionsEntity,
+            fromTier: 'Basic',
+            toTier: 'Gold',
+            amount: 0.0,
+            currencyCode: 'KWD',
+            paymentUrl: '',
+            isPaid: true,
+            status: 'Applied',
+            remainingServiceDays: 12,
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(
-        const SelectUpgradePaymentMethodEvent(_testMethod),
-      );
+        final viewModel = RestaurantTierUpgradeViewModel(
+          GetSubscriptionUpgradeOptionsUseCase(fakeRepo),
+          GetSubscriptionUpgradeSummaryUseCase(fakeRepo),
+          CreateSubscriptionUpgradeRequestUseCase(fakeRepo),
+          GetSubscriptionUpgradeStatusUseCase(fakeRepo),
+          GetCurrentCustomerSubscriptionUseCase(_BillingRepoFake()),
+        );
+        addTearDown(viewModel.close);
 
-      viewModel.doIntent(const SubmitUpgradeRequestEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(
+          const InitUpgradeConfirmationEvent(
+            RestaurantTierUpgradeConfirmationArgs(
+              subscriptionId: 'sub-1',
+              selectedOption: _testOption,
+              optionsEntity: _testOptionsEntity,
+            ),
+          ),
+        );
 
-      expect(viewModel.state.isUpgradeSuccess, isTrue);
-    });
+        viewModel.doIntent(const SelectUpgradePaymentMethodEvent(_testMethod));
+
+        viewModel.doIntent(const SubmitUpgradeRequestEvent());
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isUpgradeSuccess, isTrue);
+      },
+    );
   });
 }
 
@@ -183,72 +185,67 @@ const _testSummaryEntity = SubscriptionUpgradeSummaryEntity(
 class _UpgradeRepoFake implements RestaurantTierUpgradeRepository {
   ApiResult<SubscriptionUpgradeRequestResultEntity> createResult =
       const ApiSuccessResult(
-    data: SubscriptionUpgradeRequestResultEntity(
-      upgradeId: 'up-1',
-      subscriptionId: 'sub-1',
-      fromTier: 'Basic',
-      toTier: 'Platinum',
-      amount: 15.0,
-      currencyCode: 'KWD',
-      paymentUrl: 'https://payzah.net/checkout/up1',
-      isPaid: false,
-      status: 'Pending',
-      remainingServiceDays: 12,
-    ),
-  );
-
-  @override
-  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>>
-      createUpgradeRequest(
-    String subscriptionId,
-    SubscriptionUpgradeRequestEntity request,
-  ) async =>
-          createResult;
-
-  @override
-  Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
-    String subscriptionId,
-  ) async =>
-      const ApiSuccessResult(data: _testOptionsEntity);
-
-  @override
-  Future<ApiResult<SubscriptionUpgradeStatusEntity>> getUpgradeStatus(
-    String subscriptionId,
-    String upgradeId,
-  ) async =>
-      const ApiSuccessResult(
-        data: SubscriptionUpgradeStatusEntity(
+        data: SubscriptionUpgradeRequestResultEntity(
           upgradeId: 'up-1',
           subscriptionId: 'sub-1',
           fromTier: 'Basic',
           toTier: 'Platinum',
           amount: 15.0,
           currencyCode: 'KWD',
-          status: 'Pending',
+          paymentUrl: 'https://payzah.net/checkout/up1',
           isPaid: false,
-          isFailed: false,
-          paymentUrl: '',
+          status: 'Pending',
+          remainingServiceDays: 12,
         ),
       );
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeRequestResultEntity>>
+  createUpgradeRequest(
+    String subscriptionId,
+    SubscriptionUpgradeRequestEntity request,
+  ) async => createResult;
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
+    String subscriptionId,
+  ) async => const ApiSuccessResult(data: _testOptionsEntity);
+
+  @override
+  Future<ApiResult<SubscriptionUpgradeStatusEntity>> getUpgradeStatus(
+    String subscriptionId,
+    String upgradeId,
+  ) async => const ApiSuccessResult(
+    data: SubscriptionUpgradeStatusEntity(
+      upgradeId: 'up-1',
+      subscriptionId: 'sub-1',
+      fromTier: 'Basic',
+      toTier: 'Platinum',
+      amount: 15.0,
+      currencyCode: 'KWD',
+      status: 'Pending',
+      isPaid: false,
+      isFailed: false,
+      paymentUrl: '',
+    ),
+  );
 
   @override
   Future<ApiResult<SubscriptionUpgradeSummaryEntity>> getUpgradeSummary(
     String subscriptionId,
     String targetTier,
-  ) async =>
-      const ApiSuccessResult(data: _testSummaryEntity);
+  ) async => const ApiSuccessResult(data: _testSummaryEntity);
 }
 
 class _BillingRepoFake implements SubscriptionBillingRepository {
   @override
   Future<ApiResult<SubscriptionBillingCurrentEntity>>
-      getCurrentCustomerSubscription() async =>
-          const ApiSuccessResult(
-            data: SubscriptionBillingCurrentEntity(
-              subscription: null,
-              emptyStateCode: '',
-            ),
-          );
+  getCurrentCustomerSubscription() async => const ApiSuccessResult(
+    data: SubscriptionBillingCurrentEntity(
+      subscription: null,
+      emptyStateCode: '',
+    ),
+  );
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

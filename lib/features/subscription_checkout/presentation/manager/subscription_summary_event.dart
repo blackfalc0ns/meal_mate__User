@@ -36,10 +36,12 @@ class UpdateSubscriptionCouponDraftEvent extends SubscriptionSummaryEvent {
   final String draft;
 }
 
-class LoadMoreSubscriptionSummaryRestaurantsEvent extends SubscriptionSummaryEvent {
+class LoadMoreSubscriptionSummaryRestaurantsEvent
+    extends SubscriptionSummaryEvent {
   const LoadMoreSubscriptionSummaryRestaurantsEvent();
 }
 
-class RetrySubscriptionSummaryRestaurantsEvent extends SubscriptionSummaryEvent {
+class RetrySubscriptionSummaryRestaurantsEvent
+    extends SubscriptionSummaryEvent {
   const RetrySubscriptionSummaryRestaurantsEvent();
 }

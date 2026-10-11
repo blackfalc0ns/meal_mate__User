@@ -63,7 +63,8 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
 
     return BlocBuilder<CallingCodesViewModel, CallingCodesState>(
       buildWhen: (previous, current) =>
-          previous.items != current.items || previous.selected != current.selected,
+          previous.items != current.items ||
+          previous.selected != current.selected,
       builder: (context, state) {
         final callingCode = _resolveCallingCode(state);
         return AppTextField(
@@ -139,8 +140,7 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
 
   Future<void> _openCallingCodesSheet(BuildContext context) async {
     final viewModel = context.read<CallingCodesViewModel>();
-    if (viewModel.state.items.isEmpty &&
-        !viewModel.state.isLoading) {
+    if (viewModel.state.items.isEmpty && !viewModel.state.isLoading) {
       viewModel.doIntent(const LoadCallingCodesEvent());
     }
     final currentCallingCode = _resolveCallingCode(viewModel.state);
@@ -174,9 +174,9 @@ class _FamilyMemberPhoneFieldState extends State<FamilyMemberPhoneField> {
   CallingCodeEntity _resolveCallingCode(CallingCodesState state) {
     final selected = _selectedCallingCode ?? state.selected;
     if (selected != null) return selected;
-    return state.items
-            .where((code) => code.countryCode == 'KW')
-            .firstOrNull ??
-        (state.items.isNotEmpty ? state.items.first : CallingCodeEntity.kuwaitFallback);
+    return state.items.where((code) => code.countryCode == 'KW').firstOrNull ??
+        (state.items.isNotEmpty
+            ? state.items.first
+            : CallingCodeEntity.kuwaitFallback);
   }
 }

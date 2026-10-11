@@ -123,7 +123,7 @@ class DietaryPreferencesSectionCard extends StatelessWidget {
                         if (actionLabel != null)
                           OutlinedButton.icon(
                             onPressed: onActionPressed,
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back_ios_new_rounded,
                               size: Spacing.xs,
                             ),

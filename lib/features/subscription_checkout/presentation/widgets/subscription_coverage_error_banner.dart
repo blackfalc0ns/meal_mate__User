@@ -5,10 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class SubscriptionCoverageErrorBanner extends StatelessWidget {
-  const SubscriptionCoverageErrorBanner({
-    super.key,
-    required this.message,
-  });
+  const SubscriptionCoverageErrorBanner({super.key, required this.message});
 
   final String message;
 
@@ -21,10 +18,7 @@ class SubscriptionCoverageErrorBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.errorContainer,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(
-          color: color.error,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.error, width: Spacing.border),
       ),
       child: Row(
         children: [

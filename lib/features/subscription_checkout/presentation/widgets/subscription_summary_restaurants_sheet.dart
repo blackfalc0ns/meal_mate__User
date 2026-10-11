@@ -87,10 +87,7 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
       context: context,
       titleWidget: titleWidget,
       child: viewModel != null
-          ? BlocProvider.value(
-              value: viewModel,
-              child: sheetContent,
-            )
+          ? BlocProvider.value(value: viewModel, child: sheetContent)
           : sheetContent,
     );
   }
@@ -105,7 +102,10 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
     }
 
     if (viewModel != null) {
-      return BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
+      return BlocBuilder<
+        SubscriptionSummaryViewModel,
+        SubscriptionSummaryState
+      >(
         builder: (context, state) {
           final restaurants = state.summary?.restaurants ?? initialRestaurants;
           final hasNextPage =
@@ -121,15 +121,15 @@ class SubscriptionSummaryRestaurantsSheet extends StatelessWidget {
             appendFailure: appendFailure,
             onLoadMore: () {
               if (hasNextPage && !isLoadingMore) {
-                context
-                    .read<SubscriptionSummaryViewModel>()
-                    .doIntent(const LoadMoreSubscriptionSummaryRestaurantsEvent());
+                context.read<SubscriptionSummaryViewModel>().doIntent(
+                  const LoadMoreSubscriptionSummaryRestaurantsEvent(),
+                );
               }
             },
             onRetryAppend: () {
-              context
-                  .read<SubscriptionSummaryViewModel>()
-                  .doIntent(const RetrySubscriptionSummaryRestaurantsEvent());
+              context.read<SubscriptionSummaryViewModel>().doIntent(
+                const RetrySubscriptionSummaryRestaurantsEvent(),
+              );
             },
           );
         },

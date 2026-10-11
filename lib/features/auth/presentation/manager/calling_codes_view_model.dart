@@ -11,7 +11,7 @@ import 'calling_codes_state.dart';
 @injectable
 class CallingCodesViewModel extends Cubit<CallingCodesState> {
   CallingCodesViewModel(this._getCallingCodesUseCase)
-      : super(const CallingCodesState());
+    : super(const CallingCodesState());
 
   final GetCallingCodesUseCase _getCallingCodesUseCase;
   bool _inFlight = false;
@@ -60,12 +60,7 @@ class CallingCodesViewModel extends Cubit<CallingCodesState> {
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isLoading: false,
-            failure: () => failure,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, failure: () => failure));
     }
   }
 

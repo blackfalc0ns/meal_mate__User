@@ -64,54 +64,63 @@ void main() {
     expect(route.settings.arguments, isNull);
   });
 
-  test('family restaurants route accepts FamilyRestaurantsArgs and routes correctly', () {
-    final args = FamilyRestaurantsArgs(
-      subscriptionId: 'sub-1',
-      date: DateTime(2026, 9, 8),
-      memberName: 'أحمد',
-    );
-    final settings = RouteSettings(
-      name: AppRoutes.familyRestaurants,
-      arguments: args,
-    );
+  test(
+    'family restaurants route accepts FamilyRestaurantsArgs and routes correctly',
+    () {
+      final args = FamilyRestaurantsArgs(
+        subscriptionId: 'sub-1',
+        date: DateTime(2026, 9, 8),
+        memberName: 'أحمد',
+      );
+      final settings = RouteSettings(
+        name: AppRoutes.familyRestaurants,
+        arguments: args,
+      );
 
-    final route = RouteGenerator.getRoute(settings);
+      final route = RouteGenerator.getRoute(settings);
 
-    expect(route.settings.name, AppRoutes.familyRestaurants);
-    expect(route.settings.arguments, isA<FamilyRestaurantsArgs>());
-  });
+      expect(route.settings.name, AppRoutes.familyRestaurants);
+      expect(route.settings.arguments, isA<FamilyRestaurantsArgs>());
+    },
+  );
 
-  test('family meal selection route accepts FamilyMealSelectionArgs and routes correctly', () {
-    final args = FamilyMealSelectionArgs(
-      subscriptionId: 'sub-1',
-      date: DateTime(2026, 9, 8),
-      memberName: 'أحمد',
-    );
-    final settings = RouteSettings(
-      name: AppRoutes.familyMealSelection,
-      arguments: args,
-    );
+  test(
+    'family meal selection route accepts FamilyMealSelectionArgs and routes correctly',
+    () {
+      final args = FamilyMealSelectionArgs(
+        subscriptionId: 'sub-1',
+        date: DateTime(2026, 9, 8),
+        memberName: 'أحمد',
+      );
+      final settings = RouteSettings(
+        name: AppRoutes.familyMealSelection,
+        arguments: args,
+      );
 
-    final route = RouteGenerator.getRoute(settings);
+      final route = RouteGenerator.getRoute(settings);
 
-    expect(route.settings.name, AppRoutes.familyMealSelection);
-    expect(route.settings.arguments, isA<FamilyMealSelectionArgs>());
-  });
+      expect(route.settings.name, AppRoutes.familyMealSelection);
+      expect(route.settings.arguments, isA<FamilyMealSelectionArgs>());
+    },
+  );
 
-  test('family review meals route accepts FamilyReviewMemberMealsArgs and routes correctly', () {
-    final args = FamilyReviewMemberMealsArgs(
-      subscriptionId: 'sub-1',
-      date: DateTime(2026, 9, 8),
-      memberName: 'أحمد',
-    );
-    final settings = RouteSettings(
-      name: AppRoutes.familyReviewMemberMeals,
-      arguments: args,
-    );
+  test(
+    'family review meals route accepts FamilyReviewMemberMealsArgs and routes correctly',
+    () {
+      final args = FamilyReviewMemberMealsArgs(
+        subscriptionId: 'sub-1',
+        date: DateTime(2026, 9, 8),
+        memberName: 'أحمد',
+      );
+      final settings = RouteSettings(
+        name: AppRoutes.familyReviewMemberMeals,
+        arguments: args,
+      );
 
-    final route = RouteGenerator.getRoute(settings);
+      final route = RouteGenerator.getRoute(settings);
 
-    expect(route.settings.name, AppRoutes.familyReviewMemberMeals);
-    expect(route.settings.arguments, isA<FamilyReviewMemberMealsArgs>());
-  });
+      expect(route.settings.name, AppRoutes.familyReviewMemberMeals);
+      expect(route.settings.arguments, isA<FamilyReviewMemberMealsArgs>());
+    },
+  );
 }

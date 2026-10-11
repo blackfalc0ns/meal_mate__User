@@ -117,10 +117,7 @@ class _RestaurantTierUpgradeScreenState
               return Semantics(
                 label: locale.nav_subscription,
                 child: Scaffold(
-                  appBar: CustomAppBar(
-                    elevation: Spacing.zero,
-                    title: title,
-                  ),
+                  appBar: CustomAppBar(elevation: Spacing.zero, title: title),
                   bottomNavigationBar: RestaurantTierContinueSection(
                     onContinue: (selectedOption) =>
                         _navigateToConfirmation(state, selectedOption),
@@ -129,7 +126,8 @@ class _RestaurantTierUpgradeScreenState
                     optionsEntity: optionsEntity,
                     bundleName: state.bundleName,
                     onOptionSelected: (option) {
-                      if (state.selectedOption?.targetTier == option.targetTier) {
+                      if (state.selectedOption?.targetTier ==
+                          option.targetTier) {
                         _navigateToConfirmation(state, option);
                       } else {
                         _viewModel.doIntent(SelectTierOptionEvent(option));

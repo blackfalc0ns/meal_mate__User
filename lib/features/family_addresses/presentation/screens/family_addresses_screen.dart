@@ -34,7 +34,8 @@ class FamilyAddressesScreen extends StatelessWidget {
             ..load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
       child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
         listenWhen: (previous, current) =>
-            (previous.familyName != current.familyName && current.familyName != null) ||
+            (previous.familyName != current.familyName &&
+                current.familyName != null) ||
             (current.completed &&
                 previous.addressSaveRevision != current.addressSaveRevision),
         listener: (context, state) {

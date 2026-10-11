@@ -43,87 +43,78 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     return BlocProvider<SubscriptionTypesViewModel>(
       create: (_) =>
           getIt<SubscriptionTypesViewModel>()
             ..doIntent(const GetSubscriptionTypesEvent()),
-      child: Semantics(
-        label: locale.nav_subscription,
+      child: SafeArea(
         child: Scaffold(
-          backgroundColor: color.surface,
-          body: SafeArea(
-            bottom: false,
-            child:
-                BlocConsumer<
-                  SubscriptionTypesViewModel,
-                  SubscriptionTypesState
-                >(
-                  listenWhen: (previous, current) =>
-                      previous.isConversionSuccess !=
-                          current.isConversionSuccess ||
-                      previous.conversionFailure != current.conversionFailure,
-                  listener: (context, state) {
-                    if (state.isConversionSuccess) {
-                      final conversionOptions = state.conversionOptions;
-                      if (conversionOptions != null) {
-                        unawaited(
-                          context.pushNamed(
-                            AppRoutes.conversionOptions,
-                            arguments: conversionOptions,
-                          ),
-                        );
-                      }
-                      return;
-                    }
-
-                    final message = state.conversionFailure?.errorMessage;
-                    if (message != null && message.isNotEmpty) {
-                      CustomSnackbar.showError(
-                        context: context,
-                        message: message,
+          body:
+              BlocConsumer<SubscriptionTypesViewModel, SubscriptionTypesState>(
+                listenWhen: (previous, current) =>
+                    previous.isConversionSuccess !=
+                        current.isConversionSuccess ||
+                    previous.conversionFailure != current.conversionFailure,
+                listener: (context, state) {
+                  if (state.isConversionSuccess) {
+                    final conversionOptions = state.conversionOptions;
+                    if (conversionOptions != null) {
+                      unawaited(
+                        context.pushNamed(
+                          AppRoutes.conversionOptions,
+                          arguments: conversionOptions,
+                        ),
                       );
                     }
-                  },
-                  builder: (context, state) {
-                    if (state.isLoading && state.types.isEmpty) {
-                      return SubscriptionTypesLoadingSkeleton(
-                        showBottomSpace: widget.showBottomSpace,
-                      );
-                    }
+                    return;
+                  }
 
-                    if (state.failure != null && state.types.isEmpty) {
-                      return ApiErrorWidget(
-                        exception: state.failure!.exception,
-                        onRetry: () => context
-                            .read<SubscriptionTypesViewModel>()
-                            .doIntent(const GetSubscriptionTypesEvent()),
-                      );
-                    }
-
-                    if (state.isSuccess && state.types.isEmpty) {
-                      return EmptyStateWidget(
-                        title: locale.subscription_type_title,
-                        description: locale.subscription_type_subtitle,
-                        icon: Icons.subscriptions_rounded,
-                      );
-                    }
-
-                    return SubscriptionTypesContent(
-                      state: state,
-                      showBottomSpace: widget.showBottomSpace,
-                      scrollController: _scrollController,
-                      selectedTypeIndex: _selectedTypeIndex,
-                      onSelectType: _selectSubscriptionType,
-                      onOpenSelectedType: () {
-                        _openSelectedSubscription(context, state.types);
-                      },
+                  final message = state.conversionFailure?.errorMessage;
+                  if (message != null && message.isNotEmpty) {
+                    CustomSnackbar.showError(
+                      context: context,
+                      message: message,
                     );
-                  },
-                ),
-          ),
+                  }
+                },
+                builder: (context, state) {
+                  if (state.isLoading && state.types.isEmpty) {
+                    return SubscriptionTypesLoadingSkeleton(
+                      showBottomSpace: widget.showBottomSpace,
+                    );
+                  }
+
+                  if (state.failure != null && state.types.isEmpty) {
+                    return ApiErrorWidget(
+                      exception: state.failure!.exception,
+                      onRetry: () => context
+                          .read<SubscriptionTypesViewModel>()
+                          .doIntent(const GetSubscriptionTypesEvent()),
+                    );
+                  }
+
+                  if (state.isSuccess && state.types.isEmpty) {
+                    return EmptyStateWidget(
+                      title: locale.subscription_type_title,
+                      description: locale.subscription_type_subtitle,
+                      icon: Icons.subscriptions_rounded,
+                    );
+                  }
+
+                  return SubscriptionTypesContent(
+                    state: state,
+                    showBottomSpace: widget.showBottomSpace,
+                    scrollController: _scrollController,
+                    selectedTypeIndex: _selectedTypeIndex,
+                    onSelectType: _selectSubscriptionType,
+                    onOpenSelectedType: () {
+                      _openSelectedSubscription(context, state.types);
+                    },
+                  );
+                },
+              ),
         ),
       ),
     );

@@ -131,7 +131,8 @@ class CustomSnackbar {
         textDirection: Directionality.of(context),
         style: getMediumStyle(
           color: AppColors.textPrimary,
-          fontSize: FontSize.size13, fontFamily: FontConstant.alexandria,
+          fontSize: FontSize.size13,
+          fontFamily: FontConstant.alexandria,
         ),
       ),
       toastPosition: position == CustomSnackbarPosition.top

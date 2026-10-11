@@ -92,10 +92,7 @@ class RetryAddressCoveragePreviewEvent extends AddressEditorEvent {
 }
 
 class SubmitAddressEvent extends AddressEditorEvent {
-  const SubmitAddressEvent({
-    required this.request,
-    this.addressId,
-  });
+  const SubmitAddressEvent({required this.request, this.addressId});
 
   final CustomerAddressRequestEntity request;
   final String? addressId;

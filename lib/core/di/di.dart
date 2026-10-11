@@ -109,8 +109,8 @@ Future<void> configureDependencies() async {
         getIt<BiometricService>(),
         getCurrentCustomerSubscriptionUseCase:
             getIt.isRegistered<GetCurrentCustomerSubscriptionUseCase>()
-                ? getIt<GetCurrentCustomerSubscriptionUseCase>()
-                : null,
+            ? getIt<GetCurrentCustomerSubscriptionUseCase>()
+            : null,
         sharedPrefHelper: getIt.isRegistered<SharedPrefHelper>()
             ? getIt<SharedPrefHelper>()
             : null,
@@ -138,9 +138,7 @@ Future<void> configureDependencies() async {
   }
   if (!getIt.isRegistered<BiometricViewModel>()) {
     getIt.registerFactory<BiometricViewModel>(
-      () => BiometricViewModel(
-        getIt<BiometricService>(),
-      ),
+      () => BiometricViewModel(getIt<BiometricService>()),
     );
   }
   if (!getIt.isRegistered<ChangePasswordViewModel>()) {
@@ -177,8 +175,8 @@ Future<void> configureDependencies() async {
             : null,
         getSubscriptionBillingUseCase:
             getIt.isRegistered<GetSubscriptionBillingUseCase>()
-                ? getIt<GetSubscriptionBillingUseCase>()
-                : null,
+            ? getIt<GetSubscriptionBillingUseCase>()
+            : null,
       ),
     );
   }
@@ -192,4 +190,3 @@ Future<void> configureDependencies() async {
     );
   }
 }
-

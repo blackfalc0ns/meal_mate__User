@@ -105,190 +105,235 @@ void main() {
     await viewModel.close();
   });
 
-  test('SubmitLoginEvent passes SessionPersistence.remembered when rememberMe is true', () async {
-    const request = LoginRequestEntity(
-      phone: '+96512345678',
-      password: 'password123',
-      countryCode: 'KW',
-    );
-    final loginEntity = createTestLoginEntity();
-    fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
+  test(
+    'SubmitLoginEvent passes SessionPersistence.remembered when rememberMe is true',
+    () async {
+      const request = LoginRequestEntity(
+        phone: '+96512345678',
+        password: 'password123',
+        countryCode: 'KW',
+      );
+      final loginEntity = createTestLoginEntity();
+      fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<LoginState>((s) => s.isLoading && s.rememberMe),
-        predicate<LoginState>((s) => !s.isLoading && s.isSuccess && s.loginEntity == loginEntity),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<LoginState>((s) => s.isLoading && s.rememberMe),
+          predicate<LoginState>(
+            (s) => !s.isLoading && s.isSuccess && s.loginEntity == loginEntity,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: true));
-    await expectation;
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: true));
+      await expectation;
 
-    expect(fakeLoginUseCase.callCount, 1);
-    expect(fakeLoginUseCase.lastPersistence, SessionPersistence.remembered);
-  });
+      expect(fakeLoginUseCase.callCount, 1);
+      expect(fakeLoginUseCase.lastPersistence, SessionPersistence.remembered);
+    },
+  );
 
-  test('SubmitLoginEvent passes SessionPersistence.currentRun when rememberMe is false', () async {
-    const request = LoginRequestEntity(
-      phone: '+96512345678',
-      password: 'password123',
-      countryCode: 'KW',
-    );
-    final loginEntity = createTestLoginEntity();
-    fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
+  test(
+    'SubmitLoginEvent passes SessionPersistence.currentRun when rememberMe is false',
+    () async {
+      const request = LoginRequestEntity(
+        phone: '+96512345678',
+        password: 'password123',
+        countryCode: 'KW',
+      );
+      final loginEntity = createTestLoginEntity();
+      fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<LoginState>((s) => s.isLoading && !s.rememberMe),
-        predicate<LoginState>((s) => !s.isLoading && s.isSuccess),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<LoginState>((s) => s.isLoading && !s.rememberMe),
+          predicate<LoginState>((s) => !s.isLoading && s.isSuccess),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
-    await expectation;
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
+      await expectation;
 
-    expect(fakeLoginUseCase.callCount, 1);
-    expect(fakeLoginUseCase.lastPersistence, SessionPersistence.currentRun);
-  });
+      expect(fakeLoginUseCase.callCount, 1);
+      expect(fakeLoginUseCase.lastPersistence, SessionPersistence.currentRun);
+    },
+  );
 
-  test('duplicate concurrent SubmitLoginEvent triggers only one LoginUseCase call', () async {
-    const request = LoginRequestEntity(
-      phone: '+96512345678',
-      password: 'password123',
-      countryCode: 'KW',
-    );
-    fakeLoginUseCase.completer = Completer<ApiResult<LoginEntity>>();
+  test(
+    'duplicate concurrent SubmitLoginEvent triggers only one LoginUseCase call',
+    () async {
+      const request = LoginRequestEntity(
+        phone: '+96512345678',
+        password: 'password123',
+        countryCode: 'KW',
+      );
+      fakeLoginUseCase.completer = Completer<ApiResult<LoginEntity>>();
 
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
 
-    expect(fakeLoginUseCase.callCount, 1);
+      expect(fakeLoginUseCase.callCount, 1);
 
-    fakeLoginUseCase.completer!.complete(ApiSuccessResult(data: createTestLoginEntity()));
-    await Future<void>.delayed(Duration.zero);
-  });
+      fakeLoginUseCase.completer!.complete(
+        ApiSuccessResult(data: createTestLoginEntity()),
+      );
+      await Future<void>.delayed(Duration.zero);
+    },
+  );
 
-  test('SubmitLoginEvent failure emits LoginOutcome.failure and ends loading', () async {
-    const request = LoginRequestEntity(
-      phone: '+96512345678',
-      password: 'wrong',
-      countryCode: 'KW',
-    );
-    final failure = ServerFailure(
-      errorMessage: 'Invalid credentials',
-      exception: const ApiException(
-        errorType: ApiErrorType.unauthorized,
-        message: 'Invalid credentials',
-      ),
-    );
-    fakeLoginUseCase.stubbedResult = ApiErrorResult(failure: failure);
+  test(
+    'SubmitLoginEvent failure emits LoginOutcome.failure and ends loading',
+    () async {
+      const request = LoginRequestEntity(
+        phone: '+96512345678',
+        password: 'wrong',
+        countryCode: 'KW',
+      );
+      final failure = ServerFailure(
+        errorMessage: 'Invalid credentials',
+        exception: const ApiException(
+          errorType: ApiErrorType.unauthorized,
+          message: 'Invalid credentials',
+        ),
+      );
+      fakeLoginUseCase.stubbedResult = ApiErrorResult(failure: failure);
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<LoginState>((s) => s.isLoading),
-        predicate<LoginState>((s) => !s.isLoading && s.outcome == LoginOutcome.failure && s.failure == failure),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<LoginState>((s) => s.isLoading),
+          predicate<LoginState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == LoginOutcome.failure &&
+                s.failure == failure,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
-    await expectation;
-  });
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
+      await expectation;
+    },
+  );
 
-  test('ViewModel closed during in-flight login does not throw or emit after close', () async {
-    const request = LoginRequestEntity(
-      phone: '+96512345678',
-      password: 'password123',
-      countryCode: 'KW',
-    );
-    fakeLoginUseCase.completer = Completer<ApiResult<LoginEntity>>();
+  test(
+    'ViewModel closed during in-flight login does not throw or emit after close',
+    () async {
+      const request = LoginRequestEntity(
+        phone: '+96512345678',
+        password: 'password123',
+        countryCode: 'KW',
+      );
+      fakeLoginUseCase.completer = Completer<ApiResult<LoginEntity>>();
 
-    viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
-    await viewModel.close();
+      viewModel.doIntent(const SubmitLoginEvent(request, rememberMe: false));
+      await viewModel.close();
 
-    fakeLoginUseCase.completer!.complete(ApiSuccessResult(data: createTestLoginEntity()));
-    await Future<void>.delayed(Duration.zero);
-  });
+      fakeLoginUseCase.completer!.complete(
+        ApiSuccessResult(data: createTestLoginEntity()),
+      );
+      await Future<void>.delayed(Duration.zero);
+    },
+  );
 
-  test('RememberMeChangedEvent updates rememberMe state without calling use case', () {
-    expect(viewModel.state.rememberMe, isFalse);
+  test(
+    'RememberMeChangedEvent updates rememberMe state without calling use case',
+    () {
+      expect(viewModel.state.rememberMe, isFalse);
 
-    viewModel.doIntent(const RememberMeChangedEvent(true));
-    expect(viewModel.state.rememberMe, isTrue);
+      viewModel.doIntent(const RememberMeChangedEvent(true));
+      expect(viewModel.state.rememberMe, isTrue);
 
-    viewModel.doIntent(const RememberMeChangedEvent(false));
-    expect(viewModel.state.rememberMe, isFalse);
+      viewModel.doIntent(const RememberMeChangedEvent(false));
+      expect(viewModel.state.rememberMe, isFalse);
 
-    expect(fakeLoginUseCase.callCount, 0);
-  });
+      expect(fakeLoginUseCase.callCount, 0);
+    },
+  );
 
-  test('CheckBiometricReadinessEvent sets isBiometricReady true when supported and credentials present', () async {
-    fakeBiometricService.canOffer = true;
-    fakeBiometricService.isEnabled = true;
-    fakeBiometricService.credentials = const BiometricCredentials(
-      phone: '+96512345678',
-      password: 'password',
-      countryCode: 'KW',
-    );
+  test(
+    'CheckBiometricReadinessEvent sets isBiometricReady true when supported and credentials present',
+    () async {
+      fakeBiometricService.canOffer = true;
+      fakeBiometricService.isEnabled = true;
+      fakeBiometricService.credentials = const BiometricCredentials(
+        phone: '+96512345678',
+        password: 'password',
+        countryCode: 'KW',
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emits(predicate<LoginState>((s) => s.isBiometricReady)),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emits(predicate<LoginState>((s) => s.isBiometricReady)),
+      );
 
-    viewModel.doIntent(const CheckBiometricReadinessEvent());
-    await expectation;
-  });
+      viewModel.doIntent(const CheckBiometricReadinessEvent());
+      await expectation;
+    },
+  );
 
-  test('LoginWithBiometricsEvent user cancellation resets loading without error toast', () async {
-    fakeBiometricService.credentials = const BiometricCredentials(
-      phone: '+96512345678',
-      password: 'password',
-      countryCode: 'KW',
-    );
-    fakeBiometricService.authResult = const BiometricAuthResult.canceled();
+  test(
+    'LoginWithBiometricsEvent user cancellation resets loading without error toast',
+    () async {
+      fakeBiometricService.credentials = const BiometricCredentials(
+        phone: '+96512345678',
+        password: 'password',
+        countryCode: 'KW',
+      );
+      fakeBiometricService.authResult = const BiometricAuthResult.canceled();
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<LoginState>((s) => s.isLoading),
-        predicate<LoginState>((s) => !s.isLoading && s.outcome == LoginOutcome.idle && s.biometricErrorMessage == null),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<LoginState>((s) => s.isLoading),
+          predicate<LoginState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == LoginOutcome.idle &&
+                s.biometricErrorMessage == null,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const LoginWithBiometricsEvent());
-    await expectation;
+      viewModel.doIntent(const LoginWithBiometricsEvent());
+      await expectation;
 
-    expect(fakeLoginUseCase.callCount, 0);
-  });
+      expect(fakeLoginUseCase.callCount, 0);
+    },
+  );
 
-  test('LoginWithBiometricsEvent success performs login and emits success', () async {
-    const creds = BiometricCredentials(
-      phone: '+96512345678',
-      password: 'password',
-      countryCode: 'KW',
-    );
-    final loginEntity = createTestLoginEntity();
+  test(
+    'LoginWithBiometricsEvent success performs login and emits success',
+    () async {
+      const creds = BiometricCredentials(
+        phone: '+96512345678',
+        password: 'password',
+        countryCode: 'KW',
+      );
+      final loginEntity = createTestLoginEntity();
 
-    fakeBiometricService.credentials = creds;
-    fakeBiometricService.authResult = const BiometricAuthResult.success();
-    fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
+      fakeBiometricService.credentials = creds;
+      fakeBiometricService.authResult = const BiometricAuthResult.success();
+      fakeLoginUseCase.stubbedResult = ApiSuccessResult(data: loginEntity);
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<LoginState>((s) => s.isLoading),
-        predicate<LoginState>((s) => !s.isLoading && s.isSuccess && s.loginEntity == loginEntity),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<LoginState>((s) => s.isLoading),
+          predicate<LoginState>(
+            (s) => !s.isLoading && s.isSuccess && s.loginEntity == loginEntity,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const LoginWithBiometricsEvent());
-    await expectation;
+      viewModel.doIntent(const LoginWithBiometricsEvent());
+      await expectation;
 
-    expect(fakeLoginUseCase.callCount, 1);
-  });
+      expect(fakeLoginUseCase.callCount, 1);
+    },
+  );
 
   test('ClearLoginFeedbackEvent resets outcome and error messages', () async {
     final failure = ServerFailure(
@@ -308,10 +353,16 @@ void main() {
       ]),
     );
 
-    viewModel.doIntent(const SubmitLoginEvent(
-      LoginRequestEntity(phone: '+96512345678', password: 'p', countryCode: 'KW'),
-      rememberMe: false,
-    ));
+    viewModel.doIntent(
+      const SubmitLoginEvent(
+        LoginRequestEntity(
+          phone: '+96512345678',
+          password: 'p',
+          countryCode: 'KW',
+        ),
+        rememberMe: false,
+      ),
+    );
     await expectation;
 
     viewModel.doIntent(const ClearLoginFeedbackEvent());

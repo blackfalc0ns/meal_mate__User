@@ -96,14 +96,16 @@ extension SubscriptionUpgradeSummaryResponseDtoMapper
   SubscriptionUpgradeSummaryEntity toEntity() {
     return SubscriptionUpgradeSummaryEntity(
       subscriptionId: subscriptionId ?? '',
-      currentTier: currentTier?.toEntity() ??
+      currentTier:
+          currentTier?.toEntity() ??
           const SubscriptionUpgradeTierEntity(
             tier: '',
             tierNameAr: '',
             tierNameEn: '',
             accessibleRestaurantCount: 0,
           ),
-      targetTier: targetTier?.toEntity() ??
+      targetTier:
+          targetTier?.toEntity() ??
           const SubscriptionUpgradeTierEntity(
             tier: '',
             tierNameAr: '',
@@ -198,36 +200,29 @@ extension SubscriptionUpgradeStatusResponseDtoMapper
 abstract class RestaurantTierUpgradeMapper {
   static SubscriptionUpgradeOptionsEntity toOptionsEntity(
     SubscriptionUpgradeOptionsResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 
   static SubscriptionUpgradePaymentMethodEntity toPaymentMethodEntity(
     SubscriptionUpgradePaymentMethodResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 
   static SubscriptionUpgradeSummaryEntity toSummaryEntity(
     SubscriptionUpgradeSummaryResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 
   static SubscriptionUpgradeOptionEntity toOptionEntity(
     SubscriptionUpgradeOptionResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 
   static SubscriptionUpgradeRequestDto toRequestDto(
     SubscriptionUpgradeRequestEntity entity,
-  ) =>
-      entity.toDto();
+  ) => entity.toDto();
 
   static SubscriptionUpgradeRequestResultEntity toRequestResultEntity(
     SubscriptionUpgradeRequestResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 
   static SubscriptionUpgradeStatusEntity toStatusEntity(
     SubscriptionUpgradeStatusResponseDto dto,
-  ) =>
-      dto.toEntity();
+  ) => dto.toEntity();
 }

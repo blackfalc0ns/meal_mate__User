@@ -77,42 +77,60 @@ void main() {
     expect(entity.paymentMethods.single.integrationType, 'HOSTED');
   });
 
-  test('historical: preserves legacy MyFatoorah method in summary response', () {
-    final response = SubscriptionUpgradeSummaryResponseDto.fromJson({
-      'subscriptionId': 'sub-hist',
-      'currentTier': {'tier': 'Basic', 'tierNameAr': 'Basic', 'tierNameEn': 'Basic', 'accessibleRestaurantCount': 10},
-      'targetTier': {'tier': 'Plus', 'tierNameAr': 'Plus', 'tierNameEn': 'Plus', 'accessibleRestaurantCount': 20},
-      'currentTierRestaurants': [],
-      'targetTierRestaurants': [],
-      'newlyAddedRestaurants': [],
-      'effectiveFromDate': '2026-09-10',
-      'effectiveNoticeAr': '',
-      'effectiveNoticeEn': '',
-      'restaurantRepetition': {'limit': 3, 'restaurantCount': 20, 'durationDays': 10},
-      'currentRemainingCredit': 20.0,
-      'targetRemainingPrice': 30.0,
-      'priceDifference': 10.0,
-      'currencyCode': 'KWD',
-      'remainingServiceDays': 10,
-      'totalServiceDays': 20,
-      'paymentMethods': [
-        {
-          'paymentMethodId': 1,
-          'code': 'kn',
-          'nameAr': 'كي نت',
-          'nameEn': 'KNET',
-          'integrationType': 'MYFATOORAH_HOSTED',
-          'serviceCharge': 0.0,
-          'totalAmount': 10.0,
-          'currencyCode': 'KWD',
-          'isAvailable': true,
-          'imageUrl': 'https://example.com/kn.png',
+  test(
+    'historical: preserves legacy MyFatoorah method in summary response',
+    () {
+      final response = SubscriptionUpgradeSummaryResponseDto.fromJson({
+        'subscriptionId': 'sub-hist',
+        'currentTier': {
+          'tier': 'Basic',
+          'tierNameAr': 'Basic',
+          'tierNameEn': 'Basic',
+          'accessibleRestaurantCount': 10,
         },
-      ],
-      'upgradeEndpoint': '/api/v1/customer/subscriptions/sub-hist/upgrade-requests',
-    });
+        'targetTier': {
+          'tier': 'Plus',
+          'tierNameAr': 'Plus',
+          'tierNameEn': 'Plus',
+          'accessibleRestaurantCount': 20,
+        },
+        'currentTierRestaurants': [],
+        'targetTierRestaurants': [],
+        'newlyAddedRestaurants': [],
+        'effectiveFromDate': '2026-09-10',
+        'effectiveNoticeAr': '',
+        'effectiveNoticeEn': '',
+        'restaurantRepetition': {
+          'limit': 3,
+          'restaurantCount': 20,
+          'durationDays': 10,
+        },
+        'currentRemainingCredit': 20.0,
+        'targetRemainingPrice': 30.0,
+        'priceDifference': 10.0,
+        'currencyCode': 'KWD',
+        'remainingServiceDays': 10,
+        'totalServiceDays': 20,
+        'paymentMethods': [
+          {
+            'paymentMethodId': 1,
+            'code': 'kn',
+            'nameAr': 'كي نت',
+            'nameEn': 'KNET',
+            'integrationType': 'MYFATOORAH_HOSTED',
+            'serviceCharge': 0.0,
+            'totalAmount': 10.0,
+            'currencyCode': 'KWD',
+            'isAvailable': true,
+            'imageUrl': 'https://example.com/kn.png',
+          },
+        ],
+        'upgradeEndpoint':
+            '/api/v1/customer/subscriptions/sub-hist/upgrade-requests',
+      });
 
-    final entity = RestaurantTierUpgradeMapper.toSummaryEntity(response);
-    expect(entity.paymentMethods.single.integrationType, 'MYFATOORAH_HOSTED');
-  });
+      final entity = RestaurantTierUpgradeMapper.toSummaryEntity(response);
+      expect(entity.paymentMethods.single.integrationType, 'MYFATOORAH_HOSTED');
+    },
+  );
 }

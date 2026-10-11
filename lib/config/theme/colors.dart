@@ -265,13 +265,12 @@ extension CalendarColorScheme on ColorScheme {
 extension MonthlyPlansColorScheme on ColorScheme {
   Color get subscriptionRestaurantsSheetBackground =>
       brightness == Brightness.dark
-          ? AppColors.cardDark
-          : AppColors.subscriptionRestaurantsSheetBackground;
+      ? AppColors.cardDark
+      : AppColors.subscriptionRestaurantsSheetBackground;
 
-  Color get subscriptionRestaurantsSheetBorder =>
-      brightness == Brightness.dark
-          ? AppColors.dividerDark
-          : AppColors.subscriptionRestaurantsSheetBorder;
+  Color get subscriptionRestaurantsSheetBorder => brightness == Brightness.dark
+      ? AppColors.dividerDark
+      : AppColors.subscriptionRestaurantsSheetBorder;
 }
 
 extension RestaurantTierColorScheme on ColorScheme {
@@ -282,7 +281,8 @@ extension RestaurantTierColorScheme on ColorScheme {
   Color get restaurantTierMaxPanel => AppColors.restaurantTierMaxPanel;
 
   Color get restaurantTierPlusGreen => AppColors.restaurantTierPlusGreen;
-  Color get restaurantTierPlusGreenDark => AppColors.restaurantTierPlusGreenDark;
+  Color get restaurantTierPlusGreenDark =>
+      AppColors.restaurantTierPlusGreenDark;
   Color get restaurantTierPlusPanel => AppColors.restaurantTierPlusPanel;
   Color get restaurantTierPlusPanelBorder =>
       AppColors.restaurantTierPlusPanelBorder;
@@ -307,4 +307,3 @@ extension CallingColorScheme on ColorScheme {
   Color get callBlack => AppColors.black;
   Color get callShadowSoft => AppColors.shadowSoft;
 }
-

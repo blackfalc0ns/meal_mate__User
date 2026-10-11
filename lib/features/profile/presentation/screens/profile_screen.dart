@@ -49,7 +49,9 @@ class ProfileScreen extends StatelessWidget {
                     width: Spacing.profileHeaderActionSize,
                     height: Spacing.profileHeaderActionSize,
                   ),
-                  padding: EdgeInsetsDirectional.only(start: Spacing.screenH),
+                  padding: const EdgeInsetsDirectional.only(
+                    start: Spacing.screenH,
+                  ),
                   icon: Icon(
                     Icons.settings_rounded,
                     color: color.onSurface,

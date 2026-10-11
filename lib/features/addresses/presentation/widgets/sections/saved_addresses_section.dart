@@ -29,10 +29,10 @@ class SavedAddressesSection extends StatelessWidget {
 
     if (addresses.isEmpty) {
       return EmptyStateWidget(
-        title: locale.addresses_saved_section,
-        description: locale.addresses_add_new,
-        icon: Icons.location_off_rounded,
-      )
+            title: locale.addresses_saved_section,
+            description: locale.addresses_add_new,
+            icon: Icons.location_off_rounded,
+          )
           .animate()
           .fadeIn(delay: 120.ms, duration: 350.ms, curve: Curves.easeOut)
           .scale(
@@ -48,13 +48,13 @@ class SavedAddressesSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          locale.addresses_saved_section,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size13,
-            color: color.onSurface,
-          ),
-        )
+              locale.addresses_saved_section,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size13,
+                color: color.onSurface,
+              ),
+            )
             .animate()
             .fadeIn(delay: 100.ms, duration: 350.ms, curve: Curves.easeOut)
             .slideY(
@@ -74,19 +74,19 @@ class SavedAddressesSection extends StatelessWidget {
           itemBuilder: (context, index) {
             final address = addresses[index];
             return SavedAddressTile(
-              icon: _iconForAddress(address),
-              title: address.label,
-              address: address.addressLine,
-              isDefault: address.isDefault,
-              canDelete: address.canDelete,
-              onEdit: () => onEdit(address),
-              onSetDefault: address.addressId.isEmpty || address.isDefault
-                  ? null
-                  : () => onSetDefault(address),
-              onDelete: address.addressId.isEmpty
-                  ? null
-                  : () => onDelete(address),
-            )
+                  icon: _iconForAddress(address),
+                  title: address.label,
+                  address: address.addressLine,
+                  isDefault: address.isDefault,
+                  canDelete: address.canDelete,
+                  onEdit: () => onEdit(address),
+                  onSetDefault: address.addressId.isEmpty || address.isDefault
+                      ? null
+                      : () => onSetDefault(address),
+                  onDelete: address.addressId.isEmpty
+                      ? null
+                      : () => onDelete(address),
+                )
                 .animate()
                 .fadeIn(
                   delay: (150 + index.clamp(0, 6) * 60).ms,

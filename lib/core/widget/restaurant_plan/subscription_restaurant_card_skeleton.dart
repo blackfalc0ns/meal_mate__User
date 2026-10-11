@@ -56,9 +56,7 @@ class SubscriptionRestaurantCardSkeleton extends StatelessWidget {
                         height: 7,
                         decoration: BoxDecoration(
                           color: placeholderColor,
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusXs,
-                          ),
+                          borderRadius: BorderRadius.circular(Spacing.radiusXs),
                         ),
                       ),
                       const SizedBox(height: Spacing.xxs),
@@ -67,9 +65,7 @@ class SubscriptionRestaurantCardSkeleton extends StatelessWidget {
                         height: 7,
                         decoration: BoxDecoration(
                           color: placeholderColor,
-                          borderRadius: BorderRadius.circular(
-                            Spacing.radiusXs,
-                          ),
+                          borderRadius: BorderRadius.circular(Spacing.radiusXs),
                         ),
                       ),
                     ],
@@ -100,9 +96,7 @@ class SubscriptionRestaurantCardSkeleton extends StatelessWidget {
                       height: 6,
                       decoration: BoxDecoration(
                         color: placeholderColor,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusXs,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusXs),
                       ),
                     ),
                   ],

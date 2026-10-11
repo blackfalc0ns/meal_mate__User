@@ -49,7 +49,9 @@ class BiometricSetupBenefits extends StatelessWidget {
                   height: Spacing.buttonSmallHeight,
                   decoration: BoxDecoration(
                     color: color.primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+                    borderRadius: BorderRadius.circular(
+                      Spacing.buttonSmallRadius,
+                    ),
                   ),
                   child: Icon(
                     benefits[i].icon,

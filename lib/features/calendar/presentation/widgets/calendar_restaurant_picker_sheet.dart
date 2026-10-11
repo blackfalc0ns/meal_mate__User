@@ -191,97 +191,98 @@ class _CalendarRestaurantPickerSheetState
               child: widget.isLoading
                   ? const CalendarRestaurantPickerLoadingSkeleton()
                   : widget.restaurants.isEmpty
-                      ? CalendarRestaurantPickerEmpty(
-                          onClear: () {
-                            _searchController.clear();
-                            widget.onSearchChanged('');
-                          },
-                        )
-                      : NotificationListener<ScrollNotification>(
-                          onNotification: (notification) {
-                            if (widget.hasNextPage &&
-                                !widget.isLoading &&
-                                !widget.isLoadingMore &&
-                                widget.loadMoreFailure == null &&
-                                notification.metrics.extentAfter <= 200) {
-                              widget.onLoadMore?.call();
+                  ? CalendarRestaurantPickerEmpty(
+                      onClear: () {
+                        _searchController.clear();
+                        widget.onSearchChanged('');
+                      },
+                    )
+                  : NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        if (widget.hasNextPage &&
+                            !widget.isLoading &&
+                            !widget.isLoadingMore &&
+                            widget.loadMoreFailure == null &&
+                            notification.metrics.extentAfter <= 200) {
+                          widget.onLoadMore?.call();
+                        }
+                        return false;
+                      },
+                      child: ListView.separated(
+                        padding: EdgeInsets.zero,
+                        itemCount:
+                            widget.restaurants.length +
+                            (widget.isLoadingMore ||
+                                    widget.loadMoreFailure != null
+                                ? 1
+                                : 0),
+                        separatorBuilder: (_, _) => const SizedBox(height: 9.2),
+                        itemBuilder: (context, index) {
+                          if (index >= widget.restaurants.length) {
+                            if (widget.isLoadingMore) {
+                              return const CalendarRestaurantPickerLoadMoreSkeleton();
                             }
-                            return false;
-                          },
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemCount: widget.restaurants.length +
-                                (widget.isLoadingMore || widget.loadMoreFailure != null
-                                    ? 1
-                                    : 0),
-                            separatorBuilder: (_, _) =>
-                                const SizedBox(height: 9.2),
-                            itemBuilder: (context, index) {
-                              if (index >= widget.restaurants.length) {
-                                if (widget.isLoadingMore) {
-                                  return const CalendarRestaurantPickerLoadMoreSkeleton();
-                                }
-                                if (widget.loadMoreFailure != null) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: Spacing.sm,
-                                    ),
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              ErrorMessagePresenter.fromFailure(
-                                                context,
-                                                widget.loadMoreFailure!,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                              style: getRegularStyle(
-                                                fontFamily: FontConstant.alexandria,
-                                                fontSize: 12,
-                                                color: color.error,
-                                              ),
-                                            ),
+                            if (widget.loadMoreFailure != null) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Spacing.sm,
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          ErrorMessagePresenter.fromFailure(
+                                            context,
+                                            widget.loadMoreFailure!,
                                           ),
-                                          const SizedBox(width: Spacing.xs),
-                                          IconButton(
-                                            icon: const Icon(Icons.refresh_rounded),
-                                            color: color.primary,
-                                            onPressed: widget.onRetryLoadMore,
+                                          textAlign: TextAlign.center,
+                                          style: getRegularStyle(
+                                            fontFamily: FontConstant.alexandria,
+                                            fontSize: 12,
+                                            color: color.error,
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }
-                                return const SizedBox.shrink();
-                              }
-                              final restaurant = widget.restaurants[index];
-                              final delayMs = (index * 60).clamp(0, 480);
-                              return CalendarRestaurantOptionCard(
+                                      const SizedBox(width: Spacing.xs),
+                                      IconButton(
+                                        icon: const Icon(Icons.refresh_rounded),
+                                        color: color.primary,
+                                        onPressed: widget.onRetryLoadMore,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          }
+                          final restaurant = widget.restaurants[index];
+                          final delayMs = (index * 60).clamp(0, 480);
+                          return CalendarRestaurantOptionCard(
                                 key: ValueKey(restaurant.id),
                                 restaurant: restaurant,
                                 onTap: () =>
                                     widget.onRestaurantSelected(restaurant),
                               )
-                                  .animate()
-                                  .fadeIn(
-                                    duration: 300.ms,
-                                    delay: delayMs.ms,
-                                    curve: Curves.easeOut,
-                                  )
-                                  .slideY(
-                                    begin: 0.12,
-                                    end: 0,
-                                    duration: 300.ms,
-                                    delay: delayMs.ms,
-                                    curve: Curves.easeOutCubic,
-                                  );
-                            },
-                          ),
-                        ),
+                              .animate()
+                              .fadeIn(
+                                duration: 300.ms,
+                                delay: delayMs.ms,
+                                curve: Curves.easeOut,
+                              )
+                              .slideY(
+                                begin: 0.12,
+                                end: 0,
+                                duration: 300.ms,
+                                delay: delayMs.ms,
+                                curve: Curves.easeOutCubic,
+                              );
+                        },
+                      ),
+                    ),
             ),
           ],
         ),

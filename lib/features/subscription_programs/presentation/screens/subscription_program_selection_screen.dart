@@ -83,33 +83,40 @@ class _SubscriptionProgramSelectionScreenState
                     start: Spacing.subscriptionProgramsHorizontalPadding,
                     end: Spacing.subscriptionProgramsHorizontalPadding,
                     bottom: Spacing.lg,
-                    child: SafeArea(
-                      top: false,
-                      child: ValueListenableBuilder<int?>(
-                        valueListenable: _selectedProgramNotifier,
-                        builder: (context, selectedProgramIndex, _) {
-                          final isEnabled =
-                              selectedProgramIndex != null &&
-                              programs.isNotEmpty;
+                    child:
+                        SafeArea(
+                              top: false,
+                              child: ValueListenableBuilder<int?>(
+                                valueListenable: _selectedProgramNotifier,
+                                builder: (context, selectedProgramIndex, _) {
+                                  final selectedProgram =
+                                      (selectedProgramIndex != null &&
+                                          selectedProgramIndex >= 0 &&
+                                          selectedProgramIndex <
+                                              programs.length)
+                                      ? programs[selectedProgramIndex]
+                                      : null;
+                                  final isEnabled =
+                                      selectedProgram != null &&
+                                      selectedProgram.canSelect;
 
-                          return AppSubscriptionButton.next(
-                            text: locale.family_next_package_days,
-                            onPressed:
-                                isEnabled
-                                    ? () => _openPackageSelection(programs)
-                                    : null,
-                          );
-                        },
-                      ),
-                    )
-                        .animate()
-                        .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-                        .slideY(
-                          begin: 0.15,
-                          end: 0,
-                          duration: 350.ms,
-                          curve: Curves.easeOutCubic,
-                        ),
+                                  return AppSubscriptionButton.next(
+                                    text: locale.family_next_package_days,
+                                    onPressed: isEnabled
+                                        ? () => _openPackageSelection(programs)
+                                        : null,
+                                  );
+                                },
+                              ),
+                            )
+                            .animate()
+                            .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                            .slideY(
+                              begin: 0.15,
+                              end: 0,
+                              duration: 350.ms,
+                              curve: Curves.easeOutCubic,
+                            ),
                   );
                 },
               ),
@@ -154,9 +161,9 @@ class _SubscriptionProgramSelectionScreenState
       onLoadMore: () => context.read<SubscriptionProgramsViewModel>().doIntent(
         const LoadMoreSubscriptionProgramsEvent(),
       ),
-      onRetryLoadMore: () => context.read<SubscriptionProgramsViewModel>().doIntent(
-        const RetrySubscriptionProgramsEvent(),
-      ),
+      onRetryLoadMore: () => context
+          .read<SubscriptionProgramsViewModel>()
+          .doIntent(const RetrySubscriptionProgramsEvent()),
     );
   }
 
@@ -170,6 +177,9 @@ class _SubscriptionProgramSelectionScreenState
     if (selectedProgramIndex == null ||
         selectedProgramIndex < 0 ||
         selectedProgramIndex >= programs.length) {
+      return;
+    }
+    if (!programs[selectedProgramIndex].canSelect) {
       return;
     }
 

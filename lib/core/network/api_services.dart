@@ -311,8 +311,22 @@ abstract class ApiServices {
     @Query('pageSize') int? pageSize,
   });
 
+  @GET(EndPoints.subscriptionCatalogPrograms)
+  Future<SubscriptionProgramsPageResponseDto> getSubscriptionCatalogPrograms({
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
+
   @GET(EndPoints.subscriptionProgramBundles)
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
+    @Path('programId') String programId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  });
+
+  @GET(EndPoints.subscriptionCatalogProgramBundles)
+  Future<SubscriptionProgramBundlesResponseDto>
+  getSubscriptionCatalogProgramBundles(
     @Path('programId') String programId, {
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
@@ -334,6 +348,16 @@ abstract class ApiServices {
     @Query('familyMemberId') String? familyMemberId,
   );
 
+  @GET(EndPoints.subscriptionCatalogTiers)
+  Future<SubscriptionTiersPageResponseDto> getSubscriptionCatalogTiers(
+    @Path('programId') String programId,
+    @Path('bundleId') String bundleId, {
+    @Query('durationDays') int? durationDays,
+    @Query('startDate') String? startDate,
+    @Query('includeFriday') bool? includeFriday,
+    @Query('familyMemberId') String? familyMemberId,
+  });
+
   @GET(EndPoints.subscriptionPrerequisites)
   Future<void> checkSubscriptionPrerequisites();
 
@@ -346,6 +370,9 @@ abstract class ApiServices {
     @Query('familyMemberId') String? familyMemberId, {
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
+    @Query('durationDays') int? durationDays,
+    @Query('startDate') String? startDate,
+    @Query('includeFriday') bool? includeFriday,
   });
 
   @GET(EndPoints.subscriptionTierRestaurants)
@@ -357,6 +384,22 @@ abstract class ApiServices {
     @Query('familyMemberId') String? familyMemberId, {
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
+    @Query('durationDays') int? durationDays,
+    @Query('startDate') String? startDate,
+    @Query('includeFriday') bool? includeFriday,
+  });
+
+  @GET(EndPoints.subscriptionProgramTierRestaurants)
+  Future<SubscriptionTierRestaurantsPageResponseDto>
+  getSubscriptionProgramTierRestaurantsPage(
+    @Path('programId') String programId,
+    @Path('tier') String tier,
+    @Query('familyMemberId') String? familyMemberId, {
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('durationDays') int? durationDays,
+    @Query('startDate') String? startDate,
+    @Query('includeFriday') bool? includeFriday,
   });
 
   @GET(EndPoints.subscriptionRestaurantDetails)
@@ -407,8 +450,9 @@ abstract class ApiServices {
     @Query('durationDays') int durationDays,
     @Query('tier') String tier,
     @Query('bundleId') String bundleId,
-    @Query('programId') String programId,
-  );
+    @Query('programId') String programId, {
+    @Query('startDate') String? startDate,
+  });
 
   @GET(EndPoints.paymentMethods)
   Future<List<PaymentMethodResponseDto>> getPaymentMethods(

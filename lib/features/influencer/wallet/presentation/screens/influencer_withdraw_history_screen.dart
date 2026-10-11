@@ -42,10 +42,7 @@ class InfluencerWithdrawHistoryScreen extends StatelessWidget {
               current.withdrawals != null,
           listener: (context, state) => CustomSnackbar.showError(
             context: context,
-            message: ErrorMessagePresenter.fromFailure(
-              context,
-              state.failure!,
-            ),
+            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
           ),
           builder: (context, state) {
             if (state.isHistoryLoading && state.withdrawals == null) {

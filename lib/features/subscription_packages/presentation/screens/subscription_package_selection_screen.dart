@@ -59,101 +59,102 @@ class _SubscriptionPackageSelectionScreenState
 
     return BlocProvider<SubscriptionPackagesViewModel>.value(
       value: _viewModel,
-      child: BlocListener<
-        SubscriptionPackagesViewModel,
-        SubscriptionPackagesState
-      >(
-        listenWhen: (previous, current) =>
-            _flowController.shouldListenToProfileUpdate(previous, current),
-        listener: (context, state) =>
-            _flowController.handleProfileUpdatedListener(context, state),
-        child: Scaffold(
-          backgroundColor: color.surface,
-          appBar: CustomAppBar(
-            titleWidget: const AppLogo(
-              alignment: CrossAxisAlignment.center,
-            ),
-            backgroundColor: color.surface,
-            onBackPressed: () => Navigator.maybePop(context),
-          ),
-          body: Stack(
-            children: [
-              BlocBuilder<
-                SubscriptionPackagesViewModel,
-                SubscriptionPackagesState
-              >(
-                buildWhen: (previous, current) =>
-                    previous.isLoading != current.isLoading ||
-                    previous.isRefreshing != current.isRefreshing ||
-                    previous.isLoadingMore != current.isLoadingMore ||
-                    previous.isSuccess != current.isSuccess ||
-                    previous.failure != current.failure ||
-                    previous.loadMoreFailure != current.loadMoreFailure ||
-                    previous.bundles != current.bundles,
-                builder: (context, state) {
-                  return SubscriptionPackageSelectionBody(
-                    state: state,
-                    selectedProgram: selectedProgram,
-                    selectedPackageNotifier:
-                        _flowController.selectedPackageNotifier,
-                    onPackageSelected: _flowController.selectPackage,
-                    onRetry: () {
-                      if (selectedProgram != null) {
-                        _viewModel.doIntent(
-                          GetSubscriptionPackagesEvent(
-                            selectedProgram.programId,
-                          ),
-                        );
-                      }
-                    },
-                    onLoadMore: () {
-                      _viewModel.doIntent(
-                        const LoadMoreSubscriptionPackagesEvent(),
-                      );
-                    },
-                    onRetryLoadMore: () {
-                      _viewModel.doIntent(
-                        const RetrySubscriptionPackagesEvent(),
-                      );
-                    },
-                  );
-                },
-              ),
-              BlocSelector<
-                SubscriptionPackagesViewModel,
-                SubscriptionPackagesState,
-                ({bool hasBundles, bool isLoading})
-              >(
-                selector: (state) => (
-                  hasBundles: state.bundles.isNotEmpty,
-                  isLoading: state.isLoading,
+      child:
+          BlocListener<
+            SubscriptionPackagesViewModel,
+            SubscriptionPackagesState
+          >(
+            listenWhen: (previous, current) =>
+                _flowController.shouldListenToProfileUpdate(previous, current),
+            listener: (context, state) =>
+                _flowController.handleProfileUpdatedListener(context, state),
+            child: Scaffold(
+              backgroundColor: color.surface,
+              appBar: CustomAppBar(
+                titleWidget: const AppLogo(
+                  alignment: CrossAxisAlignment.center,
                 ),
-                builder: (context, data) {
-                  if (!data.hasBundles) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return SubscriptionPackagesBottomBar(
-                    selectedPackageNotifier:
-                        _flowController.selectedPackageNotifier,
-                    hasBundles: data.hasBundles,
-                    isLoading: data.isLoading,
-                    onContinue: () {
-                      final state = _viewModel.state;
-                      unawaited(
-                        _flowController.continueWithProfileStatus(
-                          context,
-                          state,
-                        ),
+                backgroundColor: color.surface,
+                onBackPressed: () => Navigator.maybePop(context),
+              ),
+              body: Stack(
+                children: [
+                  BlocBuilder<
+                    SubscriptionPackagesViewModel,
+                    SubscriptionPackagesState
+                  >(
+                    buildWhen: (previous, current) =>
+                        previous.isLoading != current.isLoading ||
+                        previous.isRefreshing != current.isRefreshing ||
+                        previous.isLoadingMore != current.isLoadingMore ||
+                        previous.isSuccess != current.isSuccess ||
+                        previous.failure != current.failure ||
+                        previous.loadMoreFailure != current.loadMoreFailure ||
+                        previous.bundles != current.bundles,
+                    builder: (context, state) {
+                      return SubscriptionPackageSelectionBody(
+                        state: state,
+                        selectedProgram: selectedProgram,
+                        selectedPackageNotifier:
+                            _flowController.selectedPackageNotifier,
+                        onPackageSelected: _flowController.selectPackage,
+                        onRetry: () {
+                          if (selectedProgram != null) {
+                            _viewModel.doIntent(
+                              GetSubscriptionPackagesEvent(
+                                selectedProgram.programId,
+                              ),
+                            );
+                          }
+                        },
+                        onLoadMore: () {
+                          _viewModel.doIntent(
+                            const LoadMoreSubscriptionPackagesEvent(),
+                          );
+                        },
+                        onRetryLoadMore: () {
+                          _viewModel.doIntent(
+                            const RetrySubscriptionPackagesEvent(),
+                          );
+                        },
                       );
                     },
-                  );
-                },
+                  ),
+                  BlocSelector<
+                    SubscriptionPackagesViewModel,
+                    SubscriptionPackagesState,
+                    ({bool hasBundles, bool isLoading})
+                  >(
+                    selector: (state) => (
+                      hasBundles: state.bundles.isNotEmpty,
+                      isLoading: state.isLoading,
+                    ),
+                    builder: (context, data) {
+                      if (!data.hasBundles) {
+                        return const SizedBox.shrink();
+                      }
+
+                      return SubscriptionPackagesBottomBar(
+                        selectedPackageNotifier:
+                            _flowController.selectedPackageNotifier,
+                        hasBundles: data.hasBundles,
+                        isLoading: data.isLoading,
+                        onContinue: () {
+                          final state = _viewModel.state;
+                          unawaited(
+                            _flowController.continueWithProfileStatus(
+                              context,
+                              state,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 }

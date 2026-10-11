@@ -24,11 +24,14 @@ abstract final class NotificationPresentationMapper {
     final effectiveNow = now ?? DateTime.now();
 
     // 1. Filter by category
-    final filtered = items.where((item) {
-      if (selectedCategory == NotificationCategory.all) return true;
-      final category = resolveCategory(item);
-      return category == selectedCategory;
-    }).map((item) => projectItem(item, locale, effectiveNow)).toList();
+    final filtered = items
+        .where((item) {
+          if (selectedCategory == NotificationCategory.all) return true;
+          final category = resolveCategory(item);
+          return category == selectedCategory;
+        })
+        .map((item) => projectItem(item, locale, effectiveNow))
+        .toList();
 
     if (filtered.isEmpty) return const [];
 
@@ -37,7 +40,11 @@ abstract final class NotificationPresentationMapper {
     final yesterdayList = <NotificationItemEntity>[];
     final earlierList = <NotificationItemEntity>[];
 
-    final nowDate = DateTime(effectiveNow.year, effectiveNow.month, effectiveNow.day);
+    final nowDate = DateTime(
+      effectiveNow.year,
+      effectiveNow.month,
+      effectiveNow.day,
+    );
     final yesterdayDate = nowDate.subtract(const Duration(days: 1));
 
     for (final item in filtered) {
@@ -107,27 +114,27 @@ abstract final class NotificationPresentationMapper {
     final isAr = locale.localeName.startsWith('ar');
     final title = isAr
         ? (item.titleAr?.trim().isNotEmpty == true
-            ? item.titleAr!
-            : (item.titleEn?.trim().isNotEmpty == true
-                ? item.titleEn!
-                : item.title))
+              ? item.titleAr!
+              : (item.titleEn?.trim().isNotEmpty == true
+                    ? item.titleEn!
+                    : item.title))
         : (item.titleEn?.trim().isNotEmpty == true
-            ? item.titleEn!
-            : (item.titleAr?.trim().isNotEmpty == true
-                ? item.titleAr!
-                : item.title));
+              ? item.titleEn!
+              : (item.titleAr?.trim().isNotEmpty == true
+                    ? item.titleAr!
+                    : item.title));
 
     final body = isAr
         ? (item.bodyAr?.trim().isNotEmpty == true
-            ? item.bodyAr!
-            : (item.bodyEn?.trim().isNotEmpty == true
-                ? item.bodyEn!
-                : item.body))
+              ? item.bodyAr!
+              : (item.bodyEn?.trim().isNotEmpty == true
+                    ? item.bodyEn!
+                    : item.body))
         : (item.bodyEn?.trim().isNotEmpty == true
-            ? item.bodyEn!
-            : (item.bodyAr?.trim().isNotEmpty == true
-                ? item.bodyAr!
-                : item.body));
+              ? item.bodyEn!
+              : (item.bodyAr?.trim().isNotEmpty == true
+                    ? item.bodyAr!
+                    : item.body));
 
     final category = resolveCategory(item);
     final iconType = resolveIcon(item);
@@ -175,7 +182,9 @@ abstract final class NotificationPresentationMapper {
     if (key.contains('subscription') || key.contains('package')) {
       return NotificationCardIcon.packageCard;
     }
-    if (key.contains('offer') || key.contains('gift') || key.contains('promo')) {
+    if (key.contains('offer') ||
+        key.contains('gift') ||
+        key.contains('promo')) {
       return NotificationCardIcon.offerGift;
     }
     return item.iconType;

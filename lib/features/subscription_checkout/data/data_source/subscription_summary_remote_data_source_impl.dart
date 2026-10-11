@@ -31,9 +31,8 @@ class SubscriptionSummaryRemoteDataSourceImpl
   }
 
   @override
-  Future<SubscriptionRestaurantAvailabilityResponseDto> getRestaurantAvailability(
-    SubscriptionSummaryRequestEntity request,
-  ) {
+  Future<SubscriptionRestaurantAvailabilityResponseDto>
+  getRestaurantAvailability(SubscriptionSummaryRequestEntity request) {
     return _apiServices.getSubscriptionRestaurantAvailability(
       request.includeFriday,
       request.durationDays,

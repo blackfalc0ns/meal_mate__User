@@ -52,16 +52,20 @@ class AuthPhoneField extends StatelessWidget {
             color: color.primary,
             size: Spacing.iconMd,
           ),
-          suffixIcon: BlocSelector<CallingCodesViewModel, CallingCodesState,
-              CallingCodeEntity?>(
-            selector: (state) => state.selected,
-            builder: (context, selected) {
-              return CountryCodePrefix(
-                callingCode: selected,
-                onTap: () => _openCallingCodesSheet(context),
-              );
-            },
-          ),
+          suffixIcon:
+              BlocSelector<
+                CallingCodesViewModel,
+                CallingCodesState,
+                CallingCodeEntity?
+              >(
+                selector: (state) => state.selected,
+                builder: (context, selected) {
+                  return CountryCodePrefix(
+                    callingCode: selected,
+                    onTap: () => _openCallingCodesSheet(context),
+                  );
+                },
+              ),
           validator:
               validator ??
               (value) => Validations.validatePhoneNumber(context, value),
@@ -94,4 +98,3 @@ class AuthPhoneField extends StatelessWidget {
     );
   }
 }
-

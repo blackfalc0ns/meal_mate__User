@@ -12,8 +12,7 @@ class AuthFormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final borderRadius =
-        BorderRadius.circular(Spacing.xxl + Spacing.xs);
+    final borderRadius = BorderRadius.circular(Spacing.xxl + Spacing.xs);
 
     return ClipRRect(
       borderRadius: borderRadius,

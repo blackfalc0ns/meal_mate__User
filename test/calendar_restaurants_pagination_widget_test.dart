@@ -29,7 +29,9 @@ Widget _wrapWidget({required Widget child}) {
 
 void main() {
   group('CalendarRestaurantPickerSheet Pagination Widgets', () {
-    testWidgets('Displays footer shimmer when isLoadingMore is true', (tester) async {
+    testWidgets('Displays footer shimmer when isLoadingMore is true', (
+      tester,
+    ) async {
       final items = [_makeOption('r0', 'Restaurant 0')];
 
       await tester.pumpWidget(
@@ -47,36 +49,45 @@ void main() {
       expect(find.byType(ShimmerWidget), findsWidgets);
     });
 
-    testWidgets('Displays retry button when loadMoreFailure is present and calls onRetryLoadMore', (tester) async {
-      final items = [_makeOption('r0', 'Restaurant 0')];
-      var retryCalled = false;
+    testWidgets(
+      'Displays retry button when loadMoreFailure is present and calls onRetryLoadMore',
+      (tester) async {
+        final items = [_makeOption('r0', 'Restaurant 0')];
+        var retryCalled = false;
 
-      await tester.pumpWidget(
-        _wrapWidget(
-          child: CalendarRestaurantPickerSheet(
-            restaurants: items,
-            loadMoreFailure: Failure(errorMessage: 'Network failed', code: 'net_err'),
-            onRetryLoadMore: () {
-              retryCalled = true;
-            },
-            onRestaurantSelected: (_) {},
-            onSearchChanged: (_) {},
+        await tester.pumpWidget(
+          _wrapWidget(
+            child: CalendarRestaurantPickerSheet(
+              restaurants: items,
+              loadMoreFailure: Failure(
+                errorMessage: 'Network failed',
+                code: 'net_err',
+              ),
+              onRetryLoadMore: () {
+                retryCalled = true;
+              },
+              onRestaurantSelected: (_) {},
+              onSearchChanged: (_) {},
+            ),
           ),
-        ),
-      );
-      await tester.pump(const Duration(milliseconds: 600));
+        );
+        await tester.pump(const Duration(milliseconds: 600));
 
-      final retryFinder = find.byIcon(Icons.refresh_rounded);
-      expect(retryFinder, findsOneWidget);
+        final retryFinder = find.byIcon(Icons.refresh_rounded);
+        expect(retryFinder, findsOneWidget);
 
-      await tester.tap(retryFinder);
-      await tester.pump(const Duration(milliseconds: 600));
+        await tester.tap(retryFinder);
+        await tester.pump(const Duration(milliseconds: 600));
 
-      expect(retryCalled, isTrue);
-    });
+        expect(retryCalled, isTrue);
+      },
+    );
 
     testWidgets('Calls onLoadMore when scrolled near end', (tester) async {
-      final items = List.generate(4, (i) => _makeOption('r$i', 'Restaurant $i'));
+      final items = List.generate(
+        4,
+        (i) => _makeOption('r$i', 'Restaurant $i'),
+      );
       var loadMoreCalled = false;
 
       await tester.pumpWidget(

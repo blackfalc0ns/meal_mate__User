@@ -35,6 +35,9 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
             currency: p.currency,
             priceSubtitle: p.period,
             isPriceLoading: isPriceLoading,
+            canSelect: p.canSelect,
+            isAvailable: p.isAvailable,
+            disabledReason: p.disabledReason,
           ),
         )
         .toList();
@@ -47,4 +50,3 @@ class MonthlyPlanPackagesSection extends StatelessWidget {
     );
   }
 }
-

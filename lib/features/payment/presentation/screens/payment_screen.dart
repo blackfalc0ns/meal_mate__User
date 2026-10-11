@@ -112,9 +112,9 @@ class PaymentScreen extends StatelessWidget {
             )
             .then((_) {
               if (context.mounted) {
-                context
-                    .read<PaymentViewModel>()
-                    .doIntent(LoadPaymentEvent(paymentArgs));
+                context.read<PaymentViewModel>().doIntent(
+                  LoadPaymentEvent(paymentArgs),
+                );
               }
             }),
       );

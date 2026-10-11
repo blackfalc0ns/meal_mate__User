@@ -6873,4 +6873,114 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calendarFulfillmentNotReady =>
       'The calendar is not ready yet. Refresh in a moment.';
+
+  @override
+  String get subscription_flow_no_delivery_to_address =>
+      'No restaurants currently deliver to this address.';
+
+  @override
+  String get subscription_flow_option_uncovered =>
+      'No restaurants for these options deliver to your address.';
+
+  @override
+  String get subscription_flow_no_prepared_restaurants =>
+      'No restaurants currently have prepared meals or valid pricing for these options.';
+
+  @override
+  String get subscription_flow_period_unavailable =>
+      'No restaurants can serve the entire period with these options. Change your options and try again.';
+
+  @override
+  String get subscription_flow_selection_required =>
+      'Choose the duration and start date to check the entire period.';
+
+  @override
+  String get subscription_flow_friday_unavailable =>
+      'Friday service is unavailable for this tier.';
+
+  @override
+  String get subscription_flow_pricing_unavailable =>
+      'Pricing is currently unavailable for these options.';
+
+  @override
+  String get calendar_selection_deadline_passed =>
+      'The editing deadline for this day has passed.';
+
+  @override
+  String get calendar_first_day_deadline =>
+      'You can edit the first day within 24 hours of payment, subject to the displayed deadline.';
+
+  @override
+  String get calendar_ordinary_deadline =>
+      'Complete selections for later days at least 72 hours before service.';
+
+  @override
+  String get calendar_fulfillment_pending =>
+      'Your subscription is being prepared. The calendar will appear when preparation is complete.';
+
+  @override
+  String get calendar_auto_selection_failed =>
+      'Automatic selection could not be completed. Review the day’s status before continuing.';
+
+  @override
+  String get freeze_preparation_failed =>
+      'Replacement days could not be prepared. The change was not approved.';
+
+  @override
+  String get freeze_replacement_capacity_unavailable =>
+      'Replacement days do not have enough capacity. The change was not approved.';
+
+  @override
+  String get freeze_replacement_restaurants_unavailable =>
+      'No eligible restaurant can serve the replacement days. The change was not approved.';
+
+  @override
+  String get freeze_replacement_pool_unavailable =>
+      'No replacement restaurants are available for freeze.';
+
+  @override
+  String get freeze_no_service_days => 'No service days available to freeze.';
+
+  @override
+  String get subscription_flow_empty_options =>
+      'No options are currently available.';
+
+  @override
+  String get subscription_flow_loading => 'Loading…';
+
+  @override
+  String get subscription_flow_request_failed =>
+      'Data could not be loaded. Try again.';
+
+  @override
+  String get calendar_restaurant_coverage_unavailable =>
+      'No eligible restaurant covers your delivery address for this day.';
+
+  @override
+  String get calendar_box_not_ready =>
+      'This restaurant does not have an approved menu for the delivery day.';
+
+  @override
+  String get calendar_restaurant_capacity_full =>
+      'Restaurant capacity is full or unavailable for the delivery day.';
+
+  @override
+  String get calendar_no_safe_box =>
+      'No full allergy-safe box is available for this day.';
+
+  @override
+  String get calendar_restaurant_busy =>
+      'The selected restaurant is busy on the delivery day.';
+
+  @override
+  String get calendar_quota_exhausted =>
+      'The selected restaurant has reached its selection repetition limit.';
+
+  @override
+  String get subscription_program_no_restaurants_in_area =>
+      'No restaurants available in your area';
+
+  @override
+  String get subscription_program_no_prepared_restaurants_notice =>
+      'This program is currently unavailable as there are no prepared restaurants in your area.';
 }

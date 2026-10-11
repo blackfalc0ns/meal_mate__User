@@ -26,24 +26,30 @@ void main() {
       expect(payload!.routeName, AppRoutes.calendar);
     });
 
-    test('resolves mealmate://influencer-portal to AppRoutes.influencerDashboard', () {
-      final payload = PushNotificationPayload.fromData({
-        'deepLink': 'mealmate://influencer-portal',
-      });
+    test(
+      'resolves mealmate://influencer-portal to AppRoutes.influencerDashboard',
+      () {
+        final payload = PushNotificationPayload.fromData({
+          'deepLink': 'mealmate://influencer-portal',
+        });
 
-      expect(payload, isNotNull);
-      expect(payload!.routeName, AppRoutes.influencerDashboard);
-    });
+        expect(payload, isNotNull);
+        expect(payload!.routeName, AppRoutes.influencerDashboard);
+      },
+    );
 
-    test('resolves relative path /orders/{dayId} to AppRoutes.calendar with dayId extracted', () {
-      final payload = PushNotificationPayload.fromData({
-        'deepLink': '/orders/day-uuid-999',
-      });
+    test(
+      'resolves relative path /orders/{dayId} to AppRoutes.calendar with dayId extracted',
+      () {
+        final payload = PushNotificationPayload.fromData({
+          'deepLink': '/orders/day-uuid-999',
+        });
 
-      expect(payload, isNotNull);
-      expect(payload!.routeName, AppRoutes.calendar);
-      expect(payload.arguments['dayId'], 'day-uuid-999');
-    });
+        expect(payload, isNotNull);
+        expect(payload!.routeName, AppRoutes.calendar);
+        expect(payload.arguments['dayId'], 'day-uuid-999');
+      },
+    );
 
     test('parses query parameters in deep link into arguments', () {
       final payload = PushNotificationPayload.fromData({
@@ -60,10 +66,7 @@ void main() {
         PushNotificationPayload.fromData({'deepLink': 'unknown://invalid'}),
         isNull,
       );
-      expect(
-        PushNotificationPayload.fromData({'deepLink': ''}),
-        isNull,
-      );
+      expect(PushNotificationPayload.fromData({'deepLink': ''}), isNull);
       expect(
         PushNotificationPayload.fromData({'route': 'unregistered_route'}),
         isNull,
@@ -73,10 +76,7 @@ void main() {
     test('routing_generator parses calendar arguments from String or Map', () {
       // 1. String argument
       final stringRoute = RouteGenerator.getRoute(
-        const RouteSettings(
-          name: AppRoutes.calendar,
-          arguments: 'sub-str-1',
-        ),
+        const RouteSettings(name: AppRoutes.calendar, arguments: 'sub-str-1'),
       );
       expect(stringRoute, isNotNull);
 

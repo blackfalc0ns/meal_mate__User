@@ -1,35 +1,41 @@
 import 'package:meal_meat_user/core/network/mapper/pagination_mapper.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_availability_mapper.dart';
 import 'package:meal_meat_user/features/subscription_packages/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 
 extension SubscriptionBundleResponseDtoMapper on SubscriptionBundleResponseDto {
   SubscriptionBundleEntity toEntity() {
+    final base = option ?? this;
+
     return SubscriptionBundleEntity(
-      bundleId: bundleId ?? '',
-      programId: programId ?? '',
-      code: code ?? '',
-      nameAr: nameAr ?? name ?? '',
-      nameEn: nameEn ?? name ?? '',
-      descriptionAr: descriptionAr ?? description ?? '',
-      descriptionEn: descriptionEn ?? description ?? '',
-      imageUrl: imageUrl,
-      mealsPerDay: mealsPerDay ?? 0,
-      breakfastCount: breakfastCount ?? 0,
-      lunchCount: lunchCount ?? 0,
-      dinnerCount: dinnerCount ?? 0,
-      snackCount: snackCount ?? 0,
-      slots: (slots ?? const [])
+      bundleId: base.bundleId ?? '',
+      programId: base.programId ?? '',
+      code: base.code ?? '',
+      nameAr: base.nameAr ?? base.name ?? '',
+      nameEn: base.nameEn ?? base.name ?? '',
+      descriptionAr: base.descriptionAr ?? base.description ?? '',
+      descriptionEn: base.descriptionEn ?? base.description ?? '',
+      imageUrl: base.imageUrl,
+      mealsPerDay: base.mealsPerDay ?? 0,
+      breakfastCount: base.breakfastCount ?? 0,
+      lunchCount: base.lunchCount ?? 0,
+      dinnerCount: base.dinnerCount ?? 0,
+      snackCount: base.snackCount ?? 0,
+      slots: (base.slots ?? const [])
           .whereType<SubscriptionBundleSlotResponseDto>()
           .map((slot) => slot.toEntity())
           .toList(),
-      restaurantCount: restaurantCount ?? 0,
-      restaurants: (restaurants ?? const [])
+      restaurantCount: base.restaurantCount ?? 0,
+      restaurants: (base.restaurants ?? const [])
           .whereType<SubscriptionBundleRestaurantResponseDto>()
           .map((restaurant) => restaurant.toEntity())
           .toList(),
-      selectionCount: selectionCount ?? 0,
-      isMostSelected: isMostSelected ?? false,
-      badge: badge?.toEntity(),
+      selectionCount: base.selectionCount ?? 0,
+      isMostSelected: base.isMostSelected ?? false,
+      badge: base.badge?.toEntity(),
+      isAvailable: isAvailable ?? option?.isAvailable ?? true,
+      disabledReason: disabledReason ?? option?.disabledReason,
+      availability: (availability ?? option?.availability)?.toEntity(),
     );
   }
 }
@@ -39,10 +45,15 @@ extension SubscriptionProgramBundlesResponseDtoMapper
   SubscriptionProgramBundlesEntity toProgramBundlesEntity() {
     return SubscriptionProgramBundlesEntity(
       hasDeliveryAddress: hasDeliveryAddress ?? false,
-      hasAllergies: hasAllergies ?? false,
-      hasDietaryPreferences: hasDietaryPreferences ?? false,
+      hasAllergies:
+          hasAllergies ?? (allergiesCompletedAtUtc?.isNotEmpty == true),
+      hasDietaryPreferences:
+          hasDietaryPreferences ??
+          (dietaryPreferencesCompletedAtUtc?.isNotEmpty == true),
       isProfileComplete: isProfileComplete ?? false,
-      bundles: (bundles ?? const [])
+      allergiesCompletedAtUtc: allergiesCompletedAtUtc,
+      dietaryPreferencesCompletedAtUtc: dietaryPreferencesCompletedAtUtc,
+      bundles: effectiveBundles
           .whereType<SubscriptionBundleResponseDto>()
           .map((item) => item.toEntity())
           .toList(),

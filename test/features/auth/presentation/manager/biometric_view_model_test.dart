@@ -5,7 +5,8 @@ import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/biometric_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/biometric_view_model.dart';
 
-class FakeBiometricServiceForViewModel extends Fake implements BiometricService {
+class FakeBiometricServiceForViewModel extends Fake
+    implements BiometricService {
   BiometricCapabilities stubCaps = const BiometricCapabilities(
     supportsBiometrics: true,
     hasEnrollment: true,
@@ -63,85 +64,92 @@ void main() {
     await viewModel.close();
   });
 
-  test('InitBiometricEvent updates capabilities and readiness without credentials in state',
-      () async {
-    fakeService.stubIsEnabled = true;
-    fakeService.stubCanOffer = true;
+  test(
+    'InitBiometricEvent updates capabilities and readiness without credentials in state',
+    () async {
+      fakeService.stubIsEnabled = true;
+      fakeService.stubCanOffer = true;
 
-    viewModel.doIntent(const InitBiometricEvent());
-    await Future<void>.delayed(Duration.zero);
+      viewModel.doIntent(const InitBiometricEvent());
+      await Future<void>.delayed(Duration.zero);
 
-    expect(viewModel.state.isSupported, isTrue);
-    expect(viewModel.state.hasEnrollment, isTrue);
-    expect(viewModel.state.biometricType, BiometricTypeEnum.fingerprint);
-    expect(viewModel.state.isEnabled, isTrue);
-    expect(viewModel.state.canRestoreSession, isTrue);
-  });
+      expect(viewModel.state.isSupported, isTrue);
+      expect(viewModel.state.hasEnrollment, isTrue);
+      expect(viewModel.state.biometricType, BiometricTypeEnum.fingerprint);
+      expect(viewModel.state.isEnabled, isTrue);
+      expect(viewModel.state.canRestoreSession, isTrue);
+    },
+  );
 
-  test('ToggleBiometricEvent(enable: false) disables biometric and clears session restoration',
-      () async {
-    viewModel.doIntent(
-      const ToggleBiometricEvent(
-        enable: false,
-        localizedReason: 'Reason',
-      ),
-    );
-    await Future<void>.delayed(Duration.zero);
+  test(
+    'ToggleBiometricEvent(enable: false) disables biometric and clears session restoration',
+    () async {
+      viewModel.doIntent(
+        const ToggleBiometricEvent(enable: false, localizedReason: 'Reason'),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    expect(fakeService.disableBiometricCalled, isTrue);
-    expect(viewModel.state.isEnabled, isFalse);
-    expect(viewModel.state.canRestoreSession, isFalse);
-    expect(viewModel.state.isSuccess, isTrue);
-  });
+      expect(fakeService.disableBiometricCalled, isTrue);
+      expect(viewModel.state.isEnabled, isFalse);
+      expect(viewModel.state.canRestoreSession, isFalse);
+      expect(viewModel.state.isSuccess, isTrue);
+    },
+  );
 
-  test('ToggleBiometricEvent(enable: true) authenticates and enables on success',
-      () async {
-    fakeService.stubAuthResult = const BiometricAuthResult.success();
-    fakeService.stubCanOffer = true;
+  test(
+    'ToggleBiometricEvent(enable: true) authenticates and enables on success',
+    () async {
+      fakeService.stubAuthResult = const BiometricAuthResult.success();
+      fakeService.stubCanOffer = true;
 
-    viewModel.doIntent(
-      const ToggleBiometricEvent(
-        enable: true,
-        localizedReason: 'Enable Biometrics',
-      ),
-    );
-    await Future<void>.delayed(Duration.zero);
+      viewModel.doIntent(
+        const ToggleBiometricEvent(
+          enable: true,
+          localizedReason: 'Enable Biometrics',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    expect(fakeService.setBiometricEnabledCalled, isTrue);
-    expect(fakeService.setBiometricEnabledVal, isTrue);
-    expect(viewModel.state.isEnabled, isTrue);
-    expect(viewModel.state.isSuccess, isTrue);
-    expect(viewModel.state.authStatus, BiometricAuthStatus.success);
-  });
+      expect(fakeService.setBiometricEnabledCalled, isTrue);
+      expect(fakeService.setBiometricEnabledVal, isTrue);
+      expect(viewModel.state.isEnabled, isTrue);
+      expect(viewModel.state.isSuccess, isTrue);
+      expect(viewModel.state.authStatus, BiometricAuthStatus.success);
+    },
+  );
 
-  test('ToggleBiometricEvent(enable: true) user cancellation does not enable',
-      () async {
-    fakeService.stubAuthResult = const BiometricAuthResult.canceled();
+  test(
+    'ToggleBiometricEvent(enable: true) user cancellation does not enable',
+    () async {
+      fakeService.stubAuthResult = const BiometricAuthResult.canceled();
 
-    viewModel.doIntent(
-      const ToggleBiometricEvent(
-        enable: true,
-        localizedReason: 'Enable Biometrics',
-      ),
-    );
-    await Future<void>.delayed(Duration.zero);
+      viewModel.doIntent(
+        const ToggleBiometricEvent(
+          enable: true,
+          localizedReason: 'Enable Biometrics',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    expect(fakeService.setBiometricEnabledCalled, isFalse);
-    expect(viewModel.state.isEnabled, isFalse);
-    expect(viewModel.state.isSuccess, isFalse);
-    expect(viewModel.state.authStatus, BiometricAuthStatus.canceled);
-  });
+      expect(fakeService.setBiometricEnabledCalled, isFalse);
+      expect(viewModel.state.isEnabled, isFalse);
+      expect(viewModel.state.isSuccess, isFalse);
+      expect(viewModel.state.authStatus, BiometricAuthStatus.canceled);
+    },
+  );
 
-  test('ViewModel closed during in-flight authenticate does not emit after close',
-      () async {
-    viewModel.doIntent(
-      const ToggleBiometricEvent(
-        enable: true,
-        localizedReason: 'Enable Biometrics',
-      ),
-    );
-    await viewModel.close();
-    // Should not throw emit after close
-    expect(viewModel.isClosed, isTrue);
-  });
+  test(
+    'ViewModel closed during in-flight authenticate does not emit after close',
+    () async {
+      viewModel.doIntent(
+        const ToggleBiometricEvent(
+          enable: true,
+          localizedReason: 'Enable Biometrics',
+        ),
+      );
+      await viewModel.close();
+      // Should not throw emit after close
+      expect(viewModel.isClosed, isTrue);
+    },
+  );
 }

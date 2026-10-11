@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
+
 class SubscriptionProgramEntity {
   const SubscriptionProgramEntity({
     required this.programId,
@@ -13,6 +15,9 @@ class SubscriptionProgramEntity {
     required this.bundleCount,
     required this.supportedSlots,
     required this.fallbackImageAsset,
+    this.isAvailable = true,
+    this.disabledReason,
+    this.availability,
   });
 
   final String programId;
@@ -28,6 +33,22 @@ class SubscriptionProgramEntity {
   final int bundleCount;
   final List<String> supportedSlots;
   final String fallbackImageAsset;
+  final bool isAvailable;
+  final String? disabledReason;
+  final SubscriptionAvailabilityEntity? availability;
+
+  bool get canSelect {
+    if (!isAvailable) return false;
+    if (availability != null) {
+      if (!availability!.effectiveCanSelect) return false;
+      if (!availability!.isAddressRequired &&
+          availability!.coveredRestaurantCount == 0 &&
+          availability!.canSelect != true) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 

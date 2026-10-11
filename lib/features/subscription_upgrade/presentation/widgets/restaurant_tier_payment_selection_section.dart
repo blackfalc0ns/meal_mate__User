@@ -14,7 +14,7 @@ class RestaurantTierPaymentSelectionSection extends StatelessWidget {
   });
 
   final ValueChanged<SubscriptionUpgradePaymentMethodEntity>
-      onPaymentMethodSelected;
+  onPaymentMethodSelected;
 
   @override
   Widget build(BuildContext context) {

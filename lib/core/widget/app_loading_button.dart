@@ -88,7 +88,8 @@ class _AppLoadingButtonState extends State<AppLoadingButton> {
     final buttonColor = widget.color ?? color.primary;
     final textClr = widget.textColor ?? color.onPrimary;
 
-    final resolvedStyle = widget.textStyle ??
+    final resolvedStyle =
+        widget.textStyle ??
         getBoldStyle(
           fontFamily: FontConstant.alexandria,
           fontSize: widget.fontSize ?? FontSize.size13,
@@ -101,11 +102,7 @@ class _AppLoadingButtonState extends State<AppLoadingButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.iconWidget ??
-                  Icon(
-                    widget.icon,
-                    size: Spacing.base,
-                    color: textClr,
-                  ),
+                  Icon(widget.icon, size: Spacing.base, color: textClr),
               const SizedBox(width: Spacing.xs),
               Text(
                 widget.text,

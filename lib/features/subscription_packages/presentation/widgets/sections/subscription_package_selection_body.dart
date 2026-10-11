@@ -86,9 +86,7 @@ class SubscriptionPackageSelectionBody extends StatelessWidget {
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(Spacing.md),
-                child: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
+                child: Center(child: CircularProgressIndicator.adaptive()),
               ),
             ),
           if (state.loadMoreFailure != null)

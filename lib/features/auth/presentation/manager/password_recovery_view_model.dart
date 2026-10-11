@@ -92,10 +92,7 @@ class PasswordRecoveryViewModel extends Cubit<PasswordRecoveryState> {
 
     try {
       final result = await _forgotPasswordUseCase(
-        ForgotPasswordRequestEntity(
-          phone: phone,
-          countryCode: countryCode,
-        ),
+        ForgotPasswordRequestEntity(phone: phone, countryCode: countryCode),
       );
 
       if (isClosed) return;
@@ -195,25 +192,18 @@ class PasswordRecoveryViewModel extends Cubit<PasswordRecoveryState> {
               resendOtpSent: result.data.otpSent,
               retryAvailableAtUtc: result.data.otpSent
                   ? () =>
-                      DateTime.now().toUtc().add(const Duration(seconds: 60))
+                        DateTime.now().toUtc().add(const Duration(seconds: 60))
                   : null,
             ),
           );
         case ApiErrorResult():
           emit(
-            state.copyWith(
-              isResending: false,
-              failure: () => result.failure,
-            ),
+            state.copyWith(isResending: false, failure: () => result.failure),
           );
       }
     } catch (_) {
       if (!isClosed) {
-        emit(
-          state.copyWith(
-            isResending: false,
-          ),
-        );
+        emit(state.copyWith(isResending: false));
       }
     } finally {
       _inFlight = false;

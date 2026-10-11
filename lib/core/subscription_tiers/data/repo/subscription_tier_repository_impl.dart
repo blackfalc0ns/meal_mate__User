@@ -24,6 +24,7 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? startDate,
     String? familyMemberId,
   }) {
     return safeApiCall(() async {
@@ -32,6 +33,7 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
         bundleId: bundleId,
         durationDays: durationDays,
         includeFriday: includeFriday,
+        startDate: startDate,
         familyMemberId: familyMemberId,
       );
       return response.map((item) => item.toEntity()).toList();
@@ -45,6 +47,9 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
     required String bundleId,
     required String tier,
     String? familyMemberId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getTierRestaurants(
@@ -52,6 +57,9 @@ class SubscriptionTierRepositoryImpl implements SubscriptionTierRepository {
         bundleId: bundleId,
         tier: tier,
         familyMemberId: familyMemberId,
+        durationDays: durationDays,
+        startDate: startDate,
+        includeFriday: includeFriday,
       );
       return response.map((item) => item.toEntity()).toList();
     });

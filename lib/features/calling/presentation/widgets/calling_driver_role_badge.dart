@@ -8,10 +8,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CallingDriverRoleBadge extends StatelessWidget {
-  const CallingDriverRoleBadge({
-    super.key,
-    required this.role,
-  });
+  const CallingDriverRoleBadge({super.key, required this.role});
 
   final String role;
 

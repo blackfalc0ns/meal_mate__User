@@ -23,7 +23,7 @@ class InfluencerSocialTitleSection extends StatelessWidget {
       children: [
         Text(
           title,
-         
+
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,

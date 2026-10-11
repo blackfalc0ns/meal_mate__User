@@ -27,8 +27,9 @@ void main() {
     );
   }
 
-  testWidgets('AuthOtpCountdown shows remaining seconds and counts down to 0',
-      (tester) async {
+  testWidgets('AuthOtpCountdown shows remaining seconds and counts down to 0', (
+    tester,
+  ) async {
     var currentTime = DateTime.utc(2026, 10, 7, 12, 0, 0);
     final retryAt = currentTime.add(const Duration(seconds: 3));
     var resendCallCount = 0;
@@ -60,53 +61,59 @@ void main() {
     expect(resendCallCount, 1);
   });
 
-  testWidgets('AuthOtpCountdown does not allow resend while isResending is true',
-      (tester) async {
-    final past = DateTime.now().toUtc().subtract(const Duration(seconds: 5));
-    var resendCallCount = 0;
+  testWidgets(
+    'AuthOtpCountdown does not allow resend while isResending is true',
+    (tester) async {
+      final past = DateTime.now().toUtc().subtract(const Duration(seconds: 5));
+      var resendCallCount = 0;
 
-    await tester.pumpWidget(
-      buildTestableWidget(
-        retryAvailableAtUtc: past,
-        onResend: () => resendCallCount++,
-        isResending: true,
-      ),
-    );
-    await tester.pump();
+      await tester.pumpWidget(
+        buildTestableWidget(
+          retryAvailableAtUtc: past,
+          onResend: () => resendCallCount++,
+          isResending: true,
+        ),
+      );
+      await tester.pump();
 
-    // When isResending is true, tapping should not call onResend
-    await tester.tap(find.byType(AuthOtpCountdown));
-    expect(resendCallCount, 0);
-  });
+      // When isResending is true, tapping should not call onResend
+      await tester.tap(find.byType(AuthOtpCountdown));
+      expect(resendCallCount, 0);
+    },
+  );
 
-  testWidgets('AuthOtpCountdown resets timer when didUpdateWidget receives new deadline',
-      (tester) async {
-    final past = DateTime.now().toUtc().subtract(const Duration(seconds: 1));
-    var resendCallCount = 0;
+  testWidgets(
+    'AuthOtpCountdown resets timer when didUpdateWidget receives new deadline',
+    (tester) async {
+      final past = DateTime.now().toUtc().subtract(const Duration(seconds: 1));
+      var resendCallCount = 0;
 
-    await tester.pumpWidget(
-      buildTestableWidget(
-        retryAvailableAtUtc: past,
-        onResend: () => resendCallCount++,
-        isResending: false,
-      ),
-    );
-    await tester.pump();
-    expect(find.text('Resend code'), findsOneWidget);
+      await tester.pumpWidget(
+        buildTestableWidget(
+          retryAvailableAtUtc: past,
+          onResend: () => resendCallCount++,
+          isResending: false,
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Resend code'), findsOneWidget);
 
-    // Update with new future deadline
-    final newDeadline = DateTime.now().toUtc().add(const Duration(seconds: 10));
-    await tester.pumpWidget(
-      buildTestableWidget(
-        retryAvailableAtUtc: newDeadline,
-        onResend: () => resendCallCount++,
-        isResending: false,
-      ),
-    );
-    await tester.pump();
+      // Update with new future deadline
+      final newDeadline = DateTime.now().toUtc().add(
+        const Duration(seconds: 10),
+      );
+      await tester.pumpWidget(
+        buildTestableWidget(
+          retryAvailableAtUtc: newDeadline,
+          onResend: () => resendCallCount++,
+          isResending: false,
+        ),
+      );
+      await tester.pump();
 
-    expect(find.textContaining('Resend code in'), findsOneWidget);
-    await tester.tap(find.textContaining('Resend code in'));
-    expect(resendCallCount, 0);
-  });
+      expect(find.textContaining('Resend code in'), findsOneWidget);
+      await tester.tap(find.textContaining('Resend code in'));
+      expect(resendCallCount, 0);
+    },
+  );
 }

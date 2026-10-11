@@ -35,7 +35,9 @@ class CallingActiveControlButton extends StatelessWidget {
             width: Spacing.callingActionSmallButtonSize,
             height: Spacing.callingActionSmallButtonSize,
             decoration: BoxDecoration(
-              color: isActive ? color.callActionIcon : color.callActionBackground,
+              color: isActive
+                  ? color.callActionIcon
+                  : color.callActionBackground,
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,

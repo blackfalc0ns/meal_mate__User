@@ -67,25 +67,20 @@ void main() {
     );
   }
 
-  testWidgets(
-    'displays single restaurant directly without view more button',
-    (tester) async {
-      final summary = buildSummary([
-        buildRestaurant('1', '[تجربة] بروتين لاب'),
-      ]);
+  testWidgets('displays single restaurant directly without view more button', (
+    tester,
+  ) async {
+    final summary = buildSummary([buildRestaurant('1', '[تجربة] بروتين لاب')]);
 
-      await tester.pumpWidget(
-        createTestWidget(
-          RestaurantTierUpgradeSummarySection(summary: summary),
-        ),
-      );
-      await tester.pump();
+    await tester.pumpWidget(
+      createTestWidget(RestaurantTierUpgradeSummarySection(summary: summary)),
+    );
+    await tester.pump();
 
-      expect(find.byType(RestaurantTierUpgradeRestaurantItem), findsOneWidget);
-      expect(find.text('[تجربة] بروتين لاب'), findsOneWidget);
-      expect(find.text('عرض المزيد'), findsNothing);
-    },
-  );
+    expect(find.byType(RestaurantTierUpgradeRestaurantItem), findsOneWidget);
+    expect(find.text('[تجربة] بروتين لاب'), findsOneWidget);
+    expect(find.text('عرض المزيد'), findsNothing);
+  });
 
   testWidgets(
     'caps display at 3 restaurants and shows view more button when more than 3',
@@ -99,14 +94,15 @@ void main() {
       ]);
 
       await tester.pumpWidget(
-        createTestWidget(
-          RestaurantTierUpgradeSummarySection(summary: summary),
-        ),
+        createTestWidget(RestaurantTierUpgradeSummarySection(summary: summary)),
       );
       await tester.pump();
 
       // Exactly 3 items visible in the section
-      expect(find.byType(RestaurantTierUpgradeRestaurantItem), findsNWidgets(3));
+      expect(
+        find.byType(RestaurantTierUpgradeRestaurantItem),
+        findsNWidgets(3),
+      );
       expect(find.text('مطعم 1'), findsOneWidget);
       expect(find.text('مطعم 2'), findsOneWidget);
       expect(find.text('مطعم 3'), findsOneWidget);

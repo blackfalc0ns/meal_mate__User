@@ -27,15 +27,16 @@ class RestaurantTierDetailsSection extends StatelessWidget {
         : 'KWD';
     final currencyText =
         (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
-            ? locale.currency
-            : rawCurrency;
+        ? locale.currency
+        : rawCurrency;
 
-    final currentCredit = summary?.currentRemainingCredit ??
+    final currentCredit =
+        summary?.currentRemainingCredit ??
         selectedOption.currentRemainingCredit;
-    final targetPrice = summary?.targetRemainingPrice ??
-        selectedOption.targetRemainingPrice;
-    final priceDiff = summary?.priceDifference ??
-        selectedOption.priceDifference;
+    final targetPrice =
+        summary?.targetRemainingPrice ?? selectedOption.targetRemainingPrice;
+    final priceDiff =
+        summary?.priceDifference ?? selectedOption.priceDifference;
 
     return RestaurantTierSectionCard(
       title: locale.restaurant_tier_details_title,

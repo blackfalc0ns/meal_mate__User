@@ -22,20 +22,20 @@ class BiometricMethodTile extends StatelessWidget {
 
     final (iconData, title, subtitle) = switch (presentationType) {
       BiometricTypeEnum.face => (
-          Icons.face_rounded,
-          locale.biometric_face_id,
-          locale.biometric_login_subtitle,
-        ),
+        Icons.face_rounded,
+        locale.biometric_face_id,
+        locale.biometric_login_subtitle,
+      ),
       BiometricTypeEnum.fingerprint => (
-          Icons.fingerprint_rounded,
-          locale.biometric_fingerprint,
-          locale.biometric_login_subtitle,
-        ),
+        Icons.fingerprint_rounded,
+        locale.biometric_fingerprint,
+        locale.biometric_login_subtitle,
+      ),
       _ => (
-          Icons.fingerprint_rounded,
-          locale.biometric_generic,
-          locale.biometric_login_subtitle,
-        ),
+        Icons.fingerprint_rounded,
+        locale.biometric_generic,
+        locale.biometric_login_subtitle,
+      ),
     };
 
     return Container(

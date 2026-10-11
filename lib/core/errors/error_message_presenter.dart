@@ -74,7 +74,8 @@ class ErrorMessagePresenter {
     final preferredKey = isArabic ? 'messageAr' : 'messageEn';
     final fallbackKey = isArabic ? 'messageEn' : 'messageAr';
 
-    final message = coupon[preferredKey] ??
+    final message =
+        coupon[preferredKey] ??
         coupon[isArabic ? 'message_ar' : 'message_en'] ??
         coupon[fallbackKey] ??
         coupon[isArabic ? 'message_en' : 'message_ar'];

@@ -66,31 +66,28 @@ class _FakeLocationRepo implements AddressLocationRepository {
     String address, {
     String countryCode = 'KW',
   }) async => const ApiSuccessResult(
-        data: MapAddressAutofillEntity(
-          latitude: 29.34,
-          longitude: 48.08,
-          formattedAddress: 'Kuwait City',
-        ),
-      );
+    data: MapAddressAutofillEntity(
+      latitude: 29.34,
+      longitude: 48.08,
+      formattedAddress: 'Kuwait City',
+    ),
+  );
 
   @override
   Future<ApiResult<MapAddressAutofillEntity>> reverseGeocode(
     double latitude,
     double longitude,
   ) async => const ApiSuccessResult(
-        data: MapAddressAutofillEntity(
-          latitude: 29.34,
-          longitude: 48.08,
-          formattedAddress: 'Kuwait City',
-        ),
-      );
+    data: MapAddressAutofillEntity(
+      latitude: 29.34,
+      longitude: 48.08,
+      formattedAddress: 'Kuwait City',
+    ),
+  );
 }
 
 class _CountingMapWidget extends StatelessWidget {
-  const _CountingMapWidget({
-    super.key,
-    required this.onBuild,
-  });
+  const _CountingMapWidget({super.key, required this.onBuild});
 
   final VoidCallback onBuild;
 
@@ -127,7 +124,8 @@ void main() {
       (tester) async {
         final repo = _FakeLocationRepo();
         var previewCallCount = 0;
-        final previewCompleter = Completer<ApiResult<AddressCoveragePreviewEntity>>();
+        final previewCompleter =
+            Completer<ApiResult<AddressCoveragePreviewEntity>>();
 
         final ops = CustomerAddressEditorOperations(
           previewNewAddressCoverage: (req, {page, pageSize}) {
@@ -235,11 +233,15 @@ void main() {
         expect(find.byType(AddressChooseLocationMapView), findsOneWidget);
 
         // State update of coverage loading more or similar doesn't recreate map view
-        final mapViewElement = tester.element(find.byType(AddressChooseLocationMapView));
+        final mapViewElement = tester.element(
+          find.byType(AddressChooseLocationMapView),
+        );
 
         await tester.pump();
 
-        final mapViewElementAfter = tester.element(find.byType(AddressChooseLocationMapView));
+        final mapViewElementAfter = tester.element(
+          find.byType(AddressChooseLocationMapView),
+        );
         expect(identical(mapViewElement, mapViewElementAfter), isTrue);
       },
     );
@@ -284,7 +286,8 @@ void main() {
                   body: Column(
                     children: [
                       ElevatedButton(
-                        onPressed: () => setState(() => currentMember = 'member-2'),
+                        onPressed: () =>
+                            setState(() => currentMember = 'member-2'),
                         child: const Text('Switch'),
                       ),
                       Expanded(

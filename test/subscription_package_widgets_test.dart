@@ -8,27 +8,23 @@ import 'package:meal_meat_user/features/subscription_packages/presentation/widge
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 
 void main() {
-  Widget buildTestWidget({
-    required double width,
-    required Widget child,
-  }) {
+  Widget buildTestWidget({required double width, required Widget child}) {
     return MaterialApp(
       locale: const Locale('ar'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: Center(
-          child: SizedBox(
-            width: width,
-            child: child,
-          ),
+          child: SizedBox(width: width, child: child),
         ),
       ),
     );
   }
 
   group('SubscriptionPackageChoiceCard', () {
-    testWidgets('renders without overflow on narrow 320px screen', (tester) async {
+    testWidgets('renders without overflow on narrow 320px screen', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(320, 568);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -82,14 +78,17 @@ void main() {
   });
 
   group('SubscriptionSelectedProgramCard', () {
-    testWidgets('renders without overflow and displays name and description', (tester) async {
+    testWidgets('renders without overflow and displays name and description', (
+      tester,
+    ) async {
       const program = SubscriptionProgramEntity(
         programId: 'prog-1',
         code: 'PROG_1',
         shortCode: 'P1',
         nameAr: 'برنامج خسارة الوزن المتقدم للرياضيين',
         nameEn: 'Weight Loss Program',
-        descriptionAr: 'برنامج مصمم لمساعدتك على تقليل الدهون وبناء العضلات بطريقة صحية ومستدامة',
+        descriptionAr:
+            'برنامج مصمم لمساعدتك على تقليل الدهون وبناء العضلات بطريقة صحية ومستدامة',
         descriptionEn: 'Designed to help you lose fat and build muscle.',
         imageUrl: 'https://example.com/prog.png',
         keywordsAr: ['صحي'],

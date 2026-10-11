@@ -13,8 +13,10 @@ abstract final class NotificationsMapper {
 
     final totalCount = dto.totalCount ?? validItems.length;
     final page = dto.page ?? 1;
-    final pageSize = dto.pageSize ?? (validItems.isNotEmpty ? validItems.length : 20);
-    final totalPages = dto.totalPages ??
+    final pageSize =
+        dto.pageSize ?? (validItems.isNotEmpty ? validItems.length : 20);
+    final totalPages =
+        dto.totalPages ??
         (totalCount > 0 ? ((totalCount + pageSize - 1) ~/ pageSize) : 1);
     final hasNextPage = dto.hasNextPage ?? (page < totalPages);
     final hasPreviousPage = dto.hasPreviousPage ?? (page > 1);

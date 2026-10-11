@@ -38,9 +38,11 @@ class _FamilyPackageDaysSetupScreenState
     return BlocProvider<FamilyPackageDaysViewModel>(
       create: (_) {
         final vm = getIt<FamilyPackageDaysViewModel>();
-        vm.doIntent(GetFamilySubscriptionCurrentEvent(
-          memberId: FamilyFlowScope.targetMemberIdOf(context),
-        ));
+        vm.doIntent(
+          GetFamilySubscriptionCurrentEvent(
+            memberId: FamilyFlowScope.targetMemberIdOf(context),
+          ),
+        );
         if (widget.programId != null && widget.programId!.isNotEmpty) {
           vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
         } else {
@@ -96,9 +98,11 @@ class _FamilyPackageDaysSetupScreenState
         exception: state.failure!.exception,
         onRetry: () {
           final vm = context.read<FamilyPackageDaysViewModel>();
-          vm.doIntent(GetFamilySubscriptionCurrentEvent(
-            memberId: FamilyFlowScope.targetMemberIdOf(context),
-          ));
+          vm.doIntent(
+            GetFamilySubscriptionCurrentEvent(
+              memberId: FamilyFlowScope.targetMemberIdOf(context),
+            ),
+          );
           if (widget.programId != null && widget.programId!.isNotEmpty) {
             vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
           } else {
@@ -153,8 +157,10 @@ class _FamilyPackageDaysSetupScreenState
           );
       if (!context.mounted) return;
       if (!saved) {
-        final failure =
-            context.read<FamilyPackageDaysViewModel>().state.failure;
+        final failure = context
+            .read<FamilyPackageDaysViewModel>()
+            .state
+            .failure;
         if (failure != null) {
           CustomSnackbar.showError(
             context: context,

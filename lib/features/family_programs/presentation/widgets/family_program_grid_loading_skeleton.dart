@@ -4,10 +4,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
 
 class FamilyProgramGridLoadingSkeleton extends StatelessWidget {
-  const FamilyProgramGridLoadingSkeleton({
-    super.key,
-    this.itemCount = 6,
-  });
+  const FamilyProgramGridLoadingSkeleton({super.key, this.itemCount = 6});
 
   final int itemCount;
 

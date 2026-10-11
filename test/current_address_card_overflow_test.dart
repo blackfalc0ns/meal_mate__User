@@ -78,39 +78,32 @@ void main() {
     },
   );
 
-  testWidgets(
-    'CurrentAddressCard handles long custom label without crashing',
-    (tester) async {
-      tester.view.physicalSize = const Size(375, 667);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets('CurrentAddressCard handles long custom label without crashing', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(375, 667);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
 
-      const longLabelAddress = CustomerAddressEntity(
-        addressId: 'long-id',
-        label: 'منزل العائلة الكبير في منطقة السالمية',
-        addressLine: 'حولي, السالمية, قطعة 3, شارع 2, جادة 2, 2',
-        regionId: 'reg-id',
-        latitude: 29.340746,
-        longitude: 48.083898,
-        isDefault: false,
-        notifyOnDelivery: true,
-        isDeliveryActive: false,
-      );
+    const longLabelAddress = CustomerAddressEntity(
+      addressId: 'long-id',
+      label: 'منزل العائلة الكبير في منطقة السالمية',
+      addressLine: 'حولي, السالمية, قطعة 3, شارع 2, جادة 2, 2',
+      regionId: 'reg-id',
+      latitude: 29.340746,
+      longitude: 48.083898,
+      isDefault: false,
+      notifyOnDelivery: true,
+      isDeliveryActive: false,
+    );
 
-      await tester.pumpWidget(
-        createWidget(
-          screenSize: const Size(375, 667),
-          address: longLabelAddress,
-        ),
-      );
-      await tester.pumpAndSettle();
+    await tester.pumpWidget(
+      createWidget(screenSize: const Size(375, 667), address: longLabelAddress),
+    );
+    await tester.pumpAndSettle();
 
-      expect(tester.takeException(), isNull);
-      expect(
-        find.text('منزل العائلة الكبير في منطقة السالمية'),
-        findsOneWidget,
-      );
-    },
-  );
+    expect(tester.takeException(), isNull);
+    expect(find.text('منزل العائلة الكبير في منطقة السالمية'), findsOneWidget);
+  });
 }

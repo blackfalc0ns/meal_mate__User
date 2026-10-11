@@ -30,69 +30,69 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
       start: Spacing.monthlyPlanContentHorizontalPadding,
       end: Spacing.monthlyPlanContentHorizontalPadding,
       bottom: Spacing.monthlyPlanContentHorizontalPadding,
-      child: BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
-        buildWhen: (previous, current) =>
-            previous.isLoading != current.isLoading ||
-            previous.isApplyingCoupon != current.isApplyingCoupon ||
-            previous.summary != current.summary ||
-            previous.activeRequest != current.activeRequest ||
-            previous.selectedStartDate != current.selectedStartDate,
-        builder: (context, state) {
-          final summary = state.summary;
-          final hasSummary = summary != null;
-          final currentStartDate = state.selectedStartDate.trim().isNotEmpty
-              ? state.selectedStartDate.trim()
-              : (summaryArgs.request.startDate.trim().isNotEmpty
-                  ? summaryArgs.request.startDate.trim()
-                  : initialStartDate);
+      child:
+          BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
+            buildWhen: (previous, current) =>
+                previous.isLoading != current.isLoading ||
+                previous.isApplyingCoupon != current.isApplyingCoupon ||
+                previous.summary != current.summary ||
+                previous.activeRequest != current.activeRequest ||
+                previous.selectedStartDate != current.selectedStartDate,
+            builder: (context, state) {
+              final summary = state.summary;
+              final hasSummary = summary != null;
+              final currentStartDate = state.selectedStartDate.trim().isNotEmpty
+                  ? state.selectedStartDate.trim()
+                  : (summaryArgs.request.startDate.trim().isNotEmpty
+                        ? summaryArgs.request.startDate.trim()
+                        : initialStartDate);
 
-          final activeRequest = state.activeRequest ??
-              summaryArgs.request.copyWith(
-                startDate: currentStartDate,
-              );
+              final activeRequest =
+                  state.activeRequest ??
+                  summaryArgs.request.copyWith(startDate: currentStartDate);
 
-          if (state.isLoading && !hasSummary) {
-            return const SubscriptionSummaryButtonLoadingSkeleton();
-          }
+              if (state.isLoading && !hasSummary) {
+                return const SubscriptionSummaryButtonLoadingSkeleton();
+              }
 
-          final canProceed = hasSummary && state.canCheckout;
+              final canProceed = hasSummary && state.canCheckout;
 
-          return AppSubscriptionButton(
-            price: hasSummary ? summary.finalPrice.formattedPrice : '',
-            currency: hasSummary ? summary.currencyCode : '',
-            onPressed: canProceed
-                ? () async {
-                    final result = await context.pushNamed(
-                      AppRoutes.payment,
-                      arguments: PaymentArgs(
-                        summary: summary,
-                        summaryRequest: activeRequest,
-                        restaurantId:
-                            summary.firstRestaurantId ??
-                            summaryArgs.restaurantId,
-                      ),
-                    );
-                    if (result is String &&
-                        result.isNotEmpty &&
-                        context.mounted) {
-                      CustomSnackbar.showError(
-                        context: context,
-                        message: result,
-                      );
-                    }
-                  }
-                : null,
-          )
-              .animate()
-              .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-              .slideY(
-                begin: 0.15,
-                end: 0,
-                duration: 350.ms,
-                curve: Curves.easeOutCubic,
-              );
-        },
-      ),
+              return AppSubscriptionButton(
+                    price: hasSummary ? summary.finalPrice.formattedPrice : '',
+                    currency: hasSummary ? summary.currencyCode : '',
+                    onPressed: canProceed
+                        ? () async {
+                            final result = await context.pushNamed(
+                              AppRoutes.payment,
+                              arguments: PaymentArgs(
+                                summary: summary,
+                                summaryRequest: activeRequest,
+                                restaurantId:
+                                    summary.firstRestaurantId ??
+                                    summaryArgs.restaurantId,
+                              ),
+                            );
+                            if (result is String &&
+                                result.isNotEmpty &&
+                                context.mounted) {
+                              CustomSnackbar.showError(
+                                context: context,
+                                message: result,
+                              );
+                            }
+                          }
+                        : null,
+                  )
+                  .animate()
+                  .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                  .slideY(
+                    begin: 0.15,
+                    end: 0,
+                    duration: 350.ms,
+                    curve: Curves.easeOutCubic,
+                  );
+            },
+          ),
     );
   }
 }

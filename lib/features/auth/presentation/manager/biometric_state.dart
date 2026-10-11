@@ -26,10 +26,10 @@ class BiometricState {
   final BiometricAuthStatus? authStatus;
 
   IconData get biometricIcon => switch (biometricType) {
-        BiometricTypeEnum.face => Icons.face_rounded,
-        BiometricTypeEnum.fingerprint => Icons.fingerprint_rounded,
-        _ => Icons.fingerprint_rounded,
-      };
+    BiometricTypeEnum.face => Icons.face_rounded,
+    BiometricTypeEnum.fingerprint => Icons.fingerprint_rounded,
+    _ => Icons.fingerprint_rounded,
+  };
 
   String getBiometricButtonText(AppLocalizations l10n) =>
       switch (biometricType) {

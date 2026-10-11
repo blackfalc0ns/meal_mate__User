@@ -102,10 +102,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
     secureStorage = _FakeSecureStorage();
-    tokenService = TokenService(
-      prefs: secureStorage,
-      sharedPreferences: prefs,
-    );
+    tokenService = TokenService(prefs: secureStorage, sharedPreferences: prefs);
     fakeUseCase = _FakeRefreshTokenUseCase();
     refreshService = AuthRefreshService(
       tokenService: tokenService,
@@ -124,63 +121,71 @@ void main() {
   });
 
   group('AuthRefreshService - Single-flight refresh', () {
-    test('concurrent refresh calls result in exactly ONE network call', () async {
-      fakeUseCase.completer = Completer<ApiResult<RefreshTokenEntity>>();
+    test(
+      'concurrent refresh calls result in exactly ONE network call',
+      () async {
+        fakeUseCase.completer = Completer<ApiResult<RefreshTokenEntity>>();
 
-      final call1 = refreshService.refreshSession();
-      final call2 = refreshService.refreshSession();
-      final call3 = refreshService.refreshSession();
+        final call1 = refreshService.refreshSession();
+        final call2 = refreshService.refreshSession();
+        final call3 = refreshService.refreshSession();
 
-      await Future<void>.delayed(Duration.zero);
-      expect(fakeUseCase.callCount, 1);
+        await Future<void>.delayed(Duration.zero);
+        expect(fakeUseCase.callCount, 1);
 
-      fakeUseCase.completer!.complete(
-        const ApiSuccessResult(
-          data: RefreshTokenEntity(
-            userId: 'user_1',
-            email: 'test@example.com',
-            phoneNumber: '12345678',
-            fullName: 'User One',
-            userType: 'customer',
-            accountStatus: 'active',
-            restaurantId: null,
-            roles: [],
-            permissions: [],
-            accessToken: 'new_access',
-            accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
-            refreshToken: 'new_refresh',
-            refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
-            nextStep: null,
+        fakeUseCase.completer!.complete(
+          const ApiSuccessResult(
+            data: RefreshTokenEntity(
+              userId: 'user_1',
+              email: 'test@example.com',
+              phoneNumber: '12345678',
+              fullName: 'User One',
+              userType: 'customer',
+              accountStatus: 'active',
+              restaurantId: null,
+              roles: [],
+              permissions: [],
+              accessToken: 'new_access',
+              accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
+              refreshToken: 'new_refresh',
+              refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
+              nextStep: null,
+            ),
           ),
-        ),
-      );
+        );
 
-      final results = await Future.wait<ApiResult<RefreshTokenEntity>>(
-        [call1, call2, call3],
-      );
-      expect(fakeUseCase.callCount, 1);
-      for (final r in results) {
-        expect(r, isA<ApiSuccessResult<RefreshTokenEntity>>());
-      }
-    });
+        final results = await Future.wait<ApiResult<RefreshTokenEntity>>([
+          call1,
+          call2,
+          call3,
+        ]);
+        expect(fakeUseCase.callCount, 1);
+        for (final r in results) {
+          expect(r, isA<ApiSuccessResult<RefreshTokenEntity>>());
+        }
+      },
+    );
 
-    test('transient network failure retains tokens and does not clear session', () async {
-      fakeUseCase.cannedResult = ApiErrorResult(
-        failure: Failure.fromException(
-          const ApiException(
-            errorType: ApiErrorType.noInternetConnection,
-            message: 'No internet',
+    test(
+      'transient network failure retains tokens and does not clear session',
+      () async {
+        fakeUseCase.cannedResult = ApiErrorResult(
+          failure: Failure.fromException(
+            const ApiException(
+              errorType: ApiErrorType.noInternetConnection,
+              message: 'No internet',
+            ),
           ),
-        ),
-      );
+        );
 
-      final result = await refreshService.refreshSession();
+        final result = await refreshService.refreshSession();
 
-      expect(result, isA<ApiErrorResult>());
-      expect(await tokenService.getToken(), 'old_access');
-      expect(await tokenService.getRefreshToken(), 'old_refresh');
-      expect(await tokenService.isRememberedSession(), isTrue);
-    });
+        expect(result, isA<ApiErrorResult>());
+        expect(await tokenService.getToken(), 'old_access');
+        expect(await tokenService.getRefreshToken(), 'old_refresh');
+        expect(await tokenService.isRememberedSession(), isTrue);
+      },
+    );
 
     test('permanent 401 rejection clears session tokens once', () async {
       fakeUseCase.cannedResult = ApiErrorResult(
@@ -201,42 +206,45 @@ void main() {
       expect(await tokenService.isRememberedSession(), isFalse);
     });
 
-    test('logout during in-flight refresh discards result and does not commit tokens', () async {
-      fakeUseCase.completer = Completer<ApiResult<RefreshTokenEntity>>();
+    test(
+      'logout during in-flight refresh discards result and does not commit tokens',
+      () async {
+        fakeUseCase.completer = Completer<ApiResult<RefreshTokenEntity>>();
 
-      final refreshFuture = refreshService.refreshSession();
-      await Future<void>.delayed(Duration.zero);
-      expect(fakeUseCase.callCount, 1);
+        final refreshFuture = refreshService.refreshSession();
+        await Future<void>.delayed(Duration.zero);
+        expect(fakeUseCase.callCount, 1);
 
-      // User performs logout while refresh is in flight
-      await tokenService.clearSession();
+        // User performs logout while refresh is in flight
+        await tokenService.clearSession();
 
-      // Refresh completes afterwards
-      fakeUseCase.completer!.complete(
-        const ApiSuccessResult(
-          data: RefreshTokenEntity(
-            userId: 'user_1',
-            email: 'test@example.com',
-            phoneNumber: '12345678',
-            fullName: 'User One',
-            userType: 'customer',
-            accountStatus: 'active',
-            restaurantId: null,
-            roles: [],
-            permissions: [],
-            accessToken: 'stale_access',
-            accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
-            refreshToken: 'stale_refresh',
-            refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
-            nextStep: null,
+        // Refresh completes afterwards
+        fakeUseCase.completer!.complete(
+          const ApiSuccessResult(
+            data: RefreshTokenEntity(
+              userId: 'user_1',
+              email: 'test@example.com',
+              phoneNumber: '12345678',
+              fullName: 'User One',
+              userType: 'customer',
+              accountStatus: 'active',
+              restaurantId: null,
+              roles: [],
+              permissions: [],
+              accessToken: 'stale_access',
+              accessTokenExpiresAtUtc: '2026-12-01T10:00:00.000Z',
+              refreshToken: 'stale_refresh',
+              refreshTokenExpiresAtUtc: '2026-12-15T10:00:00.000Z',
+              nextStep: null,
+            ),
           ),
-        ),
-      );
+        );
 
-      final result = await refreshFuture;
-      expect(result, isA<ApiErrorResult>());
-      expect(await tokenService.getToken(), isNull);
-      expect(await tokenService.getRefreshToken(), isNull);
-    });
+        final result = await refreshFuture;
+        expect(result, isA<ApiErrorResult>());
+        expect(await tokenService.getToken(), isNull);
+        expect(await tokenService.getRefreshToken(), isNull);
+      },
+    );
   });
 }

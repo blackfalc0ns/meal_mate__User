@@ -11,7 +11,6 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/entities/su
 export 'subscription_plan_state_mapper.dart';
 export 'subscription_tier_design.dart';
 
-
 class SubscriptionPlanState {
   const SubscriptionPlanState({
     this.isDurationsLoading = false,
@@ -75,7 +74,6 @@ class SubscriptionPlanState {
   final Failure? browseRestaurantsLoadMoreFailure;
   final Failure? readinessFailure;
 
-
   bool get hasFridayUnavailableFailure =>
       failure?.code == 'subscription_flow.friday_unavailable';
 
@@ -92,7 +90,6 @@ class SubscriptionPlanState {
       supportsAurora: false,
     );
   }
-
 
   SubscriptionDurationEntity? get selectedDuration {
     final index = selectedDurationIndex;
@@ -272,7 +269,8 @@ class SubscriptionPlanState {
           : browseRestaurantsFailure ?? this.browseRestaurantsFailure,
       browseRestaurantsLoadMoreFailure: clearBrowseRestaurantsLoadMoreFailure
           ? null
-          : browseRestaurantsLoadMoreFailure ?? this.browseRestaurantsLoadMoreFailure,
+          : browseRestaurantsLoadMoreFailure ??
+                this.browseRestaurantsLoadMoreFailure,
       readinessFailure: clearReadinessFailure
           ? null
           : readinessFailure ?? this.readinessFailure,
@@ -287,7 +285,8 @@ class SubscriptionPlanState {
         other.isDurationsLoading == isDurationsLoading &&
         other.isTiersLoading == isTiersLoading &&
         other.isBrowseRestaurantsLoading == isBrowseRestaurantsLoading &&
-        other.isBrowseRestaurantsLoadingMore == isBrowseRestaurantsLoadingMore &&
+        other.isBrowseRestaurantsLoadingMore ==
+            isBrowseRestaurantsLoadingMore &&
         other.isReadinessLoading == isReadinessLoading &&
         other.isSuccess == isSuccess &&
         other.includeFriday == includeFriday &&
@@ -308,7 +307,8 @@ class SubscriptionPlanState {
         other.readiness == readiness &&
         other.failure == failure &&
         other.browseRestaurantsFailure == browseRestaurantsFailure &&
-        other.browseRestaurantsLoadMoreFailure == browseRestaurantsLoadMoreFailure &&
+        other.browseRestaurantsLoadMoreFailure ==
+            browseRestaurantsLoadMoreFailure &&
         other.readinessFailure == readinessFailure &&
         listEquals(other.durations, durations) &&
         listEquals(other.tiers, tiers) &&
@@ -317,34 +317,34 @@ class SubscriptionPlanState {
 
   @override
   int get hashCode => Object.hashAll([
-        isDurationsLoading,
-        isTiersLoading,
-        isBrowseRestaurantsLoading,
-        isBrowseRestaurantsLoadingMore,
-        isReadinessLoading,
-        isSuccess,
-        includeFriday,
-        selectedDurationIndex,
-        selectedTierIndex,
-        selectedStartDate,
-        customDurationDays,
-        browsedTierIndex,
-        browseRestaurantsPagination,
-        browseAvailability,
-        browseTotalCount,
-        browsingProgramId,
-        browsingBundleId,
-        browsingTier,
-        browsingDurationDays,
-        browsingStartDate,
-        browsingIncludeFriday,
-        readiness,
-        failure,
-        browseRestaurantsFailure,
-        browseRestaurantsLoadMoreFailure,
-        readinessFailure,
-        Object.hashAll(durations),
-        Object.hashAll(tiers),
-        Object.hashAll(browseRestaurants),
-      ]);
+    isDurationsLoading,
+    isTiersLoading,
+    isBrowseRestaurantsLoading,
+    isBrowseRestaurantsLoadingMore,
+    isReadinessLoading,
+    isSuccess,
+    includeFriday,
+    selectedDurationIndex,
+    selectedTierIndex,
+    selectedStartDate,
+    customDurationDays,
+    browsedTierIndex,
+    browseRestaurantsPagination,
+    browseAvailability,
+    browseTotalCount,
+    browsingProgramId,
+    browsingBundleId,
+    browsingTier,
+    browsingDurationDays,
+    browsingStartDate,
+    browsingIncludeFriday,
+    readiness,
+    failure,
+    browseRestaurantsFailure,
+    browseRestaurantsLoadMoreFailure,
+    readinessFailure,
+    Object.hashAll(durations),
+    Object.hashAll(tiers),
+    Object.hashAll(browseRestaurants),
+  ]);
 }

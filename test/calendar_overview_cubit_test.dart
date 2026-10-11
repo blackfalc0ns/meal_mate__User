@@ -62,7 +62,8 @@ class _ControllableProfileRepo implements SubscriptionBillingRepository {
   @override
   Future<ApiResult<SubscriptionBillingCurrentEntity>>
   getCurrentCustomerSubscription() {
-    currentSubCompleter = Completer<ApiResult<SubscriptionBillingCurrentEntity>>();
+    currentSubCompleter =
+        Completer<ApiResult<SubscriptionBillingCurrentEntity>>();
     return currentSubCompleter!.future;
   }
 

@@ -38,18 +38,13 @@ class SubscriptionDurationResponseDto {
   final SubscriptionFridayOptionResponseDto? fridayOption;
   final SubscriptionFridayAvailabilityResponseDto? fridayAvailability;
 
-  factory SubscriptionDurationResponseDto.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SubscriptionDurationResponseDtoFromJson(json);
+  factory SubscriptionDurationResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionDurationResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
 class SubscriptionPlanBadgeResponseDto {
-  const SubscriptionPlanBadgeResponseDto({
-    this.code,
-    this.nameAr,
-    this.nameEn,
-  });
+  const SubscriptionPlanBadgeResponseDto({this.code, this.nameAr, this.nameEn});
 
   final String? code;
   final String? nameAr;

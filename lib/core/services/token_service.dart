@@ -11,8 +11,8 @@ class TokenService {
   TokenService({
     required FlutterSecureStorage prefs,
     required SharedPreferences sharedPreferences,
-  })  : _prefs = prefs,
-        _sharedPreferences = sharedPreferences;
+  }) : _prefs = prefs,
+       _sharedPreferences = sharedPreferences;
 
   final FlutterSecureStorage _prefs;
   final SharedPreferences _sharedPreferences;
@@ -136,15 +136,17 @@ class TokenService {
   }
 
   DateTime? getAccessExpiresAtUtc() {
-    final raw =
-        _sharedPreferences.getString(AppConstants.accessExpiresAtUtcKey);
+    final raw = _sharedPreferences.getString(
+      AppConstants.accessExpiresAtUtcKey,
+    );
     if (raw == null || raw.trim().isEmpty) return null;
     return DateTime.tryParse(raw)?.toUtc();
   }
 
   DateTime? getRefreshExpiresAtUtc() {
-    final raw =
-        _sharedPreferences.getString(AppConstants.refreshExpiresAtUtcKey);
+    final raw = _sharedPreferences.getString(
+      AppConstants.refreshExpiresAtUtcKey,
+    );
     if (raw == null || raw.trim().isEmpty) return null;
     return DateTime.tryParse(raw)?.toUtc();
   }

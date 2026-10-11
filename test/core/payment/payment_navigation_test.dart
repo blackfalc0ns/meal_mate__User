@@ -21,14 +21,8 @@ void main() {
     });
 
     test('rejects javascript, data, file schemes', () {
-      expect(
-        isValidInitialPaymentUrl('javascript:alert(1)'),
-        isFalse,
-      );
-      expect(
-        isValidInitialPaymentUrl('data:text/html,<html></html>'),
-        isFalse,
-      );
+      expect(isValidInitialPaymentUrl('javascript:alert(1)'), isFalse);
+      expect(isValidInitialPaymentUrl('data:text/html,<html></html>'), isFalse);
       expect(isValidInitialPaymentUrl('file:///etc/passwd'), isFalse);
     });
 
@@ -58,40 +52,55 @@ void main() {
       );
       final result = handlePaymentNavigation(uri);
       expect(result.decision, NavigationDecision.prevent);
-      expect(result.paymentReturn?.destination, PaymentReturnDestination.success);
+      expect(
+        result.paymentReturn?.destination,
+        PaymentReturnDestination.success,
+      );
       expect(result.paymentReturn?.paymentId, 'pz-track-abc');
     });
 
-    test('valid review return prevents navigation and emits review destination', () {
-      final uri = Uri.parse(
-        'mealmate://checkout/review?paymentId=pz-track-abc',
-      );
-      final result = handlePaymentNavigation(uri);
-      expect(result.decision, NavigationDecision.prevent);
-      expect(result.paymentReturn?.destination, PaymentReturnDestination.review);
-      expect(result.paymentReturn?.paymentId, 'pz-track-abc');
-    });
+    test(
+      'valid review return prevents navigation and emits review destination',
+      () {
+        final uri = Uri.parse(
+          'mealmate://checkout/review?paymentId=pz-track-abc',
+        );
+        final result = handlePaymentNavigation(uri);
+        expect(result.decision, NavigationDecision.prevent);
+        expect(
+          result.paymentReturn?.destination,
+          PaymentReturnDestination.review,
+        );
+        expect(result.paymentReturn?.paymentId, 'pz-track-abc');
+      },
+    );
 
-    test('unrelated custom schemes prevent navigation without emitting payment return', () {
-      final intentUri = Uri.parse('intent://scan/#Intent;scheme=zxing;end');
-      final intentResult = handlePaymentNavigation(intentUri);
-      expect(intentResult.decision, NavigationDecision.prevent);
-      expect(intentResult.paymentReturn, isNull);
+    test(
+      'unrelated custom schemes prevent navigation without emitting payment return',
+      () {
+        final intentUri = Uri.parse('intent://scan/#Intent;scheme=zxing;end');
+        final intentResult = handlePaymentNavigation(intentUri);
+        expect(intentResult.decision, NavigationDecision.prevent);
+        expect(intentResult.paymentReturn, isNull);
 
-      final telUri = Uri.parse('tel:+123456789');
-      final telResult = handlePaymentNavigation(telUri);
-      expect(telResult.decision, NavigationDecision.prevent);
-      expect(telResult.paymentReturn, isNull);
-    });
+        final telUri = Uri.parse('tel:+123456789');
+        final telResult = handlePaymentNavigation(telUri);
+        expect(telResult.decision, NavigationDecision.prevent);
+        expect(telResult.paymentReturn, isNull);
+      },
+    );
 
-    test('invalid mealmate scheme link prevents navigation without emitting return', () {
-      final attackerUri = Uri.parse(
-        'mealmate://attacker/success?paymentId=pz-123',
-      );
-      final result = handlePaymentNavigation(attackerUri);
-      expect(result.decision, NavigationDecision.prevent);
-      expect(result.paymentReturn, isNull);
-    });
+    test(
+      'invalid mealmate scheme link prevents navigation without emitting return',
+      () {
+        final attackerUri = Uri.parse(
+          'mealmate://attacker/success?paymentId=pz-123',
+        );
+        final result = handlePaymentNavigation(attackerUri);
+        expect(result.decision, NavigationDecision.prevent);
+        expect(result.paymentReturn, isNull);
+      },
+    );
 
     test('legacy /api/v1/payments/myfatoorah is not intercepted as success', () {
       final legacyUri = Uri.parse(

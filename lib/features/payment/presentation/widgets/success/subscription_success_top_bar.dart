@@ -3,7 +3,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/shared/widgets/app_logo.dart';
 
-
 /// Top bar implementing PreferredSizeWidget as an AppBar with leading NotificationButton, centered AppLogo, and trailing close button.
 class SubscriptionSuccessTopBar extends StatelessWidget
     implements PreferredSizeWidget {

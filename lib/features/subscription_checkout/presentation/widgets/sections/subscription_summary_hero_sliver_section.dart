@@ -36,10 +36,9 @@ class SubscriptionSummaryHeroSliverSection extends StatelessWidget {
         final titleHighlight = hasSummary
             ? summary.bundleName(locale.localeName)
             : summaryArgs.initialPlan.titleHighlight;
-        final heroImageAsset =
-            summaryArgs.initialPlan.heroImageAsset.isNotEmpty
-                ? summaryArgs.initialPlan.heroImageAsset
-                : Assets.monthlyPlanHero;
+        final heroImageAsset = summaryArgs.initialPlan.heroImageAsset.isNotEmpty
+            ? summaryArgs.initialPlan.heroImageAsset
+            : Assets.monthlyPlanHero;
 
         return SliverToBoxAdapter(
           child: MonthlyPlanHeroSection(

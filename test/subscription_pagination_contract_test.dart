@@ -57,14 +57,17 @@ void main() {
           {
             'restaurantId': '7ccfc18b-8f31-43c2-8bbf-ca61ee7c95ec',
             'nameAr': '[تجربة] جرين بول',
-            'logoUrl': 'https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/logo-green-bowl.png',
+            'logoUrl':
+                'https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/logo-green-bowl.png',
             'rating': null,
             'mealCount': 4,
             'bundleMealCount': 0,
             'tier': 'Basic',
             'tierNameAr': 'أساسي',
             'tierLogoUrl': null,
-            'classifications': [{'logoUrl': null, 'tier': 'Basic'}],
+            'classifications': [
+              {'logoUrl': null, 'tier': 'Basic'},
+            ],
             'name': '[تجربة] جرين بول',
             'tierName': 'أساسي',
           },
@@ -87,7 +90,10 @@ void main() {
       );
 
       expect(response.items?.length, 1);
-      expect(response.items?.first.restaurantId, '7ccfc18b-8f31-43c2-8bbf-ca61ee7c95ec');
+      expect(
+        response.items?.first.restaurantId,
+        '7ccfc18b-8f31-43c2-8bbf-ca61ee7c95ec',
+      );
       expect(response.items?.first.nameAr, '[تجربة] جرين بول');
       expect(response.totalCount, 3);
       expect(response.page, 1);
@@ -159,118 +165,163 @@ void main() {
       },
     );
 
-    test('getSubscriptionProgramBundles with pagination sends page & pageSize and parses wrapper', () async {
-      adapter.mockResponse = {
-        'hasDeliveryAddress': true,
-        'hasAllergies': false,
-        'hasDietaryPreferences': true,
-        'isProfileComplete': true,
-        'bundles': [
-          {'bundleId': 'b1', 'programId': 'p1', 'code': 'B1'}
-        ],
-        'pagination': {
-          'totalCount': 6,
-          'page': 1,
-          'pageSize': 2,
-          'totalPages': 3,
-          'hasNextPage': true,
-          'hasPreviousPage': false,
-        }
-      };
+    test(
+      'getSubscriptionProgramBundles with pagination sends page & pageSize and parses wrapper',
+      () async {
+        adapter.mockResponse = {
+          'hasDeliveryAddress': true,
+          'hasAllergies': false,
+          'hasDietaryPreferences': true,
+          'isProfileComplete': true,
+          'bundles': [
+            {'bundleId': 'b1', 'programId': 'p1', 'code': 'B1'},
+          ],
+          'pagination': {
+            'totalCount': 6,
+            'page': 1,
+            'pageSize': 2,
+            'totalPages': 3,
+            'hasNextPage': true,
+            'hasPreviousPage': false,
+          },
+        };
 
-      final response = await apiServices.getSubscriptionProgramBundles('p1', page: 1, pageSize: 2);
+        final response = await apiServices.getSubscriptionProgramBundles(
+          'p1',
+          page: 1,
+          pageSize: 2,
+        );
 
-      expect(adapter.requestedUri.path, '/api/v1/customer/subscription-flow/programs/p1/bundles');
-      expect(adapter.requestedUri.queryParameters['page'], '1');
-      expect(adapter.requestedUri.queryParameters['pageSize'], '2');
-      expect(response.hasDeliveryAddress, isTrue);
-      expect(response.bundles?.length, 1);
-      expect(response.pagination?.totalCount, 6);
-      expect(response.pagination?.hasNextPage, isTrue);
+        expect(
+          adapter.requestedUri.path,
+          '/api/v1/customer/subscription-flow/programs/p1/bundles',
+        );
+        expect(adapter.requestedUri.queryParameters['page'], '1');
+        expect(adapter.requestedUri.queryParameters['pageSize'], '2');
+        expect(response.hasDeliveryAddress, isTrue);
+        expect(response.bundles?.length, 1);
+        expect(response.pagination?.totalCount, 6);
+        expect(response.pagination?.hasNextPage, isTrue);
 
-      final paginationEntity = response.pagination.toEntityOrNull();
-      expect(paginationEntity?.totalPages, 3);
-      expect(paginationEntity?.hasNextPage, isTrue);
-    });
+        final paginationEntity = response.pagination.toEntityOrNull();
+        expect(paginationEntity?.totalPages, 3);
+        expect(paginationEntity?.hasNextPage, isTrue);
+      },
+    );
 
-    test('legacy getSubscriptionProgramBundles without pagination omits query and handles null pagination', () async {
-      adapter.mockResponse = {
-        'hasDeliveryAddress': true,
-        'hasAllergies': true,
-        'hasDietaryPreferences': true,
-        'isProfileComplete': true,
-        'bundles': [
-          {'bundleId': 'b1', 'programId': 'p1', 'code': 'B1'}
-        ],
-      };
+    test(
+      'legacy getSubscriptionProgramBundles without pagination omits query and handles null pagination',
+      () async {
+        adapter.mockResponse = {
+          'hasDeliveryAddress': true,
+          'hasAllergies': true,
+          'hasDietaryPreferences': true,
+          'isProfileComplete': true,
+          'bundles': [
+            {'bundleId': 'b1', 'programId': 'p1', 'code': 'B1'},
+          ],
+        };
 
-      final response = await apiServices.getSubscriptionProgramBundles('p1');
+        final response = await apiServices.getSubscriptionProgramBundles('p1');
 
-      expect(adapter.requestedUri.queryParameters.containsKey('page'), isFalse);
-      expect(adapter.requestedUri.queryParameters.containsKey('pageSize'), isFalse);
-      expect(response.pagination, isNull);
-      expect(response.pagination.toEntityOrNull(), isNull);
-    });
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('page'),
+          isFalse,
+        );
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('pageSize'),
+          isFalse,
+        );
+        expect(response.pagination, isNull);
+        expect(response.pagination.toEntityOrNull(), isNull);
+      },
+    );
 
-    test('getSubscriptionTierRestaurantsPage sends required page and pageSize', () async {
-      adapter.mockResponse = [
-        {'restaurantId': 'r1', 'nameAr': 'مطعم أ'}
-      ];
+    test(
+      'getSubscriptionTierRestaurantsPage sends required page and pageSize',
+      () async {
+        adapter.mockResponse = [
+          {'restaurantId': 'r1', 'nameAr': 'مطعم أ'},
+        ];
 
-      final response = await apiServices.getSubscriptionTierRestaurants(
-        'p1',
-        'b1',
-        'Platinum',
-        null,
-        page: 2,
-        pageSize: 5,
-      );
+        final response = await apiServices.getSubscriptionTierRestaurants(
+          'p1',
+          'b1',
+          'Platinum',
+          null,
+          page: 2,
+          pageSize: 5,
+        );
 
-      expect(adapter.requestedUri.path, '/api/v1/customer/subscription-flow/programs/p1/bundles/b1/tiers/Platinum/restaurants');
-      expect(adapter.requestedUri.queryParameters['page'], '2');
-      expect(adapter.requestedUri.queryParameters['pageSize'], '5');
-      expect(response.first.restaurantId, 'r1');
-      expect(response.length, 1);
-    });
+        expect(
+          adapter.requestedUri.path,
+          '/api/v1/customer/subscription-flow/programs/p1/bundles/b1/tiers/Platinum/restaurants',
+        );
+        expect(adapter.requestedUri.queryParameters['page'], '2');
+        expect(adapter.requestedUri.queryParameters['pageSize'], '5');
+        expect(response.first.restaurantId, 'r1');
+        expect(response.length, 1);
+      },
+    );
 
-    test('legacy getSubscriptionTierRestaurants can be called without page/pageSize', () async {
-      adapter.mockResponse = [
-        {'restaurantId': 'r1', 'nameAr': 'مطعم أ'}
-      ];
+    test(
+      'legacy getSubscriptionTierRestaurants can be called without page/pageSize',
+      () async {
+        adapter.mockResponse = [
+          {'restaurantId': 'r1', 'nameAr': 'مطعم أ'},
+        ];
 
-      final response = await apiServices.getSubscriptionTierRestaurants('p1', 'b1', 'Platinum', null);
+        final response = await apiServices.getSubscriptionTierRestaurants(
+          'p1',
+          'b1',
+          'Platinum',
+          null,
+        );
 
-      expect(adapter.requestedUri.queryParameters.containsKey('page'), isFalse);
-      expect(adapter.requestedUri.queryParameters.containsKey('pageSize'), isFalse);
-      expect(response.length, 1);
-    });
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('page'),
+          isFalse,
+        );
+        expect(
+          adapter.requestedUri.queryParameters.containsKey('pageSize'),
+          isFalse,
+        );
+        expect(response.length, 1);
+      },
+    );
 
-    test('getSubscriptionSummary sends restaurantsPage, restaurantsPageSize, and promoCode when provided', () async {
-      adapter.mockResponse = {
-        'programId': 'p1',
-        'bundleId': 'b1',
-        'tier': 'Basic',
-        'durationDays': 26,
-        'startDate': '2026-10-01',
-        'finalPrice': 90.0,
-      };
+    test(
+      'getSubscriptionSummary sends restaurantsPage, restaurantsPageSize, and promoCode when provided',
+      () async {
+        adapter.mockResponse = {
+          'programId': 'p1',
+          'bundleId': 'b1',
+          'tier': 'Basic',
+          'durationDays': 26,
+          'startDate': '2026-10-01',
+          'finalPrice': 90.0,
+        };
 
-      await apiServices.getSubscriptionSummary(
-        true,
-        26,
-        'Basic',
-        'b1',
-        'p1',
-        '2026-10-01',
-        restaurantsPage: 2,
-        restaurantsPageSize: 10,
-        promoCode: 'SAVE20',
-      );
+        await apiServices.getSubscriptionSummary(
+          true,
+          26,
+          'Basic',
+          'b1',
+          'p1',
+          '2026-10-01',
+          restaurantsPage: 2,
+          restaurantsPageSize: 10,
+          promoCode: 'SAVE20',
+        );
 
-      expect(adapter.requestedUri.queryParameters['restaurantsPage'], '2');
-      expect(adapter.requestedUri.queryParameters['restaurantsPageSize'], '10');
-      expect(adapter.requestedUri.queryParameters['promoCode'], 'SAVE20');
-    });
+        expect(adapter.requestedUri.queryParameters['restaurantsPage'], '2');
+        expect(
+          adapter.requestedUri.queryParameters['restaurantsPageSize'],
+          '10',
+        );
+        expect(adapter.requestedUri.queryParameters['promoCode'], 'SAVE20');
+      },
+    );
 
     test('PaginationResponseDtoMapper handles nulls and defaults safely', () {
       const dto = PaginationResponseDto();

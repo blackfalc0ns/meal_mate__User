@@ -32,7 +32,9 @@ class _FakeVerifyPhoneUseCase extends Fake implements VerifyPhoneUseCase {
   ApiResult<VerifyPhoneEntity>? stubbedResult;
 
   @override
-  Future<ApiResult<VerifyPhoneEntity>> call(VerifyPhoneRequestEntity request) async {
+  Future<ApiResult<VerifyPhoneEntity>> call(
+    VerifyPhoneRequestEntity request,
+  ) async {
     callCount++;
     lastRequest = request;
     return stubbedResult!;
@@ -45,7 +47,9 @@ class _FakeResendPhoneOtpUseCase extends Fake implements ResendPhoneOtpUseCase {
   ApiResult<ResendPhoneOtpEntity>? stubbedResult;
 
   @override
-  Future<ApiResult<ResendPhoneOtpEntity>> call(ResendPhoneOtpRequestEntity request) async {
+  Future<ApiResult<ResendPhoneOtpEntity>> call(
+    ResendPhoneOtpRequestEntity request,
+  ) async {
     callCount++;
     lastRequest = request;
     return stubbedResult!;
@@ -92,151 +96,227 @@ void main() {
     await viewModel.close();
   });
 
-  test('SubmitRegisterEvent stores snapshot and emits registrationSuccess when otpSent is true', () async {
-    const request = RegisterRequestEntity(
-      fullName: 'Ahmad User',
-      phone: '+96512345678',
-      password: 'secretPassword123',
-      countryCode: 'KW',
-    );
-    const registerEntity = RegisterEntity(
-      userId: 'user-123',
-      phone: '+96512345678',
-      otpSent: true,
-      nextStep: 'verifyPhone',
-    );
-    fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(data: registerEntity);
+  test(
+    'SubmitRegisterEvent stores snapshot and emits registrationSuccess when otpSent is true',
+    () async {
+      const request = RegisterRequestEntity(
+        fullName: 'Ahmad User',
+        phone: '+96512345678',
+        password: 'secretPassword123',
+        countryCode: 'KW',
+      );
+      const registerEntity = RegisterEntity(
+        userId: 'user-123',
+        phone: '+96512345678',
+        otpSent: true,
+        nextStep: 'verifyPhone',
+      );
+      fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
+        data: registerEntity,
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<RegisterState>((s) => s.isLoading && s.snapshotPhone == '+96512345678'),
-        predicate<RegisterState>((s) =>
-            !s.isLoading &&
-            s.outcome == RegisterOutcome.registrationSuccess &&
-            s.userId == 'user-123' &&
-            s.hasActiveVerification),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<RegisterState>(
+            (s) => s.isLoading && s.snapshotPhone == '+96512345678',
+          ),
+          predicate<RegisterState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == RegisterOutcome.registrationSuccess &&
+                s.userId == 'user-123' &&
+                s.hasActiveVerification,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitRegisterEvent(request));
-    await expectation;
+      viewModel.doIntent(const SubmitRegisterEvent(request));
+      await expectation;
 
-    expect(fakeRegisterUseCase.callCount, 1);
-  });
+      expect(fakeRegisterUseCase.callCount, 1);
+    },
+  );
 
-  test('SubmitRegisterEvent with otpSent=false emits failure outcome', () async {
-    const request = RegisterRequestEntity(
-      fullName: 'Ahmad User',
-      phone: '+96512345678',
-      password: 'secretPassword123',
-      countryCode: 'KW',
-    );
-    const registerEntity = RegisterEntity(
-      userId: 'user-123',
-      phone: '+96512345678',
-      otpSent: false,
-      nextStep: 'failed',
-    );
-    fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(data: registerEntity);
+  test(
+    'SubmitRegisterEvent with otpSent=false emits failure outcome',
+    () async {
+      const request = RegisterRequestEntity(
+        fullName: 'Ahmad User',
+        phone: '+96512345678',
+        password: 'secretPassword123',
+        countryCode: 'KW',
+      );
+      const registerEntity = RegisterEntity(
+        userId: 'user-123',
+        phone: '+96512345678',
+        otpSent: false,
+        nextStep: 'failed',
+      );
+      fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
+        data: registerEntity,
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<RegisterState>((s) => s.isLoading),
-        predicate<RegisterState>((s) => !s.isLoading && s.outcome == RegisterOutcome.failure),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<RegisterState>((s) => s.isLoading),
+          predicate<RegisterState>(
+            (s) => !s.isLoading && s.outcome == RegisterOutcome.failure,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitRegisterEvent(request));
-    await expectation;
-  });
+      viewModel.doIntent(const SubmitRegisterEvent(request));
+      await expectation;
+    },
+  );
 
-  test('VerifyRegisterPhoneEvent uses snapshot and code to verify phone', () async {
-    // Prime the snapshot
-    fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
-      data: RegisterEntity(userId: 'u-1', phone: '+96512345678', otpSent: true, nextStep: 'verify'),
-    );
-    viewModel.doIntent(const SubmitRegisterEvent(
-      RegisterRequestEntity(fullName: 'Name', phone: '+96512345678', password: 'p', countryCode: 'KW'),
-    ));
-    await Future<void>.delayed(Duration.zero);
+  test(
+    'VerifyRegisterPhoneEvent uses snapshot and code to verify phone',
+    () async {
+      // Prime the snapshot
+      fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
+        data: RegisterEntity(
+          userId: 'u-1',
+          phone: '+96512345678',
+          otpSent: true,
+          nextStep: 'verify',
+        ),
+      );
+      viewModel.doIntent(
+        const SubmitRegisterEvent(
+          RegisterRequestEntity(
+            fullName: 'Name',
+            phone: '+96512345678',
+            password: 'p',
+            countryCode: 'KW',
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    fakeVerifyPhoneUseCase.stubbedResult = ApiSuccessResult(data: createTestVerifyPhoneEntity());
+      fakeVerifyPhoneUseCase.stubbedResult = ApiSuccessResult(
+        data: createTestVerifyPhoneEntity(),
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<RegisterState>((s) => s.isLoading),
-        predicate<RegisterState>((s) => !s.isLoading && s.outcome == RegisterOutcome.phoneVerifiedSuccess),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<RegisterState>((s) => s.isLoading),
+          predicate<RegisterState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == RegisterOutcome.phoneVerifiedSuccess,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const VerifyRegisterPhoneEvent('123456'));
-    await expectation;
+      viewModel.doIntent(const VerifyRegisterPhoneEvent('123456'));
+      await expectation;
 
-    expect(fakeVerifyPhoneUseCase.callCount, 1);
-    expect(fakeVerifyPhoneUseCase.lastRequest?.phone, '+96512345678');
-    expect(fakeVerifyPhoneUseCase.lastRequest?.code, '123456');
-    expect(fakeVerifyPhoneUseCase.lastRequest?.countryCode, 'KW');
-  });
+      expect(fakeVerifyPhoneUseCase.callCount, 1);
+      expect(fakeVerifyPhoneUseCase.lastRequest?.phone, '+96512345678');
+      expect(fakeVerifyPhoneUseCase.lastRequest?.code, '123456');
+      expect(fakeVerifyPhoneUseCase.lastRequest?.countryCode, 'KW');
+    },
+  );
 
-  test('VerifyRegisterPhoneEvent without snapshot emits failure without calling use case', () async {
-    final expectation = expectLater(
-      viewModel.stream,
-      emits(predicate<RegisterState>((s) => s.outcome == RegisterOutcome.failure)),
-    );
+  test(
+    'VerifyRegisterPhoneEvent without snapshot emits failure without calling use case',
+    () async {
+      final expectation = expectLater(
+        viewModel.stream,
+        emits(
+          predicate<RegisterState>((s) => s.outcome == RegisterOutcome.failure),
+        ),
+      );
 
-    viewModel.doIntent(const VerifyRegisterPhoneEvent('123456'));
-    await expectation;
+      viewModel.doIntent(const VerifyRegisterPhoneEvent('123456'));
+      await expectation;
 
-    expect(fakeVerifyPhoneUseCase.callCount, 0);
-  });
+      expect(fakeVerifyPhoneUseCase.callCount, 0);
+    },
+  );
 
-  test('ResendRegisterOtpEvent calls use case with snapshot phone and countryCode', () async {
-    fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
-      data: RegisterEntity(userId: 'u-1', phone: '+96512345678', otpSent: true, nextStep: 'verify'),
-    );
-    viewModel.doIntent(const SubmitRegisterEvent(
-      RegisterRequestEntity(fullName: 'Name', phone: '+96512345678', password: 'p', countryCode: 'KW'),
-    ));
-    await Future<void>.delayed(Duration.zero);
+  test(
+    'ResendRegisterOtpEvent calls use case with snapshot phone and countryCode',
+    () async {
+      fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
+        data: RegisterEntity(
+          userId: 'u-1',
+          phone: '+96512345678',
+          otpSent: true,
+          nextStep: 'verify',
+        ),
+      );
+      viewModel.doIntent(
+        const SubmitRegisterEvent(
+          RegisterRequestEntity(
+            fullName: 'Name',
+            phone: '+96512345678',
+            password: 'p',
+            countryCode: 'KW',
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    fakeResendPhoneOtpUseCase.stubbedResult = const ApiSuccessResult(
-      data: ResendPhoneOtpEntity(success: true, otpSent: true, nextStep: 'verify'),
-    );
+      fakeResendPhoneOtpUseCase.stubbedResult = const ApiSuccessResult(
+        data: ResendPhoneOtpEntity(
+          success: true,
+          otpSent: true,
+          nextStep: 'verify',
+        ),
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<RegisterState>((s) => s.isResending),
-        predicate<RegisterState>((s) => !s.isResending && s.resendOtpSent),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<RegisterState>((s) => s.isResending),
+          predicate<RegisterState>((s) => !s.isResending && s.resendOtpSent),
+        ]),
+      );
 
-    viewModel.doIntent(const ResendRegisterOtpEvent());
-    await expectation;
+      viewModel.doIntent(const ResendRegisterOtpEvent());
+      await expectation;
 
-    expect(fakeResendPhoneOtpUseCase.callCount, 1);
-    expect(fakeResendPhoneOtpUseCase.lastRequest?.phone, '+96512345678');
-    expect(fakeResendPhoneOtpUseCase.lastRequest?.countryCode, 'KW');
-  });
+      expect(fakeResendPhoneOtpUseCase.callCount, 1);
+      expect(fakeResendPhoneOtpUseCase.lastRequest?.phone, '+96512345678');
+      expect(fakeResendPhoneOtpUseCase.lastRequest?.countryCode, 'KW');
+    },
+  );
 
-  test('ResetRegisterFlowEvent clears state and snapshots back to clean initial state', () async {
-    fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
-      data: RegisterEntity(userId: 'u-1', phone: '+96512345678', otpSent: true, nextStep: 'verify'),
-    );
-    viewModel.doIntent(const SubmitRegisterEvent(
-      RegisterRequestEntity(fullName: 'Name', phone: '+96512345678', password: 'p', countryCode: 'KW'),
-    ));
-    await Future<void>.delayed(Duration.zero);
+  test(
+    'ResetRegisterFlowEvent clears state and snapshots back to clean initial state',
+    () async {
+      fakeRegisterUseCase.stubbedResult = const ApiSuccessResult(
+        data: RegisterEntity(
+          userId: 'u-1',
+          phone: '+96512345678',
+          otpSent: true,
+          nextStep: 'verify',
+        ),
+      );
+      viewModel.doIntent(
+        const SubmitRegisterEvent(
+          RegisterRequestEntity(
+            fullName: 'Name',
+            phone: '+96512345678',
+            password: 'p',
+            countryCode: 'KW',
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    expect(viewModel.state.hasActiveVerification, isTrue);
+      expect(viewModel.state.hasActiveVerification, isTrue);
 
-    viewModel.doIntent(const ResetRegisterFlowEvent());
+      viewModel.doIntent(const ResetRegisterFlowEvent());
 
-    expect(viewModel.state.hasActiveVerification, isFalse);
-    expect(viewModel.state.snapshotPhone, isNull);
-    expect(viewModel.state.outcome, RegisterOutcome.idle);
-  });
+      expect(viewModel.state.hasActiveVerification, isFalse);
+      expect(viewModel.state.snapshotPhone, isNull);
+      expect(viewModel.state.outcome, RegisterOutcome.idle);
+    },
+  );
 }

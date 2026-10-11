@@ -61,15 +61,19 @@ class CalendarDayTile extends StatelessWidget {
                 ? Center(
                     child: Text(
                       '${day.dayNumber}',
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: selected ? FontSize.size15 : FontSize.size14,
-                        color: textColor,
-                      ).copyWith(
-                        height: 1,
-                        fontWeight:
-                            selected ? FontWeight.w600 : FontWeight.w700,
-                      ),
+                      style:
+                          getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: selected
+                                ? FontSize.size15
+                                : FontSize.size14,
+                            color: textColor,
+                          ).copyWith(
+                            height: 1,
+                            fontWeight: selected
+                                ? FontWeight.w600
+                                : FontWeight.w700,
+                          ),
                     ),
                   )
                 : Padding(
@@ -83,28 +87,26 @@ class CalendarDayTile extends StatelessWidget {
                             fontFamily: FontConstant.alexandria,
                             fontSize: selected ? 17 : 14,
                             color: textColor,
-                          ).copyWith(
-                            height: 1,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          ).copyWith(height: 1, fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 3),
                         Text(
                           day.weekday,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: (selected && !isFrozen
-                                  ? getMediumStyle(
-                                      fontFamily: FontConstant.alexandria,
-                                      fontSize: FontSize.size10,
-                                      color: textColor,
-                                    )
-                                  : getRegularStyle(
-                                      fontFamily: FontConstant.alexandria,
-                                      fontSize: FontSize.size10,
-                                      color: textColor,
-                                    ))
-                              .copyWith(height: 1),
+                          style:
+                              (selected && !isFrozen
+                                      ? getMediumStyle(
+                                          fontFamily: FontConstant.alexandria,
+                                          fontSize: FontSize.size10,
+                                          color: textColor,
+                                        )
+                                      : getRegularStyle(
+                                          fontFamily: FontConstant.alexandria,
+                                          fontSize: FontSize.size10,
+                                          color: textColor,
+                                        ))
+                                  .copyWith(height: 1),
                         ),
                         SizedBox(height: selected ? 4 : 3),
                         isFrozen

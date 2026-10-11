@@ -112,10 +112,7 @@ class FamilyBundleSlotResponseDto {
 
 @JsonSerializable(createToJson: false)
 class FamilyBundleRestaurantResponseDto {
-  const FamilyBundleRestaurantResponseDto({
-    this.restaurantId,
-    this.logoUrl,
-  });
+  const FamilyBundleRestaurantResponseDto({this.restaurantId, this.logoUrl});
 
   final String? restaurantId;
   final String? logoUrl;
@@ -127,11 +124,7 @@ class FamilyBundleRestaurantResponseDto {
 
 @JsonSerializable(createToJson: false)
 class FamilyBundleBadgeResponseDto {
-  const FamilyBundleBadgeResponseDto({
-    this.code,
-    this.nameAr,
-    this.nameEn,
-  });
+  const FamilyBundleBadgeResponseDto({this.code, this.nameAr, this.nameEn});
 
   final String? code;
   final String? nameAr;

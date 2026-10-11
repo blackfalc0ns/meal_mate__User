@@ -11,12 +11,18 @@ extension SubscriptionAvailabilityResponseDtoMapper
     return SubscriptionAvailabilityEntity(
       status: status ?? '',
       coveredRestaurantCount: coveredRestaurantCount ?? 0,
-      eligibleRestaurantCount: eligibleRestaurantCount ?? 0,
+      eligibleRestaurantCount: eligibleRestaurantCount,
       checkedAtUtc: checkedAtUtc != null && checkedAtUtc!.trim().isNotEmpty
           ? DateTime.tryParse(checkedAtUtc!.trim())
           : null,
       effectiveStartDate: effectiveStartDate ?? '',
       messageCode: messageCode ?? '',
+      scope: scope,
+      canSelect: canSelect,
+      missingStep: missingStep,
+      actionEndpoint: actionEndpoint,
+      failureReasons: failureReasons ?? const [],
+      failureReasonCounts: failureReasonCounts ?? const {},
     );
   }
 }
@@ -25,7 +31,8 @@ extension SubscriptionRestaurantAvailabilityResponseDtoMapper
     on SubscriptionRestaurantAvailabilityResponseDto {
   SubscriptionRestaurantAvailabilityEntity toEntity() {
     return SubscriptionRestaurantAvailabilityEntity(
-      availability: availability?.toEntity() ??
+      availability:
+          availability?.toEntity() ??
           const SubscriptionAvailabilityEntity(
             status: '',
             coveredRestaurantCount: 0,

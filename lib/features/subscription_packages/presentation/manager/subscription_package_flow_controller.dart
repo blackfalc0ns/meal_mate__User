@@ -43,7 +43,9 @@ class SubscriptionPackageFlowController {
   void syncBundles(List<SubscriptionBundleEntity> bundles) {
     _currentBundles = bundles;
     if (_selectedBundleId != null) {
-      final newIndex = bundles.indexWhere((b) => b.bundleId == _selectedBundleId);
+      final newIndex = bundles.indexWhere(
+        (b) => b.bundleId == _selectedBundleId,
+      );
       if (newIndex != -1) {
         selectedPackageNotifier.value = newIndex;
       } else {
@@ -113,6 +115,8 @@ class SubscriptionPackageFlowController {
             orElse: () => bundles[selectedIndex],
           )
         : bundles[selectedIndex];
+
+    if (!targetBundle.canSelect) return;
 
     await context.pushNamed(
       AppRoutes.subscriptionPlanDetails,

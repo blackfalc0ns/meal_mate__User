@@ -125,14 +125,14 @@ class LocationsCatalogState {
 
   @override
   int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        data,
-        selectedGovernorate,
-        selectedArea,
-        selectedBlock,
-        failure,
-      );
+    isLoading,
+    isSuccess,
+    data,
+    selectedGovernorate,
+    selectedArea,
+    selectedBlock,
+    failure,
+  );
 }
 
 class AddressesActionState {
@@ -196,13 +196,13 @@ class AddressesActionState {
 
   @override
   int get hashCode => Object.hash(
-        isLoading,
-        isSuccess,
-        errorMessage,
-        failure,
-        address,
-        deliveryChangeNotice,
-      );
+    isLoading,
+    isSuccess,
+    errorMessage,
+    failure,
+    address,
+    deliveryChangeNotice,
+  );
 }
 
 class MapAutofillState {
@@ -336,10 +336,12 @@ class AddressCoveragePreviewState {
       reachedEnd: reachedEnd ?? this.reachedEnd,
       preview: clearPreview ? null : preview ?? this.preview,
       pendingAction: clearPending ? null : pendingAction ?? this.pendingAction,
-      targetAddressId:
-          clearPending ? null : targetAddressId ?? this.targetAddressId,
-      pendingRequest:
-          clearPending ? null : pendingRequest ?? this.pendingRequest,
+      targetAddressId: clearPending
+          ? null
+          : targetAddressId ?? this.targetAddressId,
+      pendingRequest: clearPending
+          ? null
+          : pendingRequest ?? this.pendingRequest,
       failure: clearFailure ? null : failure ?? this.failure,
       loadMoreFailure: clearLoadMoreFailure
           ? null
@@ -366,16 +368,16 @@ class AddressCoveragePreviewState {
 
   @override
   int get hashCode => Object.hash(
-        sessionId,
-        isLoading,
-        isSuccess,
-        isLoadingMore,
-        reachedEnd,
-        preview,
-        pendingAction,
-        targetAddressId,
-        pendingRequest,
-        failure,
-        loadMoreFailure,
-      );
+    sessionId,
+    isLoading,
+    isSuccess,
+    isLoadingMore,
+    reachedEnd,
+    preview,
+    pendingAction,
+    targetAddressId,
+    pendingRequest,
+    failure,
+    loadMoreFailure,
+  );
 }

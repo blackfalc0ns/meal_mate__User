@@ -153,9 +153,9 @@ class AppCustomDialog {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.of(modalContext).pop(
-                                    onCancel?.call(),
-                                  );
+                                  Navigator.of(
+                                    modalContext,
+                                  ).pop(onCancel?.call());
                                 },
                                 child: Text(
                                   cancelText,

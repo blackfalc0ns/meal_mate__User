@@ -20,8 +20,7 @@ class ProfileSettingsCard extends StatelessWidget {
         title: locale.profile_personal_info,
         subtitle: locale.profile_personal_info_subtitle,
         onTap: () async {
-          final profile =
-              context.read<ProfileViewModel>().state.profile.data;
+          final profile = context.read<ProfileViewModel>().state.profile.data;
           if (profile == null) return;
 
           final navigator = Navigator.of(context);
@@ -46,8 +45,7 @@ class ProfileSettingsCard extends StatelessWidget {
         icon: Icons.credit_card_rounded,
         title: locale.profile_billing,
         subtitle: locale.profile_billing_subtitle,
-        onTap: () =>
-            Navigator.of(context).pushNamed(AppRoutes.profileBilling),
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.profileBilling),
       ),
       (
         icon: Icons.campaign_rounded,
@@ -72,8 +70,7 @@ class ProfileSettingsCard extends StatelessWidget {
         icon: Icons.shield_outlined,
         title: locale.profile_security,
         subtitle: locale.profile_security_subtitle,
-        onTap: () =>
-            Navigator.of(context).pushNamed(AppRoutes.securityPrivacy),
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.securityPrivacy),
       ),
     ];
 

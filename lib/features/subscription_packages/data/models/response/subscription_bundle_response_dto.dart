@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meal_meat_user/core/network/models/response/pagination_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_availability_response_dto.dart';
 
 part 'subscription_bundle_response_dto.g.dart';
 
@@ -29,6 +30,10 @@ class SubscriptionBundleResponseDto {
     this.selectionCount,
     this.isMostSelected,
     this.badge,
+    this.isAvailable,
+    this.disabledReason,
+    this.availability,
+    this.option,
   });
 
   final String? bundleId;
@@ -54,6 +59,10 @@ class SubscriptionBundleResponseDto {
   final int? selectionCount;
   final bool? isMostSelected;
   final SubscriptionBundleBadgeResponseDto? badge;
+  final bool? isAvailable;
+  final String? disabledReason;
+  final SubscriptionAvailabilityResponseDto? availability;
+  final SubscriptionBundleResponseDto? option;
 
   factory SubscriptionBundleResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionBundleResponseDtoFromJson(json);
@@ -66,7 +75,10 @@ class SubscriptionProgramBundlesResponseDto {
     this.hasAllergies,
     this.hasDietaryPreferences,
     this.isProfileComplete,
+    this.allergiesCompletedAtUtc,
+    this.dietaryPreferencesCompletedAtUtc,
     this.bundles,
+    this.items,
     this.pagination,
   });
 
@@ -74,12 +86,36 @@ class SubscriptionProgramBundlesResponseDto {
   final bool? hasAllergies;
   final bool? hasDietaryPreferences;
   final bool? isProfileComplete;
+  final String? allergiesCompletedAtUtc;
+  final String? dietaryPreferencesCompletedAtUtc;
   final List<SubscriptionBundleResponseDto>? bundles;
+  final List<SubscriptionBundleResponseDto>? items;
   final PaginationResponseDto? pagination;
+
+  List<SubscriptionBundleResponseDto> get effectiveBundles =>
+      items ?? bundles ?? const [];
 
   factory SubscriptionProgramBundlesResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) => _$SubscriptionProgramBundlesResponseDtoFromJson(json);
+  ) {
+    final parsed = _$SubscriptionProgramBundlesResponseDtoFromJson(json);
+    return SubscriptionProgramBundlesResponseDto(
+      hasDeliveryAddress: parsed.hasDeliveryAddress,
+      hasAllergies: parsed.hasAllergies,
+      hasDietaryPreferences: parsed.hasDietaryPreferences,
+      isProfileComplete: parsed.isProfileComplete,
+      allergiesCompletedAtUtc:
+          (json['allergiesCompletedAtUtc'] ?? json['AllergiesCompletedAtUtc'])
+              as String?,
+      dietaryPreferencesCompletedAtUtc:
+          (json['dietaryPreferencesCompletedAtUtc'] ??
+                  json['DietaryPreferencesCompletedAtUtc'])
+              as String?,
+      bundles: parsed.bundles,
+      items: parsed.items,
+      pagination: parsed.pagination,
+    );
+  }
 }
 
 @JsonSerializable(createToJson: false)

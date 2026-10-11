@@ -27,10 +27,7 @@ class InfluencerSocialPrivacyCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Spacing.influencerSocialPrivacyRadius,
         ),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Row(
         children: [

@@ -51,10 +51,7 @@ class _NotificationPreferencesScreenState
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: Spacing.xs,
-            bottom: Spacing.xxxl,
-          ),
+          padding: const EdgeInsets.only(top: Spacing.xs, bottom: Spacing.xxxl),
           child: Column(
             children: [
               NotificationPreferenceCard(

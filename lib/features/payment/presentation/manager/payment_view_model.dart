@@ -474,45 +474,48 @@ class PaymentViewModel extends Cubit<PaymentState> {
           }
 
           if (normalizedStatus == 'paid' || status.isPaid) {
+            final isFulfillmentReady = status.isFulfillmentReady ?? false;
             final subResult = await _getCurrentCustomerSubscriptionUseCase();
             if (isClosed || currentGen != _fulfillmentGeneration) return;
 
-            if (subResult
-                is ApiSuccessResult<SubscriptionBillingCurrentEntity>) {
-              final currentSub = subResult.data.subscription;
-              final subStatus = currentSub?.status.trim().toLowerCase() ?? '';
-              if (currentSub != null &&
-                  (subStatus == 'active' || subStatus == 'scheduled')) {
-                final customerId =
-                    await _tokenService?.getCurrentUserId() ?? '';
-                if (customerId.isNotEmpty) {
-                  final attempt = await _paymentAttemptStore?.readForCustomer(
-                    customerId,
-                  );
-                  if (attempt != null) {
-                    await _paymentAttemptStore?.save(
-                      attempt.copyWith(
-                        reviewRequired: false,
-                        lastPresentedFinalStatus: 'active',
-                      ),
-                    );
-                  }
-                }
-                await _syncCurrentSubscriptionCache();
-                if (isClosed || currentGen != _fulfillmentGeneration) return;
-                emit(
-                  state.copyWith(
-                    isFulfillmentLoading: false,
-                    isFulfillmentSuccess: true,
-                    isPaidProcessing: false,
-                    isPaymentFailed: false,
-                    isReviewRequired: false,
-                    paymentStatus: status,
-                    clearFulfillmentFailure: true,
-                  ),
+            final currentSub =
+                subResult is ApiSuccessResult<SubscriptionBillingCurrentEntity>
+                ? subResult.data.subscription
+                : null;
+            final subStatus = currentSub?.status.trim().toLowerCase() ?? '';
+            final isSubActiveOrScheduled =
+                currentSub != null &&
+                (subStatus == 'active' || subStatus == 'scheduled');
+
+            if (isFulfillmentReady || isSubActiveOrScheduled) {
+              final customerId = await _tokenService?.getCurrentUserId() ?? '';
+              if (customerId.isNotEmpty) {
+                final attempt = await _paymentAttemptStore?.readForCustomer(
+                  customerId,
                 );
-                return;
+                if (attempt != null) {
+                  await _paymentAttemptStore?.save(
+                    attempt.copyWith(
+                      reviewRequired: false,
+                      lastPresentedFinalStatus: 'active',
+                    ),
+                  );
+                }
               }
+              await _syncCurrentSubscriptionCache();
+              if (isClosed || currentGen != _fulfillmentGeneration) return;
+              emit(
+                state.copyWith(
+                  isFulfillmentLoading: false,
+                  isFulfillmentSuccess: true,
+                  isPaidProcessing: false,
+                  isPaymentFailed: false,
+                  isReviewRequired: false,
+                  paymentStatus: status,
+                  clearFulfillmentFailure: true,
+                ),
+              );
+              return;
             }
 
             emit(

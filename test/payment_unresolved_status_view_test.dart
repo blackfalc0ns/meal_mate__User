@@ -17,7 +17,9 @@ void main() {
   }
 
   group('PaymentUnresolvedStatusView Tests', () {
-    testWidgets('renders review state copy and contact support in English', (tester) async {
+    testWidgets('renders review state copy and contact support in English', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           child: const PaymentUnresolvedStatusView(
@@ -39,7 +41,9 @@ void main() {
       expect(find.text('Contact Support'), findsOneWidget);
     });
 
-    testWidgets('renders review state copy and contact support in Arabic', (tester) async {
+    testWidgets('renders review state copy and contact support in Arabic', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           locale: const Locale('ar'),
@@ -62,7 +66,9 @@ void main() {
       expect(find.text('تواصل مع الدعم'), findsOneWidget);
     });
 
-    testWidgets('renders pending state copy and check status button', (tester) async {
+    testWidgets('renders pending state copy and check status button', (
+      tester,
+    ) async {
       bool statusChecked = false;
       await tester.pumpWidget(
         buildTestWidget(

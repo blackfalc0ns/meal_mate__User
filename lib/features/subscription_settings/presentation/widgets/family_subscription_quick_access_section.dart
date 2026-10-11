@@ -21,7 +21,8 @@ class FamilySubscriptionQuickAccessSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final hasThreeCanonicalActions = actions != null &&
+    final hasThreeCanonicalActions =
+        actions != null &&
         actions!.length == 3 &&
         actions!.any((a) => a.code == 'meals') &&
         actions!.any((a) => a.code == 'subscription') &&

@@ -22,7 +22,7 @@ class CalendarDayEntity {
     this.selectedMealIds = const [],
     this.nutritionTotals = const CalendarNutritionTotalsEntity(),
     this.slotRequirements = const [],
-    this.isLocked = false,
+    bool isLocked = false,
     this.editDeadlineUtc,
     required this.dayNumber,
     required this.weekday,
@@ -30,7 +30,8 @@ class CalendarDayEntity {
     this.isSelected = false,
     this.isMuted = false,
     this.hasMeals = true,
-  });
+    // ignore: prefer_initializing_formals
+  }) : _isLocked = isLocked;
 
   final String id;
   final String status;
@@ -49,7 +50,7 @@ class CalendarDayEntity {
   final List<String> selectedMealIds;
   final CalendarNutritionTotalsEntity nutritionTotals;
   final List<CalendarSlotRequirementEntity> slotRequirements;
-  final bool isLocked;
+  final bool _isLocked;
   final DateTime? editDeadlineUtc;
   final int dayNumber;
   final String weekday;
@@ -57,6 +58,28 @@ class CalendarDayEntity {
   final bool isSelected;
   final bool isMuted;
   final bool hasMeals;
+
+  bool get isLockedReason {
+    final r = editBlockReason?.toLowerCase();
+    return r == 'selection_deadline_passed' ||
+        r == 'day_locked' ||
+        r == 'day_frozen' ||
+        r == 'day_cancelled';
+  }
+
+  bool get isLocked => _isLocked || canEdit == false || isLockedReason;
+
+  bool get isCustomerSelected {
+    final s = status.toLowerCase();
+    final ui = (uiStatus ?? '').toLowerCase();
+    return s.contains('customerselected') || ui.contains('customerselected');
+  }
+
+  bool get isSentToRestaurant {
+    final s = status.toLowerCase();
+    final ui = (uiStatus ?? '').toLowerCase();
+    return s.contains('senttorestaurant') || ui.contains('senttorestaurant');
+  }
 
   bool get isFrozen {
     final normalizedStatus = status.toLowerCase();
@@ -80,10 +103,10 @@ class CalendarDayEntity {
 
   bool get isAwaitingRestaurantConfirmation {
     if (isConfirmed) return false;
+    if (isCustomerSelected && !isSentToRestaurant) return false;
     final s = '${status}_$uiStatus'.toLowerCase();
     return s.contains('senttorestaurant') ||
-        s.contains('awaiting') ||
-        s.contains('pending');
+        (s.contains('awaiting') && !s.contains('customerselected'));
   }
 
   bool get isRestaurantClosed {
@@ -96,7 +119,7 @@ class CalendarDayEntity {
   }
 
   /// Server is the single source of truth for editing permission.
-  bool get isEditable => canEdit == true;
+  bool get isEditable => canEdit == true && !isLocked;
 
   CalendarDayEntity copyWith({
     String? id,

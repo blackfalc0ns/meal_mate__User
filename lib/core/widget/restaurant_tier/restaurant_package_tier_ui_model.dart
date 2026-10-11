@@ -12,6 +12,9 @@ class RestaurantPackageTierUiModel {
     this.currency = '',
     this.priceSubtitle = '',
     this.isPriceLoading = false,
+    this.canSelect = true,
+    this.isAvailable = true,
+    this.disabledReason,
   });
 
   final String title;
@@ -26,6 +29,9 @@ class RestaurantPackageTierUiModel {
   final String currency;
   final String priceSubtitle;
   final bool isPriceLoading;
+  final bool canSelect;
+  final bool isAvailable;
+  final String? disabledReason;
 
   RestaurantPackageTierUiModel copyWith({
     String? title,
@@ -40,6 +46,9 @@ class RestaurantPackageTierUiModel {
     String? currency,
     String? priceSubtitle,
     bool? isPriceLoading,
+    bool? canSelect,
+    bool? isAvailable,
+    String? disabledReason,
   }) {
     return RestaurantPackageTierUiModel(
       title: title ?? this.title,
@@ -54,6 +63,9 @@ class RestaurantPackageTierUiModel {
       currency: currency ?? this.currency,
       priceSubtitle: priceSubtitle ?? this.priceSubtitle,
       isPriceLoading: isPriceLoading ?? this.isPriceLoading,
+      canSelect: canSelect ?? this.canSelect,
+      isAvailable: isAvailable ?? this.isAvailable,
+      disabledReason: disabledReason ?? this.disabledReason,
     );
   }
 }

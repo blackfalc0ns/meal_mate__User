@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/core/network/models/response/pagination_response_dto.dart';
 import 'package:meal_meat_user/core/subscription_tiers/data/models/response/subscription_tier_theme_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_availability_response_dto.dart';
 part 'subscription_tier_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -8,9 +10,11 @@ class SubscriptionTierResponseDto {
     this.tier,
     this.nameAr,
     this.nameEn,
+    this.name,
     this.logoUrl,
     this.descriptionAr,
     this.descriptionEn,
+    this.description,
     this.restaurantCount,
     this.restaurants,
     this.durationDays,
@@ -25,14 +29,21 @@ class SubscriptionTierResponseDto {
     this.totalServiceDays,
     this.fridayAvailability,
     this.theme,
+    this.availability,
+    this.canSelect,
+    this.isAvailable,
+    this.disabledReason,
+    this.option,
   });
 
   final String? tier;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
   final String? logoUrl;
   final String? descriptionAr;
   final String? descriptionEn;
+  final String? description;
   final int? restaurantCount;
   final List<SubscriptionTierRestaurantResponseDto>? restaurants;
   final int? durationDays;
@@ -47,7 +58,11 @@ class SubscriptionTierResponseDto {
   final int? totalServiceDays;
   final SubscriptionFridayAvailabilityResponseDto? fridayAvailability;
   final SubscriptionTierThemeResponseDto? theme;
-
+  final SubscriptionAvailabilityResponseDto? availability;
+  final bool? canSelect;
+  final bool? isAvailable;
+  final String? disabledReason;
+  final SubscriptionTierResponseDto? option;
 
   factory SubscriptionTierResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionTierResponseDtoFromJson(json);
@@ -76,6 +91,7 @@ class SubscriptionFridayAvailabilityResponseDto {
     this.code,
     this.messageAr,
     this.messageEn,
+    this.message,
     this.displayType,
   });
 
@@ -84,9 +100,38 @@ class SubscriptionFridayAvailabilityResponseDto {
   final String? code;
   final String? messageAr;
   final String? messageEn;
+  final String? message;
   final String? displayType;
 
   factory SubscriptionFridayAvailabilityResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionFridayAvailabilityResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SubscriptionTiersPageResponseDto {
+  const SubscriptionTiersPageResponseDto({
+    this.programId,
+    this.bundleId,
+    this.hasDeliveryAddress,
+    this.periodContextComplete,
+    this.pagination,
+    this.items,
+    this.tiers,
+  });
+
+  final String? programId;
+  final String? bundleId;
+  final bool? hasDeliveryAddress;
+  final bool? periodContextComplete;
+  final PaginationResponseDto? pagination;
+  final List<SubscriptionTierResponseDto>? items;
+  final List<SubscriptionTierResponseDto>? tiers;
+
+  List<SubscriptionTierResponseDto> get effectiveTiers =>
+      items ?? tiers ?? const [];
+
+  factory SubscriptionTiersPageResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionTiersPageResponseDtoFromJson(json);
 }

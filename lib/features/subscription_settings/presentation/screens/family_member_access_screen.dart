@@ -236,10 +236,10 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                             onPressed: state.isSaving || !hasChanges
                                 ? null
                                 : () => _onSave(
-                                      access,
-                                      hasSeparateAccount,
-                                      isPaused,
-                                    ),
+                                    access,
+                                    hasSeparateAccount,
+                                    isPaused,
+                                  ),
                           ),
                   ),
                 ),
@@ -249,9 +249,7 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                   child: AbsorbPointer(
                     child: Container(
                       color: color.scrim.withValues(alpha: 0.35),
-                      child: const Center(
-                        child: CustomProgressIndicator(),
-                      ),
+                      child: const Center(child: CustomProgressIndicator()),
                     ),
                   ),
                 ),

@@ -65,9 +65,8 @@ class CalendarRestaurantSelectionSheet extends StatelessWidget {
           isLoadingMore: sheetState.isLoadingMore,
           loadMoreFailure: sheetState.loadMoreFailure,
           hasNextPage: sheetState.hasNextPage,
-          onLoadMore: () => unawaited(
-            context.read<RestaurantPickerViewModel>().loadMore(),
-          ),
+          onLoadMore: () =>
+              unawaited(context.read<RestaurantPickerViewModel>().loadMore()),
           onRetryLoadMore: () => unawaited(
             context.read<RestaurantPickerViewModel>().retryLoadMore(),
           ),

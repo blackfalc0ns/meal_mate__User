@@ -72,14 +72,8 @@ abstract class ExternalModules {
               RegExp(r'"currentPassword"\s*:\s*"[^"]*"'),
               '"currentPassword": "[REDACTED]"',
             )
-            .replaceAll(
-              RegExp(r'"otp"\s*:\s*"[^"]*"'),
-              '"otp": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"code"\s*:\s*"[^"]*"'),
-              '"code": "[REDACTED]"',
-            )
+            .replaceAll(RegExp(r'"otp"\s*:\s*"[^"]*"'), '"otp": "[REDACTED]"')
+            .replaceAll(RegExp(r'"code"\s*:\s*"[^"]*"'), '"code": "[REDACTED]"')
             .replaceAll(
               RegExp(r'"accessToken"\s*:\s*"[^"]*"'),
               '"accessToken": "[REDACTED]"',

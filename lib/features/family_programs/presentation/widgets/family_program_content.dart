@@ -34,9 +34,7 @@ class FamilyProgramContent extends StatelessWidget {
             child: Column(
               children: [
                 FamilySetupHeaderBadge(title: state.currentFlow?.name),
-                const SizedBox(
-                  height: Spacing.familyProgramProgressTopGap,
-                ),
+                const SizedBox(height: Spacing.familyProgramProgressTopGap),
                 const FamilyProgramStepper(
                   currentStep: 1,
                   includeFamilyCreationStep: true,
@@ -61,8 +59,8 @@ class FamilyProgramContent extends StatelessWidget {
                   !state.isLoadingMorePrograms &&
                   !state.isProgramsLoading) {
                 context.read<FamilyProgramsViewModel>().doIntent(
-                      const LoadMoreFamilyProgramsEvent(),
-                    );
+                  const LoadMoreFamilyProgramsEvent(),
+                );
               }
               return false;
             },

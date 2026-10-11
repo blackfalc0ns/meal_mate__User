@@ -7,15 +7,8 @@ abstract interface class SubscriptionProgramsRepository {
   Future<ApiResult<List<SubscriptionProgramEntity>>> getSubscriptionPrograms();
 
   Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>>
-  getSubscriptionProgramsPage({
-    required int page,
-    required int pageSize,
-  });
+  getSubscriptionProgramsPage({required int page, required int pageSize});
 
   Future<ApiResult<SubscriptionProgramBundlesEntity>>
-  getSubscriptionProgramBundles(
-    String programId, {
-    int? page,
-    int? pageSize,
-  });
+  getSubscriptionProgramBundles(String programId, {int? page, int? pageSize});
 }

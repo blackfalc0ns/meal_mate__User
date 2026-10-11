@@ -1,8 +1,5 @@
 class SubscriptionTierThemeEntity {
-  const SubscriptionTierThemeEntity({
-    this.designId,
-    this.designName,
-  });
+  const SubscriptionTierThemeEntity({this.designId, this.designName});
 
   final int? designId;
   final String? designName;

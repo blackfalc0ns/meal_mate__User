@@ -12,10 +12,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 
 @Injectable(as: AddressLocationRepository)
 class AddressLocationRepositoryImpl implements AddressLocationRepository {
-  AddressLocationRepositoryImpl(
-    this._remoteDataSource,
-    this._cache,
-  );
+  AddressLocationRepositoryImpl(this._remoteDataSource, this._cache);
 
   final AddressLocationRemoteDataSource _remoteDataSource;
   final AddressLocationCache _cache;

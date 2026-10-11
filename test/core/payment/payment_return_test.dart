@@ -80,9 +80,7 @@ void main() {
         isNull,
       );
       expect(
-        parsePaymentReturn(
-          Uri.parse('mealmate://checkout/success?paymentId='),
-        ),
+        parsePaymentReturn(Uri.parse('mealmate://checkout/success?paymentId=')),
         isNull,
       );
     });

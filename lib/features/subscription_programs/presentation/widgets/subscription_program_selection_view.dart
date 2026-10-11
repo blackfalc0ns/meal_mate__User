@@ -8,6 +8,9 @@ import 'package:meal_meat_user/features/subscription_programs/presentation/widge
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_header.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_hero.dart';
 
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 
@@ -94,10 +97,10 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                             SliverPadding(
                               padding: EdgeInsetsDirectional.only(
                                 top: Spacing.base,
-                                start:
-                                    Spacing.subscriptionProgramsHorizontalPadding,
-                                end:
-                                    Spacing.subscriptionProgramsHorizontalPadding,
+                                start: Spacing
+                                    .subscriptionProgramsHorizontalPadding,
+                                end: Spacing
+                                    .subscriptionProgramsHorizontalPadding,
                                 bottom: showBottomSpace
                                     ? Spacing.subscriptionProgramsBottomSpace
                                     : Spacing.xl,
@@ -113,25 +116,83 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                   );
 
                                   return ValueListenableBuilder<int?>(
-                                    valueListenable: selectedProgramNotifier,
-                                    builder: (context, selectedProgramIndex, _) {
-                                      final isSelected =
-                                          index == selectedProgramIndex;
+                                        valueListenable:
+                                            selectedProgramNotifier,
+                                        builder:
+                                            (context, selectedProgramIndex, _) {
+                                              final isSelected =
+                                                  index == selectedProgramIndex;
 
-                                      return SubscriptionProgramGoalCard(
-                                        key: ValueKey(program.programId),
-                                        title: program.name(locale.localeName),
-                                        description: program.description(
-                                          locale.localeName,
-                                        ),
-                                        imageUrl: program.imageUrl,
-                                        primaryFeature: _featureAt(keywords, 0),
-                                        secondaryFeature: _featureAt(keywords, 1),
-                                        isSelected: isSelected,
-                                        onTap: () => onProgramSelected(index),
-                                      );
-                                    },
-                                  )
+                                              return SubscriptionProgramGoalCard(
+                                                key: ValueKey(
+                                                  program.programId,
+                                                ),
+                                                title: program.name(
+                                                  locale.localeName,
+                                                ),
+                                                description: program
+                                                    .description(
+                                                      locale.localeName,
+                                                    ),
+                                                imageUrl: program.imageUrl,
+                                                primaryFeature: _featureAt(
+                                                  keywords,
+                                                  0,
+                                                ),
+                                                secondaryFeature: _featureAt(
+                                                  keywords,
+                                                  1,
+                                                ),
+                                                isSelected: isSelected,
+                                                canSelect: program.canSelect,
+                                                disabledNotice: program.canSelect
+                                                    ? null
+                                                    : locale.subscription_program_no_restaurants_in_area,
+                                                onTap: () {
+                                                  if (program.canSelect) {
+                                                    onProgramSelected(index);
+                                                  } else {
+                                                    final messenger =
+                                                        ScaffoldMessenger.of(
+                                                          context,
+                                                        );
+                                                    messenger
+                                                        .hideCurrentSnackBar();
+                                                    messenger.showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          _disabledProgramMessage(
+                                                            context,
+                                                            program,
+                                                          ),
+                                                          style:
+                                                              getRegularStyle(
+                                                                fontFamily:
+                                                                    FontConstant
+                                                                        .alexandria,
+                                                                fontSize:
+                                                                    FontSize
+                                                                        .size12,
+                                                                color: color
+                                                                    .onError,
+                                                              ),
+                                                        ),
+                                                        backgroundColor:
+                                                            color.error,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        duration:
+                                                            const Duration(
+                                                              seconds: 3,
+                                                            ),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              );
+                                            },
+                                      )
                                       .animate()
                                       .fadeIn(
                                         duration: 350.ms,
@@ -188,5 +249,23 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
   String _featureAt(List<String> keywords, int index) {
     if (index >= keywords.length) return '';
     return keywords[index];
+  }
+  String _disabledProgramMessage(
+    BuildContext context,
+    SubscriptionProgramEntity program,
+  ) {
+    final locale = context.localization;
+    final code = program.availability?.messageCode ?? program.disabledReason;
+    if (code != null && code.isNotEmpty) {
+      if (code == 'subscription_flow.no_prepared_restaurants' ||
+          code == 'no_prepared_restaurants' ||
+          code == 'subscription_flow.no_restaurants_for_selection' ||
+          code == 'no_restaurants_for_selection' ||
+          code == 'no_restaurants_for_address') {
+        return locale.subscription_program_no_prepared_restaurants_notice;
+      }
+      return mapFailureMessage(context, code);
+    }
+    return locale.subscription_program_no_prepared_restaurants_notice;
   }
 }

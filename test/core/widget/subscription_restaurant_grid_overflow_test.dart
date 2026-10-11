@@ -57,52 +57,50 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Directionality(
         textDirection: textDirection,
-        child: Scaffold(
-          body: SingleChildScrollView(child: child),
-        ),
+        child: Scaffold(body: SingleChildScrollView(child: child)),
       ),
     );
   }
 
-  testWidgets('SubscriptionRestaurantsGrid does not overflow on standard screen (360px)', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(360, 800);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.reset);
+  testWidgets(
+    'SubscriptionRestaurantsGrid does not overflow on standard screen (360px)',
+    (tester) async {
+      tester.view.physicalSize = const Size(360, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        child: SubscriptionRestaurantsGrid(
-          restaurants: sampleRestaurants,
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: SubscriptionRestaurantsGrid(restaurants: sampleRestaurants),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(tester.takeException(), isNull);
-    expect(find.text('[تجربة] بروتين لاب'), findsOneWidget);
-    expect(find.text('[تجربة] جرين بول'), findsOneWidget);
-    expect(find.text('[تجربة] مطبخ دايت كير'), findsOneWidget);
-  });
+      expect(tester.takeException(), isNull);
+      expect(find.text('[تجربة] بروتين لاب'), findsOneWidget);
+      expect(find.text('[تجربة] جرين بول'), findsOneWidget);
+      expect(find.text('[تجربة] مطبخ دايت كير'), findsOneWidget);
+    },
+  );
 
-  testWidgets('SubscriptionRestaurantsGrid does not overflow on narrow screen (320px)', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(320, 800);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.reset);
+  testWidgets(
+    'SubscriptionRestaurantsGrid does not overflow on narrow screen (320px)',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        child: SubscriptionRestaurantsGrid(
-          restaurants: sampleRestaurants,
-          childAspectRatio: 0.86,
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: SubscriptionRestaurantsGrid(
+            restaurants: sampleRestaurants,
+            childAspectRatio: 0.86,
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(tester.takeException(), isNull);
-  });
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

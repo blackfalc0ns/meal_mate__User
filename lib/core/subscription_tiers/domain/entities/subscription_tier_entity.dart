@@ -2,6 +2,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_theme_entity.dart';
 import 'package:meal_meat_user/core/widget/restaurant_tier/restaurant_package_tier_ui_model.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/monthly_plan_details_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 
 class SubscriptionTierEntity {
   const SubscriptionTierEntity({
@@ -12,7 +13,7 @@ class SubscriptionTierEntity {
     required this.descriptionAr,
     required this.descriptionEn,
     required this.restaurantCount,
-    required this.restaurants,
+    required List<SubscriptionTierRestaurantEntity> restaurants,
     this.durationDays,
     this.totalPrice,
     this.dailyPrice,
@@ -24,7 +25,12 @@ class SubscriptionTierEntity {
     this.fridayDays,
     this.totalServiceDays,
     this.theme,
-  });
+    this.availability,
+    this.canSelect = true,
+    this.isAvailable = true,
+    this.disabledReason,
+    // ignore: prefer_initializing_formals
+  }) : _restaurants = restaurants;
 
   final String tier;
   final String nameAr;
@@ -33,7 +39,9 @@ class SubscriptionTierEntity {
   final String descriptionAr;
   final String descriptionEn;
   final int restaurantCount;
-  final List<SubscriptionTierRestaurantEntity> restaurants;
+  final List<SubscriptionTierRestaurantEntity> _restaurants;
+  List<SubscriptionTierRestaurantEntity> get restaurants =>
+      effectiveCanSelect ? _restaurants : const [];
   final int? durationDays;
   final double? totalPrice;
   final double? dailyPrice;
@@ -45,7 +53,10 @@ class SubscriptionTierEntity {
   final int? fridayDays;
   final int? totalServiceDays;
   final SubscriptionTierThemeEntity? theme;
-
+  final SubscriptionAvailabilityEntity? availability;
+  final bool canSelect;
+  final bool isAvailable;
+  final String? disabledReason;
 
   String name(String localeName) {
     final lower = tier.toLowerCase();
@@ -77,15 +88,25 @@ class SubscriptionTierEntity {
   String description(String localeName) =>
       localeName == 'ar' ? descriptionAr : descriptionEn;
 
+  bool get effectiveCanSelect {
+    if (!canSelect) return false;
+    if (!isAvailable) return false;
+    if (availability != null && !availability!.effectiveCanSelect) return false;
+    return true;
+  }
+
+  int get effectiveRestaurantCount => effectiveCanSelect ? restaurantCount : 0;
+
   MonthlyPackageTierEntity toPackageTier(String localeName) {
     final lower = tier.toLowerCase();
-    final icon = lower.contains('max') ||
+    final icon =
+        lower.contains('max') ||
             lower.contains('diamond') ||
             lower.contains('elite')
         ? 'diamond'
         : lower.contains('plus') ||
-                lower.contains('crown') ||
-                lower.contains('platinum')
+              lower.contains('crown') ||
+              lower.contains('platinum')
         ? 'crown'
         : 'heart';
 
@@ -107,24 +128,30 @@ class SubscriptionTierEntity {
       bullets: const [],
       iconName: icon,
       logoUrl: logoUrl,
-      restaurantCount: restaurantCount,
-      restaurantLogoUrls: restaurants
-          .map((restaurant) => restaurant.logoUrl)
-          .whereType<String>()
-          .toList(),
+      restaurantCount: effectiveCanSelect ? restaurantCount : 0,
+      restaurantLogoUrls: effectiveCanSelect
+          ? restaurants
+                .map((restaurant) => restaurant.logoUrl)
+                .whereType<String>()
+                .toList()
+          : const [],
       isPopular: isRecommended,
+      canSelect: effectiveCanSelect,
+      isAvailable: isAvailable,
+      disabledReason: disabledReason,
     );
   }
 
   RestaurantPackageTierUiModel toTierUiModel(String localeName) {
     final lower = tier.toLowerCase();
-    final icon = lower.contains('max') ||
+    final icon =
+        lower.contains('max') ||
             lower.contains('diamond') ||
             lower.contains('elite')
         ? 'diamond'
         : lower.contains('plus') ||
-                lower.contains('crown') ||
-                lower.contains('platinum')
+              lower.contains('crown') ||
+              lower.contains('platinum')
         ? 'crown'
         : 'heart';
 
@@ -143,14 +170,16 @@ class SubscriptionTierEntity {
       subtitle: description(localeName),
       iconName: icon,
       logoUrl: logoUrl,
-      restaurantCount: restaurantCount,
-      restaurantLogoUrls: restaurants
-          .map((r) => r.logoUrl)
-          .whereType<String>()
-          .toList(),
+      restaurantCount: effectiveCanSelect ? restaurantCount : 0,
+      restaurantLogoUrls: effectiveCanSelect
+          ? restaurants.map((r) => r.logoUrl).whereType<String>().toList()
+          : const [],
       isPopular: isRecommended,
       price: formattedPriceStr,
       currency: effectiveCurrency,
+      canSelect: effectiveCanSelect,
+      isAvailable: isAvailable,
+      disabledReason: disabledReason,
     );
   }
 }

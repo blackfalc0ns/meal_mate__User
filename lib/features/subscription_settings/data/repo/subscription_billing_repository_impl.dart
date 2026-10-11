@@ -66,7 +66,8 @@ class SubscriptionBillingRepositoryImpl
             .toList(),
         invoices: invoices.map((invoice) => invoice.toEntity()).toList(),
         paymentMethod: paymentMethod.toEntity(),
-        freezePolicy: freezePolicy?.toEntity() ??
+        freezePolicy:
+            freezePolicy?.toEntity() ??
             SubscriptionBillingFreezePolicyEntity.empty,
       );
     });

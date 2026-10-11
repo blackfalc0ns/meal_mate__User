@@ -239,9 +239,11 @@ class SubscriptionTypeCard extends StatelessWidget {
                           width: contentWidth - Spacing.xxl,
                           child: Row(
                             children: [
-                              for (var i = 0;
-                                  i < features.length && i < icons.length;
-                                  i++) ...[
+                              for (
+                                var i = 0;
+                                i < features.length && i < icons.length;
+                                i++
+                              ) ...[
                                 SubscriptionTypeFeatureItem(
                                   label: features[i],
                                   icon: icons[i],
@@ -252,9 +254,7 @@ class SubscriptionTypeCard extends StatelessWidget {
                                   SizedBox(
                                     height: Spacing
                                         .subscriptionTypeMobileFeatureDividerHeight,
-                                    child: VerticalDivider(
-                                      color: dividerColor,
-                                    ),
+                                    child: VerticalDivider(color: dividerColor),
                                   ),
                               ],
                             ],

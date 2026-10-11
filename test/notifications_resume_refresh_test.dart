@@ -73,10 +73,7 @@ Widget _wrap(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('en'),
-      Locale('ar'),
-    ],
+    supportedLocales: const [Locale('en'), Locale('ar')],
     locale: const Locale('en'),
     home: child,
   );
@@ -84,7 +81,9 @@ Widget _wrap(Widget child) {
 
 void main() {
   group('Notifications Resume Lifecycle Refresh', () {
-    testWidgets('NotificationsScreen refreshes on AppLifecycleState.resumed', (tester) async {
+    testWidgets('NotificationsScreen refreshes on AppLifecycleState.resumed', (
+      tester,
+    ) async {
       final fakeGetNotifications = _FakeGetNotificationsUseCase();
       final fakeCalendar = _FakeGetCalendarUseCase();
       final badgeViewModel = NotificationBadgeViewModel(fakeCalendar);
@@ -95,9 +94,7 @@ void main() {
         badgeViewModel,
       );
 
-      await tester.pumpWidget(
-        _wrap(NotificationsScreen(viewModel: viewModel)),
-      );
+      await tester.pumpWidget(_wrap(NotificationsScreen(viewModel: viewModel)));
       await tester.pumpAndSettle();
 
       expect(fakeGetNotifications.callCount, 1);
@@ -109,17 +106,20 @@ void main() {
       expect(fakeGetNotifications.callCount, 2);
     });
 
-    test('NotificationBadgeViewModel refreshCount updates count when invoked on resumed', () async {
-      final fakeCalendar = _FakeGetCalendarUseCase();
-      final badgeViewModel = NotificationBadgeViewModel(fakeCalendar);
+    test(
+      'NotificationBadgeViewModel refreshCount updates count when invoked on resumed',
+      () async {
+        final fakeCalendar = _FakeGetCalendarUseCase();
+        final badgeViewModel = NotificationBadgeViewModel(fakeCalendar);
 
-      await badgeViewModel.refreshCount(
-        subscriptionId: 'sub-active',
-        localeName: 'en',
-      );
+        await badgeViewModel.refreshCount(
+          subscriptionId: 'sub-active',
+          localeName: 'en',
+        );
 
-      expect(fakeCalendar.callCount, 1);
-      expect(badgeViewModel.state.unreadCount, 7);
-    });
+        expect(fakeCalendar.callCount, 1);
+        expect(badgeViewModel.state.unreadCount, 7);
+      },
+    );
   });
 }

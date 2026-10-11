@@ -60,7 +60,8 @@ class _InfluencerBankAccountScreenState
           >(
             listenWhen: (previous, current) =>
                 (!_initialized && current.account != null) ||
-                (previous.failure != current.failure && current.failure != null),
+                (previous.failure != current.failure &&
+                    current.failure != null),
             listener: (context, state) {
               if (!_initialized && state.account != null) {
                 final account = state.account!;
@@ -69,7 +70,8 @@ class _InfluencerBankAccountScreenState
                 _ibanController.text = account.iban ?? '';
                 _initialized = true;
               }
-              if (state.failure != null && (state.account != null || !state.isMutating)) {
+              if (state.failure != null &&
+                  (state.account != null || !state.isMutating)) {
                 CustomSnackbar.showError(
                   context: context,
                   message: ErrorMessagePresenter.fromFailure(

@@ -81,7 +81,8 @@ class TokenInterceptor extends QueuedInterceptor {
     final isUnauthorized = err.response?.statusCode == 401;
     final shouldSkipAuth = options.extra[skipAuthKey] == true;
     final alreadyRetried = options.extra[_refreshRetryKey] == true;
-    final isCheckout = options.path.contains('/subscriptions/checkout') ||
+    final isCheckout =
+        options.path.contains('/subscriptions/checkout') ||
         options.extra[noAutoRetryKey] == true;
 
     if (!isUnauthorized || shouldSkipAuth) {

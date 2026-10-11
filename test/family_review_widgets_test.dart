@@ -22,12 +22,8 @@ void main() {
     );
   }
 
-  testWidgets('FamilyReviewLoadingSkeleton renders correctly', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestable(const FamilyReviewLoadingSkeleton()),
-    );
+  testWidgets('FamilyReviewLoadingSkeleton renders correctly', (tester) async {
+    await tester.pumpWidget(buildTestable(const FamilyReviewLoadingSkeleton()));
 
     expect(
       find.byKey(const ValueKey('family-review-loading-skeleton')),
@@ -108,9 +104,7 @@ void main() {
     );
 
     await tester.pumpWidget(
-      buildTestable(
-        const FamilyReviewMacrosCard(nutrition: nutrition),
-      ),
+      buildTestable(const FamilyReviewMacrosCard(nutrition: nutrition)),
     );
 
     expect(find.text('1420'), findsOneWidget);
@@ -140,33 +134,34 @@ void main() {
     );
   });
 
-  testWidgets('FamilyReviewCutoffBanner renders countdown, title, and disclaimer', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestable(
-        const FamilyReviewCutoffBanner(
-          title: 'يمكنك تعديل وجبات اليوم حتى وقت القفل',
-          description: 'بمجرد وصول وقت القفل سيتم تجهيز الوجبات',
-          remainingTime: '22 ساعة و 18 دقيقة',
-          disclaimer: 'في حال لم يكتمل الاختيار سيتم التعيين تلقائيا',
+  testWidgets(
+    'FamilyReviewCutoffBanner renders countdown, title, and disclaimer',
+    (tester) async {
+      await tester.pumpWidget(
+        buildTestable(
+          const FamilyReviewCutoffBanner(
+            title: 'يمكنك تعديل وجبات اليوم حتى وقت القفل',
+            description: 'بمجرد وصول وقت القفل سيتم تجهيز الوجبات',
+            remainingTime: '22 ساعة و 18 دقيقة',
+            disclaimer: 'في حال لم يكتمل الاختيار سيتم التعيين تلقائيا',
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(
-      find.text('يمكنك تعديل وجبات اليوم حتى وقت القفل'),
-      findsOneWidget,
-    );
-    expect(
-      find.text('بمجرد وصول وقت القفل سيتم تجهيز الوجبات'),
-      findsOneWidget,
-    );
-    expect(
-      find.text('في حال لم يكتمل الاختيار سيتم التعيين تلقائيا'),
-      findsOneWidget,
-    );
-  });
+      expect(
+        find.text('يمكنك تعديل وجبات اليوم حتى وقت القفل'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('بمجرد وصول وقت القفل سيتم تجهيز الوجبات'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('في حال لم يكتمل الاختيار سيتم التعيين تلقائيا'),
+        findsOneWidget,
+      );
+    },
+  );
 
   testWidgets('FamilyReviewActionsBar triggers edit and confirm callbacks', (
     tester,
@@ -194,18 +189,19 @@ void main() {
     expect(confirmCalled, isTrue);
   });
 
-  testWidgets('FamilyReviewMemberMealsScreen renders empty state without args', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        locale: Locale('ar'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: FamilyReviewMemberMealsScreen(),
-      ),
-    );
+  testWidgets(
+    'FamilyReviewMemberMealsScreen renders empty state without args',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          locale: Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: FamilyReviewMemberMealsScreen(),
+        ),
+      );
 
-    expect(find.byType(FamilyReviewMemberMealsScreen), findsOneWidget);
-  });
+      expect(find.byType(FamilyReviewMemberMealsScreen), findsOneWidget);
+    },
+  );
 }

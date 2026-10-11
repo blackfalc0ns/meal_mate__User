@@ -74,7 +74,8 @@ class _AddAllergyScreenBody extends StatelessWidget {
           ),
           body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
             buildWhen: (previous, current) =>
-                previous.preferences.isLoading != current.preferences.isLoading ||
+                previous.preferences.isLoading !=
+                    current.preferences.isLoading ||
                 previous.preferences.data != current.preferences.data ||
                 previous.preferences.failure != current.preferences.failure ||
                 previous.catalog.isLoading != current.catalog.isLoading ||
@@ -85,7 +86,8 @@ class _AddAllergyScreenBody extends StatelessWidget {
               final catalogState = state.catalog;
               final catalog = catalogState.data;
 
-              if ((preferencesState.isLoading && preferencesState.data == null) ||
+              if ((preferencesState.isLoading &&
+                      preferencesState.data == null) ||
                   (catalogState.isLoading && catalog == null)) {
                 return const LoadingWidget.fullScreen();
               }
@@ -118,9 +120,7 @@ class _AddAllergyScreenBody extends StatelessWidget {
               child: AbsorbPointer(
                 child: ColoredBox(
                   color: color.scrim.withValues(alpha: 0.35),
-                  child: const Center(
-                    child: CustomProgressIndicator(),
-                  ),
+                  child: const Center(child: CustomProgressIndicator()),
                 ),
               ),
             );

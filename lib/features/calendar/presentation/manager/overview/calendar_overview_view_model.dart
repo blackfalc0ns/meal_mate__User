@@ -83,8 +83,8 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
 
     final generation = ++_calendarRequestGeneration;
     _dayRequestGeneration++;
-    final badgeVersion =
-        _notificationBadgeViewModel?.beginCalendarCountRequest();
+    final badgeVersion = _notificationBadgeViewModel
+        ?.beginCalendarCountRequest();
 
     emit(
       state.copyWith(
@@ -201,6 +201,10 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
         )
         .firstOrNull;
     return todayDay?.date ?? days.first.date;
+  }
+
+  Future<void> refreshDay(DateTime date, {required String localeName}) async {
+    await _loadSelectedDayDetailsForDate(date, localeName: localeName);
   }
 
   Future<void> _loadSelectedDayDetails(String localeName) async {

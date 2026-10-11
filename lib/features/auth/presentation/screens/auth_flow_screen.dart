@@ -57,11 +57,13 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
       _currentPage = page;
     });
 
-    unawaited(_pageController.animateToPage(
-      page.index,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeInOut,
-    ));
+    unawaited(
+      _pageController.animateToPage(
+        page.index,
+        duration: const Duration(milliseconds: 320),
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   void _goToResetPasswordOtp() {
@@ -83,12 +85,14 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CallingCodesViewModel>(
-          create: (_) => getIt<CallingCodesViewModel>()
-            ..doIntent(const LoadCallingCodesEvent()),
+          create: (_) =>
+              getIt<CallingCodesViewModel>()
+                ..doIntent(const LoadCallingCodesEvent()),
         ),
         BlocProvider<LoginViewModel>(
-          create: (_) => getIt<LoginViewModel>()
-            ..doIntent(const CheckBiometricReadinessEvent()),
+          create: (_) =>
+              getIt<LoginViewModel>()
+                ..doIntent(const CheckBiometricReadinessEvent()),
         ),
         BlocProvider<RegisterViewModel>(
           create: (_) => getIt<RegisterViewModel>(),
@@ -105,19 +109,20 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
                 final isLoginLoading = context.select<LoginViewModel, bool>(
                   (vm) => vm.state.isLoading,
                 );
-                final isRegisterLoading =
-                    context.select<RegisterViewModel, bool>(
-                  (vm) => vm.state.isLoading || vm.state.isResending,
-                );
-                final isRecoveryLoading =
-                    context.select<PasswordRecoveryViewModel, bool>(
-                  (vm) => vm.state.isLoading || vm.state.isResending,
-                );
-                final isCallingCodesLoading =
-                    context.select<CallingCodesViewModel, bool>(
-                  (vm) => vm.state.isLoading && vm.state.items.isEmpty,
-                );
-                final isLoading = isLoginLoading ||
+                final isRegisterLoading = context
+                    .select<RegisterViewModel, bool>(
+                      (vm) => vm.state.isLoading || vm.state.isResending,
+                    );
+                final isRecoveryLoading = context
+                    .select<PasswordRecoveryViewModel, bool>(
+                      (vm) => vm.state.isLoading || vm.state.isResending,
+                    );
+                final isCallingCodesLoading = context
+                    .select<CallingCodesViewModel, bool>(
+                      (vm) => vm.state.isLoading && vm.state.items.isEmpty,
+                    );
+                final isLoading =
+                    isLoginLoading ||
                     isRegisterLoading ||
                     isRecoveryLoading ||
                     isCallingCodesLoading;

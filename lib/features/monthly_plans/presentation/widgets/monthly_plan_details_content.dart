@@ -36,7 +36,6 @@ class MonthlyPlanDetailsContent extends StatelessWidget {
     );
   }
 
-
   void _onCloseRestaurants(BuildContext context) {
     context.read<SubscriptionPlanViewModel>().doIntent(
       const CloseSubscriptionTierRestaurantsEvent(),
@@ -129,36 +128,36 @@ class MonthlyPlanDetailsContent extends StatelessWidget {
       switchOutCurve: Curves.easeInCubic,
       child: isRestaurantsView
           ? MonthlyPlanRestaurantsView(
-              key: const ValueKey('restaurants-view'),
-              state: state,
-              plan: plan,
-              onClose: () => _onCloseRestaurants(context),
-              onRetry: () => _onRetryBrowseRestaurants(context),
-            )
-              .animate(key: const ValueKey('restaurants-view-anim'))
-              .fadeIn(duration: 320.ms, curve: Curves.easeOut)
-              .slideX(
-                begin: isRtl ? -0.15 : 0.15,
-                end: 0,
-                duration: 320.ms,
-                curve: Curves.easeOutCubic,
-              )
+                  key: const ValueKey('restaurants-view'),
+                  state: state,
+                  plan: plan,
+                  onClose: () => _onCloseRestaurants(context),
+                  onRetry: () => _onRetryBrowseRestaurants(context),
+                )
+                .animate(key: const ValueKey('restaurants-view-anim'))
+                .fadeIn(duration: 320.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: isRtl ? -0.15 : 0.15,
+                  end: 0,
+                  duration: 320.ms,
+                  curve: Curves.easeOutCubic,
+                )
           : MonthlyPlanPackagesView(
-              key: const ValueKey('packages-view'),
-              state: state,
-              plan: plan,
-              fridayUnavailableMessage: fridayUnavailableMessage,
-              onBrowseRestaurants: (tierIndex) =>
-                  _onBrowseRestaurants(context, tierIndex),
-            )
-              .animate(key: const ValueKey('packages-view-anim'))
-              .fadeIn(duration: 320.ms, curve: Curves.easeOut)
-              .slideX(
-                begin: isRtl ? 0.15 : -0.15,
-                end: 0,
-                duration: 320.ms,
-                curve: Curves.easeOutCubic,
-              ),
+                  key: const ValueKey('packages-view'),
+                  state: state,
+                  plan: plan,
+                  fridayUnavailableMessage: fridayUnavailableMessage,
+                  onBrowseRestaurants: (tierIndex) =>
+                      _onBrowseRestaurants(context, tierIndex),
+                )
+                .animate(key: const ValueKey('packages-view-anim'))
+                .fadeIn(duration: 320.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: isRtl ? 0.15 : -0.15,
+                  end: 0,
+                  duration: 320.ms,
+                  curve: Curves.easeOutCubic,
+                ),
     );
   }
 }

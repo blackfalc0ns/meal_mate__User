@@ -12649,6 +12649,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The calendar is not ready yet. Refresh in a moment.'**
   String get calendarFulfillmentNotReady;
+
+  /// No description provided for @subscription_flow_no_delivery_to_address.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants currently deliver to this address.'**
+  String get subscription_flow_no_delivery_to_address;
+
+  /// No description provided for @subscription_flow_option_uncovered.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants for these options deliver to your address.'**
+  String get subscription_flow_option_uncovered;
+
+  /// No description provided for @subscription_flow_no_prepared_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants currently have prepared meals or valid pricing for these options.'**
+  String get subscription_flow_no_prepared_restaurants;
+
+  /// No description provided for @subscription_flow_period_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants can serve the entire period with these options. Change your options and try again.'**
+  String get subscription_flow_period_unavailable;
+
+  /// No description provided for @subscription_flow_selection_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the duration and start date to check the entire period.'**
+  String get subscription_flow_selection_required;
+
+  /// No description provided for @subscription_flow_friday_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday service is unavailable for this tier.'**
+  String get subscription_flow_friday_unavailable;
+
+  /// No description provided for @subscription_flow_pricing_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing is currently unavailable for these options.'**
+  String get subscription_flow_pricing_unavailable;
+
+  /// No description provided for @calendar_selection_deadline_passed.
+  ///
+  /// In en, this message translates to:
+  /// **'The editing deadline for this day has passed.'**
+  String get calendar_selection_deadline_passed;
+
+  /// No description provided for @calendar_first_day_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit the first day within 24 hours of payment, subject to the displayed deadline.'**
+  String get calendar_first_day_deadline;
+
+  /// No description provided for @calendar_ordinary_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete selections for later days at least 72 hours before service.'**
+  String get calendar_ordinary_deadline;
+
+  /// No description provided for @calendar_fulfillment_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription is being prepared. The calendar will appear when preparation is complete.'**
+  String get calendar_fulfillment_pending;
+
+  /// No description provided for @calendar_auto_selection_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic selection could not be completed. Review the day’s status before continuing.'**
+  String get calendar_auto_selection_failed;
+
+  /// No description provided for @freeze_preparation_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacement days could not be prepared. The change was not approved.'**
+  String get freeze_preparation_failed;
+
+  /// No description provided for @freeze_replacement_capacity_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacement days do not have enough capacity. The change was not approved.'**
+  String get freeze_replacement_capacity_unavailable;
+
+  /// No description provided for @freeze_replacement_restaurants_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No eligible restaurant can serve the replacement days. The change was not approved.'**
+  String get freeze_replacement_restaurants_unavailable;
+
+  /// No description provided for @freeze_replacement_pool_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No replacement restaurants are available for freeze.'**
+  String get freeze_replacement_pool_unavailable;
+
+  /// No description provided for @freeze_no_service_days.
+  ///
+  /// In en, this message translates to:
+  /// **'No service days available to freeze.'**
+  String get freeze_no_service_days;
+
+  /// No description provided for @subscription_flow_empty_options.
+  ///
+  /// In en, this message translates to:
+  /// **'No options are currently available.'**
+  String get subscription_flow_empty_options;
+
+  /// No description provided for @subscription_flow_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get subscription_flow_loading;
+
+  /// No description provided for @subscription_flow_request_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Data could not be loaded. Try again.'**
+  String get subscription_flow_request_failed;
+
+  /// No description provided for @calendar_restaurant_coverage_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No eligible restaurant covers your delivery address for this day.'**
+  String get calendar_restaurant_coverage_unavailable;
+
+  /// No description provided for @calendar_box_not_ready.
+  ///
+  /// In en, this message translates to:
+  /// **'This restaurant does not have an approved menu for the delivery day.'**
+  String get calendar_box_not_ready;
+
+  /// No description provided for @calendar_restaurant_capacity_full.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant capacity is full or unavailable for the delivery day.'**
+  String get calendar_restaurant_capacity_full;
+
+  /// No description provided for @calendar_no_safe_box.
+  ///
+  /// In en, this message translates to:
+  /// **'No full allergy-safe box is available for this day.'**
+  String get calendar_no_safe_box;
+
+  /// No description provided for @calendar_restaurant_busy.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected restaurant is busy on the delivery day.'**
+  String get calendar_restaurant_busy;
+
+  /// No description provided for @calendar_quota_exhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected restaurant has reached its selection repetition limit.'**
+  String get calendar_quota_exhausted;
+
+  /// No description provided for @subscription_program_no_restaurants_in_area.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants available in your area'**
+  String get subscription_program_no_restaurants_in_area;
+
+  /// No description provided for @subscription_program_no_prepared_restaurants_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'This program is currently unavailable as there are no prepared restaurants in your area.'**
+  String get subscription_program_no_prepared_restaurants_notice;
 }
 
 class _AppLocalizationsDelegate

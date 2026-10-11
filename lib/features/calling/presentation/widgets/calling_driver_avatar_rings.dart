@@ -4,10 +4,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CallingDriverAvatarRings extends StatelessWidget {
-  const CallingDriverAvatarRings({
-    super.key,
-    required this.avatarAsset,
-  });
+  const CallingDriverAvatarRings({super.key, required this.avatarAsset});
 
   final String avatarAsset;
 
@@ -26,9 +23,7 @@ class CallingDriverAvatarRings extends StatelessWidget {
             height: Spacing.callingRipple4Size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: color.callRippleStroke,
-              ),
+              border: Border.all(color: color.callRippleStroke),
             ),
           ),
           Container(
@@ -36,9 +31,7 @@ class CallingDriverAvatarRings extends StatelessWidget {
             height: Spacing.callingRipple3Size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: color.callRippleStroke,
-              ),
+              border: Border.all(color: color.callRippleStroke),
             ),
           ),
           Container(
@@ -46,9 +39,7 @@ class CallingDriverAvatarRings extends StatelessWidget {
             height: Spacing.callingRipple2Size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: color.callRippleStroke,
-              ),
+              border: Border.all(color: color.callRippleStroke),
             ),
           ),
           Container(
@@ -56,9 +47,7 @@ class CallingDriverAvatarRings extends StatelessWidget {
             height: Spacing.callingRipple1Size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: color.callRippleStroke,
-              ),
+              border: Border.all(color: color.callRippleStroke),
             ),
           ),
           ClipOval(

@@ -172,105 +172,114 @@ void main() {
   }
 
   group('Payment Methods Refresh & Selection Tests', () {
-    test('wallet with null id is disabled and selection/checkout ignores it', () async {
-      const walletMethod = PaymentMethodEntity(
-        id: null,
-        type: PaymentMethodType.wallet,
-        title: 'MealMate Wallet',
-        subtitle: 'Unavailable',
-        isAvailable: false,
-        unavailableReason: 'wallet_not_implemented',
-      );
-      const payzahMethod = PaymentMethodEntity(
-        id: 7,
-        type: PaymentMethodType.payzah,
-        title: 'Payzah hosted',
-        subtitle: 'Pay securely',
-        isAvailable: true,
-      );
-
-      methodsUseCase.returnMethods = [walletMethod, payzahMethod];
-
-      final args = createPaymentArgs();
-      viewModel.doIntent(LoadPaymentEvent(args));
-
-      await pumpEventQueue();
-
-      expect(viewModel.state.methods.length, 2);
-      expect(viewModel.state.selectedMethod?.id, 7);
-
-      // Attempt to select disabled wallet method
-      viewModel.doIntent(const SelectPaymentMethodEvent(walletMethod));
-      await pumpEventQueue();
-
-      // Selected method must remain Payzah
-      expect(viewModel.state.selectedMethod?.id, 7);
-
-      // Trigger checkout
-      viewModel.doIntent(CheckoutPaymentEvent(args));
-      await pumpEventQueue();
-
-      // Checkout called once with Payzah ID 7
-      expect(checkoutUseCase.callCount, 1);
-      expect(checkoutUseCase.lastRequest?.paymentMethodId, 7);
-    });
-
-    test('opening screen twice sends two requests and replaces old selection', () async {
-      const initialMethod = PaymentMethodEntity(
-        id: 3,
-        type: PaymentMethodType.payzah,
-        title: 'Payzah initial',
-        subtitle: '',
-        isAvailable: true,
-      );
-      methodsUseCase.returnMethods = [initialMethod];
-
-      final args1 = createPaymentArgs();
-      viewModel.doIntent(LoadPaymentEvent(args1));
-      await pumpEventQueue();
-
-      expect(methodsUseCase.callCount, 1);
-      expect(viewModel.state.selectedMethod?.id, 3);
-
-      // Second route entry / refresh
-      const newMethod = PaymentMethodEntity(
-        id: 9,
-        type: PaymentMethodType.payzah,
-        title: 'Payzah updated',
-        subtitle: '',
-        isAvailable: true,
-      );
-      methodsUseCase.returnMethods = [newMethod];
-
-      final args2 = createPaymentArgs();
-      viewModel.doIntent(LoadPaymentEvent(args2));
-      await pumpEventQueue();
-
-      expect(methodsUseCase.callCount, 2);
-      expect(viewModel.state.selectedMethod?.id, 9);
-      expect(viewModel.state.methods.first.id, 9);
-    });
-
-    test('rebuild/re-reading state without LoadPaymentEvent does not trigger extra calls', () async {
-      methodsUseCase.returnMethods = [
-        const PaymentMethodEntity(
-          id: 5,
+    test(
+      'wallet with null id is disabled and selection/checkout ignores it',
+      () async {
+        const walletMethod = PaymentMethodEntity(
+          id: null,
+          type: PaymentMethodType.wallet,
+          title: 'MealMate Wallet',
+          subtitle: 'Unavailable',
+          isAvailable: false,
+          unavailableReason: 'wallet_not_implemented',
+        );
+        const payzahMethod = PaymentMethodEntity(
+          id: 7,
           type: PaymentMethodType.payzah,
-          title: 'Payzah',
+          title: 'Payzah hosted',
+          subtitle: 'Pay securely',
+          isAvailable: true,
+        );
+
+        methodsUseCase.returnMethods = [walletMethod, payzahMethod];
+
+        final args = createPaymentArgs();
+        viewModel.doIntent(LoadPaymentEvent(args));
+
+        await pumpEventQueue();
+
+        expect(viewModel.state.methods.length, 2);
+        expect(viewModel.state.selectedMethod?.id, 7);
+
+        // Attempt to select disabled wallet method
+        viewModel.doIntent(const SelectPaymentMethodEvent(walletMethod));
+        await pumpEventQueue();
+
+        // Selected method must remain Payzah
+        expect(viewModel.state.selectedMethod?.id, 7);
+
+        // Trigger checkout
+        viewModel.doIntent(CheckoutPaymentEvent(args));
+        await pumpEventQueue();
+
+        // Checkout called once with Payzah ID 7
+        expect(checkoutUseCase.callCount, 1);
+        expect(checkoutUseCase.lastRequest?.paymentMethodId, 7);
+      },
+    );
+
+    test(
+      'opening screen twice sends two requests and replaces old selection',
+      () async {
+        const initialMethod = PaymentMethodEntity(
+          id: 3,
+          type: PaymentMethodType.payzah,
+          title: 'Payzah initial',
           subtitle: '',
           isAvailable: true,
-        ),
-      ];
+        );
+        methodsUseCase.returnMethods = [initialMethod];
 
-      final args = createPaymentArgs();
-      viewModel.doIntent(LoadPaymentEvent(args));
-      await pumpEventQueue();
+        final args1 = createPaymentArgs();
+        viewModel.doIntent(LoadPaymentEvent(args1));
+        await pumpEventQueue();
 
-      expect(methodsUseCase.callCount, 1);
+        expect(methodsUseCase.callCount, 1);
+        expect(viewModel.state.selectedMethod?.id, 3);
 
-      // Simulating UI rebuild by accessing state
-      expect(viewModel.state.methods.length, 1);
-      expect(methodsUseCase.callCount, 1);
-    });
+        // Second route entry / refresh
+        const newMethod = PaymentMethodEntity(
+          id: 9,
+          type: PaymentMethodType.payzah,
+          title: 'Payzah updated',
+          subtitle: '',
+          isAvailable: true,
+        );
+        methodsUseCase.returnMethods = [newMethod];
+
+        final args2 = createPaymentArgs();
+        viewModel.doIntent(LoadPaymentEvent(args2));
+        await pumpEventQueue();
+
+        expect(methodsUseCase.callCount, 2);
+        expect(viewModel.state.selectedMethod?.id, 9);
+        expect(viewModel.state.methods.first.id, 9);
+      },
+    );
+
+    test(
+      'rebuild/re-reading state without LoadPaymentEvent does not trigger extra calls',
+      () async {
+        methodsUseCase.returnMethods = [
+          const PaymentMethodEntity(
+            id: 5,
+            type: PaymentMethodType.payzah,
+            title: 'Payzah',
+            subtitle: '',
+            isAvailable: true,
+          ),
+        ];
+
+        final args = createPaymentArgs();
+        viewModel.doIntent(LoadPaymentEvent(args));
+        await pumpEventQueue();
+
+        expect(methodsUseCase.callCount, 1);
+
+        // Simulating UI rebuild by accessing state
+        expect(viewModel.state.methods.length, 1);
+        expect(methodsUseCase.callCount, 1);
+      },
+    );
   });
 }

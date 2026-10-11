@@ -48,12 +48,14 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
 
   Future<void> load({int page = 1, int pageSize = 20}) async {
     final generation = ++_requestGeneration;
-    emit(state.copyWith(
-      isLoading: true,
-      initialFailure: () => null,
-      page: page,
-      pageSize: pageSize,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        initialFailure: () => null,
+        page: page,
+        pageSize: pageSize,
+      ),
+    );
 
     final result = await _getNotificationsUseCase(
       page: page,
@@ -64,21 +66,20 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          rawItems: data.items,
-          page: data.page,
-          pageSize: data.pageSize,
-          totalCount: data.totalCount,
-          totalPages: data.totalPages,
-          hasNextPage: data.hasNextPage,
-          isLoading: false,
-          initialFailure: () => null,
-        ));
+        emit(
+          state.copyWith(
+            rawItems: data.items,
+            page: data.page,
+            pageSize: data.pageSize,
+            totalCount: data.totalCount,
+            totalPages: data.totalPages,
+            hasNextPage: data.hasNextPage,
+            isLoading: false,
+            initialFailure: () => null,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          isLoading: false,
-          initialFailure: () => failure,
-        ));
+        emit(state.copyWith(isLoading: false, initialFailure: () => failure));
     }
   }
 
@@ -86,10 +87,7 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
     if (state.isRefreshing || state.isLoading) return;
 
     final generation = ++_requestGeneration;
-    emit(state.copyWith(
-      isRefreshing: true,
-      refreshFailure: () => null,
-    ));
+    emit(state.copyWith(isRefreshing: true, refreshFailure: () => null));
 
     final result = await _getNotificationsUseCase(
       page: 1,
@@ -100,21 +98,22 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          rawItems: data.items,
-          page: data.page,
-          pageSize: data.pageSize,
-          totalCount: data.totalCount,
-          totalPages: data.totalPages,
-          hasNextPage: data.hasNextPage,
-          isRefreshing: false,
-          refreshFailure: () => null,
-        ));
+        emit(
+          state.copyWith(
+            rawItems: data.items,
+            page: data.page,
+            pageSize: data.pageSize,
+            totalCount: data.totalCount,
+            totalPages: data.totalPages,
+            hasNextPage: data.hasNextPage,
+            isRefreshing: false,
+            refreshFailure: () => null,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          isRefreshing: false,
-          refreshFailure: () => failure,
-        ));
+        emit(
+          state.copyWith(isRefreshing: false, refreshFailure: () => failure),
+        );
     }
   }
 
@@ -126,10 +125,7 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
       return;
     }
 
-    emit(state.copyWith(
-      isLoadingMore: true,
-      loadMoreFailure: () => null,
-    ));
+    emit(state.copyWith(isLoadingMore: true, loadMoreFailure: () => null));
 
     final nextPage = state.page + 1;
     final result = await _getNotificationsUseCase(
@@ -142,24 +138,26 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
     switch (result) {
       case ApiSuccessResult(:final data):
         final existingIds = state.rawItems.map((e) => e.id).toSet();
-        final newItems =
-            data.items.where((e) => !existingIds.contains(e.id)).toList();
+        final newItems = data.items
+            .where((e) => !existingIds.contains(e.id))
+            .toList();
         final combined = [...state.rawItems, ...newItems];
 
-        emit(state.copyWith(
-          rawItems: combined,
-          page: data.page,
-          totalCount: data.totalCount,
-          totalPages: data.totalPages,
-          hasNextPage: data.hasNextPage,
-          isLoadingMore: false,
-          loadMoreFailure: () => null,
-        ));
+        emit(
+          state.copyWith(
+            rawItems: combined,
+            page: data.page,
+            totalCount: data.totalCount,
+            totalPages: data.totalPages,
+            hasNextPage: data.hasNextPage,
+            isLoadingMore: false,
+            loadMoreFailure: () => null,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          isLoadingMore: false,
-          loadMoreFailure: () => failure,
-        ));
+        emit(
+          state.copyWith(isLoadingMore: false, loadMoreFailure: () => failure),
+        );
     }
   }
 
@@ -183,10 +181,12 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
       return;
     }
 
-    emit(state.copyWith(
-      readingIds: {...state.readingIds, id},
-      actionFailure: () => null,
-    ));
+    emit(
+      state.copyWith(
+        readingIds: {...state.readingIds, id},
+        actionFailure: () => null,
+      ),
+    );
 
     final result = await _markNotificationReadUseCase(id);
     final updatedReadingIds = Set<String>.from(state.readingIds)..remove(id);
@@ -204,26 +204,24 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
           return e;
         }).toList();
 
-        emit(state.copyWith(
-          rawItems: updatedItems,
-          readingIds: updatedReadingIds,
-        ));
+        emit(
+          state.copyWith(rawItems: updatedItems, readingIds: updatedReadingIds),
+        );
         onSuccess?.call();
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          readingIds: updatedReadingIds,
-          actionFailure: () => failure,
-        ));
+        emit(
+          state.copyWith(
+            readingIds: updatedReadingIds,
+            actionFailure: () => failure,
+          ),
+        );
     }
   }
 
   Future<void> markAllRead() async {
     if (state.isMarkingAllRead) return;
 
-    emit(state.copyWith(
-      isMarkingAllRead: true,
-      actionFailure: () => null,
-    ));
+    emit(state.copyWith(isMarkingAllRead: true, actionFailure: () => null));
 
     final result = await _markAllNotificationsReadUseCase();
 
@@ -237,15 +235,11 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
             .map((e) => e.copyWith(isRead: true, readAtUtc: nowUtc))
             .toList();
 
-        emit(state.copyWith(
-          rawItems: updatedItems,
-          isMarkingAllRead: false,
-        ));
+        emit(state.copyWith(rawItems: updatedItems, isMarkingAllRead: false));
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          isMarkingAllRead: false,
-          actionFailure: () => failure,
-        ));
+        emit(
+          state.copyWith(isMarkingAllRead: false, actionFailure: () => failure),
+        );
     }
   }
 }

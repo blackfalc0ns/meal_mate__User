@@ -56,4 +56,3 @@ class AuthFooterAction extends StatelessWidget {
     );
   }
 }
-

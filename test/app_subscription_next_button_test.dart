@@ -22,10 +22,7 @@ void main() {
       await tester.pumpWidget(
         buildTestWidget(
           textDirection: TextDirection.rtl,
-          child: AppSubscriptionButton.next(
-            text: 'التالي',
-            onPressed: () {},
-          ),
+          child: AppSubscriptionButton.next(text: 'التالي', onPressed: () {}),
         ),
       );
       await tester.pumpAndSettle();
@@ -39,10 +36,7 @@ void main() {
       await tester.pumpWidget(
         buildTestWidget(
           textDirection: TextDirection.ltr,
-          child: AppSubscriptionButton.next(
-            text: 'Next',
-            onPressed: () {},
-          ),
+          child: AppSubscriptionButton.next(text: 'Next', onPressed: () {}),
         ),
       );
       await tester.pumpAndSettle();

@@ -39,32 +39,35 @@ void main() {
   });
 
   group('SubscriptionProgramsViewModel Pagination Tests', () {
-    test('initial load fetches page 1 and emits success with items and pagination', () async {
-      repo.programsPageResult = ApiSuccessResult(
-        data: PagedEntity(
-          items: [
-            _createProgram('prog_1', 'Program 1'),
-            _createProgram('prog_2', 'Program 2'),
-          ],
-          pagination: const PaginationEntity(
-            totalCount: 4,
-            page: 1,
-            pageSize: 2,
-            totalPages: 2,
-            hasNextPage: true,
-            hasPreviousPage: false,
+    test(
+      'initial load fetches page 1 and emits success with items and pagination',
+      () async {
+        repo.programsPageResult = ApiSuccessResult(
+          data: PagedEntity(
+            items: [
+              _createProgram('prog_1', 'Program 1'),
+              _createProgram('prog_2', 'Program 2'),
+            ],
+            pagination: const PaginationEntity(
+              totalCount: 4,
+              page: 1,
+              pageSize: 2,
+              totalPages: 2,
+              hasNextPage: true,
+              hasPreviousPage: false,
+            ),
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(const GetSubscriptionProgramsEvent());
-      await pumpEventQueue();
+        viewModel.doIntent(const GetSubscriptionProgramsEvent());
+        await pumpEventQueue();
 
-      expect(viewModel.state.programs.length, 2);
-      expect(viewModel.state.programs[0].programId, 'prog_1');
-      expect(viewModel.state.pagination?.hasNextPage, isTrue);
-      expect(viewModel.state.pagination?.page, 1);
-    });
+        expect(viewModel.state.programs.length, 2);
+        expect(viewModel.state.programs[0].programId, 'prog_1');
+        expect(viewModel.state.pagination?.hasNextPage, isTrue);
+        expect(viewModel.state.pagination?.page, 1);
+      },
+    );
 
     test('load more appends page 2 without duplicates', () async {
       repo.programsPageResult = ApiSuccessResult(
@@ -156,68 +159,73 @@ void main() {
       expect(viewModel.state.programs.first.programId, 'prog_new');
     });
 
-    test('stale response from older request is ignored when a newer request completes first', () async {
-      final completer1 = Completer<ApiResult<PagedEntity<SubscriptionProgramEntity>>>();
-      final completer2 = Completer<ApiResult<PagedEntity<SubscriptionProgramEntity>>>();
+    test(
+      'stale response from older request is ignored when a newer request completes first',
+      () async {
+        final completer1 =
+            Completer<ApiResult<PagedEntity<SubscriptionProgramEntity>>>();
+        final completer2 =
+            Completer<ApiResult<PagedEntity<SubscriptionProgramEntity>>>();
 
-      int callCount = 0;
-      repo.customHandler = (page, pageSize) {
-        callCount++;
-        if (callCount == 1) {
-          return completer1.future;
-        }
-        return completer2.future;
-      };
+        int callCount = 0;
+        repo.customHandler = (page, pageSize) {
+          callCount++;
+          if (callCount == 1) {
+            return completer1.future;
+          }
+          return completer2.future;
+        };
 
-      // Start first request
-      viewModel.doIntent(const GetSubscriptionProgramsEvent());
-      await pumpEventQueue();
+        // Start first request
+        viewModel.doIntent(const GetSubscriptionProgramsEvent());
+        await pumpEventQueue();
 
-      // Trigger second request (refresh)
-      viewModel.doIntent(const GetSubscriptionProgramsEvent(isRefresh: true));
-      await pumpEventQueue();
+        // Trigger second request (refresh)
+        viewModel.doIntent(const GetSubscriptionProgramsEvent(isRefresh: true));
+        await pumpEventQueue();
 
-      // Complete request 2 first with new data
-      completer2.complete(
-        ApiSuccessResult(
-          data: PagedEntity(
-            items: [_createProgram('fresh_prog', 'Fresh')],
-            pagination: const PaginationEntity(
-              totalCount: 1,
-              page: 1,
-              pageSize: 10,
-              totalPages: 1,
-              hasNextPage: false,
-              hasPreviousPage: false,
+        // Complete request 2 first with new data
+        completer2.complete(
+          ApiSuccessResult(
+            data: PagedEntity(
+              items: [_createProgram('fresh_prog', 'Fresh')],
+              pagination: const PaginationEntity(
+                totalCount: 1,
+                page: 1,
+                pageSize: 10,
+                totalPages: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
+              ),
             ),
           ),
-        ),
-      );
-      await pumpEventQueue();
+        );
+        await pumpEventQueue();
 
-      expect(viewModel.state.programs.first.programId, 'fresh_prog');
+        expect(viewModel.state.programs.first.programId, 'fresh_prog');
 
-      // Now complete request 1 with stale data
-      completer1.complete(
-        ApiSuccessResult(
-          data: PagedEntity(
-            items: [_createProgram('stale_prog', 'Stale')],
-            pagination: const PaginationEntity(
-              totalCount: 1,
-              page: 1,
-              pageSize: 10,
-              totalPages: 1,
-              hasNextPage: false,
-              hasPreviousPage: false,
+        // Now complete request 1 with stale data
+        completer1.complete(
+          ApiSuccessResult(
+            data: PagedEntity(
+              items: [_createProgram('stale_prog', 'Stale')],
+              pagination: const PaginationEntity(
+                totalCount: 1,
+                page: 1,
+                pageSize: 10,
+                totalPages: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
+              ),
             ),
           ),
-        ),
-      );
-      await pumpEventQueue();
+        );
+        await pumpEventQueue();
 
-      // Should still be fresh_prog, stale was ignored
-      expect(viewModel.state.programs.first.programId, 'fresh_prog');
-    });
+        // Should still be fresh_prog, stale was ignored
+        expect(viewModel.state.programs.first.programId, 'fresh_prog');
+      },
+    );
 
     test('failure on loadMore preserves existing items in state', () async {
       repo.programsPageResult = ApiSuccessResult(
@@ -274,18 +282,24 @@ SubscriptionProgramEntity _createProgram(String id, String name) {
   );
 }
 
-class _FakeSubscriptionProgramsRepository implements SubscriptionProgramsRepository {
+class _FakeSubscriptionProgramsRepository
+    implements SubscriptionProgramsRepository {
   ApiResult<PagedEntity<SubscriptionProgramEntity>>? programsPageResult;
-  Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>> Function(int page, int pageSize)?
-      customHandler;
+  Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>> Function(
+    int page,
+    int pageSize,
+  )?
+  customHandler;
 
   @override
-  Future<ApiResult<List<SubscriptionProgramEntity>>> getSubscriptionPrograms() async {
+  Future<ApiResult<List<SubscriptionProgramEntity>>>
+  getSubscriptionPrograms() async {
     return ApiSuccessResult(data: []);
   }
 
   @override
-  Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>> getSubscriptionProgramsPage({
+  Future<ApiResult<PagedEntity<SubscriptionProgramEntity>>>
+  getSubscriptionProgramsPage({
     required int page,
     required int pageSize,
   }) async {
@@ -309,7 +323,8 @@ class _FakeSubscriptionProgramsRepository implements SubscriptionProgramsReposit
   }
 
   @override
-  Future<ApiResult<SubscriptionProgramBundlesEntity>> getSubscriptionProgramBundles(
+  Future<ApiResult<SubscriptionProgramBundlesEntity>>
+  getSubscriptionProgramBundles(
     String programId, {
     int? page,
     int? pageSize,

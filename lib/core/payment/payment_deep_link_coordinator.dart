@@ -13,9 +13,9 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
     required TokenService tokenService,
     required PaymentAttemptStore paymentAttemptStore,
     required AppNavigatorService navigatorService,
-  })  : _tokenService = tokenService,
-        _paymentAttemptStore = paymentAttemptStore,
-        _navigatorService = navigatorService;
+  }) : _tokenService = tokenService,
+       _paymentAttemptStore = paymentAttemptStore,
+       _navigatorService = navigatorService;
 
   final TokenService _tokenService;
   final PaymentAttemptStore _paymentAttemptStore;

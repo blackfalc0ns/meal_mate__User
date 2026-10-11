@@ -42,108 +42,126 @@ void main() {
       expect(viewModel.state.isRefreshing, isFalse);
     });
 
-    test('acceptCalendarCount updates unreadCount and ignores stale versions', () {
-      final v1 = viewModel.beginCalendarCountRequest();
-      final v2 = viewModel.beginCalendarCountRequest();
-      expect(v2, greaterThan(v1));
+    test(
+      'acceptCalendarCount updates unreadCount and ignores stale versions',
+      () {
+        final v1 = viewModel.beginCalendarCountRequest();
+        final v2 = viewModel.beginCalendarCountRequest();
+        expect(v2, greaterThan(v1));
 
-      // v1 is stale now
-      viewModel.acceptCalendarCount(5, requestVersion: v1);
-      expect(viewModel.state.unreadCount, isNull);
+        // v1 is stale now
+        viewModel.acceptCalendarCount(5, requestVersion: v1);
+        expect(viewModel.state.unreadCount, isNull);
 
-      // v2 is valid
-      viewModel.acceptCalendarCount(5, requestVersion: v2);
-      expect(viewModel.state.unreadCount, 5);
-      expect(viewModel.state.hasUnread, isTrue);
-    });
+        // v2 is valid
+        viewModel.acceptCalendarCount(5, requestVersion: v2);
+        expect(viewModel.state.unreadCount, 5);
+        expect(viewModel.state.hasUnread, isTrue);
+      },
+    );
 
-    test('acknowledgeRead decrements unreadCount once per notification id and clamps at 0', () {
-      final v1 = viewModel.beginCalendarCountRequest();
-      viewModel.acceptCalendarCount(2, requestVersion: v1);
+    test(
+      'acknowledgeRead decrements unreadCount once per notification id and clamps at 0',
+      () {
+        final v1 = viewModel.beginCalendarCountRequest();
+        viewModel.acceptCalendarCount(2, requestVersion: v1);
 
-      viewModel.acknowledgeRead('n1');
-      expect(viewModel.state.unreadCount, 1);
+        viewModel.acknowledgeRead('n1');
+        expect(viewModel.state.unreadCount, 1);
 
-      // Duplicate acknowledge for same id must NOT decrement again
-      viewModel.acknowledgeRead('n1');
-      expect(viewModel.state.unreadCount, 1);
+        // Duplicate acknowledge for same id must NOT decrement again
+        viewModel.acknowledgeRead('n1');
+        expect(viewModel.state.unreadCount, 1);
 
-      viewModel.acknowledgeRead('n2');
-      expect(viewModel.state.unreadCount, 0);
-      expect(viewModel.state.hasUnread, isFalse);
+        viewModel.acknowledgeRead('n2');
+        expect(viewModel.state.unreadCount, 0);
+        expect(viewModel.state.hasUnread, isFalse);
 
-      // Clamps at 0
-      viewModel.acknowledgeRead('n3');
-      expect(viewModel.state.unreadCount, 0);
-    });
+        // Clamps at 0
+        viewModel.acknowledgeRead('n3');
+        expect(viewModel.state.unreadCount, 0);
+      },
+    );
 
-    test('acknowledgeRead when count is unknown does NOT convert count to 0', () {
-      expect(viewModel.state.unreadCount, isNull);
-      viewModel.acknowledgeRead('n1');
-      expect(viewModel.state.unreadCount, isNull);
-    });
+    test(
+      'acknowledgeRead when count is unknown does NOT convert count to 0',
+      () {
+        expect(viewModel.state.unreadCount, isNull);
+        viewModel.acknowledgeRead('n1');
+        expect(viewModel.state.unreadCount, isNull);
+      },
+    );
 
-    test('acknowledgeReadAll sets count to 0 and invalidates older calendar responses', () {
-      final v1 = viewModel.beginCalendarCountRequest();
-      viewModel.acknowledgeReadAll();
+    test(
+      'acknowledgeReadAll sets count to 0 and invalidates older calendar responses',
+      () {
+        final v1 = viewModel.beginCalendarCountRequest();
+        viewModel.acknowledgeReadAll();
 
-      expect(viewModel.state.unreadCount, 0);
-      expect(viewModel.state.hasUnread, isFalse);
+        expect(viewModel.state.unreadCount, 0);
+        expect(viewModel.state.hasUnread, isFalse);
 
-      // Attempting to deliver v1 response must be ignored
-      viewModel.acceptCalendarCount(7, requestVersion: v1);
-      expect(viewModel.state.unreadCount, 0);
-    });
+        // Attempting to deliver v1 response must be ignored
+        viewModel.acceptCalendarCount(7, requestVersion: v1);
+        expect(viewModel.state.unreadCount, 0);
+      },
+    );
 
-    test('resetForAccountChange resets state completely and invalidates old responses', () {
-      final v1 = viewModel.beginCalendarCountRequest();
-      viewModel.acceptCalendarCount(5, requestVersion: v1);
+    test(
+      'resetForAccountChange resets state completely and invalidates old responses',
+      () {
+        final v1 = viewModel.beginCalendarCountRequest();
+        viewModel.acceptCalendarCount(5, requestVersion: v1);
 
-      viewModel.resetForAccountChange();
-      expect(viewModel.state.unreadCount, isNull);
-      expect(viewModel.state.hasUnread, isFalse);
+        viewModel.resetForAccountChange();
+        expect(viewModel.state.unreadCount, isNull);
+        expect(viewModel.state.hasUnread, isFalse);
 
-      viewModel.acceptCalendarCount(5, requestVersion: v1);
-      expect(viewModel.state.unreadCount, isNull);
-    });
+        viewModel.acceptCalendarCount(5, requestVersion: v1);
+        expect(viewModel.state.unreadCount, isNull);
+      },
+    );
 
-    test('refreshCount calls GetCalendarUseCase and updates unreadCount on success', () async {
-      fakeGetCalendarUseCase.nextResult = ApiSuccessResult(
-        data: const CalendarSubscriptionEntity(
-          subscriptionId: 'sub-1',
-          days: [],
-          unreadNotificationsCount: 8,
-          hasUnreadNotifications: true,
-        ),
-      );
+    test(
+      'refreshCount calls GetCalendarUseCase and updates unreadCount on success',
+      () async {
+        fakeGetCalendarUseCase.nextResult = ApiSuccessResult(
+          data: const CalendarSubscriptionEntity(
+            subscriptionId: 'sub-1',
+            days: [],
+            unreadNotificationsCount: 8,
+            hasUnreadNotifications: true,
+          ),
+        );
 
-      await viewModel.refreshCount(
-        subscriptionId: 'sub-1',
-        localeName: 'en',
-      );
+        await viewModel.refreshCount(subscriptionId: 'sub-1', localeName: 'en');
 
-      expect(viewModel.state.unreadCount, 8);
-      expect(viewModel.state.hasUnread, isTrue);
-      expect(viewModel.state.isRefreshing, isFalse);
-      expect(viewModel.state.refreshFailure, isNull);
-    });
+        expect(viewModel.state.unreadCount, 8);
+        expect(viewModel.state.hasUnread, isTrue);
+        expect(viewModel.state.isRefreshing, isFalse);
+        expect(viewModel.state.refreshFailure, isNull);
+      },
+    );
 
-    test('refreshCount on failure preserves existing count and sets refreshFailure', () async {
-      final v1 = viewModel.beginCalendarCountRequest();
-      viewModel.acceptCalendarCount(4, requestVersion: v1);
+    test(
+      'refreshCount on failure preserves existing count and sets refreshFailure',
+      () async {
+        final v1 = viewModel.beginCalendarCountRequest();
+        viewModel.acceptCalendarCount(4, requestVersion: v1);
 
-      fakeGetCalendarUseCase.nextResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Network error', code: 'network.timeout'),
-      );
+        fakeGetCalendarUseCase.nextResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Network error',
+            code: 'network.timeout',
+          ),
+        );
 
-      await viewModel.refreshCount(
-        subscriptionId: 'sub-1',
-        localeName: 'en',
-      );
+        await viewModel.refreshCount(subscriptionId: 'sub-1', localeName: 'en');
 
-      expect(viewModel.state.unreadCount, 4);
-      expect(viewModel.state.refreshFailure?.code, 'network.timeout');
-      expect(viewModel.state.isRefreshing, isFalse);
-    });
+        expect(viewModel.state.unreadCount, 4);
+        expect(viewModel.state.refreshFailure?.code, 'network.timeout');
+        expect(viewModel.state.isRefreshing, isFalse);
+      },
+    );
   });
 }

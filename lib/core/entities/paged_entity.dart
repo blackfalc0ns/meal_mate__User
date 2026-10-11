@@ -1,10 +1,7 @@
 import 'pagination_entity.dart';
 
 class PagedEntity<T> {
-  const PagedEntity({
-    required this.items,
-    required this.pagination,
-  });
+  const PagedEntity({required this.items, required this.pagination});
 
   final List<T> items;
   final PaginationEntity pagination;

@@ -17,7 +17,7 @@ class DietaryPreferencesSaveSection extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
+    return ColoredBox(
       color: color.surface,
       child: SafeArea(
         top: false,

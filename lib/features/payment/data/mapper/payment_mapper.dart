@@ -10,7 +10,8 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
       id: paymentMethodId ?? id,
       type: _methodType,
       title: nameAr ?? nameEn ?? name ?? titleAr ?? titleEn ?? title ?? '',
-      subtitle: descriptionAr ??
+      subtitle:
+          descriptionAr ??
           descriptionEn ??
           description ??
           (unavailableReason ?? ''),
@@ -36,8 +37,7 @@ extension PaymentMethodResponseDtoMapper on PaymentMethodResponseDto {
       return PaymentMethodType.payzah;
     }
 
-    if (normalizedCode == 'MEALMATE_WALLET' ||
-        normalizedCode == 'WALLET') {
+    if (normalizedCode == 'MEALMATE_WALLET' || normalizedCode == 'WALLET') {
       return PaymentMethodType.wallet;
     }
 
@@ -106,6 +106,8 @@ extension PaymentStatusResponseDtoMapper on PaymentStatusResponseDto {
       isFailed: isFailed ?? false,
       amount: amount ?? 0,
       currencyCode: currencyCode ?? '',
+      isFulfillmentReady: isFulfillmentReady,
+      fulfillmentStatus: fulfillmentStatus,
     );
   }
 }

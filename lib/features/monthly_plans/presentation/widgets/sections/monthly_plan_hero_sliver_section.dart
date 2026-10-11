@@ -58,46 +58,54 @@ class MonthlyPlanHeroSliverSection extends StatelessWidget {
                             key: ValueKey('duration-skeleton'),
                           )
                         : SubscriptionDurationSelector(
-                            key: const ValueKey('duration-selector'),
-                            selectedIndex: state.selectedDurationIndex,
-                            onSelected: (index) =>
-                                context.read<SubscriptionPlanViewModel>().doIntent(
-                                  SelectSubscriptionDurationEvent(
-                                    programId: detailsArgs.program.programId,
-                                    bundleId: detailsArgs.bundle.bundleId,
-                                    durationIndex: index,
-                                  ),
-                                ),
-                            includesFriday: state.includeFriday,
-                            onFridayChanged: (value) =>
-                                context.read<SubscriptionPlanViewModel>().doIntent(
-                                  ToggleSubscriptionFridayEvent(
-                                    programId: detailsArgs.program.programId,
-                                    bundleId: detailsArgs.bundle.bundleId,
-                                    includeFriday: value,
-                                  ),
-                                ),
-                            customDurationDays: state.customDurationDays,
-                            onCustomDurationChanged: (value) =>
-                                context.read<SubscriptionPlanViewModel>().doIntent(
-                                  UpdateCustomSubscriptionDurationEvent(
-                                    programId: detailsArgs.program.programId,
-                                    bundleId: detailsArgs.bundle.bundleId,
-                                    durationDays: value,
-                                  ),
-                                ),
-                            durations: state.durations,
-                            isFridayEnabled: state.canToggleFriday,
-                            isLoading: false,
-                          )
-                            .animate(key: const ValueKey('duration-selector-anim'))
-                            .fadeIn(duration: 320.ms, curve: Curves.easeOut)
-                            .slideX(
-                              begin: isRtl ? 0.15 : -0.15,
-                              end: 0,
-                              duration: 320.ms,
-                              curve: Curves.easeOutCubic,
-                            ),
+                                key: const ValueKey('duration-selector'),
+                                selectedIndex: state.selectedDurationIndex,
+                                onSelected: (index) => context
+                                    .read<SubscriptionPlanViewModel>()
+                                    .doIntent(
+                                      SelectSubscriptionDurationEvent(
+                                        programId:
+                                            detailsArgs.program.programId,
+                                        bundleId: detailsArgs.bundle.bundleId,
+                                        durationIndex: index,
+                                      ),
+                                    ),
+                                includesFriday: state.includeFriday,
+                                onFridayChanged: (value) => context
+                                    .read<SubscriptionPlanViewModel>()
+                                    .doIntent(
+                                      ToggleSubscriptionFridayEvent(
+                                        programId:
+                                            detailsArgs.program.programId,
+                                        bundleId: detailsArgs.bundle.bundleId,
+                                        includeFriday: value,
+                                      ),
+                                    ),
+                                customDurationDays: state.customDurationDays,
+                                onCustomDurationChanged: (value) => context
+                                    .read<SubscriptionPlanViewModel>()
+                                    .doIntent(
+                                      UpdateCustomSubscriptionDurationEvent(
+                                        programId:
+                                            detailsArgs.program.programId,
+                                        bundleId: detailsArgs.bundle.bundleId,
+                                        durationDays: value,
+                                      ),
+                                    ),
+                                durations: state.durations,
+                                isFridayEnabled: state.canToggleFriday,
+                                isLoading: false,
+                              )
+                              .animate(
+                                key: const ValueKey('duration-selector-anim'),
+                              )
+                              .fadeIn(duration: 320.ms, curve: Curves.easeOut)
+                              .slideX(
+                                begin: isRtl ? 0.15 : -0.15,
+                                end: 0,
+                                duration: 320.ms,
+                                curve: Curves.easeOutCubic,
+                              ),
                   ),
             onBack: onBack ?? () => Navigator.maybePop(context),
           ),

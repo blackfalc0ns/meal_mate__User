@@ -28,10 +28,8 @@ class FamilySubscriptionMealsStatusItem extends StatelessWidget {
             width: 28,
             height: 28,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => const SizedBox(
-              width: 28,
-              height: 28,
-            ),
+            errorBuilder: (context, error, stackTrace) =>
+                const SizedBox(width: 28, height: 28),
           ),
         ),
         const SizedBox(width: Spacing.xs),

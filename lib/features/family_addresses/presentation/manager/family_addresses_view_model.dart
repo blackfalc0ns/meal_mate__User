@@ -77,10 +77,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
       return m;
     }).toList();
 
-    final completedMemberIds = {
-      ...state.completedMemberIds,
-      targetMemberId,
-    };
+    final completedMemberIds = {...state.completedMemberIds, targetMemberId};
     final isComplete = completedMemberIds.length == updatedMembers.length;
     final nextIndex = isComplete
         ? state.currentIndex

@@ -13,10 +13,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 
 class MonthlyPlanBottomBarSection extends StatelessWidget {
-  const MonthlyPlanBottomBarSection({
-    super.key,
-    required this.detailsArgs,
-  });
+  const MonthlyPlanBottomBarSection({super.key, required this.detailsArgs});
 
   final SubscriptionPlanDetailsArgs detailsArgs;
 
@@ -34,8 +31,7 @@ class MonthlyPlanBottomBarSection extends StatelessWidget {
             previous.browsedTierIndex != current.browsedTierIndex ||
             previous.selectedTier != current.selectedTier ||
             previous.isTiersLoading != current.isTiersLoading ||
-            previous.isSelectedDurationValid !=
-                current.isSelectedDurationValid,
+            previous.isSelectedDurationValid != current.isSelectedDurationValid,
         builder: (context, state) {
           if (state.isBrowsingRestaurants) {
             return const SizedBox.shrink();
@@ -46,7 +42,8 @@ class MonthlyPlanBottomBarSection extends StatelessWidget {
               !state.isTiersLoading &&
               state.isSelectedDurationValid &&
               selectedTier != null &&
-              selectedTier.totalPrice != null;
+              selectedTier.totalPrice != null &&
+              selectedTier.effectiveCanSelect;
 
           return AppSubscriptionButton.next(
             text: locale.subscription_details_subscribe_now,
@@ -65,8 +62,7 @@ class MonthlyPlanBottomBarSection extends StatelessWidget {
                       localeName: locale.localeName,
                       titlePrefix: detailsArgs.program.name(locale.localeName),
                       dayLabel: locale.subscription_day,
-                      subscribeLabel:
-                          locale.subscription_details_subscribe_now,
+                      subscribeLabel: locale.subscription_details_subscribe_now,
                       primaryColor: color.primary,
                     );
 

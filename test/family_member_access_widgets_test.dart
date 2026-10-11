@@ -23,10 +23,9 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      buildTestable(const SizedBox(
-        height: 800,
-        child: FamilyMemberAccessLoadingSkeleton(),
-      )),
+      buildTestable(
+        const SizedBox(height: 800, child: FamilyMemberAccessLoadingSkeleton()),
+      ),
     );
 
     expect(find.byType(FamilyMemberAccessLoadingSkeleton), findsOneWidget);
@@ -53,32 +52,28 @@ void main() {
   ) async {
     await tester.pumpWidget(
       buildTestable(
-        const FamilyMemberAccessHeader(
-          isPaused: true,
-          hasExistingLogin: false,
-        ),
+        const FamilyMemberAccessHeader(isPaused: true, hasExistingLogin: false),
       ),
     );
 
     expect(find.text('متوقف مؤقتاً'), findsWidgets);
   });
 
-  testWidgets('FamilyMemberAccessCredentialsCard renders identifier and password', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestable(
-        const FamilyMemberAccessCredentialsCard(
-          identifier: '+965 50000000',
+  testWidgets(
+    'FamilyMemberAccessCredentialsCard renders identifier and password',
+    (tester) async {
+      await tester.pumpWidget(
+        buildTestable(
+          const FamilyMemberAccessCredentialsCard(identifier: '+965 50000000'),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('بيانات الدخول'), findsOneWidget);
-    expect(find.text('+965 50000000'), findsOneWidget);
-    expect(find.text('••••••••'), findsOneWidget);
-    expect(find.text('تعديل'), findsNWidgets(2));
-  });
+      expect(find.text('بيانات الدخول'), findsOneWidget);
+      expect(find.text('+965 50000000'), findsOneWidget);
+      expect(find.text('••••••••'), findsOneWidget);
+      expect(find.text('تعديل'), findsNWidgets(2));
+    },
+  );
 
   testWidgets('FamilyMemberAccessIndependentCard renders title and switch', (
     tester,
@@ -101,35 +96,36 @@ void main() {
     expect(toggled, false);
   });
 
-  testWidgets('FamilyMemberAccessStatusCard renders radio choices and deactivate button', (
-    tester,
-  ) async {
-    bool selectedPause = false;
-    bool deactivateClicked = false;
+  testWidgets(
+    'FamilyMemberAccessStatusCard renders radio choices and deactivate button',
+    (tester) async {
+      bool selectedPause = false;
+      bool deactivateClicked = false;
 
-    await tester.pumpWidget(
-      buildTestable(
-        FamilyMemberAccessStatusCard(
-          memberName: 'أحمد',
-          isPaused: false,
-          canDeactivate: true,
-          onStatusChanged: (val) => selectedPause = val,
-          onDeactivate: () => deactivateClicked = true,
+      await tester.pumpWidget(
+        buildTestable(
+          FamilyMemberAccessStatusCard(
+            memberName: 'أحمد',
+            isPaused: false,
+            canDeactivate: true,
+            onStatusChanged: (val) => selectedPause = val,
+            onDeactivate: () => deactivateClicked = true,
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('إدارة العضوية'), findsOneWidget);
-    expect(find.text('نشط'), findsOneWidget);
-    expect(find.text('متوقف مؤقتاً'), findsOneWidget);
-    expect(find.text('إيقاف الحساب'), findsOneWidget);
+      expect(find.text('إدارة العضوية'), findsOneWidget);
+      expect(find.text('نشط'), findsOneWidget);
+      expect(find.text('متوقف مؤقتاً'), findsOneWidget);
+      expect(find.text('إيقاف الحساب'), findsOneWidget);
 
-    await tester.tap(find.text('متوقف مؤقتاً'));
-    expect(selectedPause, true);
+      await tester.tap(find.text('متوقف مؤقتاً'));
+      expect(selectedPause, true);
 
-    await tester.tap(find.text('إيقاف الحساب'));
-    expect(deactivateClicked, true);
-  });
+      await tester.tap(find.text('إيقاف الحساب'));
+      expect(deactivateClicked, true);
+    },
+  );
 
   testWidgets('FamilyMemberAccessPermissionsTile renders navigation tile', (
     tester,
@@ -137,9 +133,7 @@ void main() {
     bool tapped = false;
     await tester.pumpWidget(
       buildTestable(
-        FamilyMemberAccessPermissionsTile(
-          onTap: () => tapped = true,
-        ),
+        FamilyMemberAccessPermissionsTile(onTap: () => tapped = true),
       ),
     );
 
@@ -148,24 +142,25 @@ void main() {
     expect(tapped, true);
   });
 
-  testWidgets('FamilyMemberAccessPasswordDialog renders password and copy button', (
-    tester,
-  ) async {
-    bool dismissed = false;
-    await tester.pumpWidget(
-      buildTestable(
-        FamilyMemberAccessPasswordDialog(
-          password: 'Pass1234!',
-          onDismiss: () => dismissed = true,
+  testWidgets(
+    'FamilyMemberAccessPasswordDialog renders password and copy button',
+    (tester) async {
+      bool dismissed = false;
+      await tester.pumpWidget(
+        buildTestable(
+          FamilyMemberAccessPasswordDialog(
+            password: 'Pass1234!',
+            onDismiss: () => dismissed = true,
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('كلمة مرور لمرة واحدة'), findsOneWidget);
-    expect(find.text('Pass1234!'), findsOneWidget);
-    expect(find.text('نسخ'), findsOneWidget);
+      expect(find.text('كلمة مرور لمرة واحدة'), findsOneWidget);
+      expect(find.text('Pass1234!'), findsOneWidget);
+      expect(find.text('نسخ'), findsOneWidget);
 
-    await tester.tap(find.byType(TextButton).last);
-    expect(dismissed, true);
-  });
+      await tester.tap(find.byType(TextButton).last);
+      expect(dismissed, true);
+    },
+  );
 }

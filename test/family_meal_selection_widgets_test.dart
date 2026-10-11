@@ -31,57 +31,58 @@ void main() {
     );
   });
 
-  testWidgets('FamilyMealSelectionCard renders unselected and selected states', (
-    tester,
-  ) async {
-    const mealUnselected = CalendarMealEntity(
-      id: 'meal_1',
-      title: 'دجاج مشوي بالأعشاب',
-      description: 'دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة',
-      calories: '480',
-      carbs: '48',
-      protein: '42',
-      fat: '12',
-      mealType: 'غداء',
-      time: '12:00',
-      actionLabel: 'اختيار',
-      imageAsset: '',
-      ingredients: [],
-      allergens: [
-        CalendarMealAllergenEntity(code: 'gluten_free', label: 'خالي من الجلوتين'),
-      ],
-      selected: false,
-    );
+  testWidgets(
+    'FamilyMealSelectionCard renders unselected and selected states',
+    (tester) async {
+      const mealUnselected = CalendarMealEntity(
+        id: 'meal_1',
+        title: 'دجاج مشوي بالأعشاب',
+        description: 'دجاج مشوي متبل بالأعشاب مع أرز بني وخضار مشكلة',
+        calories: '480',
+        carbs: '48',
+        protein: '42',
+        fat: '12',
+        mealType: 'غداء',
+        time: '12:00',
+        actionLabel: 'اختيار',
+        imageAsset: '',
+        ingredients: [],
+        allergens: [
+          CalendarMealAllergenEntity(
+            code: 'gluten_free',
+            label: 'خالي من الجلوتين',
+          ),
+        ],
+        selected: false,
+      );
 
-    bool tapped = false;
-    await tester.pumpWidget(
-      buildTestable(
-        FamilyMealSelectionCard(
-          meal: mealUnselected,
-          onSelect: () => tapped = true,
+      bool tapped = false;
+      await tester.pumpWidget(
+        buildTestable(
+          FamilyMealSelectionCard(
+            meal: mealUnselected,
+            onSelect: () => tapped = true,
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('دجاج مشوي بالأعشاب'), findsOneWidget);
-    expect(find.text('خالي من الجلوتين'), findsOneWidget);
-    expect(find.text('اختيار الوجبة'), findsOneWidget);
+      expect(find.text('دجاج مشوي بالأعشاب'), findsOneWidget);
+      expect(find.text('خالي من الجلوتين'), findsOneWidget);
+      expect(find.text('اختيار الوجبة'), findsOneWidget);
 
-    await tester.tap(find.text('اختيار الوجبة'));
-    expect(tapped, isTrue);
+      await tester.tap(find.text('اختيار الوجبة'));
+      expect(tapped, isTrue);
 
-    final mealSelected = mealUnselected.copyWith(selected: true);
-    await tester.pumpWidget(
-      buildTestable(
-        FamilyMealSelectionCard(
-          meal: mealSelected,
-          onSelect: () {},
+      final mealSelected = mealUnselected.copyWith(selected: true);
+      await tester.pumpWidget(
+        buildTestable(
+          FamilyMealSelectionCard(meal: mealSelected, onSelect: () {}),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('تم الاختيار'), findsOneWidget);
-  });
+      expect(find.text('تم الاختيار'), findsOneWidget);
+    },
+  );
 
   testWidgets('FamilyMealSelectionMacrosCard renders macros correctly', (
     tester,
@@ -105,27 +106,28 @@ void main() {
     expect(find.text('36 جم'), findsOneWidget);
   });
 
-  testWidgets('FamilyMealSelectionBottomBar renders counters and continue button', (
-    tester,
-  ) async {
-    bool continued = false;
-    await tester.pumpWidget(
-      buildTestable(
-        FamilyMealSelectionBottomBar(
-          selectedCount: 3,
-          totalCount: 4,
-          slotAndDateLabel: 'الغداء • الأثنين 26 مايو',
-          onContinue: () => continued = true,
+  testWidgets(
+    'FamilyMealSelectionBottomBar renders counters and continue button',
+    (tester) async {
+      bool continued = false;
+      await tester.pumpWidget(
+        buildTestable(
+          FamilyMealSelectionBottomBar(
+            selectedCount: 3,
+            totalCount: 4,
+            slotAndDateLabel: 'الغداء • الأثنين 26 مايو',
+            onContinue: () => continued = true,
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text('تم اختيار 3 من 4 وجبات'), findsOneWidget);
-    expect(find.text('الغداء'), findsOneWidget);
-    expect(find.text('الأثنين 26 مايو'), findsOneWidget);
-    expect(find.text('متابعة المراجعة'), findsOneWidget);
+      expect(find.text('تم اختيار 3 من 4 وجبات'), findsOneWidget);
+      expect(find.text('الغداء'), findsOneWidget);
+      expect(find.text('الأثنين 26 مايو'), findsOneWidget);
+      expect(find.text('متابعة المراجعة'), findsOneWidget);
 
-    await tester.tap(find.text('متابعة المراجعة'));
-    expect(continued, isTrue);
-  });
+      await tester.tap(find.text('متابعة المراجعة'));
+      expect(continued, isTrue);
+    },
+  );
 }

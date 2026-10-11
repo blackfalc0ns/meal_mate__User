@@ -18,7 +18,9 @@ class InfluencerStatisticsLoadingSkeleton extends StatelessWidget {
         children: [
           const Row(
             children: [
-              ShimmerPlaceholder.circle(size: Spacing.influencerStatsTitleIconSize),
+              ShimmerPlaceholder.circle(
+                size: Spacing.influencerStatsTitleIconSize,
+              ),
               SizedBox(width: Spacing.sm),
               ShimmerPlaceholder.rect(width: 140, height: 20),
             ],
@@ -29,7 +31,9 @@ class InfluencerStatisticsLoadingSkeleton extends StatelessWidget {
               4,
               (index) => Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: index == 0 ? 0 : Spacing.xxs),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: index == 0 ? 0 : Spacing.xxs,
+                  ),
                   child: const ShimmerPlaceholder.rect(
                     height: 38,
                     borderRadius: Spacing.radiusPill,

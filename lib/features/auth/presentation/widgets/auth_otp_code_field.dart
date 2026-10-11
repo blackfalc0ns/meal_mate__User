@@ -133,10 +133,7 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(Spacing.inputRadius),
-                borderSide: BorderSide(
-                  color: color.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: color.primary, width: 1.5),
               ),
             ),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -151,4 +148,3 @@ class _AuthOtpCodeFieldState extends State<AuthOtpCodeField> {
     );
   }
 }
-

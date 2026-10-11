@@ -10,7 +10,20 @@ abstract interface class SubscriptionProgramsRemoteDataSource {
     required int pageSize,
   });
 
+  Future<SubscriptionProgramsPageResponseDto>
+  getSubscriptionCatalogProgramsPage({
+    required int page,
+    required int pageSize,
+  });
+
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
+    String programId, {
+    int? page,
+    int? pageSize,
+  });
+
+  Future<SubscriptionProgramBundlesResponseDto>
+  getSubscriptionCatalogProgramBundles(
     String programId, {
     int? page,
     int? pageSize,

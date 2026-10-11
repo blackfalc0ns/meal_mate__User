@@ -21,8 +21,9 @@ class NotificationBadgeState {
     return NotificationBadgeState(
       unreadCount: unreadCount != null ? unreadCount() : this.unreadCount,
       isRefreshing: isRefreshing ?? this.isRefreshing,
-      refreshFailure:
-          refreshFailure != null ? refreshFailure() : this.refreshFailure,
+      refreshFailure: refreshFailure != null
+          ? refreshFailure()
+          : this.refreshFailure,
     );
   }
 }

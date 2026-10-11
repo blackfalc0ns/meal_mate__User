@@ -25,21 +25,24 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
     GeocodeAddressUseCase? geocodeAddressUseCase,
     ReverseGeocodeLocationUseCase? reverseGeocodeLocationUseCase,
     AddressLocationRepository? locationRepository,
-  })  : // ignore: prefer_initializing_formals
-        _operations = operations,
-        _getLocationsCatalogUseCase = getLocationsCatalogUseCase ??
-            (locationRepository != null
-                ? GetLocationsCatalogUseCase(locationRepository)
-                : null)!,
-        _geocodeAddressUseCase = geocodeAddressUseCase ??
-            (locationRepository != null
-                ? GeocodeAddressUseCase(locationRepository)
-                : null)!,
-        _reverseGeocodeLocationUseCase = reverseGeocodeLocationUseCase ??
-            (locationRepository != null
-                ? ReverseGeocodeLocationUseCase(locationRepository)
-                : null)!,
-        super(const AddressEditorState());
+  }) : // ignore: prefer_initializing_formals
+       _operations = operations,
+       _getLocationsCatalogUseCase =
+           getLocationsCatalogUseCase ??
+           (locationRepository != null
+               ? GetLocationsCatalogUseCase(locationRepository)
+               : null)!,
+       _geocodeAddressUseCase =
+           geocodeAddressUseCase ??
+           (locationRepository != null
+               ? GeocodeAddressUseCase(locationRepository)
+               : null)!,
+       _reverseGeocodeLocationUseCase =
+           reverseGeocodeLocationUseCase ??
+           (locationRepository != null
+               ? ReverseGeocodeLocationUseCase(locationRepository)
+               : null)!,
+       super(const AddressEditorState());
 
   final AddressEditorOperations _operations;
   final GetLocationsCatalogUseCase _getLocationsCatalogUseCase;
@@ -126,8 +129,8 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
       final selectedAreaWithBlocks = initialArea == null
           ? null
           : (initialArea.blocks.isNotEmpty
-              ? initialArea
-              : await _loadAreaBlocks(countryCode, initialArea.id));
+                ? initialArea
+                : await _loadAreaBlocks(countryCode, initialArea.id));
       final selectedArea = selectedAreaWithBlocks ?? initialArea;
       final selectedBlock = selectedArea == null
           ? null
@@ -505,16 +508,18 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
     );
     if (selection.governorate == null && selection.area == null) return null;
 
-    final countryCode =
-        catalog.countryCode.isNotEmpty ? catalog.countryCode : 'KW';
+    final countryCode = catalog.countryCode.isNotEmpty
+        ? catalog.countryCode
+        : 'KW';
     final currentArea = state.locations.selectedArea;
-    final areaWithBlocks = (currentArea != null &&
+    final areaWithBlocks =
+        (currentArea != null &&
             currentArea.id == selection.area?.id &&
             currentArea.blocks.isNotEmpty)
         ? currentArea
         : (selection.area != null
-            ? await _loadAreaBlocks(countryCode, selection.area!.id)
-            : null);
+              ? await _loadAreaBlocks(countryCode, selection.area!.id)
+              : null);
 
     final selectedArea = areaWithBlocks ?? selection.area;
     final selectedBlock = selectedArea != null
@@ -552,8 +557,9 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
     }
 
     final isUpdate = addressId != null && addressId.isNotEmpty;
-    final actionType =
-        isUpdate ? AddressEditorAction.update : AddressEditorAction.add;
+    final actionType = isUpdate
+        ? AddressEditorAction.update
+        : AddressEditorAction.add;
 
     if (!_operations.supportedActions.contains(actionType)) {
       emit(
@@ -588,7 +594,9 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
   Future<void> _setDefaultAddress(String addressId) async {
     if (_isSaving) return;
 
-    if (!_operations.supportedActions.contains(AddressEditorAction.setDefault)) {
+    if (!_operations.supportedActions.contains(
+      AddressEditorAction.setDefault,
+    )) {
       emit(
         state.copyWith(
           action: state.action.copyWith(

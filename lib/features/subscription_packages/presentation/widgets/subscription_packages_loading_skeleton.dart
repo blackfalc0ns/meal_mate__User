@@ -72,9 +72,7 @@ class SubscriptionPackagesLoadingSkeleton extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: Spacing.md),
-                        ShimmerPlaceholder.circle(
-                          size: Spacing.avatarLg,
-                        ),
+                        ShimmerPlaceholder.circle(size: Spacing.avatarLg),
                       ],
                     ),
                   );

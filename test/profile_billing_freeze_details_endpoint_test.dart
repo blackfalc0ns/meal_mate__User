@@ -13,7 +13,9 @@ void main() {
       final adapter = _CapturingAdapter();
       final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
         ..httpClientAdapter = adapter;
-      final dataSource = SubscriptionBillingRemoteDataSourceImpl(ApiServices(dio));
+      final dataSource = SubscriptionBillingRemoteDataSourceImpl(
+        ApiServices(dio),
+      );
 
       await dataSource.getCurrentCustomerSubscriptionFreezeDetails();
 
@@ -31,7 +33,9 @@ void main() {
       final adapter = _CapturingAdapter();
       final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
         ..httpClientAdapter = adapter;
-      final dataSource = SubscriptionBillingRemoteDataSourceImpl(ApiServices(dio));
+      final dataSource = SubscriptionBillingRemoteDataSourceImpl(
+        ApiServices(dio),
+      );
 
       await dataSource.getCustomerSubscriptionFreezeDetails('sub-1');
 

@@ -7,7 +7,7 @@ import 'package:meal_meat_user/features/notifications/presentation/manager/notif
 @lazySingleton
 class NotificationBadgeViewModel extends Cubit<NotificationBadgeState> {
   NotificationBadgeViewModel(this._getCalendarUseCase)
-      : super(const NotificationBadgeState());
+    : super(const NotificationBadgeState());
 
   final GetCalendarUseCase _getCalendarUseCase;
 
@@ -50,11 +50,13 @@ class NotificationBadgeViewModel extends Cubit<NotificationBadgeState> {
   void resetForAccountChange() {
     _acknowledgedReadIds.clear();
     _requestVersion++;
-    emit(const NotificationBadgeState(
-      unreadCount: null,
-      isRefreshing: false,
-      refreshFailure: null,
-    ));
+    emit(
+      const NotificationBadgeState(
+        unreadCount: null,
+        isRefreshing: false,
+        refreshFailure: null,
+      ),
+    );
   }
 
   Future<void> refreshCount({
@@ -66,10 +68,7 @@ class NotificationBadgeViewModel extends Cubit<NotificationBadgeState> {
     }
 
     final capturedVersion = beginCalendarCountRequest();
-    emit(state.copyWith(
-      isRefreshing: true,
-      refreshFailure: () => null,
-    ));
+    emit(state.copyWith(isRefreshing: true, refreshFailure: () => null));
 
     final result = await _getCalendarUseCase(
       subscriptionId: subscriptionId,
@@ -86,34 +85,32 @@ class NotificationBadgeViewModel extends Cubit<NotificationBadgeState> {
         _acknowledgedReadIds.clear();
         final serverCount = data.unreadNotificationsCount;
         if (serverCount != null) {
-          emit(state.copyWith(
-            unreadCount: () => serverCount,
-            isRefreshing: false,
-          ));
+          emit(
+            state.copyWith(unreadCount: () => serverCount, isRefreshing: false),
+          );
         } else if (data.hasUnreadNotifications != null) {
           final hasUnread = data.hasUnreadNotifications!;
           if (!hasUnread) {
-            emit(state.copyWith(
-              unreadCount: () => 0,
-              isRefreshing: false,
-            ));
+            emit(state.copyWith(unreadCount: () => 0, isRefreshing: false));
           } else {
-            final fallbackCount = (state.unreadCount != null && state.unreadCount! > 0)
+            final fallbackCount =
+                (state.unreadCount != null && state.unreadCount! > 0)
                 ? state.unreadCount
                 : 1;
-            emit(state.copyWith(
-              unreadCount: () => fallbackCount,
-              isRefreshing: false,
-            ));
+            emit(
+              state.copyWith(
+                unreadCount: () => fallbackCount,
+                isRefreshing: false,
+              ),
+            );
           }
         } else {
           emit(state.copyWith(isRefreshing: false));
         }
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          isRefreshing: false,
-          refreshFailure: () => failure,
-        ));
+        emit(
+          state.copyWith(isRefreshing: false, refreshFailure: () => failure),
+        );
     }
   }
 }

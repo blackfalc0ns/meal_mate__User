@@ -18,6 +18,18 @@ extension FoodPreferencesResponseDtoMapper on FoodPreferencesResponseDto {
       dislikedFoods:
           dislikedFoods?.map((item) => item.toEntity()).toList() ?? const [],
       notes: notes,
+      allergiesCompletedAtUtc:
+          allergiesCompletedAtUtc != null &&
+              allergiesCompletedAtUtc!.trim().isNotEmpty
+          ? DateTime.tryParse(allergiesCompletedAtUtc!.trim())
+          : null,
+      dietaryPreferencesCompletedAtUtc:
+          dietaryPreferencesCompletedAtUtc != null &&
+              dietaryPreferencesCompletedAtUtc!.trim().isNotEmpty
+          ? DateTime.tryParse(dietaryPreferencesCompletedAtUtc!.trim())
+          : null,
+      hasNoAllergies: hasNoAllergies ?? false,
+      hasNoDietaryRestriction: hasNoDietaryRestriction ?? false,
     );
   }
 

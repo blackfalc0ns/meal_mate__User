@@ -483,7 +483,6 @@ class Spacing {
   static const double addAllergyButtonHeight = 31.51;
   static const double addAllergyButtonRadius = 17.75;
 
-
   // Monthly plan Figma measurements.
   static const double monthlyPlanDesignWidth = 390.0;
   static const double monthlyPlanHeroHeight = 328.0;

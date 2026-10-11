@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_availability_response_dto.dart';
 
 part 'subscription_program_response_dto.g.dart';
 
@@ -17,6 +18,10 @@ class SubscriptionProgramResponseDto {
     this.imageUrl,
     this.bundleCount,
     this.supportedSlots,
+    this.isAvailable,
+    this.disabledReason,
+    this.availability,
+    this.option,
   });
 
   final String? programId;
@@ -31,6 +36,10 @@ class SubscriptionProgramResponseDto {
   final String? imageUrl;
   final int? bundleCount;
   final List<String>? supportedSlots;
+  final bool? isAvailable;
+  final String? disabledReason;
+  final SubscriptionAvailabilityResponseDto? availability;
+  final SubscriptionProgramResponseDto? option;
 
   factory SubscriptionProgramResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionProgramResponseDtoFromJson(json);

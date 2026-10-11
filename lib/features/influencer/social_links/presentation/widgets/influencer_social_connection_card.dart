@@ -7,10 +7,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import '../models/influencer_social_item_view_data.dart';
 
 class InfluencerSocialConnectionCard extends StatelessWidget {
-  const InfluencerSocialConnectionCard({
-    super.key,
-    required this.item,
-  });
+  const InfluencerSocialConnectionCard({super.key, required this.item});
 
   final InfluencerSocialItemViewData item;
 
@@ -82,10 +79,7 @@ class InfluencerSocialConnectionCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   Spacing.influencerSocialAddButtonRadius,
                 ),
-                border: Border.all(
-                  color: color.primary,
-                  width: Spacing.border,
-                ),
+                border: Border.all(color: color.primary, width: Spacing.border),
               ),
               child: Text(
                 isConnected

@@ -14,12 +14,18 @@ class GetSubscriptionTierRestaurantsUseCase {
     required String bundleId,
     required String tier,
     String? familyMemberId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) {
     return _repository.getTierRestaurants(
       programId: programId,
       bundleId: bundleId,
       tier: tier,
       familyMemberId: familyMemberId,
+      durationDays: durationDays,
+      startDate: startDate,
+      includeFriday: includeFriday,
     );
   }
 }

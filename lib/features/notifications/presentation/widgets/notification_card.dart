@@ -44,9 +44,7 @@ class NotificationCard extends StatelessWidget {
         color: color.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          side: BorderSide(
-            color: color.outlineVariant.withValues(alpha: 0.5),
-          ),
+          side: BorderSide(color: color.outlineVariant.withValues(alpha: 0.5)),
         ),
         elevation: 0,
         child: InkWell(

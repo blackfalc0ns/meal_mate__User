@@ -3,7 +3,6 @@ export 'subscription_flow_args.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 
 class SubscriptionReadinessEntity {
-
   const SubscriptionReadinessEntity({
     required this.isComplete,
     required this.canOpenSummary,
@@ -44,7 +43,10 @@ class SubscriptionReadinessEntity {
     return (!canCheckout && deliveringRestaurantCount == 0) ||
         reason == SubscriptionErrorCodes.restaurantNotEligible ||
         reason == SubscriptionErrorCodes.noRestaurantsForAddress ||
-        reason == SubscriptionErrorCodes.checkoutNoRestaurantsForAddress;
+        reason == SubscriptionErrorCodes.checkoutNoRestaurantsForAddress ||
+        reason == SubscriptionErrorCodes.noPreparedRestaurants ||
+        reason == 'no_prepared_restaurants' ||
+        reason == 'subscription_flow.no_prepared_restaurants';
   }
 
   List<SubscriptionReadinessItemEntity> get incompleteItems =>
@@ -101,32 +103,31 @@ class SubscriptionReadinessAddressEntity {
 
     final gov = isAr
         ? (governorateNameAr?.trim().isNotEmpty == true
-            ? governorateNameAr!.trim()
-            : (governorate?.trim() ?? ''))
+              ? governorateNameAr!.trim()
+              : (governorate?.trim() ?? ''))
         : (governorateNameEn?.trim().isNotEmpty == true
-            ? governorateNameEn!.trim()
-            : (governorate?.trim() ?? ''));
+              ? governorateNameEn!.trim()
+              : (governorate?.trim() ?? ''));
 
     final ar = isAr
         ? (areaNameAr?.trim().isNotEmpty == true
-            ? areaNameAr!.trim()
-            : (area?.trim() ?? ''))
+              ? areaNameAr!.trim()
+              : (area?.trim() ?? ''))
         : (areaNameEn?.trim().isNotEmpty == true
-            ? areaNameEn!.trim()
-            : (area?.trim() ?? ''));
+              ? areaNameEn!.trim()
+              : (area?.trim() ?? ''));
 
     final blk = isAr
         ? (blockNameAr?.trim().isNotEmpty == true
-            ? blockNameAr!.trim()
-            : (block?.trim() ?? ''))
+              ? blockNameAr!.trim()
+              : (block?.trim() ?? ''))
         : (blockNameEn?.trim().isNotEmpty == true
-            ? blockNameEn!.trim()
-            : (block?.trim() ?? ''));
+              ? blockNameEn!.trim()
+              : (block?.trim() ?? ''));
 
     return [gov, ar, blk].where((part) => part.isNotEmpty).join(' - ');
   }
 }
-
 
 class SubscriptionReadinessItemEntity {
   const SubscriptionReadinessItemEntity({
@@ -165,5 +166,3 @@ class SubscriptionReadinessRestaurantEntity {
 
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 }
-
-

@@ -57,9 +57,9 @@ class CallingCodesBottomSheet extends StatelessWidget {
                         final isSelected =
                             callingCode.countryCode ==
                             state.selected?.countryCode;
-                        final isArabic = Localizations.localeOf(context)
-                            .languageCode
-                            .startsWith('ar');
+                        final isArabic = Localizations.localeOf(
+                          context,
+                        ).languageCode.startsWith('ar');
                         final countryName = isArabic
                             ? callingCode.nameAr
                             : callingCode.nameEn;

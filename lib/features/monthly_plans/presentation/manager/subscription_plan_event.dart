@@ -103,3 +103,7 @@ class LoadMoreSubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
 class RetrySubscriptionTierRestaurantsEvent extends SubscriptionPlanEvent {
   const RetrySubscriptionTierRestaurantsEvent();
 }
+
+class InvalidateSubscriptionPlanContextEvent extends SubscriptionPlanEvent {
+  const InvalidateSubscriptionPlanContextEvent();
+}

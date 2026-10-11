@@ -142,6 +142,15 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     switch (result) {
       case ApiSuccessResult(:final data):
         overviewViewModel.replaceDay(data);
+        unawaited(
+          overviewViewModel.refreshDay(targetDate, localeName: effectiveLocale),
+        );
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: targetSubId,
+            localeName: effectiveLocale,
+          ),
+        );
       case ApiErrorResult(:final failure):
         _handleFailure(failure, targetDate, targetSubId, effectiveLocale);
     }
@@ -155,7 +164,8 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? localeName,
   }) {
     final day = overviewViewModel.state.selectedDay;
-    final targetDate = date ?? overviewViewModel.state.selectedDate ?? day?.date;
+    final targetDate =
+        date ?? overviewViewModel.state.selectedDate ?? day?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
         ? subscriptionId
         : overviewViewModel.state.subscriptionId;
@@ -196,7 +206,9 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
 
   Future<void> saveMeals({String? localeName}) async {
     final effectiveLocale = localeName ?? 'en';
-    final result = await mealSelectionViewModel.save(localeName: effectiveLocale);
+    final result = await mealSelectionViewModel.save(
+      localeName: effectiveLocale,
+    );
 
     if (isClosed) return;
 
@@ -204,6 +216,20 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
       case ApiSuccessResult(:final data):
         overviewViewModel.replaceDay(data);
         mealSelectionViewModel.clear();
+        final targetDate =
+            data.date ?? overviewViewModel.state.selectedDate ?? DateTime.now();
+        final subId = mealSelectionViewModel.state.subscriptionId.isNotEmpty
+            ? mealSelectionViewModel.state.subscriptionId
+            : overviewViewModel.state.subscriptionId;
+        unawaited(
+          overviewViewModel.refreshDay(targetDate, localeName: effectiveLocale),
+        );
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: subId,
+            localeName: effectiveLocale,
+          ),
+        );
         emit(
           CalendarFlowState(
             effect: MealsSavedEffect(id: _nextEffectId++, day: data),
@@ -242,9 +268,17 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         final currentMeals = day?.meals ?? const [];
         final confirmedDay = data.copyWith(
           meals: data.meals.isNotEmpty ? data.meals : currentMeals,
-          canEdit: false,
         );
         overviewViewModel.replaceDay(confirmedDay);
+        unawaited(
+          overviewViewModel.refreshDay(date, localeName: effectiveLocale),
+        );
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: subscriptionId,
+            localeName: effectiveLocale,
+          ),
+        );
         emit(
           CalendarFlowState(
             effect: MealsConfirmedEffect(
@@ -277,6 +311,16 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     switch (result) {
       case ApiSuccessResult(:final data):
         overviewViewModel.replaceDay(data);
+        final targetDate = data.date ?? date;
+        unawaited(
+          overviewViewModel.refreshDay(targetDate, localeName: effectiveLocale),
+        );
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: subscriptionId,
+            localeName: effectiveLocale,
+          ),
+        );
         emit(
           CalendarFlowState(
             effect: MealsSavedEffect(id: _nextEffectId++, day: data),
@@ -305,9 +349,44 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     if (failure.code == SubscriptionErrorCodes.calendarSelectionLocked) {
       final day = overviewViewModel.state.selectedDay;
       if (day != null) {
-        overviewViewModel.replaceDay(day.copyWith(canEdit: false, isLocked: true));
+        overviewViewModel.replaceDay(
+          day.copyWith(canEdit: false, isLocked: true),
+        );
       }
-    } else if (failure.code == SubscriptionErrorCodes.calendarDayUnavailable) {
+    } else if (failure.code == SubscriptionErrorCodes.calendarNoSafeBox) {
+      if (subscriptionId.isNotEmpty) {
+        unawaited(overviewViewModel.refreshDay(date, localeName: localeName));
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: subscriptionId,
+            localeName: localeName,
+          ),
+        );
+      }
+    } else if (failure.code ==
+        SubscriptionErrorCodes.calendarRestaurantCoverageUnavailable) {
+      if (subscriptionId.isNotEmpty) {
+        unawaited(overviewViewModel.refreshDay(date, localeName: localeName));
+        unawaited(
+          overviewViewModel.loadCalendar(
+            subscriptionId: subscriptionId,
+            localeName: localeName,
+          ),
+        );
+        unawaited(
+          restaurantPickerViewModel.load(
+            subscriptionId: subscriptionId,
+            date: date,
+            localeName: localeName,
+          ),
+        );
+      }
+    } else if (failure.code == SubscriptionErrorCodes.calendarDayUnavailable ||
+        failure.code == SubscriptionErrorCodes.freezePreparationFailed ||
+        failure.code == SubscriptionErrorCodes.freezePreparationUnavailable ||
+        failure.code == SubscriptionErrorCodes.replacementCapacityUnavailable ||
+        failure.code ==
+            SubscriptionErrorCodes.replacementRestaurantsUnavailable) {
       if (subscriptionId.isNotEmpty) {
         unawaited(
           overviewViewModel.loadCalendar(
@@ -315,6 +394,10 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
             localeName: localeName,
           ),
         );
+      }
+    } else {
+      if (subscriptionId.isNotEmpty) {
+        unawaited(overviewViewModel.refreshDay(date, localeName: localeName));
       }
     }
 

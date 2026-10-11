@@ -10,6 +10,7 @@ abstract class SubscriptionTierRepository {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? startDate,
     String? familyMemberId,
   });
 
@@ -19,5 +20,8 @@ abstract class SubscriptionTierRepository {
     required String bundleId,
     required String tier,
     String? familyMemberId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   });
 }

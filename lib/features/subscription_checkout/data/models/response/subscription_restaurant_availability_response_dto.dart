@@ -21,6 +21,5 @@ class SubscriptionRestaurantAvailabilityResponseDto {
 
   factory SubscriptionRestaurantAvailabilityResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$SubscriptionRestaurantAvailabilityResponseDtoFromJson(json);
+  ) => _$SubscriptionRestaurantAvailabilityResponseDtoFromJson(json);
 }

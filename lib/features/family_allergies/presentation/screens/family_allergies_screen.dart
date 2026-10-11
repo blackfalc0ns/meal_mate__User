@@ -59,9 +59,9 @@ class FamilyAllergiesScreen extends StatelessWidget {
           if (state.failure != null && state.members.isEmpty) {
             final errorWidget = ApiErrorWidget(
               exception: state.failure!.exception,
-              onRetry: () => context
-                  .read<FamilyAllergiesViewModel>()
-                  .load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
+              onRetry: () => context.read<FamilyAllergiesViewModel>().load(
+                memberId: FamilyFlowScope.targetMemberIdOf(context),
+              ),
             );
             if (isInFamilyFlow) return errorWidget;
             return Scaffold(
@@ -70,10 +70,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
                 title: locale.family_setup_title,
                 showBackButton: true,
               ),
-              body: SafeArea(
-                top: false,
-                child: errorWidget,
-              ),
+              body: SafeArea(top: false, child: errorWidget),
             );
           }
           if (isInFamilyFlow) {

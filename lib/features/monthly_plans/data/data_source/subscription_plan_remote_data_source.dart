@@ -22,6 +22,9 @@ abstract interface class SubscriptionPlanRemoteDataSource {
     required String programId,
     required String bundleId,
     required String tier,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   });
 
   Future<SubscriptionTierRestaurantsPageResponseDto> getTierRestaurantsPage({
@@ -31,6 +34,9 @@ abstract interface class SubscriptionPlanRemoteDataSource {
     required int page,
     required int pageSize,
     String? addressId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   });
 
   Future<SubscriptionRestaurantDetailsResponseDto> getRestaurantDetails({

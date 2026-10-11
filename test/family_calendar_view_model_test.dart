@@ -177,10 +177,7 @@ void main() {
 
     final targetDate = DateTime(2026, 9, 20);
     viewModel.doIntent(
-      InitFamilyCalendarEvent(
-        initialDate: targetDate,
-        localeName: 'ar',
-      ),
+      InitFamilyCalendarEvent(initialDate: targetDate, localeName: 'ar'),
     );
 
     await Future<void>.delayed(Duration.zero);

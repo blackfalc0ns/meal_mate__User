@@ -129,7 +129,9 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CalendarOverviewViewModel>.value(value: _overviewViewModel),
+        BlocProvider<CalendarOverviewViewModel>.value(
+          value: _overviewViewModel,
+        ),
         BlocProvider<RestaurantPickerViewModel>.value(
           value: _restaurantPickerViewModel,
         ),

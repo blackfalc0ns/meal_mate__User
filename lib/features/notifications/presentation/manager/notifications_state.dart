@@ -71,14 +71,18 @@ class NotificationsState {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       isMarkingAllRead: isMarkingAllRead ?? this.isMarkingAllRead,
       readingIds: readingIds ?? this.readingIds,
-      initialFailure:
-          initialFailure != null ? initialFailure() : this.initialFailure,
-      refreshFailure:
-          refreshFailure != null ? refreshFailure() : this.refreshFailure,
-      loadMoreFailure:
-          loadMoreFailure != null ? loadMoreFailure() : this.loadMoreFailure,
-      actionFailure:
-          actionFailure != null ? actionFailure() : this.actionFailure,
+      initialFailure: initialFailure != null
+          ? initialFailure()
+          : this.initialFailure,
+      refreshFailure: refreshFailure != null
+          ? refreshFailure()
+          : this.refreshFailure,
+      loadMoreFailure: loadMoreFailure != null
+          ? loadMoreFailure()
+          : this.loadMoreFailure,
+      actionFailure: actionFailure != null
+          ? actionFailure()
+          : this.actionFailure,
     );
   }
 }

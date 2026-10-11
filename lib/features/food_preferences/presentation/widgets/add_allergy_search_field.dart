@@ -5,10 +5,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class AddAllergySearchField extends StatelessWidget {
-  const AddAllergySearchField({
-    super.key,
-    required this.onChanged,
-  });
+  const AddAllergySearchField({super.key, required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -29,24 +26,14 @@ class AddAllergySearchField extends StatelessWidget {
             fontSize: FontSize.size12,
             color: color.onSurfaceVariant,
           ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: Spacing.md,
-          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(
-              Spacing.addAllergySearchRadius,
-            ),
-            borderSide: BorderSide(
-              color: color.outlineVariant,
-            ),
+            borderRadius: BorderRadius.circular(Spacing.addAllergySearchRadius),
+            borderSide: BorderSide(color: color.outlineVariant),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(
-              Spacing.addAllergySearchRadius,
-            ),
-            borderSide: BorderSide(
-              color: color.outlineVariant,
-            ),
+            borderRadius: BorderRadius.circular(Spacing.addAllergySearchRadius),
+            borderSide: BorderSide(color: color.outlineVariant),
           ),
         ),
       ),

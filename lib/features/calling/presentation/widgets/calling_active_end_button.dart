@@ -8,10 +8,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CallingActiveEndButton extends StatelessWidget {
-  const CallingActiveEndButton({
-    super.key,
-    required this.onTap,
-  });
+  const CallingActiveEndButton({super.key, required this.onTap});
 
   final VoidCallback onTap;
 
@@ -38,10 +35,7 @@ class CallingActiveEndButton extends StatelessWidget {
               Assets.callEnd,
               width: Spacing.callingActiveEndButtonIconSize,
               height: Spacing.callingActiveEndButtonIconSize,
-              colorFilter: ColorFilter.mode(
-                color.callWhite,
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(color.callWhite, BlendMode.srcIn),
             ),
           ),
           const SizedBox(height: Spacing.xs),

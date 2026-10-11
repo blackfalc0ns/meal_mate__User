@@ -72,10 +72,12 @@ class AuthRepositoryImpl implements AuthRepository {
           userId: entity.userId,
           accessToken: entity.accessToken,
           refreshToken: entity.refreshToken,
-          accessExpiresAtUtc:
-              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
-          refreshExpiresAtUtc:
-              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          accessExpiresAtUtc: DateTime.tryParse(
+            entity.accessTokenExpiresAtUtc,
+          )?.toUtc(),
+          refreshExpiresAtUtc: DateTime.tryParse(
+            entity.refreshTokenExpiresAtUtc,
+          )?.toUtc(),
           persistence: persistence,
         );
         await _pushNotificationService.registerCurrentToken();
@@ -109,10 +111,12 @@ class AuthRepositoryImpl implements AuthRepository {
           userId: entity.userId,
           accessToken: entity.accessToken,
           refreshToken: entity.refreshToken,
-          accessExpiresAtUtc:
-              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
-          refreshExpiresAtUtc:
-              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          accessExpiresAtUtc: DateTime.tryParse(
+            entity.accessTokenExpiresAtUtc,
+          )?.toUtc(),
+          refreshExpiresAtUtc: DateTime.tryParse(
+            entity.refreshTokenExpiresAtUtc,
+          )?.toUtc(),
           persistence: SessionPersistence.currentRun,
         );
         await _pushNotificationService.registerCurrentToken();
@@ -180,10 +184,12 @@ class AuthRepositoryImpl implements AuthRepository {
           userId: entity.userId,
           accessToken: entity.accessToken,
           refreshToken: entity.refreshToken,
-          accessExpiresAtUtc:
-              DateTime.tryParse(entity.accessTokenExpiresAtUtc)?.toUtc(),
-          refreshExpiresAtUtc:
-              DateTime.tryParse(entity.refreshTokenExpiresAtUtc)?.toUtc(),
+          accessExpiresAtUtc: DateTime.tryParse(
+            entity.accessTokenExpiresAtUtc,
+          )?.toUtc(),
+          refreshExpiresAtUtc: DateTime.tryParse(
+            entity.refreshTokenExpiresAtUtc,
+          )?.toUtc(),
           persistence: isRemembered
               ? SessionPersistence.remembered
               : SessionPersistence.currentRun,

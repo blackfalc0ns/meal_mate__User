@@ -31,50 +31,51 @@ void main() {
     );
   }
 
-  testWidgets('NotificationButton renders and does not show badge when hasNotification is false', (
-    tester,
-  ) async {
-    await tester.pumpWidget(buildTestWidget(hasNotification: false));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'NotificationButton renders and does not show badge when hasNotification is false',
+    (tester) async {
+      await tester.pumpWidget(buildTestWidget(hasNotification: false));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(NotificationButton), findsOneWidget);
+      expect(find.byType(NotificationButton), findsOneWidget);
 
-    final badgeFinder = find.byWidgetPredicate((widget) {
-      if (widget is Container && widget.decoration is BoxDecoration) {
-        final decoration = widget.decoration as BoxDecoration;
-        return decoration.shape == BoxShape.circle && decoration.border != null;
-      }
-      return false;
-    });
+      final badgeFinder = find.byWidgetPredicate((widget) {
+        if (widget is Container && widget.decoration is BoxDecoration) {
+          final decoration = widget.decoration as BoxDecoration;
+          return decoration.shape == BoxShape.circle &&
+              decoration.border != null;
+        }
+        return false;
+      });
 
-    expect(badgeFinder, findsNothing);
-  });
+      expect(badgeFinder, findsNothing);
+    },
+  );
 
-  testWidgets('NotificationButton renders badge dot when hasNotification is true', (
-    tester,
-  ) async {
-    await tester.pumpWidget(buildTestWidget(hasNotification: true));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'NotificationButton renders badge dot when hasNotification is true',
+    (tester) async {
+      await tester.pumpWidget(buildTestWidget(hasNotification: true));
+      await tester.pumpAndSettle();
 
-    final badgeFinder = find.byWidgetPredicate((widget) {
-      if (widget is Container && widget.decoration is BoxDecoration) {
-        final decoration = widget.decoration as BoxDecoration;
-        return decoration.shape == BoxShape.circle && decoration.border != null;
-      }
-      return false;
-    });
+      final badgeFinder = find.byWidgetPredicate((widget) {
+        if (widget is Container && widget.decoration is BoxDecoration) {
+          final decoration = widget.decoration as BoxDecoration;
+          return decoration.shape == BoxShape.circle &&
+              decoration.border != null;
+        }
+        return false;
+      });
 
-    expect(badgeFinder, findsOneWidget);
-  });
+      expect(badgeFinder, findsOneWidget);
+    },
+  );
 
   testWidgets('NotificationButton triggers onTap when pressed', (tester) async {
     var pressed = false;
 
     await tester.pumpWidget(
-      buildTestWidget(
-        hasNotification: true,
-        onTap: () => pressed = true,
-      ),
+      buildTestWidget(hasNotification: true, onTap: () => pressed = true),
     );
     await tester.pumpAndSettle();
 

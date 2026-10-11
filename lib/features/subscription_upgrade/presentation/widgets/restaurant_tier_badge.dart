@@ -33,11 +33,7 @@ class RestaurantTierBadge extends StatelessWidget {
               size: size,
             ),
           )
-        : Icon(
-            Icons.military_tech_rounded,
-            color: color.primary,
-            size: size,
-          );
+        : Icon(Icons.military_tech_rounded, color: color.primary, size: size);
 
     if (imageUrl != null && imageUrl!.isNotEmpty) {
       return AppCachedNetworkImage(
@@ -53,4 +49,3 @@ class RestaurantTierBadge extends StatelessWidget {
     return fallbackWidget;
   }
 }
-

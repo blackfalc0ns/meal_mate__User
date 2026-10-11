@@ -1,4 +1,3 @@
-
 import 'package:meal_meat_user/core/address/domain/contracts/address_editor_operations.dart';
 import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
@@ -11,31 +10,35 @@ import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existin
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 
-typedef PreviewNewAddressCoverageFn = Future<ApiResult<AddressCoveragePreviewEntity>> Function(
-  CustomerAddressRequestEntity request, {
-  int? page,
-  int? pageSize,
-});
-typedef PreviewExistingAddressCoverageFn = Future<ApiResult<AddressCoveragePreviewEntity>> Function(
-  String addressId, {
-  int? page,
-  int? pageSize,
-});
-typedef AddCustomerAddressFn = Future<ApiResult<CustomerAddressEntity>> Function(
-  CustomerAddressRequestEntity request,
-);
-typedef UpdateCustomerAddressFn = Future<ApiResult<CustomerAddressEntity>> Function(
-  String addressId,
-  CustomerAddressRequestEntity request,
-);
-typedef ConfirmSetDefaultAddressFn = Future<ApiResult<CustomerAddressEntity>> Function(
-  String addressId,
-);
+typedef PreviewNewAddressCoverageFn =
+    Future<ApiResult<AddressCoveragePreviewEntity>> Function(
+      CustomerAddressRequestEntity request, {
+      int? page,
+      int? pageSize,
+    });
+typedef PreviewExistingAddressCoverageFn =
+    Future<ApiResult<AddressCoveragePreviewEntity>> Function(
+      String addressId, {
+      int? page,
+      int? pageSize,
+    });
+typedef AddCustomerAddressFn =
+    Future<ApiResult<CustomerAddressEntity>> Function(
+      CustomerAddressRequestEntity request,
+    );
+typedef UpdateCustomerAddressFn =
+    Future<ApiResult<CustomerAddressEntity>> Function(
+      String addressId,
+      CustomerAddressRequestEntity request,
+    );
+typedef ConfirmSetDefaultAddressFn =
+    Future<ApiResult<CustomerAddressEntity>> Function(String addressId);
 
 class CustomerAddressEditorOperations implements AddressEditorOperations {
   CustomerAddressEditorOperations({
     PreviewNewAddressCoverageUseCase? previewNewAddressCoverageUseCase,
-    PreviewExistingAddressCoverageUseCase? previewExistingAddressCoverageUseCase,
+    PreviewExistingAddressCoverageUseCase?
+    previewExistingAddressCoverageUseCase,
     AddCustomerAddressUseCase? addCustomerAddressUseCase,
     UpdateCustomerAddressUseCase? updateCustomerAddressUseCase,
     ConfirmSetDefaultAddressUseCase? confirmSetDefaultAddressUseCase,
@@ -44,26 +47,31 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     AddCustomerAddressFn? addCustomerAddress,
     UpdateCustomerAddressFn? updateCustomerAddress,
     ConfirmSetDefaultAddressFn? confirmSetDefaultAddress,
-  })  : _previewNew = previewNewAddressCoverage ??
-            (previewNewAddressCoverageUseCase != null
-                ? previewNewAddressCoverageUseCase.call
-                : null),
-        _previewExisting = previewExistingAddressCoverage ??
-            (previewExistingAddressCoverageUseCase != null
-                ? previewExistingAddressCoverageUseCase.call
-                : null),
-        _add = addCustomerAddress ??
-            (addCustomerAddressUseCase != null
-                ? addCustomerAddressUseCase.call
-                : null),
-        _update = updateCustomerAddress ??
-            (updateCustomerAddressUseCase != null
-                ? updateCustomerAddressUseCase.call
-                : null),
-        _setDefault = confirmSetDefaultAddress ??
-            (confirmSetDefaultAddressUseCase != null
-                ? confirmSetDefaultAddressUseCase.call
-                : null);
+  }) : _previewNew =
+           previewNewAddressCoverage ??
+           (previewNewAddressCoverageUseCase != null
+               ? previewNewAddressCoverageUseCase.call
+               : null),
+       _previewExisting =
+           previewExistingAddressCoverage ??
+           (previewExistingAddressCoverageUseCase != null
+               ? previewExistingAddressCoverageUseCase.call
+               : null),
+       _add =
+           addCustomerAddress ??
+           (addCustomerAddressUseCase != null
+               ? addCustomerAddressUseCase.call
+               : null),
+       _update =
+           updateCustomerAddress ??
+           (updateCustomerAddressUseCase != null
+               ? updateCustomerAddressUseCase.call
+               : null),
+       _setDefault =
+           confirmSetDefaultAddress ??
+           (confirmSetDefaultAddressUseCase != null
+               ? confirmSetDefaultAddressUseCase.call
+               : null);
 
   final PreviewNewAddressCoverageFn? _previewNew;
   final PreviewExistingAddressCoverageFn? _previewExisting;
@@ -73,10 +81,10 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
 
   @override
   Set<AddressEditorAction> get supportedActions => const {
-        AddressEditorAction.add,
-        AddressEditorAction.update,
-        AddressEditorAction.setDefault,
-      };
+    AddressEditorAction.add,
+    AddressEditorAction.update,
+    AddressEditorAction.setDefault,
+  };
 
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewNew(
@@ -87,9 +95,11 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     if (_previewNew != null) {
       return _previewNew(request, page: page, pageSize: pageSize);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Preview new operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Preview new operation not configured'),
+      ),
+    );
   }
 
   @override
@@ -101,9 +111,13 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     if (_previewExisting != null) {
       return _previewExisting(addressId, page: page, pageSize: pageSize);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Preview existing operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(
+          errorMessage: 'Preview existing operation not configured',
+        ),
+      ),
+    );
   }
 
   @override
@@ -113,9 +127,11 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     if (_add != null) {
       return _add(request);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Add operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Add operation not configured'),
+      ),
+    );
   }
 
   @override
@@ -126,9 +142,11 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     if (_update != null) {
       return _update(addressId, request);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Update operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Update operation not configured'),
+      ),
+    );
   }
 
   @override
@@ -136,8 +154,10 @@ class CustomerAddressEditorOperations implements AddressEditorOperations {
     if (_setDefault != null) {
       return _setDefault(addressId);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Set default operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Set default operation not configured'),
+      ),
+    );
   }
 }

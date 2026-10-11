@@ -107,6 +107,19 @@ class MealSelectionViewModel extends Cubit<MealSelectionState> {
 
     switch (result) {
       case ApiSuccessResult():
+        if (result.data.meals.isEmpty) {
+          emit(
+            state.copyWith(
+              isLoading: false,
+              clearAvailableMeals: true,
+              failure: Failure(
+                code: SubscriptionErrorCodes.calendarBoxNotReady,
+                errorMessage: SubscriptionErrorCodes.calendarBoxNotReady,
+              ),
+            ),
+          );
+          return;
+        }
         final availableMeals = _withRestaurantFallback(
           result.data,
           selectedRestaurant,

@@ -95,34 +95,40 @@ void main() {
       expect(storageValue, isNull);
     });
 
-    test('wrong customer read returns null and does not return other data', () async {
-      final attempt = PaymentAttempt(
-        ownerCustomerId: 'user-AAA',
-        subscriptionId: 'sub-AAA',
-        paymentId: 'pz-AAA',
-        createdAtUtc: DateTime.utc(2026, 10, 8, 12, 0),
-      );
+    test(
+      'wrong customer read returns null and does not return other data',
+      () async {
+        final attempt = PaymentAttempt(
+          ownerCustomerId: 'user-AAA',
+          subscriptionId: 'sub-AAA',
+          paymentId: 'pz-AAA',
+          createdAtUtc: DateTime.utc(2026, 10, 8, 12, 0),
+        );
 
-      await store.save(attempt);
+        await store.save(attempt);
 
-      final readOther = await store.readForCustomer('user-BBB');
-      expect(readOther, isNull);
-    });
+        final readOther = await store.readForCustomer('user-BBB');
+        expect(readOther, isNull);
+      },
+    );
 
-    test('removeForCustomer clears attempt on logout or account switch', () async {
-      final attempt = PaymentAttempt(
-        ownerCustomerId: 'user-123',
-        subscriptionId: 'sub-456',
-        paymentId: 'pz-track-789',
-        createdAtUtc: DateTime.utc(2026, 10, 8, 12, 0),
-      );
+    test(
+      'removeForCustomer clears attempt on logout or account switch',
+      () async {
+        final attempt = PaymentAttempt(
+          ownerCustomerId: 'user-123',
+          subscriptionId: 'sub-456',
+          paymentId: 'pz-track-789',
+          createdAtUtc: DateTime.utc(2026, 10, 8, 12, 0),
+        );
 
-      await store.save(attempt);
-      expect(await store.readForCustomer('user-123'), isNotNull);
+        await store.save(attempt);
+        expect(await store.readForCustomer('user-123'), isNotNull);
 
-      await store.removeForCustomer('user-123');
-      expect(await store.readForCustomer('user-123'), isNull);
-    });
+        await store.removeForCustomer('user-123');
+        expect(await store.readForCustomer('user-123'), isNull);
+      },
+    );
 
     test('PaymentAttempt rejects payload missing required IDs', () {
       expect(

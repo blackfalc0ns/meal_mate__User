@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/entities/pagination_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 
 class SubscriptionBundleEntity {
   const SubscriptionBundleEntity({
@@ -17,11 +18,15 @@ class SubscriptionBundleEntity {
     required this.snackCount,
     required this.slots,
     required this.restaurantCount,
-    required this.restaurants,
+    required List<SubscriptionBundleRestaurantEntity> restaurants,
     required this.selectionCount,
     required this.isMostSelected,
     required this.badge,
-  });
+    this.isAvailable = true,
+    this.disabledReason,
+    this.availability,
+    // ignore: prefer_initializing_formals
+  }) : _restaurants = restaurants;
 
   final String bundleId;
   final String programId;
@@ -38,10 +43,15 @@ class SubscriptionBundleEntity {
   final int snackCount;
   final List<SubscriptionBundleSlotEntity> slots;
   final int restaurantCount;
-  final List<SubscriptionBundleRestaurantEntity> restaurants;
+  final List<SubscriptionBundleRestaurantEntity> _restaurants;
+  List<SubscriptionBundleRestaurantEntity> get restaurants =>
+      canSelect ? _restaurants : const [];
   final int selectionCount;
   final bool isMostSelected;
   final SubscriptionBundleBadgeEntity? badge;
+  final bool isAvailable;
+  final String? disabledReason;
+  final SubscriptionAvailabilityEntity? availability;
 
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 
@@ -58,8 +68,16 @@ class SubscriptionBundleEntity {
     return slotsFormatted.isNotEmpty ? slotsFormatted : description(localeName);
   }
 
-  List<String?> get restaurantLogoUrls =>
-      restaurants.map((restaurant) => restaurant.logoUrl).toList(growable: false);
+  List<String?> get restaurantLogoUrls => canSelect
+      ? _restaurants
+            .map((restaurant) => restaurant.logoUrl)
+            .toList(growable: false)
+      : const [];
+
+  int get effectiveRestaurantCount => canSelect ? restaurantCount : 0;
+
+  bool get canSelect =>
+      isAvailable && (availability?.effectiveCanSelect ?? true);
 }
 
 class SubscriptionProgramBundlesEntity {
@@ -70,6 +88,8 @@ class SubscriptionProgramBundlesEntity {
     required this.isProfileComplete,
     required this.bundles,
     this.pagination,
+    this.allergiesCompletedAtUtc,
+    this.dietaryPreferencesCompletedAtUtc,
   });
 
   final bool hasDeliveryAddress;
@@ -78,6 +98,8 @@ class SubscriptionProgramBundlesEntity {
   final bool isProfileComplete;
   final List<SubscriptionBundleEntity> bundles;
   final PaginationEntity? pagination;
+  final String? allergiesCompletedAtUtc;
+  final String? dietaryPreferencesCompletedAtUtc;
 }
 
 class SubscriptionBundleSlotEntity {

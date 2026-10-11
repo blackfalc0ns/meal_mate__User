@@ -83,25 +83,28 @@ void main() {
     );
   }
 
-  testWidgets('BiometricSetupScreen renders hero, benefits, and action buttons',
-      (tester) async {
-    tester.view.physicalSize = const Size(800, 1600);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets(
+    'BiometricSetupScreen renders hero, benefits, and action buttons',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 1600);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-    await tester.pumpWidget(buildTestableWidget());
-    await tester.pump();
+      await tester.pumpWidget(buildTestableWidget());
+      await tester.pump();
 
-    expect(find.text('Biometric Sign-In'), findsWidgets);
-    expect(find.text('Enable Now'), findsOneWidget);
-    expect(find.text('Later'), findsOneWidget);
-    expect(find.text('Enhanced Security'), findsOneWidget);
-    expect(find.text('Instant Access'), findsOneWidget);
-  });
+      expect(find.text('Biometric Sign-In'), findsWidgets);
+      expect(find.text('Enable Now'), findsOneWidget);
+      expect(find.text('Later'), findsOneWidget);
+      expect(find.text('Enhanced Security'), findsOneWidget);
+      expect(find.text('Instant Access'), findsOneWidget);
+    },
+  );
 
-  testWidgets('Tapping Later marks deferred and navigates to home',
-      (tester) async {
+  testWidgets('Tapping Later marks deferred and navigates to home', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(800, 1600);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -117,20 +120,22 @@ void main() {
     expect(find.text('Home Screen'), findsOneWidget);
   });
 
-  testWidgets('Tapping Enable Now authenticates and navigates to home on success',
-      (tester) async {
-    tester.view.physicalSize = const Size(800, 1600);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets(
+    'Tapping Enable Now authenticates and navigates to home on success',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 1600);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-    await tester.pumpWidget(buildTestableWidget());
-    await tester.pump();
+      await tester.pumpWidget(buildTestableWidget());
+      await tester.pump();
 
-    await tester.tap(find.text('Enable Now'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('Enable Now'));
+      await tester.pumpAndSettle();
 
-    expect(fakeService.setBiometricEnabledCalled, isTrue);
-    expect(find.text('Home Screen'), findsOneWidget);
-  });
+      expect(fakeService.setBiometricEnabledCalled, isTrue);
+      expect(find.text('Home Screen'), findsOneWidget);
+    },
+  );
 }

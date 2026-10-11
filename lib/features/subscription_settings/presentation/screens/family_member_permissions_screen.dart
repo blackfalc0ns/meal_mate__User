@@ -149,11 +149,11 @@ class _FamilyMemberPermissionsScreenState
                                     SwitchListTile(
                                       title: Text(permission.label),
                                       value:
-                                          state.permissionValues[
-                                              permission.key] ??
+                                          state.permissionValues[permission
+                                              .key] ??
                                           permission.value,
-                                      onChanged: widget.isManager ||
-                                              state.isSaving
+                                      onChanged:
+                                          widget.isManager || state.isSaving
                                           ? null
                                           : (value) => _viewModel.doIntent(
                                               ToggleFamilyPermissionEvent(
@@ -182,7 +182,8 @@ class _FamilyMemberPermissionsScreenState
                           )
                         : AppButton(
                             text: locale.family_member_permissions_save,
-                            onPressed: !hasChanges ||
+                            onPressed:
+                                !hasChanges ||
                                     widget.isManager ||
                                     state.isSaving
                                 ? null
@@ -199,9 +200,7 @@ class _FamilyMemberPermissionsScreenState
                   child: AbsorbPointer(
                     child: Container(
                       color: color.scrim.withValues(alpha: 0.35),
-                      child: const Center(
-                        child: CustomProgressIndicator(),
-                      ),
+                      child: const Center(child: CustomProgressIndicator()),
                     ),
                   ),
                 ),

@@ -99,6 +99,9 @@ class MonthlyPackageTierEntity {
     required this.restaurantCount,
     required this.restaurantLogoUrls,
     this.isPopular = false,
+    this.canSelect = true,
+    this.isAvailable = true,
+    this.disabledReason,
   });
 
   final String title;
@@ -112,6 +115,9 @@ class MonthlyPackageTierEntity {
   final int restaurantCount;
   final List<String?> restaurantLogoUrls;
   final bool isPopular;
+  final bool canSelect;
+  final bool isAvailable;
+  final String? disabledReason;
 }
 
 class MonthlyMealEntity {

@@ -7,10 +7,7 @@ import 'package:meal_meat_user/features/subscription_upgrade/presentation/manage
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_continue_button.dart';
 
 class RestaurantTierContinueSection extends StatelessWidget {
-  const RestaurantTierContinueSection({
-    super.key,
-    required this.onContinue,
-  });
+  const RestaurantTierContinueSection({super.key, required this.onContinue});
 
   final ValueChanged<SubscriptionUpgradeOptionEntity> onContinue;
 
@@ -25,8 +22,7 @@ class RestaurantTierContinueSection extends StatelessWidget {
     >(
       selector: (state) => state.selectedOption,
       builder: (context, selectedOption) {
-        final isEnabled =
-            selectedOption != null && selectedOption.selectable;
+        final isEnabled = selectedOption != null && selectedOption.selectable;
 
         final text = isEnabled
             ? locale.restaurant_tier_continue_to_tier(

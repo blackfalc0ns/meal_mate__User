@@ -85,61 +85,69 @@ void main() {
   });
 
   group('PaymentDeepLinkCoordinator & Return Recovery Tests', () {
-    test('warm start didPushRouteInformation parses link and dispatches to webview', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-matched-42',
-        paymentId: 'pz-track-123',
-        createdAtUtc: DateTime.now().toUtc(),
-      );
+    test(
+      'warm start didPushRouteInformation parses link and dispatches to webview',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-matched-42',
+          paymentId: 'pz-track-123',
+          createdAtUtc: DateTime.now().toUtc(),
+        );
 
-      final handled = await coordinator.didPushRouteInformation(
-        RouteInformation(
-          uri: Uri.parse('mealmate://checkout/success?paymentId=pz-track-123'),
-        ),
-      );
+        final handled = await coordinator.didPushRouteInformation(
+          RouteInformation(
+            uri: Uri.parse(
+              'mealmate://checkout/success?paymentId=pz-track-123',
+            ),
+          ),
+        );
 
-      expect(handled, isTrue);
-      expect(fakeNavigator.lastPushedRoute, equals(AppRoutes.paymentWebView));
-      expect(fakeNavigator.lastArguments, isA<PaymentWebViewArgs>());
-      final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
-      expect(args.checkout.subscriptionId, equals('sub-matched-42'));
-      expect(args.checkout.paymentId, equals('pz-track-123'));
-    });
+        expect(handled, isTrue);
+        expect(fakeNavigator.lastPushedRoute, equals(AppRoutes.paymentWebView));
+        expect(fakeNavigator.lastArguments, isA<PaymentWebViewArgs>());
+        final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
+        expect(args.checkout.subscriptionId, equals('sub-matched-42'));
+        expect(args.checkout.paymentId, equals('pz-track-123'));
+      },
+    );
 
-    test('cold start / unauthenticated queues link until user logs in', () async {
-      fakeTokenService.hasTokens = false;
+    test(
+      'cold start / unauthenticated queues link until user logs in',
+      () async {
+        fakeTokenService.hasTokens = false;
 
-      final returnItem = const PaymentReturn(
-        destination: PaymentReturnDestination.success,
-        paymentId: 'pz-deferred-99',
-      );
+        final returnItem = const PaymentReturn(
+          destination: PaymentReturnDestination.success,
+          paymentId: 'pz-deferred-99',
+        );
 
-      await coordinator.handleReturn(returnItem);
+        await coordinator.handleReturn(returnItem);
 
-      // Should NOT have navigated while unauthenticated
-      expect(fakeNavigator.pushCount, equals(0));
+        // Should NOT have navigated while unauthenticated
+        expect(fakeNavigator.pushCount, equals(0));
 
-      // User completes authentication
-      fakeTokenService.hasTokens = true;
-      fakeTokenService.userId = 'cust-123';
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-after-auth',
-        paymentId: 'pz-deferred-99',
-        createdAtUtc: DateTime.now().toUtc(),
-      );
+        // User completes authentication
+        fakeTokenService.hasTokens = true;
+        fakeTokenService.userId = 'cust-123';
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-after-auth',
+          paymentId: 'pz-deferred-99',
+          createdAtUtc: DateTime.now().toUtc(),
+        );
 
-      await coordinator.onUserAuthenticated();
+        await coordinator.onUserAuthenticated();
 
-      expect(fakeNavigator.pushCount, equals(1));
-      expect(fakeNavigator.lastPushedRoute, equals(AppRoutes.paymentWebView));
-      final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
-      expect(args.checkout.subscriptionId, equals('sub-after-auth'));
-      expect(args.checkout.paymentId, equals('pz-deferred-99'));
-    });
+        expect(fakeNavigator.pushCount, equals(1));
+        expect(fakeNavigator.lastPushedRoute, equals(AppRoutes.paymentWebView));
+        final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
+        expect(args.checkout.subscriptionId, equals('sub-after-auth'));
+        expect(args.checkout.paymentId, equals('pz-deferred-99'));
+      },
+    );
 
     test('deduplicates rapid return links for the same paymentId', () async {
       final returnItem = const PaymentReturn(
@@ -155,49 +163,55 @@ void main() {
       expect(fakeNavigator.pushCount, equals(1));
     });
 
-    test('review destination persists conservative review lock in attempt store', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-review-test',
-        paymentId: 'pz-review-attempt',
-        createdAtUtc: DateTime.now().toUtc(),
-        reviewRequired: false,
-      );
+    test(
+      'review destination persists conservative review lock in attempt store',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-review-test',
+          paymentId: 'pz-review-attempt',
+          createdAtUtc: DateTime.now().toUtc(),
+          reviewRequired: false,
+        );
 
-      final returnItem = const PaymentReturn(
-        destination: PaymentReturnDestination.review,
-        paymentId: 'pz-review-attempt',
-      );
+        final returnItem = const PaymentReturn(
+          destination: PaymentReturnDestination.review,
+          paymentId: 'pz-review-attempt',
+        );
 
-      await coordinator.handleReturn(returnItem);
+        await coordinator.handleReturn(returnItem);
 
-      expect(fakeStore.attempt?.reviewRequired, isTrue);
-      expect(fakeNavigator.pushCount, equals(1));
-    });
+        expect(fakeStore.attempt?.reviewRequired, isTrue);
+        expect(fakeNavigator.pushCount, equals(1));
+      },
+    );
 
-    test('unknown or mismatched paymentId forwards empty subscriptionId for fallback resolution', () async {
-      // Stored attempt belongs to a different paymentId
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-current-active',
-        paymentId: 'pz-older-attempt',
-        createdAtUtc: DateTime.now().toUtc(),
-      );
+    test(
+      'unknown or mismatched paymentId forwards empty subscriptionId for fallback resolution',
+      () async {
+        // Stored attempt belongs to a different paymentId
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-current-active',
+          paymentId: 'pz-older-attempt',
+          createdAtUtc: DateTime.now().toUtc(),
+        );
 
-      final returnItem = const PaymentReturn(
-        destination: PaymentReturnDestination.success,
-        paymentId: 'pz-unknown-or-different',
-      );
+        final returnItem = const PaymentReturn(
+          destination: PaymentReturnDestination.success,
+          paymentId: 'pz-unknown-or-different',
+        );
 
-      await coordinator.handleReturn(returnItem);
+        await coordinator.handleReturn(returnItem);
 
-      expect(fakeNavigator.pushCount, equals(1));
-      final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
-      // Does not wrongly claim the older subscriptionId
-      expect(args.checkout.subscriptionId, isEmpty);
-      expect(args.checkout.paymentId, equals('pz-unknown-or-different'));
-    });
+        expect(fakeNavigator.pushCount, equals(1));
+        final args = fakeNavigator.lastArguments as PaymentWebViewArgs;
+        // Does not wrongly claim the older subscriptionId
+        expect(args.checkout.subscriptionId, isEmpty);
+        expect(args.checkout.paymentId, equals('pz-unknown-or-different'));
+      },
+    );
   });
 }

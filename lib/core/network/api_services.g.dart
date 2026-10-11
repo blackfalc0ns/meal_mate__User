@@ -1129,6 +1129,40 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<SubscriptionProgramsPageResponseDto> getSubscriptionCatalogPrograms({
+    int? page,
+    int? pageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionProgramsPageResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/catalog/programs',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionProgramsPageResponseDto _value;
+    try {
+      _value = SubscriptionProgramsPageResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     String programId, {
     int? page,
@@ -1147,6 +1181,42 @@ class _ApiServices implements ApiServices {
           .compose(
             _dio.options,
             '/api/v1/customer/subscription-flow/programs/${programId}/bundles',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionProgramBundlesResponseDto _value;
+    try {
+      _value = SubscriptionProgramBundlesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionProgramBundlesResponseDto>
+  getSubscriptionCatalogProgramBundles(
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionProgramBundlesResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/catalog/programs/${programId}/bundles',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -1244,6 +1314,46 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<SubscriptionTiersPageResponseDto> getSubscriptionCatalogTiers(
+    String programId,
+    String bundleId, {
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
+    String? familyMemberId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'durationDays': durationDays,
+      r'startDate': startDate,
+      r'includeFriday': includeFriday,
+      r'familyMemberId': familyMemberId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionTiersPageResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/catalog/programs/${programId}/bundles/${bundleId}/tiers',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionTiersPageResponseDto _value;
+    try {
+      _value = SubscriptionTiersPageResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<void> checkSubscriptionPrerequisites() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1271,12 +1381,18 @@ class _ApiServices implements ApiServices {
     String? familyMemberId, {
     int? page,
     int? pageSize,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'familyMemberId': familyMemberId,
       r'page': page,
       r'pageSize': pageSize,
+      r'durationDays': durationDays,
+      r'startDate': startDate,
+      r'includeFriday': includeFriday,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -1320,12 +1436,18 @@ class _ApiServices implements ApiServices {
     String? familyMemberId, {
     int? page,
     int? pageSize,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'familyMemberId': familyMemberId,
       r'page': page,
       r'pageSize': pageSize,
+      r'durationDays': durationDays,
+      r'startDate': startDate,
+      r'includeFriday': includeFriday,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -1335,6 +1457,53 @@ class _ApiServices implements ApiServices {
           .compose(
             _dio.options,
             '/api/v1/customer/subscription-flow/programs/${programId}/bundles/${bundleId}/tiers/${tier}/restaurants',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionTierRestaurantsPageResponseDto _value;
+    try {
+      _value = SubscriptionTierRestaurantsPageResponseDto.fromJson(
+        _result.data!,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionTierRestaurantsPageResponseDto>
+  getSubscriptionProgramTierRestaurantsPage(
+    String programId,
+    String tier,
+    String? familyMemberId, {
+    int? page,
+    int? pageSize,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'familyMemberId': familyMemberId,
+      r'page': page,
+      r'pageSize': pageSize,
+      r'durationDays': durationDays,
+      r'startDate': startDate,
+      r'includeFriday': includeFriday,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionTierRestaurantsPageResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-flow/programs/${programId}/tiers/${tier}/restaurants',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -1523,8 +1692,9 @@ class _ApiServices implements ApiServices {
     int durationDays,
     String tier,
     String bundleId,
-    String programId,
-  ) async {
+    String programId, {
+    String? startDate,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'includeFriday': includeFriday,
@@ -1532,7 +1702,9 @@ class _ApiServices implements ApiServices {
       r'tier': tier,
       r'bundleId': bundleId,
       r'programId': programId,
+      r'startDate': startDate,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<SubscriptionReadinessResponseDto>(

@@ -26,11 +26,7 @@ import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_flow_args.dart';
 
 class AddressChooseLocationScreen extends StatefulWidget {
-  const AddressChooseLocationScreen({
-    super.key,
-    this.args,
-    this.operations,
-  });
+  const AddressChooseLocationScreen({super.key, this.args, this.operations});
 
   final AddressChooseLocationArgs? args;
   final AddressEditorOperations? operations;
@@ -96,7 +92,8 @@ class _AddressChooseLocationScreenState
   }
 
   AddressEditorViewModel _createViewModel(
-      CustomerAddressEntity? initialAddress) {
+    CustomerAddressEntity? initialAddress,
+  ) {
     final operations =
         widget.operations ?? getIt<CustomerAddressEditorOperations>();
 
@@ -115,7 +112,9 @@ class _AddressChooseLocationScreenState
   }
 
   Future<void> _handleState(
-      BuildContext context, AddressEditorState state) async {
+    BuildContext context,
+    AddressEditorState state,
+  ) async {
     final locale = context.localization;
 
     if (_completed) return;
@@ -148,7 +147,8 @@ class _AddressChooseLocationScreenState
       CustomSnackbar.showError(context: context, message: actionError);
     }
 
-    final isNewSessionLoading = !_isCoverageSheetOpen &&
+    final isNewSessionLoading =
+        !_isCoverageSheetOpen &&
         (state.coveragePreview.isLoading ||
             (state.coveragePreview.isSuccess &&
                 state.coveragePreview.preview != null)) &&
@@ -216,12 +216,11 @@ class _AddressChooseLocationScreenState
                 loadMoreFailure: coverage.loadMoreFailure,
                 onLoadMoreRestaurants: () => unawaited(
                   sheetContext.read<AddressEditorViewModel>().doIntent(
-                        const LoadMoreAddressCoverageRestaurantsEvent(),
-                      ),
+                    const LoadMoreAddressCoverageRestaurantsEvent(),
+                  ),
                 ),
                 onConfirm: () {
-                  final viewModel =
-                      sheetContext.read<AddressEditorViewModel>();
+                  final viewModel = sheetContext.read<AddressEditorViewModel>();
                   unawaited(
                     viewModel.doIntent(
                       const ConfirmPendingAddressActionEvent(),
@@ -246,8 +245,8 @@ class _AddressChooseLocationScreenState
             .sessionId;
         if (currentSession == _activeCoverageSessionId) {
           context.read<AddressEditorViewModel>().doIntent(
-                const ClearCoveragePreviewEvent(),
-              );
+            const ClearCoveragePreviewEvent(),
+          );
         }
       }
     }

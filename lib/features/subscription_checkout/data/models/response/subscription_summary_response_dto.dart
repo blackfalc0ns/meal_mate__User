@@ -50,15 +50,20 @@ class SubscriptionSummaryResponseDto {
     this.coupon,
     this.restaurantsPagination,
     this.availability,
+    this.programName,
+    this.bundleName,
+    this.tierName,
   });
 
   final String? programId;
   final String? programNameAr;
   final String? programNameEn;
+  final String? programName;
   final String? programImageUrl;
   final String? bundleId;
   final String? bundleNameAr;
   final String? bundleNameEn;
+  final String? bundleName;
   final String? imageUrl;
   final String? restaurantId;
   final String? restaurantNameAr;
@@ -67,10 +72,12 @@ class SubscriptionSummaryResponseDto {
   final String? tier;
   final String? tierNameAr;
   final String? tierNameEn;
+  final String? tierName;
   final int? durationDays;
   final String? chosenStartDate;
   final String? startDate;
   final String? endDate;
+  @JsonKey(fromJson: _parseStringList)
   final List<String>? serviceDates;
   final SubscriptionSummaryRestaurantRepetitionResponseDto?
   restaurantRepetition;
@@ -95,6 +102,13 @@ class SubscriptionSummaryResponseDto {
   final SubscriptionCouponResponseDto? coupon;
   final PaginationResponseDto? restaurantsPagination;
   final SubscriptionAvailabilityResponseDto? availability;
+
+  static List<String>? _parseStringList(dynamic value) {
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
+    }
+    return null;
+  }
 
   factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionSummaryResponseDtoFromJson(json);
@@ -129,10 +143,13 @@ class SubscriptionSummaryAddressResponseDto {
     this.regionId,
     this.governorateNameAr,
     this.governorateNameEn,
+    this.governorateName,
     this.areaNameAr,
     this.areaNameEn,
+    this.areaName,
     this.blockNameAr,
     this.blockNameEn,
+    this.blockName,
   });
 
   final String? id;
@@ -144,15 +161,17 @@ class SubscriptionSummaryAddressResponseDto {
   final String? regionId;
   final String? governorateNameAr;
   final String? governorateNameEn;
+  final String? governorateName;
   final String? areaNameAr;
   final String? areaNameEn;
+  final String? areaName;
   final String? blockNameAr;
   final String? blockNameEn;
+  final String? blockName;
 
   factory SubscriptionSummaryAddressResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$SubscriptionSummaryAddressResponseDtoFromJson(json);
-
 }
 
 @JsonSerializable(createToJson: false)
@@ -161,6 +180,7 @@ class SubscriptionSummaryRestaurantResponseDto {
     this.restaurantId,
     this.nameAr,
     this.nameEn,
+    this.name,
     this.logoUrl,
     this.tier,
   });
@@ -168,6 +188,7 @@ class SubscriptionSummaryRestaurantResponseDto {
   final String? restaurantId;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
   final String? logoUrl;
   final String? tier;
 
@@ -182,12 +203,14 @@ class SubscriptionSummarySlotRequirementResponseDto {
     this.slot,
     this.nameAr,
     this.nameEn,
+    this.name,
     this.count,
   });
 
   final String? slot;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
   final int? count;
 
   factory SubscriptionSummarySlotRequirementResponseDto.fromJson(
@@ -200,11 +223,13 @@ class SubscriptionSummaryIncludesResponseDto {
   const SubscriptionSummaryIncludesResponseDto({
     this.titleAr,
     this.titleEn,
+    this.title,
     this.items,
   });
 
   final String? titleAr;
   final String? titleEn;
+  final String? title;
   final List<SubscriptionSummaryIncludeItemResponseDto>? items;
 
   factory SubscriptionSummaryIncludesResponseDto.fromJson(
@@ -218,11 +243,13 @@ class SubscriptionSummaryIncludeItemResponseDto {
     this.code,
     this.textAr,
     this.textEn,
+    this.text,
   });
 
   final String? code;
   final String? textAr;
   final String? textEn;
+  final String? text;
 
   factory SubscriptionSummaryIncludeItemResponseDto.fromJson(
     Map<String, dynamic> json,

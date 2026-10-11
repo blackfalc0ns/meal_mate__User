@@ -15,8 +15,8 @@ class AuthRefreshService {
   AuthRefreshService({
     required TokenService tokenService,
     required RefreshTokenUseCaseProvider refreshTokenUseCaseProvider,
-  })  : _tokenService = tokenService,
-        _refreshTokenUseCaseProvider = refreshTokenUseCaseProvider;
+  }) : _tokenService = tokenService,
+       _refreshTokenUseCaseProvider = refreshTokenUseCaseProvider;
 
   final TokenService _tokenService;
   final RefreshTokenUseCaseProvider _refreshTokenUseCaseProvider;

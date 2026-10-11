@@ -202,152 +202,170 @@ void main() {
   }
 
   group('Payment Checkout & Coupon Integration Tests', () {
-    test('PaymentCheckoutRequestDto JSON includes promoCode only when not null', () {
-      const dtoWithCoupon = PaymentCheckoutRequestDto(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        tier: 'Standard',
-        durationDays: 12,
-        startDate: '2026-10-10',
-        callbackUrl: 'mealmate://payment/success',
-        errorUrl: 'mealmate://payment/error',
-        includeFriday: false,
-        paymentMethodId: 1,
-        correlationId: 'corr-1',
-        promoCode: 'SAVE20',
-      );
+    test(
+      'PaymentCheckoutRequestDto JSON includes promoCode only when not null',
+      () {
+        const dtoWithCoupon = PaymentCheckoutRequestDto(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          tier: 'Standard',
+          durationDays: 12,
+          startDate: '2026-10-10',
+          callbackUrl: 'mealmate://payment/success',
+          errorUrl: 'mealmate://payment/error',
+          includeFriday: false,
+          paymentMethodId: 1,
+          correlationId: 'corr-1',
+          promoCode: 'SAVE20',
+        );
 
-      final jsonWith = dtoWithCoupon.toJson();
-      expect(jsonWith['promoCode'], equals('SAVE20'));
-      expect(jsonWith['programId'], equals('prog-1'));
+        final jsonWith = dtoWithCoupon.toJson();
+        expect(jsonWith['promoCode'], equals('SAVE20'));
+        expect(jsonWith['programId'], equals('prog-1'));
 
-      const dtoWithoutCoupon = PaymentCheckoutRequestDto(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        tier: 'Standard',
-        durationDays: 12,
-        startDate: '2026-10-10',
-        callbackUrl: 'mealmate://payment/success',
-        errorUrl: 'mealmate://payment/error',
-        includeFriday: false,
-        paymentMethodId: 1,
-        correlationId: 'corr-1',
-        promoCode: null,
-      );
+        const dtoWithoutCoupon = PaymentCheckoutRequestDto(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          tier: 'Standard',
+          durationDays: 12,
+          startDate: '2026-10-10',
+          callbackUrl: 'mealmate://payment/success',
+          errorUrl: 'mealmate://payment/error',
+          includeFriday: false,
+          paymentMethodId: 1,
+          correlationId: 'corr-1',
+          promoCode: null,
+        );
 
-      final jsonWithout = dtoWithoutCoupon.toJson();
-      expect(jsonWithout.containsKey('promoCode'), isFalse);
-    });
+        final jsonWithout = dtoWithoutCoupon.toJson();
+        expect(jsonWithout.containsKey('promoCode'), isFalse);
+      },
+    );
 
-    test('PaymentCheckoutRequestEntity maps promoCode to PaymentCheckoutRequestDto', () {
-      const entity = PaymentCheckoutRequestEntity(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        tier: 'Standard',
-        durationDays: 12,
-        startDate: '2026-10-10',
-        callbackUrl: 'mealmate://payment/success',
-        errorUrl: 'mealmate://payment/error',
-        includeFriday: false,
-        paymentMethodId: 2,
-        correlationId: 'corr-2',
-        promoCode: 'TESTCODE',
-      );
+    test(
+      'PaymentCheckoutRequestEntity maps promoCode to PaymentCheckoutRequestDto',
+      () {
+        const entity = PaymentCheckoutRequestEntity(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          tier: 'Standard',
+          durationDays: 12,
+          startDate: '2026-10-10',
+          callbackUrl: 'mealmate://payment/success',
+          errorUrl: 'mealmate://payment/error',
+          includeFriday: false,
+          paymentMethodId: 2,
+          correlationId: 'corr-2',
+          promoCode: 'TESTCODE',
+        );
 
-      final dto = entity.toDto();
-      expect(dto.promoCode, equals('TESTCODE'));
-      expect(dto.paymentMethodId, equals(2));
-    });
+        final dto = entity.toDto();
+        expect(dto.promoCode, equals('TESTCODE'));
+        expect(dto.paymentMethodId, equals(2));
+      },
+    );
 
-    test('LoadPaymentEvent passes latest summary.finalPrice to GetPaymentMethodsUseCase', () async {
-      final args = buildPaymentArgs(finalPrice: 175.5);
-      viewModel.doIntent(LoadPaymentEvent(args));
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'LoadPaymentEvent passes latest summary.finalPrice to GetPaymentMethodsUseCase',
+      () async {
+        final args = buildPaymentArgs(finalPrice: 175.5);
+        viewModel.doIntent(LoadPaymentEvent(args));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(fakeMethodsUseCase.lastRequestedAmount, equals(175.5));
-    });
+        expect(fakeMethodsUseCase.lastRequestedAmount, equals(175.5));
+      },
+    );
 
-    test('stale payment methods load response is discarded by generation guard', () async {
-      final completer1 = Completer<ApiResult<List<PaymentMethodEntity>>>();
-      fakeMethodsUseCase.completer = completer1;
+    test(
+      'stale payment methods load response is discarded by generation guard',
+      () async {
+        final completer1 = Completer<ApiResult<List<PaymentMethodEntity>>>();
+        fakeMethodsUseCase.completer = completer1;
 
-      // Start first load (generation 1)
-      final args1 = buildPaymentArgs(finalPrice: 200.0);
-      viewModel.doIntent(LoadPaymentEvent(args1));
-      await Future<void>.delayed(Duration.zero);
+        // Start first load (generation 1)
+        final args1 = buildPaymentArgs(finalPrice: 200.0);
+        viewModel.doIntent(LoadPaymentEvent(args1));
+        await Future<void>.delayed(Duration.zero);
 
-      // Start second load (generation 2) with different methods
-      final completer2 = Completer<ApiResult<List<PaymentMethodEntity>>>();
-      fakeMethodsUseCase.completer = completer2;
-      final args2 = buildPaymentArgs(finalPrice: 150.0);
-      viewModel.doIntent(LoadPaymentEvent(args2));
-      await Future<void>.delayed(Duration.zero);
+        // Start second load (generation 2) with different methods
+        final completer2 = Completer<ApiResult<List<PaymentMethodEntity>>>();
+        fakeMethodsUseCase.completer = completer2;
+        final args2 = buildPaymentArgs(finalPrice: 150.0);
+        viewModel.doIntent(LoadPaymentEvent(args2));
+        await Future<void>.delayed(Duration.zero);
 
-      // Complete second load first
-      completer2.complete(
-        ApiSuccessResult(
-          data: const [
-            PaymentMethodEntity(
-              id: 2,
-              type: PaymentMethodType.visa,
-              title: 'Visa',
-              subtitle: 'Credit Card',
-              isAvailable: true,
-            ),
-          ],
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
-      expect(viewModel.state.methods.first.id, equals(2));
+        // Complete second load first
+        completer2.complete(
+          ApiSuccessResult(
+            data: const [
+              PaymentMethodEntity(
+                id: 2,
+                type: PaymentMethodType.visa,
+                title: 'Visa',
+                subtitle: 'Credit Card',
+                isAvailable: true,
+              ),
+            ],
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.methods.first.id, equals(2));
 
-      // Now complete first (stale) load with old methods
-      completer1.complete(
-        ApiSuccessResult(
-          data: const [
-            PaymentMethodEntity(
-              id: 99,
-              type: PaymentMethodType.mada,
-              title: 'Old Mada',
-              subtitle: 'Stale',
-              isAvailable: true,
-            ),
-          ],
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        // Now complete first (stale) load with old methods
+        completer1.complete(
+          ApiSuccessResult(
+            data: const [
+              PaymentMethodEntity(
+                id: 99,
+                type: PaymentMethodType.mada,
+                title: 'Old Mada',
+                subtitle: 'Stale',
+                isAvailable: true,
+              ),
+            ],
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
 
-      // State MUST retain methods from generation 2
-      expect(viewModel.state.methods.first.id, equals(2));
-    });
+        // State MUST retain methods from generation 2
+        expect(viewModel.state.methods.first.id, equals(2));
+      },
+    );
 
-    test('CheckoutPaymentEvent propagates promoCode from summaryRequest', () async {
-      final args = buildPaymentArgs(finalPrice: 180.0, promoCode: 'SUMMER30');
-      viewModel.doIntent(LoadPaymentEvent(args));
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'CheckoutPaymentEvent propagates promoCode from summaryRequest',
+      () async {
+        final args = buildPaymentArgs(finalPrice: 180.0, promoCode: 'SUMMER30');
+        viewModel.doIntent(LoadPaymentEvent(args));
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(CheckoutPaymentEvent(args));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(CheckoutPaymentEvent(args));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(fakeCheckoutUseCase.lastRequest, isNotNull);
-      expect(fakeCheckoutUseCase.lastRequest!.promoCode, equals('SUMMER30'));
-    });
+        expect(fakeCheckoutUseCase.lastRequest, isNotNull);
+        expect(fakeCheckoutUseCase.lastRequest!.promoCode, equals('SUMMER30'));
+      },
+    );
 
-    test('CheckoutPaymentEvent blocks zero-amount checkout with couponFullDiscountUnsupported', () async {
-      final args = buildPaymentArgs(finalPrice: 0.0, promoCode: 'FREE100');
-      viewModel.doIntent(LoadPaymentEvent(args));
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'CheckoutPaymentEvent blocks zero-amount checkout with couponFullDiscountUnsupported',
+      () async {
+        final args = buildPaymentArgs(finalPrice: 0.0, promoCode: 'FREE100');
+        viewModel.doIntent(LoadPaymentEvent(args));
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(CheckoutPaymentEvent(args));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(CheckoutPaymentEvent(args));
+        await Future<void>.delayed(Duration.zero);
 
-      // Checkout use case should NOT have been called
-      expect(fakeCheckoutUseCase.lastRequest, isNull);
-      expect(viewModel.state.isCouponCheckoutFailure, isTrue);
-      expect(
-        viewModel.state.checkoutFailure?.code,
-        equals(SubscriptionErrorCodes.couponFullDiscountUnsupported),
-      );
-    });
+        // Checkout use case should NOT have been called
+        expect(fakeCheckoutUseCase.lastRequest, isNull);
+        expect(viewModel.state.isCouponCheckoutFailure, isTrue);
+        expect(
+          viewModel.state.checkoutFailure?.code,
+          equals(SubscriptionErrorCodes.couponFullDiscountUnsupported),
+        );
+      },
+    );
 
     test('PaymentState detects coupon rejection failures accurately', () {
       final couponRejectedFailure = ServerFailure(
@@ -375,9 +393,7 @@ void main() {
         ),
       );
 
-      final stateWithNetwork = PaymentState(
-        checkoutFailure: networkFailure,
-      );
+      final stateWithNetwork = PaymentState(checkoutFailure: networkFailure);
       expect(stateWithNetwork.isCouponCheckoutFailure, isFalse);
     });
   });

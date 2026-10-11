@@ -29,8 +29,7 @@ class _ControllableCalendarRepo implements CalendarRepository {
     int? pageSize,
   }) {
     restaurantQueries.add(query);
-    final completer =
-        Completer<ApiResult<CalendarRestaurantsPageEntity>>();
+    final completer = Completer<ApiResult<CalendarRestaurantsPageEntity>>();
     restaurantCompleters.add(completer);
     return completer.future;
   }
@@ -63,7 +62,9 @@ CalendarRestaurantOptionEntity _createOption(String id, String name) {
   );
 }
 
-CalendarRestaurantsPageEntity _createPage(List<CalendarRestaurantOptionEntity> options) {
+CalendarRestaurantsPageEntity _createPage(
+  List<CalendarRestaurantOptionEntity> options,
+) {
   return CalendarRestaurantsPageEntity(
     restaurants: options,
     page: 1,
@@ -105,7 +106,9 @@ void main() {
       expect(cubit.state.isLoading, isTrue);
 
       final options = [_createOption('r1', 'Green Bowl')];
-      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: _createPage(options)));
+      repo.restaurantCompleters[0].complete(
+        ApiSuccessResult(data: _createPage(options)),
+      );
       await future;
 
       expect(cubit.state.isLoading, isFalse);
@@ -133,14 +136,18 @@ void main() {
 
       // Resolve query 2 first
       final optionsSal = [_createOption('r2', 'Salad Co')];
-      repo.restaurantCompleters[1].complete(ApiSuccessResult(data: _createPage(optionsSal)));
+      repo.restaurantCompleters[1].complete(
+        ApiSuccessResult(data: _createPage(optionsSal)),
+      );
       await Future<void>.delayed(Duration.zero);
 
       expect(cubit.state.restaurants, optionsSal);
 
       // Resolve query 1 late
       final optionsSa = [_createOption('r1', 'Sandwich Bar')];
-      repo.restaurantCompleters[0].complete(ApiSuccessResult(data: _createPage(optionsSa)));
+      repo.restaurantCompleters[0].complete(
+        ApiSuccessResult(data: _createPage(optionsSa)),
+      );
       await Future<void>.delayed(Duration.zero);
 
       // Must remain optionsSal

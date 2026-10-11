@@ -59,6 +59,9 @@ class FakeSubscriptionPlanRepository implements SubscriptionPlanRepository {
     required String programId,
     required String bundleId,
     required String tier,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
     required int page,
     required int pageSize,
     String? addressId,
@@ -74,7 +77,6 @@ class FakeSubscriptionPlanRepository implements SubscriptionPlanRepository {
   }) async {
     throw UnimplementedError();
   }
-
 }
 
 class FakeSubscriptionTierRepository implements SubscriptionTierRepository {
@@ -93,6 +95,7 @@ class FakeSubscriptionTierRepository implements SubscriptionTierRepository {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? startDate,
     String? familyMemberId,
   }) async {
     lastRequestedDurationDays = durationDays;
@@ -106,6 +109,9 @@ class FakeSubscriptionTierRepository implements SubscriptionTierRepository {
     required String programId,
     required String bundleId,
     required String tier,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
     String? familyMemberId,
   }) async {
     return ApiSuccessResult(data: []);
@@ -259,87 +265,93 @@ void main() {
     await viewModel.close();
   });
 
-  test('ToggleSubscriptionFridayEvent preserves selected duration and tier', () async {
-    // 1. Initial load
-    viewModel.doIntent(
-      const GetSubscriptionDurationsEvent(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        includeFriday: false,
-      ),
-    );
-    await pumpEventQueue();
+  test(
+    'ToggleSubscriptionFridayEvent preserves selected duration and tier',
+    () async {
+      // 1. Initial load
+      viewModel.doIntent(
+        const GetSubscriptionDurationsEvent(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          includeFriday: false,
+        ),
+      );
+      await pumpEventQueue();
 
-    expect(viewModel.state.durations.length, 2);
-    expect(viewModel.state.tiers.length, 2);
+      expect(viewModel.state.durations.length, 2);
+      expect(viewModel.state.tiers.length, 2);
 
-    // 2. User selects duration (30 days, index 1)
-    viewModel.doIntent(
-      const SelectSubscriptionDurationEvent(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        durationIndex: 1,
-      ),
-    );
-    await pumpEventQueue();
+      // 2. User selects duration (30 days, index 1)
+      viewModel.doIntent(
+        const SelectSubscriptionDurationEvent(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          durationIndex: 1,
+        ),
+      );
+      await pumpEventQueue();
 
-    // 3. User selects tier ('vip', index 1)
-    viewModel.doIntent(const SelectSubscriptionTierEvent(1));
-    await pumpEventQueue();
+      // 3. User selects tier ('vip', index 1)
+      viewModel.doIntent(const SelectSubscriptionTierEvent(1));
+      await pumpEventQueue();
 
-    expect(viewModel.state.selectedDurationIndex, 1);
-    expect(viewModel.state.selectedDuration?.durationDays, 30);
-    expect(viewModel.state.selectedTierIndex, 1);
-    expect(viewModel.state.selectedTier?.tier, 'vip');
+      expect(viewModel.state.selectedDurationIndex, 1);
+      expect(viewModel.state.selectedDuration?.durationDays, 30);
+      expect(viewModel.state.selectedTierIndex, 1);
+      expect(viewModel.state.selectedTier?.tier, 'vip');
 
-    // 4. User toggles Friday to true
-    viewModel.doIntent(
-      const ToggleSubscriptionFridayEvent(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        includeFriday: true,
-      ),
-    );
-    await pumpEventQueue();
+      // 4. User toggles Friday to true
+      viewModel.doIntent(
+        const ToggleSubscriptionFridayEvent(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          includeFriday: true,
+        ),
+      );
+      await pumpEventQueue();
 
-    // 5. Verify selections are NOT cleared!
-    expect(viewModel.state.includeFriday, isTrue);
-    expect(tierRepo.lastRequestedDurationDays, 30);
-    expect(tierRepo.lastRequestedIncludeFriday, isTrue);
-    expect(viewModel.state.selectedDurationIndex, 1);
-    expect(viewModel.state.selectedDuration?.durationDays, 30);
-    expect(viewModel.state.selectedTierIndex, 1);
-    expect(viewModel.state.selectedTier?.tier, 'vip');
-  });
+      // 5. Verify selections are NOT cleared!
+      expect(viewModel.state.includeFriday, isTrue);
+      expect(tierRepo.lastRequestedDurationDays, 30);
+      expect(tierRepo.lastRequestedIncludeFriday, isTrue);
+      expect(viewModel.state.selectedDurationIndex, 1);
+      expect(viewModel.state.selectedDuration?.durationDays, 30);
+      expect(viewModel.state.selectedTierIndex, 1);
+      expect(viewModel.state.selectedTier?.tier, 'vip');
+    },
+  );
 
-  test('BrowseSubscriptionTierRestaurantsEvent and CloseSubscriptionTierRestaurantsEvent toggle isBrowsingRestaurants', () async {
-    viewModel.doIntent(
-      const GetSubscriptionDurationsEvent(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        includeFriday: false,
-      ),
-    );
-    await pumpEventQueue();
+  test(
+    'BrowseSubscriptionTierRestaurantsEvent and CloseSubscriptionTierRestaurantsEvent toggle isBrowsingRestaurants',
+    () async {
+      viewModel.doIntent(
+        const GetSubscriptionDurationsEvent(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          includeFriday: false,
+        ),
+      );
+      await pumpEventQueue();
 
-    expect(viewModel.state.isBrowsingRestaurants, isFalse);
+      expect(viewModel.state.isBrowsingRestaurants, isFalse);
 
-    viewModel.doIntent(
-      const BrowseSubscriptionTierRestaurantsEvent(
-        programId: 'prog-1',
-        bundleId: 'bundle-1',
-        tierIndex: 0,
-      ),
-    );
-    await pumpEventQueue();
+      viewModel.doIntent(
+        const BrowseSubscriptionTierRestaurantsEvent(
+          programId: 'prog-1',
+          bundleId: 'bundle-1',
+          tierIndex: 0,
+        ),
+      );
+      await pumpEventQueue();
 
-    expect(viewModel.state.isBrowsingRestaurants, isTrue);
-    expect(viewModel.state.browsedTierIndex, 0);
+      expect(viewModel.state.isBrowsingRestaurants, isTrue);
+      expect(viewModel.state.browsedTierIndex, 0);
 
-    viewModel.doIntent(const CloseSubscriptionTierRestaurantsEvent());
-    await pumpEventQueue();
+      viewModel.doIntent(const CloseSubscriptionTierRestaurantsEvent());
+      await pumpEventQueue();
 
-    expect(viewModel.state.isBrowsingRestaurants, isFalse);
-    expect(viewModel.state.browsedTierIndex, isNull);
-  });
+      expect(viewModel.state.isBrowsingRestaurants, isFalse);
+      expect(viewModel.state.browsedTierIndex, isNull);
+    },
+  );
 }

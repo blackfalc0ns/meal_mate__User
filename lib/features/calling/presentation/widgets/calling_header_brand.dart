@@ -8,11 +8,7 @@ import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class CallingHeaderBrand extends StatelessWidget {
-  const CallingHeaderBrand({
-    super.key,
-    required this.title,
-    this.timerText,
-  });
+  const CallingHeaderBrand({super.key, required this.title, this.timerText});
 
   final String title;
   final String? timerText;

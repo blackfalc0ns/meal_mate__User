@@ -6755,4 +6755,112 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get calendarFulfillmentNotReady =>
       'التقويم غير جاهز بعد. حاول التحديث بعد قليل.';
+
+  @override
+  String get subscription_flow_no_delivery_to_address =>
+      'لا توجد مطاعم توصل إلى هذا العنوان حاليًا.';
+
+  @override
+  String get subscription_flow_option_uncovered =>
+      'لا توجد مطاعم لهذه الخيارات توصل إلى عنوانك.';
+
+  @override
+  String get subscription_flow_no_prepared_restaurants =>
+      'لا توجد مطاعم جاهزة بوجبات مؤهلة وأسعار صالحة لهذه الخيارات حاليًا.';
+
+  @override
+  String get subscription_flow_period_unavailable =>
+      'لا توجد مطاعم تستطيع خدمة كامل الفترة بهذه الخيارات. غيّر الخيارات وحاول مجددًا.';
+
+  @override
+  String get subscription_flow_selection_required =>
+      'اختر المدة وتاريخ البداية للتحقق من كامل الفترة.';
+
+  @override
+  String get subscription_flow_friday_unavailable =>
+      'لا تتوفر خدمة الجمعة لهذه الفئة.';
+
+  @override
+  String get subscription_flow_pricing_unavailable =>
+      'السعر غير متاح لهذه الخيارات حاليًا.';
+
+  @override
+  String get calendar_selection_deadline_passed =>
+      'انتهت مهلة تعديل هذا اليوم.';
+
+  @override
+  String get calendar_first_day_deadline =>
+      'يمكنك تعديل اليوم الأول خلال 24 ساعة من الدفع، وفق المهلة المعروضة.';
+
+  @override
+  String get calendar_ordinary_deadline =>
+      'يجب إكمال اختيار الأيام التالية قبل الخدمة بـ72 ساعة على الأقل.';
+
+  @override
+  String get calendar_fulfillment_pending =>
+      'جارٍ تجهيز اشتراكك. سنعرض التقويم عند اكتمال التجهيز.';
+
+  @override
+  String get calendar_auto_selection_failed =>
+      'تعذر إكمال الاختيار التلقائي. راجع حالة اليوم قبل المتابعة.';
+
+  @override
+  String get freeze_preparation_failed =>
+      'تعذر تجهيز أيام التعويض. لم يُعتمد التغيير.';
+
+  @override
+  String get freeze_replacement_capacity_unavailable =>
+      'لا تتوفر سعة كافية لأيام التعويض. لم يُعتمد التغيير.';
+
+  @override
+  String get freeze_replacement_restaurants_unavailable =>
+      'لا يوجد مطعم مؤهل لخدمة أيام التعويض. لم يُعتمد التغيير.';
+
+  @override
+  String get freeze_replacement_pool_unavailable =>
+      'لا توجد مطاعم بديلة متاحة للتجميد.';
+
+  @override
+  String get freeze_no_service_days => 'لا توجد أيام خدمة متاحة للتجميد.';
+
+  @override
+  String get subscription_flow_empty_options => 'لا توجد خيارات متاحة حاليًا.';
+
+  @override
+  String get subscription_flow_loading => 'جارٍ التحميل…';
+
+  @override
+  String get subscription_flow_request_failed =>
+      'تعذر تحميل البيانات. حاول مجددًا.';
+
+  @override
+  String get calendar_restaurant_coverage_unavailable =>
+      'لا يوجد مطعم مؤهل يغطي عنوان التوصيل لهذا اليوم.';
+
+  @override
+  String get calendar_box_not_ready =>
+      'لا توجد قائمة معتمدة لهذا المطعم في يوم التوصيل.';
+
+  @override
+  String get calendar_restaurant_capacity_full =>
+      'سعة المطاعم ممتلئة أو غير متاحة في يوم التوصيل.';
+
+  @override
+  String get calendar_no_safe_box =>
+      'لا توجد وجبات كاملة آمنة للحساسية لهذا اليوم.';
+
+  @override
+  String get calendar_restaurant_busy => 'المطعم المختار مشغول في يوم التوصيل.';
+
+  @override
+  String get calendar_quota_exhausted =>
+      'وصل المطعم المختار إلى حد تكرار الاختيار.';
+
+  @override
+  String get subscription_program_no_restaurants_in_area =>
+      'لا تتوفر مطاعم في منطقتك';
+
+  @override
+  String get subscription_program_no_prepared_restaurants_notice =>
+      'هذا البرنامج غير متاح حاليًا لعدم توفر مطاعم جاهزة في منطقتك.';
 }

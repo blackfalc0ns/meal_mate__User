@@ -48,9 +48,7 @@ class CallingActiveControls extends StatelessWidget {
           ],
         ),
         const SizedBox(height: Spacing.md),
-        CallingActiveEndButton(
-          onTap: onEndCall,
-        ),
+        CallingActiveEndButton(onTap: onEndCall),
       ],
     );
   }

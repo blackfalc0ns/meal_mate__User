@@ -49,7 +49,10 @@ void main() {
     ),
   ];
 
-  SubscriptionTierRestaurantBrowseEntity createRestaurant(String id, String name) {
+  SubscriptionTierRestaurantBrowseEntity createRestaurant(
+    String id,
+    String name,
+  ) {
     return SubscriptionTierRestaurantBrowseEntity(
       restaurantId: id,
       nameRaw: name,
@@ -68,76 +71,86 @@ void main() {
     );
   }
 
-
-
   group('SubscriptionPlanViewModel Tier Restaurants Pagination Tests', () {
-    test('initial browse tier restaurants fetches page 1 and keeps selectedTierIndex separate', () async {
-      final mockPageUseCase = _MockTierRestaurantsPageUseCase((page, tier) async {
-        return ApiSuccessResult(
-          data: PagedEntity(
-            items: [
-              createRestaurant('rest-1', 'Restaurant 1'),
-              createRestaurant('rest-2', 'Restaurant 2'),
-            ],
-            pagination: const PaginationEntity(
-              totalCount: 4,
-              page: 1,
-              pageSize: 2,
-              totalPages: 2,
-              hasNextPage: true,
-              hasPreviousPage: false,
+    test(
+      'initial browse tier restaurants fetches page 1 and keeps selectedTierIndex separate',
+      () async {
+        final mockPageUseCase = _MockTierRestaurantsPageUseCase((
+          page,
+          tier,
+        ) async {
+          return ApiSuccessResult(
+            data: PagedEntity(
+              items: [
+                createRestaurant('rest-1', 'Restaurant 1'),
+                createRestaurant('rest-2', 'Restaurant 2'),
+              ],
+              pagination: const PaginationEntity(
+                totalCount: 4,
+                page: 1,
+                pageSize: 2,
+                totalPages: 2,
+                hasNextPage: true,
+                hasPreviousPage: false,
+              ),
             ),
+          );
+        });
+
+        final viewModel = SubscriptionPlanViewModel.withState(
+          _UnusedDurationsUseCase(),
+          _FakeTiersUseCase(sampleTiers),
+          _UnusedTierRestaurantsUseCase(),
+          _UnusedReadinessUseCase(),
+          getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
+          initialState: const SubscriptionPlanState(tiers: sampleTiers),
+        );
+
+        addTearDown(viewModel.close);
+
+        // Initially set selectedTierIndex to 0
+        viewModel.doIntent(const SelectSubscriptionTierEvent(0));
+        expect(viewModel.state.selectedTierIndex, equals(0));
+
+        // Browse tier 1 (premium, index 1)
+        viewModel.doIntent(
+          const BrowseSubscriptionTierRestaurantsEvent(
+            programId: 'prog-1',
+            bundleId: 'bundle-1',
+            tierIndex: 1,
           ),
         );
-      });
 
-      final viewModel = SubscriptionPlanViewModel.withState(
-        _UnusedDurationsUseCase(),
-        _FakeTiersUseCase(sampleTiers),
-        _UnusedTierRestaurantsUseCase(),
-        _UnusedReadinessUseCase(),
-        getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
-        initialState: const SubscriptionPlanState(tiers: sampleTiers),
-      );
+        await expectLater(
+          viewModel.stream,
+          emitsThrough(
+            isA<dynamic>()
+                .having((s) => s.browsedTierIndex, 'browsedTierIndex', 1)
+                .having(
+                  (s) => s.selectedTierIndex,
+                  'selectedTierIndex',
+                  0,
+                ) // Unchanged!
+                .having((s) => s.browseRestaurants.length, 'count', 2)
+                .having(
+                  (s) => s.browseRestaurantsPagination?.hasNextPage,
+                  'hasNext',
+                  true,
+                ),
+          ),
+        );
 
-
-      addTearDown(viewModel.close);
-
-      // Initially set selectedTierIndex to 0
-      viewModel.doIntent(const SelectSubscriptionTierEvent(0));
-      expect(viewModel.state.selectedTierIndex, equals(0));
-
-      // Browse tier 1 (premium, index 1)
-      viewModel.doIntent(
-        const BrowseSubscriptionTierRestaurantsEvent(
-          programId: 'prog-1',
-          bundleId: 'bundle-1',
-          tierIndex: 1,
-        ),
-      );
-
-      await expectLater(
-        viewModel.stream,
-        emitsThrough(
-          isA<dynamic>()
-              .having((s) => s.browsedTierIndex, 'browsedTierIndex', 1)
-              .having((s) => s.selectedTierIndex, 'selectedTierIndex', 0) // Unchanged!
-              .having((s) => s.browseRestaurants.length, 'count', 2)
-              .having(
-                (s) => s.browseRestaurantsPagination?.hasNextPage,
-                'hasNext',
-                true,
-              ),
-        ),
-      );
-
-      expect(mockPageUseCase.lastRequestedPage, equals(1));
-      expect(mockPageUseCase.lastRequestedTier, equals('premium'));
-    });
+        expect(mockPageUseCase.lastRequestedPage, equals(1));
+        expect(mockPageUseCase.lastRequestedTier, equals('premium'));
+      },
+    );
 
     test('load more appends page 2 without duplicates', () async {
       var callCount = 0;
-      final mockPageUseCase = _MockTierRestaurantsPageUseCase((page, tier) async {
+      final mockPageUseCase = _MockTierRestaurantsPageUseCase((
+        page,
+        tier,
+      ) async {
         callCount++;
         if (page == 1) {
           return ApiSuccessResult(
@@ -160,7 +173,10 @@ void main() {
           return ApiSuccessResult(
             data: PagedEntity(
               items: [
-                createRestaurant('rest-2', 'Restaurant 2 Duplicate'), // Should be deduped
+                createRestaurant(
+                  'rest-2',
+                  'Restaurant 2 Duplicate',
+                ), // Should be deduped
                 createRestaurant('rest-3', 'Restaurant 3'),
               ],
               pagination: const PaginationEntity(
@@ -184,7 +200,6 @@ void main() {
         getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
         initialState: const SubscriptionPlanState(tiers: sampleTiers),
       );
-
 
       addTearDown(viewModel.close);
 
@@ -226,136 +241,149 @@ void main() {
       expect(callCount, equals(2));
     });
 
-    test('close restaurants cancels pending request and clears state', () async {
-      final completer = Completer<ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>>();
-      final mockPageUseCase = _MockTierRestaurantsPageUseCase((page, tier) => completer.future);
+    test(
+      'close restaurants cancels pending request and clears state',
+      () async {
+        final completer =
+            Completer<
+              ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>
+            >();
+        final mockPageUseCase = _MockTierRestaurantsPageUseCase(
+          (page, tier) => completer.future,
+        );
 
-      final viewModel = SubscriptionPlanViewModel.withState(
-        _UnusedDurationsUseCase(),
-        _FakeTiersUseCase(sampleTiers),
-        _UnusedTierRestaurantsUseCase(),
-        _UnusedReadinessUseCase(),
-        getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
-        initialState: const SubscriptionPlanState(tiers: sampleTiers),
-      );
+        final viewModel = SubscriptionPlanViewModel.withState(
+          _UnusedDurationsUseCase(),
+          _FakeTiersUseCase(sampleTiers),
+          _UnusedTierRestaurantsUseCase(),
+          _UnusedReadinessUseCase(),
+          getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
+          initialState: const SubscriptionPlanState(tiers: sampleTiers),
+        );
 
+        addTearDown(viewModel.close);
 
-      addTearDown(viewModel.close);
-
-      viewModel.doIntent(
-        const BrowseSubscriptionTierRestaurantsEvent(
-          programId: 'prog-1',
-          bundleId: 'bundle-1',
-          tierIndex: 0,
-        ),
-      );
-
-      expect(viewModel.state.isBrowseRestaurantsLoading, isTrue);
-
-      // Close before completer completes
-      viewModel.doIntent(const CloseSubscriptionTierRestaurantsEvent());
-
-      expect(viewModel.state.isBrowseRestaurantsLoading, isFalse);
-      expect(viewModel.state.browsedTierIndex, isNull);
-      expect(viewModel.state.browseRestaurants, isEmpty);
-
-      // When response completes later, it must be ignored
-      completer.complete(
-        ApiSuccessResult(
-          data: PagedEntity(
-            items: [createRestaurant('rest-99', 'Ghost')],
-            pagination: const PaginationEntity(
-              totalCount: 1,
-              page: 1,
-              pageSize: 10,
-              totalPages: 1,
-              hasNextPage: false,
-              hasPreviousPage: false,
-            ),
+        viewModel.doIntent(
+          const BrowseSubscriptionTierRestaurantsEvent(
+            programId: 'prog-1',
+            bundleId: 'bundle-1',
+            tierIndex: 0,
           ),
-        ),
-      );
+        );
 
-      await Future<void>.delayed(const Duration(milliseconds: 20));
-      expect(viewModel.state.browseRestaurants, isEmpty);
-      expect(viewModel.state.browsedTierIndex, isNull);
-    });
+        expect(viewModel.state.isBrowseRestaurantsLoading, isTrue);
 
-    test('load more failure preserves existing items and records failure', () async {
-      final mockPageUseCase = _MockTierRestaurantsPageUseCase((page, tier) async {
-        if (page == 1) {
-          return ApiSuccessResult(
+        // Close before completer completes
+        viewModel.doIntent(const CloseSubscriptionTierRestaurantsEvent());
+
+        expect(viewModel.state.isBrowseRestaurantsLoading, isFalse);
+        expect(viewModel.state.browsedTierIndex, isNull);
+        expect(viewModel.state.browseRestaurants, isEmpty);
+
+        // When response completes later, it must be ignored
+        completer.complete(
+          ApiSuccessResult(
             data: PagedEntity(
-              items: [createRestaurant('rest-1', 'Restaurant 1')],
+              items: [createRestaurant('rest-99', 'Ghost')],
               pagination: const PaginationEntity(
-                totalCount: 2,
+                totalCount: 1,
                 page: 1,
-                pageSize: 1,
-                totalPages: 2,
-                hasNextPage: true,
+                pageSize: 10,
+                totalPages: 1,
+                hasNextPage: false,
                 hasPreviousPage: false,
               ),
             ),
-          );
-        } else {
-          return ApiErrorResult(
-            failure: ServerFailure(
-              code: 'load_more_failed',
-              errorMessage: 'Load more failed',
-              exception: const ApiException(
-                errorType: ApiErrorType.unknown,
-                message: 'Load more failed',
+          ),
+        );
+
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        expect(viewModel.state.browseRestaurants, isEmpty);
+        expect(viewModel.state.browsedTierIndex, isNull);
+      },
+    );
+
+    test(
+      'load more failure preserves existing items and records failure',
+      () async {
+        final mockPageUseCase = _MockTierRestaurantsPageUseCase((
+          page,
+          tier,
+        ) async {
+          if (page == 1) {
+            return ApiSuccessResult(
+              data: PagedEntity(
+                items: [createRestaurant('rest-1', 'Restaurant 1')],
+                pagination: const PaginationEntity(
+                  totalCount: 2,
+                  page: 1,
+                  pageSize: 1,
+                  totalPages: 2,
+                  hasNextPage: true,
+                  hasPreviousPage: false,
+                ),
               ),
+            );
+          } else {
+            return ApiErrorResult(
+              failure: ServerFailure(
+                code: 'load_more_failed',
+                errorMessage: 'Load more failed',
+                exception: const ApiException(
+                  errorType: ApiErrorType.unknown,
+                  message: 'Load more failed',
+                ),
+              ),
+            );
+          }
+        });
+
+        final viewModel = SubscriptionPlanViewModel.withState(
+          _UnusedDurationsUseCase(),
+          _FakeTiersUseCase(sampleTiers),
+          _UnusedTierRestaurantsUseCase(),
+          _UnusedReadinessUseCase(),
+          getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
+          initialState: const SubscriptionPlanState(tiers: sampleTiers),
+        );
+
+        addTearDown(viewModel.close);
+
+        viewModel.doIntent(
+          const BrowseSubscriptionTierRestaurantsEvent(
+            programId: 'prog-1',
+            bundleId: 'bundle-1',
+            tierIndex: 0,
+          ),
+        );
+
+        await expectLater(
+          viewModel.stream,
+          emitsThrough(
+            isA<dynamic>().having(
+              (s) => s.browseRestaurants.length,
+              'count',
+              1,
             ),
-          );
+          ),
+        );
 
+        viewModel.doIntent(const LoadMoreSubscriptionTierRestaurantsEvent());
 
-
-        }
-      });
-
-      final viewModel = SubscriptionPlanViewModel.withState(
-        _UnusedDurationsUseCase(),
-        _FakeTiersUseCase(sampleTiers),
-        _UnusedTierRestaurantsUseCase(),
-        _UnusedReadinessUseCase(),
-        getSubscriptionTierRestaurantsPageUseCase: mockPageUseCase,
-        initialState: const SubscriptionPlanState(tiers: sampleTiers),
-      );
-
-
-      addTearDown(viewModel.close);
-
-      viewModel.doIntent(
-        const BrowseSubscriptionTierRestaurantsEvent(
-          programId: 'prog-1',
-          bundleId: 'bundle-1',
-          tierIndex: 0,
-        ),
-      );
-
-      await expectLater(
-        viewModel.stream,
-        emitsThrough(
-          isA<dynamic>().having((s) => s.browseRestaurants.length, 'count', 1),
-        ),
-      );
-
-      viewModel.doIntent(const LoadMoreSubscriptionTierRestaurantsEvent());
-
-      await expectLater(
-        viewModel.stream,
-        emitsThrough(
-          isA<dynamic>()
-              .having((s) => s.browseRestaurants.length, 'count', 1)
-              .having(
-                (s) => s.browseRestaurantsLoadMoreFailure?.code,
-                'failure code',
-                'load_more_failed',
-              ),
-        ),
-      );
-    });
+        await expectLater(
+          viewModel.stream,
+          emitsThrough(
+            isA<dynamic>()
+                .having((s) => s.browseRestaurants.length, 'count', 1)
+                .having(
+                  (s) => s.browseRestaurantsLoadMoreFailure?.code,
+                  'failure code',
+                  'load_more_failed',
+                ),
+          ),
+        );
+      },
+    );
   });
 }
 
@@ -364,22 +392,32 @@ class _MockTierRestaurantsPageUseCase extends Fake
   _MockTierRestaurantsPageUseCase(this._handler);
 
   final Future<ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>>
-      Function(int page, String tier) _handler;
+  Function(int page, String tier)
+  _handler;
 
   int? lastRequestedPage;
   String? lastRequestedTier;
+  int? lastRequestedDurationDays;
+  String? lastRequestedStartDate;
+  bool? lastRequestedIncludeFriday;
 
   @override
   Future<ApiResult<PagedEntity<SubscriptionTierRestaurantBrowseEntity>>> call({
     required String programId,
     required String bundleId,
     required String tier,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
     required int page,
     required int pageSize,
     String? addressId,
   }) {
     lastRequestedPage = page;
     lastRequestedTier = tier;
+    lastRequestedDurationDays = durationDays;
+    lastRequestedStartDate = startDate;
+    lastRequestedIncludeFriday = includeFriday;
     return _handler(page, tier);
   }
 }
@@ -397,6 +435,7 @@ class _FakeTiersUseCase extends Fake implements GetSubscriptionTiersUseCase {
     required bool includeFriday,
     String? addressId,
     String? familyMemberId,
+    String? startDate,
   }) async {
     return ApiSuccessResult(data: tiers);
   }

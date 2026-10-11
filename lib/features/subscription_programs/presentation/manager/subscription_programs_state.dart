@@ -18,6 +18,7 @@ class SubscriptionProgramsState {
     this.hasAllergies = false,
     this.hasDietaryPreferences = false,
     this.isProfileComplete = false,
+    this.addressCoverage,
   });
 
   final bool isLoading;
@@ -33,6 +34,12 @@ class SubscriptionProgramsState {
   final bool hasAllergies;
   final bool hasDietaryPreferences;
   final bool isProfileComplete;
+  final String? addressCoverage;
+
+  bool get isAddressRequired => !hasDeliveryAddress;
+  bool get isNoDelivery =>
+      hasDeliveryAddress &&
+      (addressCoverage == 'no_delivery' || addressCoverage == 'uncovered');
 
   SubscriptionProgramsState copyWith({
     bool? isLoading,
@@ -51,6 +58,7 @@ class SubscriptionProgramsState {
     bool? hasAllergies,
     bool? hasDietaryPreferences,
     bool? isProfileComplete,
+    String? addressCoverage,
   }) {
     return SubscriptionProgramsState(
       isLoading: isLoading ?? this.isLoading,
@@ -61,13 +69,15 @@ class SubscriptionProgramsState {
       bundles: bundles ?? this.bundles,
       pagination: clearPagination ? null : pagination ?? this.pagination,
       failure: clearFailure ? null : failure ?? this.failure,
-      loadMoreFailure:
-          clearLoadMoreFailure ? null : loadMoreFailure ?? this.loadMoreFailure,
+      loadMoreFailure: clearLoadMoreFailure
+          ? null
+          : loadMoreFailure ?? this.loadMoreFailure,
       hasDeliveryAddress: hasDeliveryAddress ?? this.hasDeliveryAddress,
       hasAllergies: hasAllergies ?? this.hasAllergies,
       hasDietaryPreferences:
           hasDietaryPreferences ?? this.hasDietaryPreferences,
       isProfileComplete: isProfileComplete ?? this.isProfileComplete,
+      addressCoverage: addressCoverage ?? this.addressCoverage,
     );
   }
 }

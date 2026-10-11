@@ -8,41 +8,50 @@ import 'package:meal_meat_user/features/subscription_checkout/data/data_source/s
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 
 void main() {
-  test('restaurant availability endpoint performs GET with all 8 query params and startDate=anchor', () async {
-    final adapter = _CapturingAdapter();
-    final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
-      ..httpClientAdapter = adapter;
-    final dataSource = SubscriptionSummaryRemoteDataSourceImpl(ApiServices(dio));
+  test(
+    'restaurant availability endpoint performs GET with all 8 query params and startDate=anchor',
+    () async {
+      final adapter = _CapturingAdapter();
+      final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
+        ..httpClientAdapter = adapter;
+      final dataSource = SubscriptionSummaryRemoteDataSourceImpl(
+        ApiServices(dio),
+      );
 
-    const request = SubscriptionSummaryRequestEntity(
-      programId: 'prog-123',
-      bundleId: 'bundle-456',
-      tier: 'Basic',
-      durationDays: 26,
-      startDate: '2026-10-08',
-      includeFriday: true,
-      restaurantsPage: 2,
-      restaurantsPageSize: 15,
-    );
+      const request = SubscriptionSummaryRequestEntity(
+        programId: 'prog-123',
+        bundleId: 'bundle-456',
+        tier: 'Basic',
+        durationDays: 26,
+        startDate: '2026-10-08',
+        includeFriday: true,
+        restaurantsPage: 2,
+        restaurantsPageSize: 15,
+      );
 
-    await dataSource.getRestaurantAvailability(request);
+      await dataSource.getRestaurantAvailability(request);
 
-    expect(
-      adapter.requestedUri.path,
-      '/api/v1/customer/subscription-flow/restaurant-availability',
-    );
-    expect(adapter.requestedMethod, 'GET');
+      expect(
+        adapter.requestedUri.path,
+        '/api/v1/customer/subscription-flow/restaurant-availability',
+      );
+      expect(adapter.requestedMethod, 'GET');
 
-    final query = adapter.requestedUri.queryParameters;
-    expect(query['programId'], 'prog-123');
-    expect(query['bundleId'], 'bundle-456');
-    expect(query['tier'], 'Basic');
-    expect(query['durationDays'], '26');
-    expect(query['startDate'], '2026-10-08', reason: 'startDate must be anchor date');
-    expect(query['includeFriday'], 'true');
-    expect(query['restaurantsPage'], '2');
-    expect(query['restaurantsPageSize'], '15');
-  });
+      final query = adapter.requestedUri.queryParameters;
+      expect(query['programId'], 'prog-123');
+      expect(query['bundleId'], 'bundle-456');
+      expect(query['tier'], 'Basic');
+      expect(query['durationDays'], '26');
+      expect(
+        query['startDate'],
+        '2026-10-08',
+        reason: 'startDate must be anchor date',
+      );
+      expect(query['includeFriday'], 'true');
+      expect(query['restaurantsPage'], '2');
+      expect(query['restaurantsPageSize'], '15');
+    },
+  );
 }
 
 class _CapturingAdapter implements HttpClientAdapter {

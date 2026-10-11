@@ -19,10 +19,9 @@ class SubscriptionTotalPriceCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final effectiveCurrency =
-        (currency.isEmpty || currency == 'KWD')
-            ? locale.currency_kwd
-            : currency;
+    final effectiveCurrency = (currency.isEmpty || currency == 'KWD')
+        ? locale.currency_kwd
+        : currency;
 
     return Container(
       padding: const EdgeInsets.all(Spacing.base),

@@ -25,7 +25,7 @@ Future<void> main() async {
   debugPaintBaselinesEnabled = false;
 
   runApp(
-    DevicePreview(enabled: true, builder: (context) => const MealMateApp()),
+    DevicePreview(enabled: false, builder: (context) => const MealMateApp()),
   );
 }
 
@@ -52,7 +52,7 @@ class MealMateApp extends StatelessWidget {
               locale ?? const Locale('ar'),
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          initialRoute: AppRoutes.activeCall,
+          initialRoute: AppRoutes.splash,
           onGenerateRoute: RouteGenerator.getRoute,
         );
       },

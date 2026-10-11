@@ -24,7 +24,7 @@ class LoginViewModel extends Cubit<LoginState> {
   final LoginUseCase _loginUseCase;
   final BiometricService _biometricService;
   final GetCurrentCustomerSubscriptionUseCase?
-      getCurrentCustomerSubscriptionUseCase;
+  getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper? sharedPrefHelper;
 
   bool _inFlight = false;
@@ -63,11 +63,7 @@ class LoginViewModel extends Cubit<LoginState> {
     try {
       final canOffer = await _biometricService.canOfferBiometricLogin();
       if (isClosed) return;
-      emit(
-        state.copyWith(
-          isBiometricReady: canOffer,
-        ),
-      );
+      emit(state.copyWith(isBiometricReady: canOffer));
     } catch (_) {
       if (!isClosed) {
         emit(state.copyWith(isBiometricReady: false));
@@ -124,12 +120,7 @@ class LoginViewModel extends Cubit<LoginState> {
       }
     } catch (_) {
       if (!isClosed) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            outcome: LoginOutcome.failure,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, outcome: LoginOutcome.failure));
       }
     } finally {
       _inFlight = false;
@@ -234,12 +225,7 @@ class LoginViewModel extends Cubit<LoginState> {
       }
     } catch (_) {
       if (!isClosed) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            outcome: LoginOutcome.failure,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, outcome: LoginOutcome.failure));
       }
     } finally {
       _inFlight = false;
@@ -255,12 +241,9 @@ class LoginViewModel extends Cubit<LoginState> {
       final result = await useCase();
       switch (result) {
         case ApiSuccessResult():
-          final subscriptionId =
-              result.data.subscription?.subscriptionId ?? '';
+          final subscriptionId = result.data.subscription?.subscriptionId ?? '';
           if (subscriptionId.isEmpty) {
-            await prefHelper.removeData(
-              key: StorageKeys.currentSubscriptionId,
-            );
+            await prefHelper.removeData(key: StorageKeys.currentSubscriptionId);
           } else {
             await prefHelper.saveData(
               key: StorageKeys.currentSubscriptionId,
@@ -268,9 +251,7 @@ class LoginViewModel extends Cubit<LoginState> {
             );
           }
         case ApiErrorResult():
-          await prefHelper.removeData(
-            key: StorageKeys.currentSubscriptionId,
-          );
+          await prefHelper.removeData(key: StorageKeys.currentSubscriptionId);
       }
     } catch (_) {
       // Non-blocking auxiliary sync

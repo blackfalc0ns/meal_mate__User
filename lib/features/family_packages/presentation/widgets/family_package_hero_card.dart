@@ -26,10 +26,7 @@ class FamilyPackageHeroCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Spacing.subscriptionProgramCardRadius,
         ),
-        border: Border.all(
-          color: color.primary,
-          width: 1.5,
-        ),
+        border: Border.all(color: color.primary, width: 1.5),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

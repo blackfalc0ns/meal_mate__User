@@ -164,186 +164,192 @@ void main() {
   });
 
   group('SubscriptionBillingActionCoordinator freeze flow tests', () {
-    testWidgets('shows notice sheet first and cancelling prevents freeze request', (
-      tester,
-    ) async {
-      SubscriptionBillingFreezeRequestEntity? emittedRequest;
-      final coordinator = SubscriptionBillingActionCoordinator(
-        onRenew: (_) {},
-        onFreeze: (_, request) => emittedRequest = request,
-        onCancelQuote: (_) {},
-        onCancel: (_, reason) {},
-        onResetAction: () {},
-        onDeleteUncompleted: (_) {},
-        onResumePreview: (_) {},
-        onResume: (_, [paymentMethodId]) {},
-      );
+    testWidgets(
+      'shows notice sheet first and cancelling prevents freeze request',
+      (tester) async {
+        SubscriptionBillingFreezeRequestEntity? emittedRequest;
+        final coordinator = SubscriptionBillingActionCoordinator(
+          onRenew: (_) {},
+          onFreeze: (_, request) => emittedRequest = request,
+          onCancelQuote: (_) {},
+          onCancel: (_, reason) {},
+          onResetAction: () {},
+          onDeleteUncompleted: (_) {},
+          onResumePreview: (_) {},
+          onResume: (_, [paymentMethodId]) {},
+        );
 
-      final subscription = createTestSubscription();
+        final subscription = createTestSubscription();
 
-      await tester.pumpWidget(
-        buildApp(
-          home: Builder(
-            builder: (context) {
-              return Scaffold(
-                body: ElevatedButton(
-                  onPressed: () => coordinator.confirmFreeze(
-                    context: context,
-                    subscription: subscription,
+        await tester.pumpWidget(
+          buildApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: ElevatedButton(
+                    onPressed: () => coordinator.confirmFreeze(
+                      context: context,
+                      subscription: subscription,
+                    ),
+                    child: const Text('Freeze Action'),
                   ),
-                  child: const Text('Freeze Action'),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.text('Freeze Action'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Freeze Action'));
+        await tester.pumpAndSettle();
 
-      // Step 1: Notice sheet MUST be visible first
-      expect(find.byType(SubscriptionFreezeNoticeSheet), findsOneWidget);
-      expect(
-        find.text('Server freeze policy text for testing'),
-        findsOneWidget,
-      );
+        // Step 1: Notice sheet MUST be visible first
+        expect(find.byType(SubscriptionFreezeNoticeSheet), findsOneWidget);
+        expect(
+          find.text('Server freeze policy text for testing'),
+          findsOneWidget,
+        );
 
-      // Cancel it
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
+        // Cancel it
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
 
-      // No freeze request was made
-      expect(emittedRequest, isNull);
-      expect(coordinator.isFreezeFlowOpen, isFalse);
-    });
+        // No freeze request was made
+        expect(emittedRequest, isNull);
+        expect(coordinator.isFreezeFlowOpen, isFalse);
+      },
+    );
 
-    testWidgets('active freeze opens active freeze dialog without new freeze sheet', (
-      tester,
-    ) async {
-      final coordinator = SubscriptionBillingActionCoordinator(
-        onRenew: (_) {},
-        onFreeze: (_, req) {},
-        onCancelQuote: (_) {},
-        onCancel: (_, reason) {},
-        onResetAction: () {},
-        onDeleteUncompleted: (_) {},
-        onResumePreview: (_) {},
-        onResume: (_, [paymentMethodId]) {},
-      );
+    testWidgets(
+      'active freeze opens active freeze dialog without new freeze sheet',
+      (tester) async {
+        final coordinator = SubscriptionBillingActionCoordinator(
+          onRenew: (_) {},
+          onFreeze: (_, req) {},
+          onCancelQuote: (_) {},
+          onCancel: (_, reason) {},
+          onResetAction: () {},
+          onDeleteUncompleted: (_) {},
+          onResumePreview: (_) {},
+          onResume: (_, [paymentMethodId]) {},
+        );
 
-      const activeFreeze = SubscriptionBillingActiveFreezeEntity(
-        requestId: 'act-1',
-        startDate: '2026-10-10',
-        endDate: '2026-10-15',
-        freezeDays: 5,
-        frozenServiceDaysCount: 5,
-        status: 'Active',
-        statusNameAr: 'نشط',
-        isCurrentlyActive: true,
-        isUpcoming: false,
-        reason: 'Holiday',
-        createdAtUtc: '2026-10-01T00:00:00Z',
-        processedAtUtc: '2026-10-01T00:00:00Z',
-        frozenServiceDates: [],
-        compensationDates: [],
-        subscriptionEndDate: '2026-11-05',
-        summaryAr: '',
-        summaryEn: '',
-      );
+        const activeFreeze = SubscriptionBillingActiveFreezeEntity(
+          requestId: 'act-1',
+          startDate: '2026-10-10',
+          endDate: '2026-10-15',
+          freezeDays: 5,
+          frozenServiceDaysCount: 5,
+          status: 'Active',
+          statusNameAr: 'نشط',
+          isCurrentlyActive: true,
+          isUpcoming: false,
+          reason: 'Holiday',
+          createdAtUtc: '2026-10-01T00:00:00Z',
+          processedAtUtc: '2026-10-01T00:00:00Z',
+          frozenServiceDates: [],
+          compensationDates: [],
+          subscriptionEndDate: '2026-11-05',
+          summaryAr: '',
+          summaryEn: '',
+        );
 
-      final subscription = createTestSubscription(activeFreeze: activeFreeze);
+        final subscription = createTestSubscription(activeFreeze: activeFreeze);
 
-      await tester.pumpWidget(
-        buildApp(
-          home: Builder(
-            builder: (context) {
-              return Scaffold(
-                body: ElevatedButton(
-                  onPressed: () => coordinator.confirmFreeze(
-                    context: context,
-                    subscription: subscription,
+        await tester.pumpWidget(
+          buildApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: ElevatedButton(
+                    onPressed: () => coordinator.confirmFreeze(
+                      context: context,
+                      subscription: subscription,
+                    ),
+                    child: const Text('Freeze Action'),
                   ),
-                  child: const Text('Freeze Action'),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.text('Freeze Action'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Freeze Action'));
+        await tester.pumpAndSettle();
 
-      // Should NOT show new freeze notice sheet
-      expect(find.byType(SubscriptionFreezeNoticeSheet), findsNothing);
-      expect(find.byType(SubscriptionBillingActiveFreezeCard), findsOneWidget);
-    });
+        // Should NOT show new freeze notice sheet
+        expect(find.byType(SubscriptionFreezeNoticeSheet), findsNothing);
+        expect(
+          find.byType(SubscriptionBillingActiveFreezeCard),
+          findsOneWidget,
+        );
+      },
+    );
 
-    testWidgets('handleConfirmOverwriteSelections emits freeze request with acknowledgeLostSelections: true', (
-      tester,
-    ) async {
-      SubscriptionBillingFreezeRequestEntity? capturedRequest;
-      String? capturedSubId;
+    testWidgets(
+      'handleConfirmOverwriteSelections emits freeze request with acknowledgeLostSelections: true',
+      (tester) async {
+        SubscriptionBillingFreezeRequestEntity? capturedRequest;
+        String? capturedSubId;
 
-      final coordinator = SubscriptionBillingActionCoordinator(
-        onRenew: (_) {},
-        onFreeze: (subId, request) {
-          capturedSubId = subId;
-          capturedRequest = request;
-        },
-        onCancelQuote: (_) {},
-        onCancel: (_, reason) {},
-        onResetAction: () {},
-        onDeleteUncompleted: (_) {},
-        onResumePreview: (_) {},
-        onResume: (_, [paymentMethodId]) {},
-      );
+        final coordinator = SubscriptionBillingActionCoordinator(
+          onRenew: (_) {},
+          onFreeze: (subId, request) {
+            capturedSubId = subId;
+            capturedRequest = request;
+          },
+          onCancelQuote: (_) {},
+          onCancel: (_, reason) {},
+          onResetAction: () {},
+          onDeleteUncompleted: (_) {},
+          onResumePreview: (_) {},
+          onResume: (_, [paymentMethodId]) {},
+        );
 
-      const pendingRequest = SubscriptionBillingFreezeRequestEntity(
-        startDate: '2026-10-10',
-        endDate: '2026-10-15',
-        reason: 'Travel',
-        acknowledgeLostSelections: false,
-      );
+        const pendingRequest = SubscriptionBillingFreezeRequestEntity(
+          startDate: '2026-10-10',
+          endDate: '2026-10-15',
+          reason: 'Travel',
+          acknowledgeLostSelections: false,
+        );
 
-      await tester.pumpWidget(
-        buildApp(
-          home: Builder(
-            builder: (context) {
-              return Scaffold(
-                body: ElevatedButton(
-                  onPressed: () =>
-                      coordinator.handleConfirmOverwriteSelections(
-                    context: context,
-                    pendingRequest: pendingRequest,
-                    pendingSubscriptionId: 'sub-test-1',
+        await tester.pumpWidget(
+          buildApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: ElevatedButton(
+                    onPressed: () =>
+                        coordinator.handleConfirmOverwriteSelections(
+                          context: context,
+                          pendingRequest: pendingRequest,
+                          pendingSubscriptionId: 'sub-test-1',
+                        ),
+                    child: const Text('Trigger Overwrite Dialog'),
                   ),
-                  child: const Text('Trigger Overwrite Dialog'),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.text('Trigger Overwrite Dialog'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Trigger Overwrite Dialog'));
+        await tester.pumpAndSettle();
 
-      expect(
-        find.text('Confirm Meal Selections Cancellation'),
-        findsOneWidget,
-      );
+        expect(
+          find.text('Confirm Meal Selections Cancellation'),
+          findsOneWidget,
+        );
 
-      // Confirm
-      await tester.tap(find.text('Confirm'));
-      await tester.pumpAndSettle();
+        // Confirm
+        await tester.tap(find.text('Confirm'));
+        await tester.pumpAndSettle();
 
-      expect(capturedSubId, 'sub-test-1');
-      expect(capturedRequest, isNotNull);
-      expect(capturedRequest?.acknowledgeLostSelections, isTrue);
-      expect(capturedRequest?.startDate, '2026-10-10');
-      expect(capturedRequest?.endDate, '2026-10-15');
-    });
+        expect(capturedSubId, 'sub-test-1');
+        expect(capturedRequest, isNotNull);
+        expect(capturedRequest?.acknowledgeLostSelections, isTrue);
+        expect(capturedRequest?.startDate, '2026-10-10');
+        expect(capturedRequest?.endDate, '2026-10-15');
+      },
+    );
   });
 }

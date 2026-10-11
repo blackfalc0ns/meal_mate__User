@@ -34,8 +34,8 @@ class AddAllergyGridSection extends StatelessWidget {
           label: option.label,
           isSelected: selectedCodes.contains(option.code),
           onTap: () => context.read<FoodPreferencesViewModel>().doIntent(
-                ToggleAllergyPreferenceEvent(option.code),
-              ),
+            ToggleAllergyPreferenceEvent(option.code),
+          ),
         );
       },
     );

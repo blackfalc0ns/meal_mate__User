@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_programs_page_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/usecase/get_subscription_program_bundles_usecase.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/usecase/get_subscription_programs_page_usecase.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/usecase/get_subscription_programs_usecase.dart';
@@ -69,6 +70,14 @@ class SubscriptionProgramsViewModel extends Cubit<SubscriptionProgramsState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final pageData = result.data;
+        final addressCoverage = pageData is SubscriptionProgramsPageEntity
+            ? pageData.addressCoverage
+            : null;
+        final hasDeliveryAddress = pageData is SubscriptionProgramsPageEntity
+            ? pageData.hasDeliveryAddress ?? state.hasDeliveryAddress
+            : state.hasDeliveryAddress;
+
         emit(
           state.copyWith(
             isLoading: false,
@@ -76,6 +85,8 @@ class SubscriptionProgramsViewModel extends Cubit<SubscriptionProgramsState> {
             isSuccess: true,
             programs: result.data.items,
             pagination: result.data.pagination,
+            addressCoverage: addressCoverage,
+            hasDeliveryAddress: hasDeliveryAddress,
             clearFailure: true,
           ),
         );
@@ -98,12 +109,7 @@ class SubscriptionProgramsViewModel extends Cubit<SubscriptionProgramsState> {
     final targetPage = state.pagination!.page + 1;
     final generation = _programsGeneration;
 
-    emit(
-      state.copyWith(
-        isLoadingMore: true,
-        clearLoadMoreFailure: true,
-      ),
-    );
+    emit(state.copyWith(isLoadingMore: true, clearLoadMoreFailure: true));
 
     final result = await _getSubscriptionProgramsPageUseCase(
       page: targetPage,
@@ -129,10 +135,7 @@ class SubscriptionProgramsViewModel extends Cubit<SubscriptionProgramsState> {
         );
       case ApiErrorResult():
         emit(
-          state.copyWith(
-            isLoadingMore: false,
-            loadMoreFailure: result.failure,
-          ),
+          state.copyWith(isLoadingMore: false, loadMoreFailure: result.failure),
         );
     }
   }

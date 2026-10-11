@@ -12,9 +12,11 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
 
-class RecordingSubscriptionSummaryRepository implements SubscriptionSummaryRepository {
+class RecordingSubscriptionSummaryRepository
+    implements SubscriptionSummaryRepository {
   final List<SubscriptionSummaryRequestEntity> recordedRequests = [];
-  SubscriptionSummaryEntity Function(SubscriptionSummaryRequestEntity request)? responder;
+  SubscriptionSummaryEntity Function(SubscriptionSummaryRequestEntity request)?
+  responder;
 
   @override
   Future<ApiResult<SubscriptionSummaryEntity>> getSummary(
@@ -107,9 +109,9 @@ void main() {
       'chosen anchor date (2026-10-08) is preserved in activeRequest & selectedStartDate when server returns first delivery (2026-10-11)',
       () async {
         repository.responder = (req) => buildTestSummaryWithServerFirstDelivery(
-              chosenAnchorDate: '2026-10-08',
-              serverFirstDeliveryDate: '2026-10-11',
-            );
+          chosenAnchorDate: '2026-10-08',
+          serverFirstDeliveryDate: '2026-10-11',
+        );
 
         const initialRequest = SubscriptionSummaryRequestEntity(
           programId: 'prog-1',
@@ -123,12 +125,22 @@ void main() {
         viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
         await pumpEventQueue();
 
-        expect(viewModel.state.selectedStartDate, '2026-10-08',
-            reason: 'selectedStartDate must remain the customer anchor date');
-        expect(viewModel.state.activeRequest?.startDate, '2026-10-08',
-            reason: 'activeRequest.startDate must remain 2026-10-08');
-        expect(viewModel.state.summary?.startDate, '2026-10-11',
-            reason: 'summary.startDate reflects server first delivery for UI display');
+        expect(
+          viewModel.state.selectedStartDate,
+          '2026-10-08',
+          reason: 'selectedStartDate must remain the customer anchor date',
+        );
+        expect(
+          viewModel.state.activeRequest?.startDate,
+          '2026-10-08',
+          reason: 'activeRequest.startDate must remain 2026-10-08',
+        );
+        expect(
+          viewModel.state.summary?.startDate,
+          '2026-10-11',
+          reason:
+              'summary.startDate reflects server first delivery for UI display',
+        );
       },
     );
 
@@ -136,17 +148,17 @@ void main() {
       'subsequent actions (apply coupon, remove coupon) continue to send anchor date (2026-10-08), NOT 2026-10-11',
       () async {
         repository.responder = (req) => buildTestSummaryWithServerFirstDelivery(
-              chosenAnchorDate: '2026-10-08',
-              serverFirstDeliveryDate: '2026-10-11',
-              coupon: req.promoCode == 'SAVE10'
-                  ? const SubscriptionCouponEntity(
-                      code: 'SAVE10',
-                      status: SubscriptionCouponStatus.valid,
-                      rawStatus: 'valid',
-                      discountAmount: 10,
-                    )
-                  : null,
-            );
+          chosenAnchorDate: '2026-10-08',
+          serverFirstDeliveryDate: '2026-10-11',
+          coupon: req.promoCode == 'SAVE10'
+              ? const SubscriptionCouponEntity(
+                  code: 'SAVE10',
+                  status: SubscriptionCouponStatus.valid,
+                  rawStatus: 'valid',
+                  discountAmount: 10,
+                )
+              : null,
+        );
 
         const initialRequest = SubscriptionSummaryRequestEntity(
           programId: 'prog-1',
@@ -171,8 +183,11 @@ void main() {
         // Verify all 3 requests had startDate == 2026-10-08
         expect(repository.recordedRequests.length, 3);
         for (var i = 0; i < repository.recordedRequests.length; i++) {
-          expect(repository.recordedRequests[i].startDate, '2026-10-08',
-              reason: 'Request #$i should have anchor date 2026-10-08');
+          expect(
+            repository.recordedRequests[i].startDate,
+            '2026-10-08',
+            reason: 'Request #$i should have anchor date 2026-10-08',
+          );
         }
       },
     );
@@ -181,9 +196,9 @@ void main() {
       'user explicitly changing anchor date updates anchor to the new date (2026-10-15)',
       () async {
         repository.responder = (req) => buildTestSummaryWithServerFirstDelivery(
-              chosenAnchorDate: req.startDate,
-              serverFirstDeliveryDate: '2026-10-18',
-            );
+          chosenAnchorDate: req.startDate,
+          serverFirstDeliveryDate: '2026-10-18',
+        );
 
         const initialRequest = SubscriptionSummaryRequestEntity(
           programId: 'prog-1',
@@ -197,10 +212,12 @@ void main() {
         viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
         await pumpEventQueue();
 
-        viewModel.doIntent(const ChangeSubscriptionStartDateEvent(
-          startDate: '2026-10-15',
-          baseRequest: initialRequest,
-        ));
+        viewModel.doIntent(
+          const ChangeSubscriptionStartDateEvent(
+            startDate: '2026-10-15',
+            baseRequest: initialRequest,
+          ),
+        );
         await pumpEventQueue();
 
         expect(viewModel.state.selectedStartDate, '2026-10-15');

@@ -53,8 +53,9 @@ class PasswordRecoveryState {
       isResending: isResending ?? this.isResending,
       outcome: outcome ?? this.outcome,
       failure: failure != null ? failure() : this.failure,
-      snapshotPhone:
-          snapshotPhone != null ? snapshotPhone() : this.snapshotPhone,
+      snapshotPhone: snapshotPhone != null
+          ? snapshotPhone()
+          : this.snapshotPhone,
       snapshotCountryCode: snapshotCountryCode != null
           ? snapshotCountryCode()
           : this.snapshotCountryCode,

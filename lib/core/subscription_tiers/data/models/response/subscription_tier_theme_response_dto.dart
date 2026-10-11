@@ -4,14 +4,12 @@ part 'subscription_tier_theme_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class SubscriptionTierThemeResponseDto {
-  const SubscriptionTierThemeResponseDto({
-    this.designId,
-    this.designName,
-  });
+  const SubscriptionTierThemeResponseDto({this.designId, this.designName});
 
   final int? designId;
   final String? designName;
 
-  factory SubscriptionTierThemeResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionTierThemeResponseDtoFromJson(json);
+  factory SubscriptionTierThemeResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$SubscriptionTierThemeResponseDtoFromJson(json);
 }

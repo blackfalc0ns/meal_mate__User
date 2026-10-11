@@ -21,9 +21,7 @@ Widget _buildTestApp(Widget child) {
     locale: const Locale('ar'),
     supportedLocales: AppLocalizations.supportedLocales,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
-    routes: {
-      AppRoutes.activeCall: (context) => const ActiveCallScreen(),
-    },
+    routes: {AppRoutes.activeCall: (context) => const ActiveCallScreen()},
     home: child,
   );
 }
@@ -39,58 +37,54 @@ void _setMobileViewSize(WidgetTester tester) {
 
 void main() {
   group('Calling Feature Widget Tests', () {
-    testWidgets('IncomingCallScreen renders all components correctly in Arabic', (
-      tester,
-    ) async {
-      _setMobileViewSize(tester);
+    testWidgets(
+      'IncomingCallScreen renders all components correctly in Arabic',
+      (tester) async {
+        _setMobileViewSize(tester);
 
-      await tester.pumpWidget(
-        _buildTestApp(const IncomingCallScreen()),
-      );
-      await tester.pump();
+        await tester.pumpWidget(_buildTestApp(const IncomingCallScreen()));
+        await tester.pump();
 
-      expect(find.byType(CallingHeaderBrand), findsOneWidget);
-      expect(find.byType(CallingDriverAvatarRings), findsOneWidget);
-      expect(find.byType(CallingDriverRoleBadge), findsOneWidget);
-      expect(find.byType(CallingIncomingActions), findsOneWidget);
+        expect(find.byType(CallingHeaderBrand), findsOneWidget);
+        expect(find.byType(CallingDriverAvatarRings), findsOneWidget);
+        expect(find.byType(CallingDriverRoleBadge), findsOneWidget);
+        expect(find.byType(CallingIncomingActions), findsOneWidget);
 
-      expect(find.text('محمد علي'), findsOneWidget);
-      expect(find.text('مندوب التوصيل'), findsOneWidget);
-      expect(find.text('مكالمة واردة من'), findsOneWidget);
-      expect(find.text('يتصل بك الآن'), findsOneWidget);
-      expect(find.text('قبول'), findsOneWidget);
-      expect(find.text('رفض'), findsOneWidget);
-    });
+        expect(find.text('محمد علي'), findsOneWidget);
+        expect(find.text('مندوب التوصيل'), findsOneWidget);
+        expect(find.text('مكالمة واردة من'), findsOneWidget);
+        expect(find.text('يتصل بك الآن'), findsOneWidget);
+        expect(find.text('قبول'), findsOneWidget);
+        expect(find.text('رفض'), findsOneWidget);
+      },
+    );
 
-    testWidgets('IncomingCallScreen accepting call transitions to ActiveCallScreen', (
-      tester,
-    ) async {
-      _setMobileViewSize(tester);
+    testWidgets(
+      'IncomingCallScreen accepting call transitions to ActiveCallScreen',
+      (tester) async {
+        _setMobileViewSize(tester);
 
-      await tester.pumpWidget(
-        _buildTestApp(const IncomingCallScreen()),
-      );
-      await tester.pump();
+        await tester.pumpWidget(_buildTestApp(const IncomingCallScreen()));
+        await tester.pump();
 
-      final acceptButton = find.text('قبول');
-      expect(acceptButton, findsOneWidget);
+        final acceptButton = find.text('قبول');
+        expect(acceptButton, findsOneWidget);
 
-      await tester.tap(acceptButton);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 300));
+        await tester.tap(acceptButton);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 300));
 
-      expect(find.byType(ActiveCallScreen), findsOneWidget);
-      expect(find.text('مكالمة جارية'), findsOneWidget);
-    });
+        expect(find.byType(ActiveCallScreen), findsOneWidget);
+        expect(find.text('مكالمة جارية'), findsOneWidget);
+      },
+    );
 
     testWidgets('ActiveCallScreen renders all components correctly', (
       tester,
     ) async {
       _setMobileViewSize(tester);
 
-      await tester.pumpWidget(
-        _buildTestApp(const ActiveCallScreen()),
-      );
+      await tester.pumpWidget(_buildTestApp(const ActiveCallScreen()));
       await tester.pump();
 
       expect(find.byType(CallingHeaderBrand), findsOneWidget);
@@ -113,13 +107,17 @@ void main() {
     ) async {
       _setMobileViewSize(tester);
 
-      await tester.pumpWidget(
-        _buildTestApp(const ActiveCallScreen()),
-      );
+      await tester.pumpWidget(_buildTestApp(const ActiveCallScreen()));
       await tester.pump();
 
-      final muteButton = find.widgetWithText(CallingActiveControlButton, 'كتم الميكروفون');
-      final speakerButton = find.widgetWithText(CallingActiveControlButton, 'سماعة');
+      final muteButton = find.widgetWithText(
+        CallingActiveControlButton,
+        'كتم الميكروفون',
+      );
+      final speakerButton = find.widgetWithText(
+        CallingActiveControlButton,
+        'سماعة',
+      );
 
       expect(muteButton, findsOneWidget);
       expect(speakerButton, findsOneWidget);
@@ -131,9 +129,7 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('ActiveCallScreen end call button pops screen', (
-      tester,
-    ) async {
+    testWidgets('ActiveCallScreen end call button pops screen', (tester) async {
       _setMobileViewSize(tester);
 
       await tester.pumpWidget(

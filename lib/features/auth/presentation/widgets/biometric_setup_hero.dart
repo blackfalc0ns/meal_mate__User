@@ -6,10 +6,7 @@ import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class BiometricSetupHero extends StatelessWidget {
-  const BiometricSetupHero({
-    super.key,
-    required this.presentationType,
-  });
+  const BiometricSetupHero({super.key, required this.presentationType});
 
   final BiometricTypeEnum presentationType;
 
@@ -38,11 +35,7 @@ class BiometricSetupHero extends StatelessWidget {
             ),
           ),
           child: Center(
-            child: Icon(
-              iconData,
-              size: Spacing.xxxl,
-              color: color.primary,
-            ),
+            child: Icon(iconData, size: Spacing.xxxl, color: color.primary),
           ),
         ),
         const SizedBox(height: Spacing.xl),

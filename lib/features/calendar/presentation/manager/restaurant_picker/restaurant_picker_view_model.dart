@@ -195,7 +195,7 @@ class RestaurantPickerViewModel extends Cubit<RestaurantPickerState> {
     required CalendarRestaurantOptionEntity restaurant,
     required String localeName,
   }) async {
-    if (state.isSelecting) {
+    if (state.isSelecting && state.selectingRestaurantId == restaurant.id) {
       return ApiErrorResult(
         failure: Failure(
           errorMessage: 'Selection already in progress',

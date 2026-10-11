@@ -13,65 +13,70 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_res
 
 void main() {
   group('Calendar Restaurants Pagination Contract', () {
-    test('RemoteDataSource passes page, pageSize and query correctly', () async {
-      RequestOptions? recordedOptions;
-      final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
-        ..httpClientAdapter = _MockAdapter((options) {
-          recordedOptions = options;
-          return ResponseBody.fromString(
-            jsonEncode({
-              'serviceDate': '2026-10-15',
-              'limit': 8,
-              'adminCeiling': 8,
-              'restaurants': [
-                {
-                  'restaurantId': 'r1',
-                  'nameEn': 'Kitchen',
-                  'rating': null,
-                  'ratingCount': 0,
-                  'isEnabled': false,
-                  'disabledReason': 'calendar.quota_exhausted',
-                }
-              ],
-              'page': 1,
-              'pageSize': 20,
-              'totalCount': 21,
-              'totalPages': 2,
-              'hasNextPage': true,
-              'hasPreviousPage': false,
-            }),
-            200,
-            headers: {Headers.contentTypeHeader: [Headers.jsonContentType]},
-          );
-        });
+    test(
+      'RemoteDataSource passes page, pageSize and query correctly',
+      () async {
+        RequestOptions? recordedOptions;
+        final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
+          ..httpClientAdapter = _MockAdapter((options) {
+            recordedOptions = options;
+            return ResponseBody.fromString(
+              jsonEncode({
+                'serviceDate': '2026-10-15',
+                'limit': 8,
+                'adminCeiling': 8,
+                'restaurants': [
+                  {
+                    'restaurantId': 'r1',
+                    'nameEn': 'Kitchen',
+                    'rating': null,
+                    'ratingCount': 0,
+                    'isEnabled': false,
+                    'disabledReason': 'calendar.quota_exhausted',
+                  },
+                ],
+                'page': 1,
+                'pageSize': 20,
+                'totalCount': 21,
+                'totalPages': 2,
+                'hasNextPage': true,
+                'hasPreviousPage': false,
+              }),
+              200,
+              headers: {
+                Headers.contentTypeHeader: [Headers.jsonContentType],
+              },
+            );
+          });
 
-      final dataSource = CalendarRemoteDataSourceImpl(ApiServices(dio));
-      final responseDto = await dataSource.getRestaurants(
-        subscriptionId: 'sub-1',
-        date: '2026-10-15',
-        query: 'Kitchen',
-        page: 1,
-        pageSize: 20,
-      );
+        final dataSource = CalendarRemoteDataSourceImpl(ApiServices(dio));
+        final responseDto = await dataSource.getRestaurants(
+          subscriptionId: 'sub-1',
+          date: '2026-10-15',
+          query: 'Kitchen',
+          page: 1,
+          pageSize: 20,
+        );
 
-      expect(recordedOptions?.method, 'GET');
-      expect(
-        recordedOptions?.uri.path,
-        '/api/v1/customer/subscriptions/sub-1/days/2026-10-15/restaurants',
-      );
-      expect(recordedOptions?.uri.queryParameters['query'], 'Kitchen');
-      expect(recordedOptions?.uri.queryParameters['page'], '1');
-      expect(recordedOptions?.uri.queryParameters['pageSize'], '20');
+        expect(recordedOptions?.method, 'GET');
+        expect(
+          recordedOptions?.uri.path,
+          '/api/v1/customer/subscriptions/sub-1/days/2026-10-15/restaurants',
+        );
+        expect(recordedOptions?.uri.queryParameters['query'], 'Kitchen');
+        expect(recordedOptions?.uri.queryParameters['page'], '1');
+        expect(recordedOptions?.uri.queryParameters['pageSize'], '20');
 
-      expect(responseDto.page, 1);
-      expect(responseDto.pageSize, 20);
-      expect(responseDto.totalCount, 21);
-      expect(responseDto.totalPages, 2);
-      expect(responseDto.hasNextPage, isTrue);
-      expect(responseDto.hasPreviousPage, isFalse);
-      expect(responseDto.restaurants?.length, 1);
-      expect(responseDto.restaurants?.first.restaurantId, 'r1');
-    });
+        expect(responseDto.page, 1);
+        expect(responseDto.pageSize, 20);
+        expect(responseDto.totalCount, 21);
+        expect(responseDto.totalPages, 2);
+        expect(responseDto.hasNextPage, isTrue);
+        expect(responseDto.hasPreviousPage, isFalse);
+        expect(responseDto.restaurants?.length, 1);
+        expect(responseDto.restaurants?.first.restaurantId, 'r1');
+      },
+    );
 
     test('Legacy call does not send page/pageSize query params', () async {
       RequestOptions? recordedOptions;
@@ -81,11 +86,13 @@ void main() {
           return ResponseBody.fromString(
             jsonEncode({
               'restaurants': [
-                {'restaurantId': 'r1', 'name': 'Kitchen'}
+                {'restaurantId': 'r1', 'name': 'Kitchen'},
               ],
             }),
             200,
-            headers: {Headers.contentTypeHeader: [Headers.jsonContentType]},
+            headers: {
+              Headers.contentTypeHeader: [Headers.jsonContentType],
+            },
           );
         });
 
@@ -96,124 +103,145 @@ void main() {
       );
 
       expect(recordedOptions?.uri.queryParameters.containsKey('page'), isFalse);
-      expect(recordedOptions?.uri.queryParameters.containsKey('pageSize'), isFalse);
-      expect(recordedOptions?.uri.queryParameters.containsKey('query'), isFalse);
-    });
-
-    test('Mapper preserves metadata when present and filters empty restaurantId without mutating totalCount', () {
-      final dto = CalendarRestaurantsResponseDto(
-        serviceDate: '2026-10-15',
-        limit: 8,
-        adminCeiling: 8,
-        page: 1,
-        pageSize: 20,
-        totalCount: 21,
-        totalPages: 2,
-        hasNextPage: true,
-        hasPreviousPage: false,
-        restaurants: [
-          CalendarRestaurantResponseDto(
-            restaurantId: 'r1',
-            nameEn: 'Kitchen',
-            rating: null,
-            ratingCount: 0,
-            isEnabled: false,
-          ),
-          CalendarRestaurantResponseDto(
-            restaurantId: '', // Should be filtered out
-            nameEn: 'Invalid',
-          ),
-        ],
+      expect(
+        recordedOptions?.uri.queryParameters.containsKey('pageSize'),
+        isFalse,
       );
-
-      final entity = dto.toEntity(localeName: 'en');
-      expect(entity.page, 1);
-      expect(entity.pageSize, 20);
-      expect(entity.totalCount, 21); // Remains 21 from response
-      expect(entity.totalPages, 2);
-      expect(entity.hasNextPage, isTrue);
-      expect(entity.hasPreviousPage, isFalse);
-      expect(entity.restaurants.length, 1);
-      expect(entity.restaurants.first.id, 'r1');
-      expect(entity.restaurants.first.isEnabled, isFalse);
-    });
-
-    test('Mapper falls back safely for legacy response missing pagination fields', () {
-      final dto = CalendarRestaurantsResponseDto(
-        restaurants: [
-          CalendarRestaurantResponseDto(
-            restaurantId: 'r1',
-            name: 'Restaurant 1',
-          ),
-          CalendarRestaurantResponseDto(
-            restaurantId: 'r2',
-            name: 'Restaurant 2',
-          ),
-        ],
+      expect(
+        recordedOptions?.uri.queryParameters.containsKey('query'),
+        isFalse,
       );
-
-      final entity = dto.toEntity(localeName: 'en');
-      expect(entity.page, 1);
-      expect(entity.pageSize, 2);
-      expect(entity.totalCount, 2);
-      expect(entity.totalPages, 1);
-      expect(entity.hasNextPage, isFalse);
-      expect(entity.hasPreviousPage, isFalse);
-      expect(entity.restaurants.length, 2);
     });
 
-    test('Mapper falls back safely when restaurants list is empty and pagination metadata is null', () {
-      final dto = CalendarRestaurantsResponseDto(restaurants: []);
+    test(
+      'Mapper preserves metadata when present and filters empty restaurantId without mutating totalCount',
+      () {
+        final dto = CalendarRestaurantsResponseDto(
+          serviceDate: '2026-10-15',
+          limit: 8,
+          adminCeiling: 8,
+          page: 1,
+          pageSize: 20,
+          totalCount: 21,
+          totalPages: 2,
+          hasNextPage: true,
+          hasPreviousPage: false,
+          restaurants: [
+            CalendarRestaurantResponseDto(
+              restaurantId: 'r1',
+              nameEn: 'Kitchen',
+              rating: null,
+              ratingCount: 0,
+              isEnabled: false,
+            ),
+            CalendarRestaurantResponseDto(
+              restaurantId: '', // Should be filtered out
+              nameEn: 'Invalid',
+            ),
+          ],
+        );
 
-      final entity = dto.toEntity(localeName: 'en');
-      expect(entity.page, 1);
-      expect(entity.pageSize, 1);
-      expect(entity.totalCount, 0);
-      expect(entity.totalPages, 0);
-      expect(entity.hasNextPage, isFalse);
-      expect(entity.hasPreviousPage, isFalse);
-      expect(entity.restaurants, isEmpty);
-    });
+        final entity = dto.toEntity(localeName: 'en');
+        expect(entity.page, 1);
+        expect(entity.pageSize, 20);
+        expect(entity.totalCount, 21); // Remains 21 from response
+        expect(entity.totalPages, 2);
+        expect(entity.hasNextPage, isTrue);
+        expect(entity.hasPreviousPage, isFalse);
+        expect(entity.restaurants.length, 1);
+        expect(entity.restaurants.first.id, 'r1');
+        expect(entity.restaurants.first.isEnabled, isFalse);
+      },
+    );
 
-    test('Repository and UseCase return ApiResult<CalendarRestaurantsPageEntity>', () async {
-      final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
-        ..httpClientAdapter = _MockAdapter((options) {
-          return ResponseBody.fromString(
-            jsonEncode({
-              'page': 2,
-              'pageSize': 20,
-              'totalCount': 22,
-              'totalPages': 2,
-              'hasNextPage': false,
-              'hasPreviousPage': true,
-              'restaurants': [
-                {'restaurantId': 'r2', 'name': 'Kitchen 2'}
-              ],
-            }),
-            200,
-            headers: {Headers.contentTypeHeader: [Headers.jsonContentType]},
-          );
-        });
+    test(
+      'Mapper falls back safely for legacy response missing pagination fields',
+      () {
+        final dto = CalendarRestaurantsResponseDto(
+          restaurants: [
+            CalendarRestaurantResponseDto(
+              restaurantId: 'r1',
+              name: 'Restaurant 1',
+            ),
+            CalendarRestaurantResponseDto(
+              restaurantId: 'r2',
+              name: 'Restaurant 2',
+            ),
+          ],
+        );
 
-      final dataSource = CalendarRemoteDataSourceImpl(ApiServices(dio));
-      final repo = CalendarRepositoryImpl(dataSource);
-      final useCase = GetCalendarRestaurantsUseCase(repo);
+        final entity = dto.toEntity(localeName: 'en');
+        expect(entity.page, 1);
+        expect(entity.pageSize, 2);
+        expect(entity.totalCount, 2);
+        expect(entity.totalPages, 1);
+        expect(entity.hasNextPage, isFalse);
+        expect(entity.hasPreviousPage, isFalse);
+        expect(entity.restaurants.length, 2);
+      },
+    );
 
-      final result = await useCase(
-        subscriptionId: 'sub-1',
-        date: '2026-10-15',
-        localeName: 'en',
-        page: 2,
-        pageSize: 20,
-      );
+    test(
+      'Mapper falls back safely when restaurants list is empty and pagination metadata is null',
+      () {
+        final dto = CalendarRestaurantsResponseDto(restaurants: []);
 
-      expect(result, isA<ApiSuccessResult<CalendarRestaurantsPageEntity>>());
-      final pageEntity = (result as ApiSuccessResult<CalendarRestaurantsPageEntity>).data;
-      expect(pageEntity.page, 2);
-      expect(pageEntity.hasNextPage, isFalse);
-      expect(pageEntity.restaurants.length, 1);
-      expect(pageEntity.restaurants.first.id, 'r2');
-    });
+        final entity = dto.toEntity(localeName: 'en');
+        expect(entity.page, 1);
+        expect(entity.pageSize, 1);
+        expect(entity.totalCount, 0);
+        expect(entity.totalPages, 0);
+        expect(entity.hasNextPage, isFalse);
+        expect(entity.hasPreviousPage, isFalse);
+        expect(entity.restaurants, isEmpty);
+      },
+    );
+
+    test(
+      'Repository and UseCase return ApiResult<CalendarRestaurantsPageEntity>',
+      () async {
+        final dio = Dio(BaseOptions(baseUrl: 'http://maelmate.runasp.net'))
+          ..httpClientAdapter = _MockAdapter((options) {
+            return ResponseBody.fromString(
+              jsonEncode({
+                'page': 2,
+                'pageSize': 20,
+                'totalCount': 22,
+                'totalPages': 2,
+                'hasNextPage': false,
+                'hasPreviousPage': true,
+                'restaurants': [
+                  {'restaurantId': 'r2', 'name': 'Kitchen 2'},
+                ],
+              }),
+              200,
+              headers: {
+                Headers.contentTypeHeader: [Headers.jsonContentType],
+              },
+            );
+          });
+
+        final dataSource = CalendarRemoteDataSourceImpl(ApiServices(dio));
+        final repo = CalendarRepositoryImpl(dataSource);
+        final useCase = GetCalendarRestaurantsUseCase(repo);
+
+        final result = await useCase(
+          subscriptionId: 'sub-1',
+          date: '2026-10-15',
+          localeName: 'en',
+          page: 2,
+          pageSize: 20,
+        );
+
+        expect(result, isA<ApiSuccessResult<CalendarRestaurantsPageEntity>>());
+        final pageEntity =
+            (result as ApiSuccessResult<CalendarRestaurantsPageEntity>).data;
+        expect(pageEntity.page, 2);
+        expect(pageEntity.hasNextPage, isFalse);
+        expect(pageEntity.restaurants.length, 1);
+        expect(pageEntity.restaurants.first.id, 'r2');
+      },
+    );
   });
 }
 

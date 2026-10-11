@@ -208,10 +208,7 @@ class _FamilySubscriptionSetupScreenState
     } else if (state.failure != null && state.currentFlow != null) {
       CustomSnackbar.showError(
         context: context,
-        message: ErrorMessagePresenter.fromFailure(
-          context,
-          state.failure!,
-        ),
+        message: ErrorMessagePresenter.fromFailure(context, state.failure!),
       );
     }
   }

@@ -54,30 +54,34 @@ void main() {
     );
   });
 
-  test('historical: preserves legacy MyFatoorah method mapping in historical options responses', () {
-    final response = SubscriptionUpgradeOptionsResponseDto.fromJson({
-      'subscriptionId': 'sub-old',
-      'currentTier': 'Silver',
-      'options': [],
-      'paymentMethods': [
-        {
-          'paymentMethodId': 6,
-          'code': 'md',
-          'nameAr': 'مدى',
-          'integrationType': 'MYFATOORAH_HOSTED',
-          'serviceCharge': 1.153,
-          'totalAmount': 15.25,
-          'currencyCode': 'KWD',
-          'isAvailable': true,
-          'unavailableReason': null,
-          'imageUrl': 'https://demo.myfatoorah.com/imgs/payment-methods/md.png',
-          'name': 'مدى',
-        },
-      ],
-    });
+  test(
+    'historical: preserves legacy MyFatoorah method mapping in historical options responses',
+    () {
+      final response = SubscriptionUpgradeOptionsResponseDto.fromJson({
+        'subscriptionId': 'sub-old',
+        'currentTier': 'Silver',
+        'options': [],
+        'paymentMethods': [
+          {
+            'paymentMethodId': 6,
+            'code': 'md',
+            'nameAr': 'مدى',
+            'integrationType': 'MYFATOORAH_HOSTED',
+            'serviceCharge': 1.153,
+            'totalAmount': 15.25,
+            'currencyCode': 'KWD',
+            'isAvailable': true,
+            'unavailableReason': null,
+            'imageUrl':
+                'https://demo.myfatoorah.com/imgs/payment-methods/md.png',
+            'name': 'مدى',
+          },
+        ],
+      });
 
-    final entity = RestaurantTierUpgradeMapper.toOptionsEntity(response);
-    expect(entity.paymentMethods.single.id, 6);
-    expect(entity.paymentMethods.single.integrationType, 'MYFATOORAH_HOSTED');
-  });
+      final entity = RestaurantTierUpgradeMapper.toOptionsEntity(response);
+      expect(entity.paymentMethods.single.id, 6);
+      expect(entity.paymentMethods.single.integrationType, 'MYFATOORAH_HOSTED');
+    },
+  );
 }

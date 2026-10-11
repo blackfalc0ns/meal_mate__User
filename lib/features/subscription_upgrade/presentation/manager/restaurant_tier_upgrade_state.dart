@@ -118,16 +118,21 @@ class RestaurantTierUpgradeState {
       attemptHandle: clearAttemptHandle
           ? null
           : (attemptHandle ?? this.attemptHandle),
-      optionsFailure:
-          clearOptionsFailure ? null : (optionsFailure ?? this.optionsFailure),
-      summaryFailure:
-          clearSummaryFailure ? null : (summaryFailure ?? this.summaryFailure),
-      submitFailure:
-          clearSubmitFailure ? null : (submitFailure ?? this.submitFailure),
-      statusFailure:
-          clearStatusFailure ? null : (statusFailure ?? this.statusFailure),
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      optionsFailure: clearOptionsFailure
+          ? null
+          : (optionsFailure ?? this.optionsFailure),
+      summaryFailure: clearSummaryFailure
+          ? null
+          : (summaryFailure ?? this.summaryFailure),
+      submitFailure: clearSubmitFailure
+          ? null
+          : (submitFailure ?? this.submitFailure),
+      statusFailure: clearStatusFailure
+          ? null
+          : (statusFailure ?? this.statusFailure),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
     );
   }
 
@@ -163,29 +168,29 @@ class RestaurantTierUpgradeState {
 
   @override
   int get hashCode => Object.hashAll([
-        subscriptionId,
-        programName,
-        bundleName,
-        isLoadingOptions,
-        optionsEntity,
-        preparedOptions == null ? 0 : Object.hashAll(preparedOptions!),
-        selectedOption,
-        isLoadingSummary,
-        upgradeSummary,
-        selectedPaymentMethod,
-        isSubmitting,
-        upgradeRequestResult,
-        isPollingStatus,
-        upgradeStatus,
-        isUpgradeSuccess,
-        isUpgradeFailed,
-        isReviewRequired,
-        isUpgradePending,
-        attemptHandle,
-        optionsFailure,
-        summaryFailure,
-        submitFailure,
-        statusFailure,
-        errorMessage,
-      ]);
+    subscriptionId,
+    programName,
+    bundleName,
+    isLoadingOptions,
+    optionsEntity,
+    preparedOptions == null ? 0 : Object.hashAll(preparedOptions!),
+    selectedOption,
+    isLoadingSummary,
+    upgradeSummary,
+    selectedPaymentMethod,
+    isSubmitting,
+    upgradeRequestResult,
+    isPollingStatus,
+    upgradeStatus,
+    isUpgradeSuccess,
+    isUpgradeFailed,
+    isReviewRequired,
+    isUpgradePending,
+    attemptHandle,
+    optionsFailure,
+    summaryFailure,
+    submitFailure,
+    statusFailure,
+    errorMessage,
+  ]);
 }

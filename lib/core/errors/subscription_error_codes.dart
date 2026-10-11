@@ -39,6 +39,101 @@ class SubscriptionErrorCodes {
   static const String couponFullDiscountUnsupported =
       'checkout.coupon_full_discount_unsupported';
 
+  /// Error code when no restaurants deliver to address.
+  static const String noDelivery = 'subscription_flow.no_delivery_to_address';
+
+  /// Error code when no restaurants cover the selected options.
+  static const String optionUncovered = 'no_restaurants_for_address';
+
+  /// Error code when restaurants cover address, but none have eligible meals/valid pricing.
+  static const String noPreparedRestaurants =
+      'subscription_flow.no_prepared_restaurants';
+
+  /// Error code when no restaurants can serve the entire period.
+  static const String periodUnavailable = 'no_restaurants_for_selection';
+
+  /// Error code when selection (duration, start date) is required.
+  static const String selectionRequired =
+      'subscription_flow.selection_required';
+
+  /// Error code when Friday service is unavailable.
+  static const String fridayUnavailable =
+      'subscription_flow.friday_unavailable';
+
+  /// Error code when pricing is unavailable.
+  static const String pricingUnavailable =
+      'subscription_flow.pricing_unavailable';
+
+  /// Error code for empty options.
+  static const String emptyOptions = 'subscription_flow.empty_options';
+
+  /// Error code for loading status.
+  static const String loading = 'subscription_flow.loading';
+
+  /// Error code for request failed.
+  static const String requestFailed = 'subscription_flow.request_failed';
+
+  /// Error code when deadline has passed.
+  static const String deadlinePassed = 'deadline_passed';
+  static const String selectionDeadlinePassed = 'selection_deadline_passed';
+  static const String calendarSelectionDeadlinePassed =
+      'calendar.selection_deadline_passed';
+
+  /// Error code for first day edit deadline window.
+  static const String firstDayDeadline = 'calendar.first_day_deadline';
+
+  /// Error code for ordinary days edit deadline window.
+  static const String ordinaryDeadline = 'calendar.ordinary_deadline';
+
+  /// Error code for pending fulfillment.
+  static const String fulfillmentPending = 'fulfillment_pending';
+  static const String fulfillmentNotReady = 'fulfillment_not_ready';
+
+  /// Error code for automatic selection failure.
+  static const String autoSelectionFailed = 'calendar.auto_selection_failed';
+
+  // ── Calendar Failure Reason Codes ──
+  /// No eligible restaurant covers delivery address for this day.
+  static const String calendarRestaurantCoverageUnavailable =
+      'calendar.restaurant_coverage_unavailable';
+
+  /// Restaurant does not have approved menu for delivery day.
+  static const String calendarBoxNotReady = 'calendar.box_not_ready';
+
+  /// Restaurant capacity is full or unavailable on delivery day.
+  static const String restaurantCapacityFull = 'RESTAURANT_CAPACITY_FULL';
+
+  /// No full allergy-safe box available for this day.
+  static const String calendarNoSafeBox = 'calendar.no_safe_box';
+
+  /// Restaurant is busy on delivery day.
+  static const String calendarRestaurantBusy = 'calendar.restaurant_busy';
+
+  /// Restaurant has reached repetition limit.
+  static const String calendarQuotaExhausted = 'calendar.quota_exhausted';
+
+  // ── Day Edit Block Reasons ──
+  static const String dayLocked = 'day_locked';
+  static const String calendarDayLocked = 'calendar.day_locked';
+  static const String dayFrozen = 'day_frozen';
+  static const String calendarDayFrozen = 'subscription.day_frozen';
+  static const String dayCancelled = 'day_cancelled';
+  static const String calendarDayCancelled = 'calendar.day_cancelled';
+
+  // ── Freeze Codes ──
+  static const String freezePreparationFailed = 'freeze.preparation_failed';
+  static const String freezePreparationUnavailable =
+      'freeze.preparation_unavailable';
+  static const String freezeReplacementPoolUnavailable =
+      'freeze.replacement_pool_unavailable';
+  static const String replacementCapacityUnavailable =
+      'freeze.replacement_capacity_unavailable';
+  static const String replacementRestaurantsUnavailable =
+      'freeze.replacement_restaurants_unavailable';
+  static const String freezeNoServiceDays = 'freeze.no_service_days';
+  static const String freezeLockedDaysCannotBeFrozen =
+      'freeze.locked_days_cannot_be_frozen';
+
   // ── Readiness action screens ──
   /// User must select or add an address.
   static const String actionAddress = 'ADDRESS';
@@ -95,7 +190,8 @@ class SubscriptionErrorCodes {
   static const String upgradeCustomerNotFound = 'upgrade.customer_not_found';
 
   /// Subscription upgrade is not available.
-  static const String upgradeNotAvailable = 'subscription.upgrade_not_available';
+  static const String upgradeNotAvailable =
+      'subscription.upgrade_not_available';
 
   /// Upgrade request already pending.
   static const String upgradeRequestAlreadyPending =

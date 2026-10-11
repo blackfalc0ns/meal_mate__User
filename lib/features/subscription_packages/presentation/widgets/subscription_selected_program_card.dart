@@ -151,8 +151,9 @@ class _SubscriptionSelectedProgramCardState
                             imageUrl: widget.program.imageUrl,
                             shape: BoxShape.circle,
                             fit: BoxFit.cover,
-                            semanticLabel:
-                                widget.program.name(locale.localeName),
+                            semanticLabel: widget.program.name(
+                              locale.localeName,
+                            ),
                           ),
                         ),
                       ),

@@ -63,110 +63,120 @@ void main() {
     await viewModel.close();
   });
 
-  test('SubmitChangePasswordEvent calls usecase and deletes biometric credentials on success',
-      () async {
-    final expectedStates = <ChangePasswordState>[];
-    final sub = viewModel.stream.listen(expectedStates.add);
+  test(
+    'SubmitChangePasswordEvent calls usecase and deletes biometric credentials on success',
+    () async {
+      final expectedStates = <ChangePasswordState>[];
+      final sub = viewModel.stream.listen(expectedStates.add);
 
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(fakeRepo.callCount, 1);
-    expect(fakeRepo.lastRequest?.currentPassword, 'oldPassword123');
-    expect(fakeRepo.lastRequest?.newPassword, 'newPassword456');
-    expect(fakeTokenService.deleteBiometricCalls, 1);
+      expect(fakeRepo.callCount, 1);
+      expect(fakeRepo.lastRequest?.currentPassword, 'oldPassword123');
+      expect(fakeRepo.lastRequest?.newPassword, 'newPassword456');
+      expect(fakeTokenService.deleteBiometricCalls, 1);
 
-    expect(expectedStates.length, 2);
-    expect(expectedStates[0].isLoading, isTrue);
-    expect(expectedStates[1].isLoading, isFalse);
-    expect(expectedStates[1].outcome, ChangePasswordOutcome.success);
-    expect(expectedStates[1].failure, isNull);
+      expect(expectedStates.length, 2);
+      expect(expectedStates[0].isLoading, isTrue);
+      expect(expectedStates[1].isLoading, isFalse);
+      expect(expectedStates[1].outcome, ChangePasswordOutcome.success);
+      expect(expectedStates[1].failure, isNull);
 
-    await sub.cancel();
-  });
+      await sub.cancel();
+    },
+  );
 
-  test('Concurrent duplicate SubmitChangePasswordEvent only triggers one in-flight call',
-      () async {
-    final completer = Completer<ApiResult<void>>();
-    fakeRepo.completer = completer;
+  test(
+    'Concurrent duplicate SubmitChangePasswordEvent only triggers one in-flight call',
+    () async {
+      final completer = Completer<ApiResult<void>>();
+      fakeRepo.completer = completer;
 
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(fakeRepo.callCount, 1);
+      expect(fakeRepo.callCount, 1);
 
-    completer.complete(const ApiSuccessResult(data: null));
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      completer.complete(const ApiSuccessResult(data: null));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(fakeRepo.callCount, 1);
-  });
+      expect(fakeRepo.callCount, 1);
+    },
+  );
 
-  test('SubmitChangePasswordEvent does NOT delete biometric credentials on failure',
-      () async {
-    final failure = ServerFailure(
-      errorMessage: 'Wrong password',
-      exception: const ApiException(
-        errorType: ApiErrorType.unauthorized,
-        message: 'Wrong password',
-      ),
-    );
-    fakeRepo.stubResult = ApiErrorResult(failure: failure);
+  test(
+    'SubmitChangePasswordEvent does NOT delete biometric credentials on failure',
+    () async {
+      final failure = ServerFailure(
+        errorMessage: 'Wrong password',
+        exception: const ApiException(
+          errorType: ApiErrorType.unauthorized,
+          message: 'Wrong password',
+        ),
+      );
+      fakeRepo.stubResult = ApiErrorResult(failure: failure);
 
-    final expectedStates = <ChangePasswordState>[];
-    final sub = viewModel.stream.listen(expectedStates.add);
+      final expectedStates = <ChangePasswordState>[];
+      final sub = viewModel.stream.listen(expectedStates.add);
 
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(fakeRepo.callCount, 1);
-    expect(fakeTokenService.deleteBiometricCalls, 0);
+      expect(fakeRepo.callCount, 1);
+      expect(fakeTokenService.deleteBiometricCalls, 0);
 
-    expect(expectedStates.length, 2);
-    expect(expectedStates[0].isLoading, isTrue);
-    expect(expectedStates[1].isLoading, isFalse);
-    expect(expectedStates[1].outcome, ChangePasswordOutcome.failure);
-    expect(expectedStates[1].failure, failure);
+      expect(expectedStates.length, 2);
+      expect(expectedStates[0].isLoading, isTrue);
+      expect(expectedStates[1].isLoading, isFalse);
+      expect(expectedStates[1].outcome, ChangePasswordOutcome.failure);
+      expect(expectedStates[1].failure, failure);
 
-    await sub.cancel();
-  });
+      await sub.cancel();
+    },
+  );
 
-  test('Closing ViewModel during in-flight call does not crash or emit after close',
-      () async {
-    final completer = Completer<ApiResult<void>>();
-    fakeRepo.completer = completer;
+  test(
+    'Closing ViewModel during in-flight call does not crash or emit after close',
+    () async {
+      final completer = Completer<ApiResult<void>>();
+      fakeRepo.completer = completer;
 
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    await viewModel.close();
-    completer.complete(const ApiSuccessResult(data: null));
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      await viewModel.close();
+      completer.complete(const ApiSuccessResult(data: null));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(viewModel.isClosed, isTrue);
-  });
+      expect(viewModel.isClosed, isTrue);
+    },
+  );
 
-  test('ClearChangePasswordFeedbackEvent resets outcome to idle and clears failure',
-      () async {
-    final failure = ServerFailure(
-      errorMessage: 'Failed',
-      exception: const ApiException(
-        errorType: ApiErrorType.badRequest,
-        message: 'Failed',
-      ),
-    );
-    fakeRepo.stubResult = ApiErrorResult(failure: failure);
+  test(
+    'ClearChangePasswordFeedbackEvent resets outcome to idle and clears failure',
+    () async {
+      final failure = ServerFailure(
+        errorMessage: 'Failed',
+        exception: const ApiException(
+          errorType: ApiErrorType.badRequest,
+          message: 'Failed',
+        ),
+      );
+      fakeRepo.stubResult = ApiErrorResult(failure: failure);
 
-    viewModel.add(const SubmitChangePasswordEvent(testRequest));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+      viewModel.add(const SubmitChangePasswordEvent(testRequest));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
-    expect(viewModel.state.outcome, ChangePasswordOutcome.failure);
-    expect(viewModel.state.failure, isNotNull);
+      expect(viewModel.state.outcome, ChangePasswordOutcome.failure);
+      expect(viewModel.state.failure, isNotNull);
 
-    viewModel.add(const ClearChangePasswordFeedbackEvent());
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+      viewModel.add(const ClearChangePasswordFeedbackEvent());
+      await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    expect(viewModel.state.outcome, ChangePasswordOutcome.idle);
-    expect(viewModel.state.failure, isNull);
-  });
+      expect(viewModel.state.outcome, ChangePasswordOutcome.idle);
+      expect(viewModel.state.failure, isNull);
+    },
+  );
 }

@@ -7,7 +7,6 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_entity.dart';
-import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_durations_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_page_usecase.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/usecase/get_subscription_tier_restaurants_usecase.dart';
@@ -17,6 +16,7 @@ import 'package:meal_meat_user/features/monthly_plans/presentation/manager/subsc
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_restaurant_availability_usecase.dart';
 
 @injectable
@@ -41,8 +41,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     SubscriptionPlanState? initialState,
   }) : super(initialState ?? const SubscriptionPlanState());
 
-
-
   final GetSubscriptionDurationsUseCase _getSubscriptionDurationsUseCase;
   final GetSubscriptionTiersUseCase _getSubscriptionTiersUseCase;
   final GetSubscriptionTierRestaurantsUseCase
@@ -55,6 +53,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
   Timer? _customDurationDebounceTimer;
   int _browseGeneration = 0;
+  int _tiersGeneration = 0;
 
   void doIntent(SubscriptionPlanEvent event) {
     switch (event) {
@@ -92,7 +91,25 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
           ),
         );
       case SelectSubscriptionTierEvent():
+        if (event.tierIndex >= 0 && event.tierIndex < state.tiers.length) {
+          if (!state.tiers[event.tierIndex].effectiveCanSelect) {
+            return;
+          }
+        }
         emit(state.copyWith(selectedTierIndex: event.tierIndex));
+      case InvalidateSubscriptionPlanContextEvent():
+        _customDurationDebounceTimer?.cancel();
+        _tiersGeneration++;
+        _browseGeneration++;
+        emit(
+          state.copyWith(
+            isTiersLoading: false,
+            tiers: const [],
+            clearSelectedTier: true,
+            clearCustomDuration: true,
+            clearFailure: true,
+          ),
+        );
       case SelectSubscriptionPlanStartDateEvent():
         emit(state.copyWith(selectedStartDate: event.startDate));
         if (state.isBrowsingRestaurants && state.browsedTierIndex != null) {
@@ -142,6 +159,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     required bool includeFriday,
   }) async {
     _customDurationDebounceTimer?.cancel();
+    final generation = ++_tiersGeneration;
+
     emit(
       state.copyWith(
         isDurationsLoading: true,
@@ -162,7 +181,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       durationDays: null,
     );
 
-    if (isClosed) return;
+    if (isClosed || generation != _tiersGeneration) return;
 
     if (result.failure != null) {
       emit(
@@ -178,6 +197,18 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     }
 
     final validTiers = result.tiers ?? const [];
+    final currentSelected = state.selectedTierIndex;
+    int? targetSelected;
+    if (currentSelected != null &&
+        currentSelected < validTiers.length &&
+        validTiers[currentSelected].effectiveCanSelect) {
+      targetSelected = currentSelected;
+    } else {
+      final firstSelectable = validTiers.indexWhere(
+        (t) => t.effectiveCanSelect,
+      );
+      targetSelected = firstSelectable != -1 ? firstSelectable : null;
+    }
     emit(
       state.copyWith(
         isDurationsLoading: false,
@@ -185,8 +216,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         isSuccess: true,
         durations: result.durations ?? const [],
         tiers: validTiers,
-        selectedTierIndex:
-            state.selectedTierIndex ?? (validTiers.isNotEmpty ? 0 : null),
+        selectedTierIndex: targetSelected,
       ),
     );
   }
@@ -197,10 +227,12 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     required bool includeFriday,
   }) async {
     _customDurationDebounceTimer?.cancel();
+    final generation = ++_tiersGeneration;
 
     final selectedDuration = state.selectedDuration;
     final isCustom = selectedDuration?.isCustom ?? false;
-    final shouldFetchTiers = selectedDuration != null &&
+    final shouldFetchTiers =
+        selectedDuration != null &&
         (!isCustom || state.isSelectedDurationValid);
 
     emit(
@@ -222,9 +254,21 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       bundleId: bundleId,
       durationDays: durationDays,
       includeFriday: includeFriday,
+      startDate: state.selectedStartDate,
     );
 
-    _handleTiersResult(result);
+    _handleTiersResult(result, generation);
+    if (state.isBrowsingRestaurants && state.browsedTierIndex != null) {
+      unawaited(
+        _browseTierRestaurants(
+          programId: state.browsingProgramId ?? programId,
+          bundleId: state.browsingBundleId ?? bundleId,
+          tierIndex: state.browsedTierIndex!,
+          startDate: state.selectedStartDate,
+          forceRefresh: true,
+        ),
+      );
+    }
   }
 
   Future<void> _selectDuration({
@@ -235,6 +279,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     if (durationIndex < 0 || durationIndex >= state.durations.length) return;
 
     _customDurationDebounceTimer?.cancel();
+    final generation = ++_tiersGeneration;
     final duration = state.durations[durationIndex];
 
     emit(
@@ -254,9 +299,21 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       bundleId: bundleId,
       durationDays: duration.durationDays,
       includeFriday: state.includeFriday,
+      startDate: state.selectedStartDate,
     );
 
-    _handleTiersResult(result);
+    _handleTiersResult(result, generation);
+    if (state.isBrowsingRestaurants && state.browsedTierIndex != null) {
+      unawaited(
+        _browseTierRestaurants(
+          programId: state.browsingProgramId ?? programId,
+          bundleId: state.browsingBundleId ?? bundleId,
+          tierIndex: state.browsedTierIndex!,
+          startDate: state.selectedStartDate,
+          forceRefresh: true,
+        ),
+      );
+    }
   }
 
   Future<void> _updateCustomDuration({
@@ -265,6 +322,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     required int? durationDays,
   }) async {
     _customDurationDebounceTimer?.cancel();
+    final generation = ++_tiersGeneration;
 
     emit(
       state.copyWith(
@@ -282,15 +340,27 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     emit(state.copyWith(isTiersLoading: true, isSuccess: false));
 
     _customDurationDebounceTimer = Timer(AppDurations.debounce, () async {
-      if (isClosed) return;
+      if (isClosed || generation != _tiersGeneration) return;
       final result = await _getSubscriptionTiersUseCase(
         programId: programId,
         bundleId: bundleId,
         durationDays: state.selectedDurationDays,
         includeFriday: state.includeFriday,
+        startDate: state.selectedStartDate,
       );
 
-      _handleTiersResult(result);
+      _handleTiersResult(result, generation);
+      if (state.isBrowsingRestaurants && state.browsedTierIndex != null) {
+        unawaited(
+          _browseTierRestaurants(
+            programId: state.browsingProgramId ?? programId,
+            bundleId: state.browsingBundleId ?? bundleId,
+            tierIndex: state.browsedTierIndex!,
+            startDate: state.selectedStartDate,
+            forceRefresh: true,
+          ),
+        );
+      }
     });
   }
 
@@ -299,12 +369,28 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     required String bundleId,
     required int tierIndex,
     String? startDate,
+    bool forceRefresh = false,
   }) async {
     if (tierIndex < 0 || tierIndex >= state.tiers.length) return;
 
     final tier = state.tiers[tierIndex];
-    final generation = ++_browseGeneration;
     final effectiveStartDate = startDate ?? state.selectedStartDate;
+
+    if (!forceRefresh &&
+        !state.isBrowseRestaurantsLoading &&
+        state.browsedTierIndex == tierIndex &&
+        state.browsingProgramId == programId &&
+        state.browsingBundleId == bundleId &&
+        state.browsingTier == tier.tier &&
+        state.browsingDurationDays == state.selectedDurationDays &&
+        state.browsingStartDate == effectiveStartDate &&
+        state.browsingIncludeFriday == state.includeFriday &&
+        state.browseRestaurants.isNotEmpty &&
+        state.browseRestaurantsFailure == null) {
+      return;
+    }
+
+    final generation = ++_browseGeneration;
 
     emit(
       state.copyWith(
@@ -343,21 +429,49 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         restaurantsPageSize: 10,
       );
 
-      final result =
-          await _getSubscriptionRestaurantAvailabilityUseCase(request);
+      final result = await _getSubscriptionRestaurantAvailabilityUseCase(
+        request,
+      );
 
       if (isClosed || generation != _browseGeneration) return;
 
       switch (result) {
         case ApiSuccessResult():
           final availability = result.data.availability;
-          final isAvailable = availability.status == 'available';
-          final validItems = isAvailable
-              ? result.data.restaurants
-                  .where((r) => r.restaurantId.trim().isNotEmpty)
-                  .map((r) => r.toBrowseEntity())
-                  .toList()
-              : <SubscriptionTierRestaurantBrowseEntity>[];
+          final isAvailable =
+              availability.status == 'available' &&
+              !availability.isNoPreparedRestaurants &&
+              availability.effectiveCanSelect;
+
+          if (!isAvailable) {
+            final failureCode = availability.isNoPreparedRestaurants
+                ? SubscriptionErrorCodes.noPreparedRestaurants
+                : (availability.messageCode.isNotEmpty
+                      ? availability.messageCode
+                      : (availability.failureReasons.isNotEmpty
+                            ? availability.failureReasons.first
+                            : availability.status));
+
+            emit(
+              state.copyWith(
+                isBrowseRestaurantsLoading: false,
+                browseRestaurants: const [],
+                browseRestaurantsPagination: result.data.pagination,
+                browseAvailability: availability,
+                browseTotalCount: 0,
+                browseRestaurantsFailure: Failure(
+                  code: failureCode,
+                  errorMessage: '',
+                ),
+              ),
+            );
+            return;
+          }
+
+          final validItems = result.data.restaurants
+              .where((r) => r.restaurantId.trim().isNotEmpty)
+              .map((r) => r.toBrowseEntity())
+              .toList();
 
           emit(
             state.copyWith(
@@ -384,6 +498,9 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         programId: programId,
         bundleId: bundleId,
         tier: tier.tier,
+        durationDays: state.selectedDurationDays,
+        startDate: effectiveStartDate,
+        includeFriday: state.includeFriday,
         page: 1,
         pageSize: 10,
       );
@@ -435,6 +552,9 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       programId: programId,
       bundleId: bundleId,
       tier: tier.tier,
+      durationDays: state.selectedDurationDays,
+      startDate: effectiveStartDate,
+      includeFriday: state.includeFriday,
     );
 
     if (isClosed || generation != _browseGeneration) return;
@@ -487,7 +607,8 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
     final effectiveBrowsingStartDate =
         state.browsingStartDate ?? state.selectedStartDate;
-    final hasBrowsingStartDate = effectiveBrowsingStartDate != null &&
+    final hasBrowsingStartDate =
+        effectiveBrowsingStartDate != null &&
         effectiveBrowsingStartDate.trim().isNotEmpty;
 
     if (_getSubscriptionRestaurantAvailabilityUseCase != null &&
@@ -504,19 +625,23 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         restaurantsPageSize: pagination?.pageSize ?? 10,
       );
 
-      final result =
-          await _getSubscriptionRestaurantAvailabilityUseCase(request);
+      final result = await _getSubscriptionRestaurantAvailabilityUseCase(
+        request,
+      );
 
       if (isClosed || generation != _browseGeneration) return;
 
       switch (result) {
         case ApiSuccessResult():
-          final existingIds =
-              state.browseRestaurants.map((r) => r.restaurantId).toSet();
+          final existingIds = state.browseRestaurants
+              .map((r) => r.restaurantId)
+              .toSet();
           final newItems = result.data.restaurants
-              .where((r) =>
-                  r.restaurantId.trim().isNotEmpty &&
-                  !existingIds.contains(r.restaurantId))
+              .where(
+                (r) =>
+                    r.restaurantId.trim().isNotEmpty &&
+                    !existingIds.contains(r.restaurantId),
+              )
               .map((r) => r.toBrowseEntity())
               .toList();
           emit(
@@ -548,6 +673,9 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
       programId: programId,
       bundleId: bundleId,
       tier: tier,
+      durationDays: state.browsingDurationDays ?? state.selectedDurationDays,
+      startDate: effectiveBrowsingStartDate,
+      includeFriday: state.browsingIncludeFriday ?? state.includeFriday,
       page: nextPage,
       pageSize: pagination?.pageSize ?? 10,
     );
@@ -556,12 +684,15 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final existingIds =
-            state.browseRestaurants.map((r) => r.restaurantId).toSet();
+        final existingIds = state.browseRestaurants
+            .map((r) => r.restaurantId)
+            .toSet();
         final newItems = result.data.items
-            .where((r) =>
-                r.restaurantId.trim().isNotEmpty &&
-                !existingIds.contains(r.restaurantId))
+            .where(
+              (r) =>
+                  r.restaurantId.trim().isNotEmpty &&
+                  !existingIds.contains(r.restaurantId),
+            )
             .toList();
         emit(
           state.copyWith(
@@ -619,7 +750,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     );
   }
 
-
   Future<void> _checkReadiness(SubscriptionSummaryRequestEntity request) async {
     emit(
       state.copyWith(
@@ -676,6 +806,7 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         bundleId: bundleId,
         durationDays: durationDays,
         includeFriday: includeFriday,
+        startDate: state.selectedStartDate,
       ),
     ]);
 
@@ -712,18 +843,29 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
     return (durations: validDurations, tiers: validTiers, failure: null);
   }
 
-  void _handleTiersResult(ApiResult<List<SubscriptionTierEntity>> result) {
-    if (isClosed) return;
+  void _handleTiersResult(
+    ApiResult<List<SubscriptionTierEntity>> result,
+    int generation,
+  ) {
+    if (isClosed || generation != _tiersGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
         final validTiers = result.data
             .where((tier) => tier.tier.isNotEmpty)
             .toList();
-        final currentSelected = state.selectedTierIndex ?? 0;
-        final targetSelected = validTiers.isNotEmpty
-            ? (currentSelected < validTiers.length ? currentSelected : 0)
-            : null;
+        final currentSelected = state.selectedTierIndex;
+        int? targetSelected;
+        if (currentSelected != null &&
+            currentSelected < validTiers.length &&
+            validTiers[currentSelected].effectiveCanSelect) {
+          targetSelected = currentSelected;
+        } else {
+          final firstSelectable = validTiers.indexWhere(
+            (t) => t.effectiveCanSelect,
+          );
+          targetSelected = firstSelectable != -1 ? firstSelectable : null;
+        }
         emit(
           state.copyWith(
             isTiersLoading: false,
@@ -742,7 +884,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         );
     }
   }
-
 
   @override
   Future<void> close() {

@@ -15,14 +15,16 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final hasCustomLabel = address?.label.trim().isNotEmpty == true &&
+    final hasCustomLabel =
+        address?.label.trim().isNotEmpty == true &&
         address!.label.trim() != address?.addressLine.trim();
 
     final title = hasCustomLabel
         ? address!.label.trim()
         : locale.subscription_address_title;
 
-    final namesLine = address?.localizedNamesLine(locale.localeName).trim() ?? '';
+    final namesLine =
+        address?.localizedNamesLine(locale.localeName).trim() ?? '';
     final userAddressLine = address?.addressLine.trim() ?? '';
     final detailLine = userAddressLine.isNotEmpty
         ? userAddressLine

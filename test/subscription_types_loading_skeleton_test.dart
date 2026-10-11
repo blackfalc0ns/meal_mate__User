@@ -33,9 +33,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const SubscriptionTypesLoadingSkeleton(
-            showBottomSpace: false,
-          ),
+          child: const SubscriptionTypesLoadingSkeleton(showBottomSpace: false),
         ),
       );
       await tester.pump();

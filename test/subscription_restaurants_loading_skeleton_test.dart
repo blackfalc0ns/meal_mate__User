@@ -42,8 +42,9 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('renders properly on small/compact viewport without overflow',
-        (tester) async {
+    testWidgets('renders properly on small/compact viewport without overflow', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestableWidget(
           size: const Size(320, 600),

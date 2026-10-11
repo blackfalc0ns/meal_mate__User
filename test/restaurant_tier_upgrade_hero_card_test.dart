@@ -7,8 +7,9 @@ import 'package:meal_meat_user/features/subscription_upgrade/presentation/widget
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_upgrade_hero_card.dart';
 
 void main() {
-  testWidgets('RestaurantTierUpgradeHeroCard renders properly in RTL and LTR',
-      (tester) async {
+  testWidgets('RestaurantTierUpgradeHeroCard renders properly in RTL and LTR', (
+    tester,
+  ) async {
     const currentOption = SubscriptionUpgradeOptionEntity(
       targetTier: 'basic',
       tierNameAr: 'أساسي',

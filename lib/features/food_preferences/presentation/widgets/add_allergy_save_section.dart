@@ -9,10 +9,7 @@ import 'package:meal_meat_user/features/food_preferences/presentation/manager/fo
 import 'package:meal_meat_user/features/food_preferences/presentation/manager/food_preferences_view_model.dart';
 
 class AddAllergySaveSection extends StatelessWidget {
-  const AddAllergySaveSection({
-    super.key,
-    required this.isLoading,
-  });
+  const AddAllergySaveSection({super.key, required this.isLoading});
 
   final bool isLoading;
 
@@ -45,8 +42,8 @@ class AddAllergySaveSection extends StatelessWidget {
               : () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   context.read<FoodPreferencesViewModel>().doIntent(
-                        const SaveFoodPreferencesAllergiesEvent(),
-                      );
+                    const SaveFoodPreferencesAllergiesEvent(),
+                  );
                 },
           isLoading: false,
           height: Spacing.addAllergyButtonHeight,

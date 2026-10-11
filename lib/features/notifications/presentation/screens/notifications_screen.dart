@@ -23,10 +23,7 @@ import 'package:meal_meat_user/features/notifications/presentation/widgets/notif
 import 'package:meal_meat_user/features/notifications/presentation/widgets/notifications_loading_skeleton.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  const NotificationsScreen({
-    super.key,
-    this.viewModel,
-  });
+  const NotificationsScreen({super.key, this.viewModel});
 
   final NotificationsViewModel? viewModel;
 
@@ -164,9 +161,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                       _viewModel.selectCategory(cat);
                     },
                   ),
-                  Expanded(
-                    child: _buildBody(context, state, locale),
-                  ),
+                  Expanded(child: _buildBody(context, state, locale)),
                 ],
               ),
             ),
@@ -223,10 +218,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
       child: RefreshIndicator(
         onRefresh: () => _viewModel.refresh(),
         child: ListView(
-          padding: const EdgeInsets.only(
-            top: Spacing.xs,
-            bottom: Spacing.xxxl,
-          ),
+          padding: const EdgeInsets.only(top: Spacing.xs, bottom: Spacing.xxxl),
           children: [
             for (final section in sections) ...[
               NotificationSectionActionRow(
@@ -242,8 +234,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                 ),
               const SizedBox(height: Spacing.xs),
             ],
-            if (state.isLoadingMore)
-              const NotificationsLoadMoreSkeleton(),
+            if (state.isLoadingMore) const NotificationsLoadMoreSkeleton(),
             if (state.loadMoreFailure != null)
               Padding(
                 padding: const EdgeInsets.symmetric(

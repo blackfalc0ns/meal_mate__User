@@ -41,4 +41,3 @@ class AuthHeader extends StatelessWidget {
     );
   }
 }
-

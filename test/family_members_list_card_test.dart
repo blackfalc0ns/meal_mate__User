@@ -19,10 +19,7 @@ void main() {
         body: Center(
           child: SizedBox(
             width: 380,
-            child: FamilyMembersListCard(
-              member: member,
-              onTap: onTap,
-            ),
+            child: FamilyMembersListCard(member: member, onTap: onTap),
           ),
         ),
       ),
@@ -94,10 +91,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        buildTestCard(
-          member: member,
-          onTap: () => tapped = true,
-        ),
+        buildTestCard(member: member, onTap: () => tapped = true),
       );
       await tester.pumpAndSettle();
 

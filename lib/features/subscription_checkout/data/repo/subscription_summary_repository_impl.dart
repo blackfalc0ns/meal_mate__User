@@ -30,7 +30,9 @@ class SubscriptionSummaryRepositoryImpl
   Future<ApiResult<SubscriptionRestaurantAvailabilityEntity>>
   getRestaurantAvailability(SubscriptionSummaryRequestEntity request) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getRestaurantAvailability(request);
+      final response = await _remoteDataSource.getRestaurantAvailability(
+        request,
+      );
       return response.toEntity();
     });
   }

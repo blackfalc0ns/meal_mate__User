@@ -64,8 +64,9 @@ class _FakeTokenService implements TokenService {
 
 class _FakeMethodsUseCase implements GetPaymentMethodsUseCase {
   @override
-  Future<ApiResult<List<PaymentMethodEntity>>> call({required double amount}) async =>
-      const ApiSuccessResult(data: []);
+  Future<ApiResult<List<PaymentMethodEntity>>> call({
+    required double amount,
+  }) async => const ApiSuccessResult(data: []);
 }
 
 class _FakeCheckoutUseCase implements CheckoutSubscriptionUseCase {
@@ -86,7 +87,9 @@ class _FakeCheckoutUseCase implements CheckoutSubscriptionUseCase {
   );
 
   @override
-  Future<ApiResult<PaymentCheckoutEntity>> call(PaymentCheckoutRequestEntity request) async {
+  Future<ApiResult<PaymentCheckoutEntity>> call(
+    PaymentCheckoutRequestEntity request,
+  ) async {
     callCount++;
     return response;
   }
@@ -115,7 +118,8 @@ class _FakeStatusUseCase implements GetSubscriptionPaymentStatusUseCase {
 
 class _FakeCalendarUseCase implements GetSubscriptionCalendarUseCase {
   @override
-  Future<ApiResult<dynamic>> call(String subscriptionId) async => const ApiSuccessResult(data: true);
+  Future<ApiResult<dynamic>> call(String subscriptionId) async =>
+      const ApiSuccessResult(data: true);
 }
 
 class _FakeCurrentSubUseCase implements GetCurrentCustomerSubscriptionUseCase {
@@ -249,179 +253,202 @@ void main() {
   }
 
   group('Payment Checkout Lifecycle & State Machine Tests', () {
-    test('successful checkout stores PaymentAttempt before gateway navigation', () async {
-      viewModel.doIntent(
-        const SelectPaymentMethodEvent(
-          PaymentMethodEntity(
-            id: 3,
-            type: PaymentMethodType.payzah,
-            title: 'Payzah',
-            subtitle: '',
-            isAvailable: true,
+    test(
+      'successful checkout stores PaymentAttempt before gateway navigation',
+      () async {
+        viewModel.doIntent(
+          const SelectPaymentMethodEvent(
+            PaymentMethodEntity(
+              id: 3,
+              type: PaymentMethodType.payzah,
+              title: 'Payzah',
+              subtitle: '',
+              isAvailable: true,
+            ),
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.checkout, isNotNull);
-      expect(fakeStore.attempt, isNotNull);
-      expect(fakeStore.attempt!.subscriptionId, equals('sub-test-1'));
-      expect(fakeStore.attempt!.paymentId, equals('pz-attempt-1'));
-      expect(fakeStore.attempt!.ownerCustomerId, equals('cust-123'));
-      expect(fakeStore.attempt!.reviewRequired, isFalse);
-    });
+        expect(viewModel.state.checkout, isNotNull);
+        expect(fakeStore.attempt, isNotNull);
+        expect(fakeStore.attempt!.subscriptionId, equals('sub-test-1'));
+        expect(fakeStore.attempt!.paymentId, equals('pz-attempt-1'));
+        expect(fakeStore.attempt!.ownerCustomerId, equals('cust-123'));
+        expect(fakeStore.attempt!.reviewRequired, isFalse);
+      },
+    );
 
-    test('failure to store PaymentAttempt aborts checkout and reports error', () async {
-      fakeStore.shouldThrow = true;
+    test(
+      'failure to store PaymentAttempt aborts checkout and reports error',
+      () async {
+        fakeStore.shouldThrow = true;
 
-      viewModel.doIntent(
-        const SelectPaymentMethodEvent(
-          PaymentMethodEntity(
-            id: 3,
-            type: PaymentMethodType.payzah,
-            title: 'Payzah',
-            subtitle: '',
-            isAvailable: true,
+        viewModel.doIntent(
+          const SelectPaymentMethodEvent(
+            PaymentMethodEntity(
+              id: 3,
+              type: PaymentMethodType.payzah,
+              title: 'Payzah',
+              subtitle: '',
+              isAvailable: true,
+            ),
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.checkout, isNull);
-      expect(viewModel.state.checkoutFailure, isNotNull);
-      expect(viewModel.state.checkoutFailure!.code, equals('checkout.attempt_persistence_failed'));
-    });
+        expect(viewModel.state.checkout, isNull);
+        expect(viewModel.state.checkoutFailure, isNotNull);
+        expect(
+          viewModel.state.checkoutFailure!.code,
+          equals('checkout.attempt_persistence_failed'),
+        );
+      },
+    );
 
-    test('transitions PendingPayment -> Paid -> Active fulfill subscription', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-test-1',
-        paymentId: 'pz-attempt-1',
-        createdAtUtc: DateTime.now().toUtc(),
-      );
-      fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
-        data: PaymentStatusEntity(
-          paymentStatus: 'Paid',
-          isPaid: true,
-          isFailed: false,
-          amount: 100,
-          currencyCode: 'KWD',
-        ),
-      );
-      fakeCurrentSubUseCase.defaultResponse = ApiSuccessResult(
-        data: PaymentFixtures.activeCurrentEntity(subscriptionId: 'sub-test-1'),
-      );
-
-      viewModel.doIntent(const VerifyPaymentFulfillmentEvent('sub-test-1'));
-      await Future<void>.delayed(Duration.zero);
-
-      expect(viewModel.state.isFulfillmentSuccess, isTrue);
-      expect(viewModel.state.isPaymentFailed, isFalse);
-      expect(fakeStore.attempt?.lastPresentedFinalStatus, equals('active'));
-    });
-
-    test('review link sets conservative reviewRequired and persists lock', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-test-1',
-        paymentId: 'pz-attempt-1',
-        createdAtUtc: DateTime.now().toUtc(),
-        reviewRequired: false,
-      );
-
-      fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
-        data: PaymentStatusEntity(
-          paymentStatus: 'SuspendedForReview',
-          isPaid: false,
-          isFailed: false,
-          amount: 100,
-          currencyCode: 'KWD',
-        ),
-      );
-
-      viewModel.doIntent(
-        const HandlePaymentReturnEvent(
-          PaymentReturn(
-            destination: PaymentReturnDestination.review,
-            paymentId: 'pz-attempt-1',
+    test(
+      'transitions PendingPayment -> Paid -> Active fulfill subscription',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-test-1',
+          paymentId: 'pz-attempt-1',
+          createdAtUtc: DateTime.now().toUtc(),
+        );
+        fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
+          data: PaymentStatusEntity(
+            paymentStatus: 'Paid',
+            isPaid: true,
+            isFailed: false,
+            amount: 100,
+            currencyCode: 'KWD',
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
-
-      expect(viewModel.state.isReviewRequired, isTrue);
-      expect(fakeStore.attempt?.reviewRequired, isTrue);
-    });
-
-    test('server terminal PaymentFailed lifts reviewRequired lock and shows failure', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-test-1',
-        paymentId: 'pz-attempt-1',
-        createdAtUtc: DateTime.now().toUtc(),
-        reviewRequired: true,
-      );
-
-      fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
-        data: PaymentStatusEntity(
-          paymentStatus: 'PaymentFailed',
-          isPaid: false,
-          isFailed: true,
-          amount: 100,
-          currencyCode: 'KWD',
-        ),
-      );
-
-      viewModel.doIntent(const VerifyPaymentFulfillmentEvent('sub-test-1'));
-      await Future<void>.delayed(Duration.zero);
-
-      expect(viewModel.state.isPaymentFailed, isTrue);
-      expect(viewModel.state.isReviewRequired, isFalse);
-      expect(fakeStore.attempt?.reviewRequired, isFalse);
-      expect(fakeStore.attempt?.lastPresentedFinalStatus, equals('failed'));
-    });
-
-    test('network 5xx error during review preserves reviewRequired lock', () async {
-      fakeStore.attempt = PaymentAttempt(
-        schemaVersion: 1,
-        ownerCustomerId: 'cust-123',
-        subscriptionId: 'sub-test-1',
-        paymentId: 'pz-attempt-1',
-        createdAtUtc: DateTime.now().toUtc(),
-        reviewRequired: true,
-      );
-
-      fakeStatusUseCase.defaultResponse = ApiErrorResult(
-        failure: ServerFailure(
-          code: 'server_error',
-          errorMessage: 'Server 500 error',
-          exception: const ApiException(
-            message: 'Server error',
-            statusCode: 500,
-            errorType: ApiErrorType.serverError,
+        );
+        fakeCurrentSubUseCase.defaultResponse = ApiSuccessResult(
+          data: PaymentFixtures.activeCurrentEntity(
+            subscriptionId: 'sub-test-1',
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(
-        const HandlePaymentReturnEvent(
-          PaymentReturn(
-            destination: PaymentReturnDestination.review,
-            paymentId: 'pz-attempt-1',
+        viewModel.doIntent(const VerifyPaymentFulfillmentEvent('sub-test-1'));
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isFulfillmentSuccess, isTrue);
+        expect(viewModel.state.isPaymentFailed, isFalse);
+        expect(fakeStore.attempt?.lastPresentedFinalStatus, equals('active'));
+      },
+    );
+
+    test(
+      'review link sets conservative reviewRequired and persists lock',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-test-1',
+          paymentId: 'pz-attempt-1',
+          createdAtUtc: DateTime.now().toUtc(),
+          reviewRequired: false,
+        );
+
+        fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
+          data: PaymentStatusEntity(
+            paymentStatus: 'SuspendedForReview',
+            isPaid: false,
+            isFailed: false,
+            amount: 100,
+            currencyCode: 'KWD',
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
+        );
 
-      expect(viewModel.state.isReviewRequired, isTrue);
-      expect(fakeStore.attempt?.reviewRequired, isTrue);
-    });
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.review,
+              paymentId: 'pz-attempt-1',
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isReviewRequired, isTrue);
+        expect(fakeStore.attempt?.reviewRequired, isTrue);
+      },
+    );
+
+    test(
+      'server terminal PaymentFailed lifts reviewRequired lock and shows failure',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-test-1',
+          paymentId: 'pz-attempt-1',
+          createdAtUtc: DateTime.now().toUtc(),
+          reviewRequired: true,
+        );
+
+        fakeStatusUseCase.defaultResponse = const ApiSuccessResult(
+          data: PaymentStatusEntity(
+            paymentStatus: 'PaymentFailed',
+            isPaid: false,
+            isFailed: true,
+            amount: 100,
+            currencyCode: 'KWD',
+          ),
+        );
+
+        viewModel.doIntent(const VerifyPaymentFulfillmentEvent('sub-test-1'));
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isPaymentFailed, isTrue);
+        expect(viewModel.state.isReviewRequired, isFalse);
+        expect(fakeStore.attempt?.reviewRequired, isFalse);
+        expect(fakeStore.attempt?.lastPresentedFinalStatus, equals('failed'));
+      },
+    );
+
+    test(
+      'network 5xx error during review preserves reviewRequired lock',
+      () async {
+        fakeStore.attempt = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'sub-test-1',
+          paymentId: 'pz-attempt-1',
+          createdAtUtc: DateTime.now().toUtc(),
+          reviewRequired: true,
+        );
+
+        fakeStatusUseCase.defaultResponse = ApiErrorResult(
+          failure: ServerFailure(
+            code: 'server_error',
+            errorMessage: 'Server 500 error',
+            exception: const ApiException(
+              message: 'Server error',
+              statusCode: 500,
+              errorType: ApiErrorType.serverError,
+            ),
+          ),
+        );
+
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.review,
+              paymentId: 'pz-attempt-1',
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isReviewRequired, isTrue);
+        expect(fakeStore.attempt?.reviewRequired, isTrue);
+      },
+    );
   });
 }

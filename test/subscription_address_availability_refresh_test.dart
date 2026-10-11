@@ -15,7 +15,8 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/manag
 
 class AddressRefreshSummaryRepo implements SubscriptionSummaryRepository {
   final List<SubscriptionSummaryRequestEntity> recordedRequests = [];
-  SubscriptionSummaryEntity Function(SubscriptionSummaryRequestEntity request)? responder;
+  SubscriptionSummaryEntity Function(SubscriptionSummaryRequestEntity request)?
+  responder;
 
   @override
   Future<ApiResult<SubscriptionSummaryEntity>> getSummary(
@@ -25,7 +26,9 @@ class AddressRefreshSummaryRepo implements SubscriptionSummaryRepository {
     if (responder != null) {
       return ApiSuccessResult(data: responder!(request));
     }
-    return ApiSuccessResult(data: _buildSummaryWithAddress(addressId: 'addr-1', canCheckout: true));
+    return ApiSuccessResult(
+      data: _buildSummaryWithAddress(addressId: 'addr-1', canCheckout: true),
+    );
   }
 
   @override
@@ -119,54 +122,69 @@ void main() {
       startDate: '2026-10-08',
     );
 
-    test('Address change refresh preserves the original chosen anchor date (2026-10-08)', () async {
-      repo.responder = (req) => _buildSummaryWithAddress(
-            addressId: 'addr-1',
-            canCheckout: true,
-          );
+    test(
+      'Address change refresh preserves the original chosen anchor date (2026-10-08)',
+      () async {
+        repo.responder = (req) =>
+            _buildSummaryWithAddress(addressId: 'addr-1', canCheckout: true);
 
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
-      await pumpEventQueue();
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
+        await pumpEventQueue();
 
-      expect(viewModel.state.summary, isNotNull);
-      expect(viewModel.state.selectedStartDate, equals('2026-10-08'));
+        expect(viewModel.state.summary, isNotNull);
+        expect(viewModel.state.selectedStartDate, equals('2026-10-08'));
 
-      // User returns from address selection, trigger refresh using active request
-      final refreshRequest = viewModel.state.activeRequest ?? initialRequest;
-      viewModel.doIntent(GetSubscriptionSummaryEvent(refreshRequest));
-      await pumpEventQueue();
+        // User returns from address selection, trigger refresh using active request
+        final refreshRequest = viewModel.state.activeRequest ?? initialRequest;
+        viewModel.doIntent(GetSubscriptionSummaryEvent(refreshRequest));
+        await pumpEventQueue();
 
-      expect(repo.recordedRequests.length, equals(2));
-      expect(repo.recordedRequests[1].startDate, equals('2026-10-08'));
-      expect(viewModel.state.selectedStartDate, equals('2026-10-08'));
-    });
+        expect(repo.recordedRequests.length, equals(2));
+        expect(repo.recordedRequests[1].startDate, equals('2026-10-08'));
+        expect(viewModel.state.selectedStartDate, equals('2026-10-08'));
+      },
+    );
 
-    test('When new address has no coverage, refreshed summary blocks checkout with reason', () async {
-      int requestCount = 0;
-      repo.responder = (req) {
-        requestCount++;
-        if (requestCount == 1) {
-          return _buildSummaryWithAddress(addressId: 'addr-1', canCheckout: true);
-        } else {
-          return _buildSummaryWithAddress(
-            addressId: 'addr-2',
-            canCheckout: false,
-            checkoutBlockReason: 'subscription_flow.no_restaurants_for_address',
-          );
-        }
-      };
+    test(
+      'When new address has no coverage, refreshed summary blocks checkout with reason',
+      () async {
+        int requestCount = 0;
+        repo.responder = (req) {
+          requestCount++;
+          if (requestCount == 1) {
+            return _buildSummaryWithAddress(
+              addressId: 'addr-1',
+              canCheckout: true,
+            );
+          } else {
+            return _buildSummaryWithAddress(
+              addressId: 'addr-2',
+              canCheckout: false,
+              checkoutBlockReason:
+                  'subscription_flow.no_restaurants_for_address',
+            );
+          }
+        };
 
-      viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
-      await pumpEventQueue();
-      expect(viewModel.state.canCheckout, isTrue);
+        viewModel.doIntent(const GetSubscriptionSummaryEvent(initialRequest));
+        await pumpEventQueue();
+        expect(viewModel.state.canCheckout, isTrue);
 
-      // Trigger refresh after address change
-      viewModel.doIntent(GetSubscriptionSummaryEvent(viewModel.state.activeRequest ?? initialRequest));
-      await pumpEventQueue();
+        // Trigger refresh after address change
+        viewModel.doIntent(
+          GetSubscriptionSummaryEvent(
+            viewModel.state.activeRequest ?? initialRequest,
+          ),
+        );
+        await pumpEventQueue();
 
-      expect(viewModel.state.summary!.canCheckout, isFalse);
-      expect(viewModel.state.summary!.checkoutBlockReason, equals('subscription_flow.no_restaurants_for_address'));
-      expect(viewModel.state.canCheckout, isFalse);
-    });
+        expect(viewModel.state.summary!.canCheckout, isFalse);
+        expect(
+          viewModel.state.summary!.checkoutBlockReason,
+          equals('subscription_flow.no_restaurants_for_address'),
+        );
+        expect(viewModel.state.canCheckout, isFalse);
+      },
+    );
   });
 }

@@ -29,7 +29,7 @@ class RestaurantTierConfirmationBody extends StatelessWidget {
   final SubscriptionUpgradeOptionEntity selectedOption;
   final String? programName;
   final ValueChanged<SubscriptionUpgradePaymentMethodEntity>
-      onPaymentMethodSelected;
+  onPaymentMethodSelected;
   final VoidCallback onConfirm;
   final VoidCallback onBack;
 

@@ -6,10 +6,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 
 class SubscriptionBillingFreezeRulesCard extends StatelessWidget {
-  const SubscriptionBillingFreezeRulesCard({
-    super.key,
-    required this.policy,
-  });
+  const SubscriptionBillingFreezeRulesCard({super.key, required this.policy});
 
   final SubscriptionBillingFreezePolicyEntity? policy;
 
@@ -26,21 +23,22 @@ class SubscriptionBillingFreezeRulesCard extends StatelessWidget {
     final currentPolicy = policy!;
     final noticeText = isRtl
         ? (currentPolicy.noticeAr.isNotEmpty
-            ? currentPolicy.noticeAr
-            : currentPolicy.notice)
+              ? currentPolicy.noticeAr
+              : currentPolicy.notice)
         : (currentPolicy.notice.isNotEmpty
-            ? currentPolicy.notice
-            : currentPolicy.noticeAr);
+              ? currentPolicy.notice
+              : currentPolicy.noticeAr);
     final messageText = isRtl
         ? (currentPolicy.messageAr.isNotEmpty
-            ? currentPolicy.messageAr
-            : currentPolicy.message)
+              ? currentPolicy.messageAr
+              : currentPolicy.message)
         : (currentPolicy.messageEn.isNotEmpty
-            ? currentPolicy.messageEn
-            : currentPolicy.message);
+              ? currentPolicy.messageEn
+              : currentPolicy.message);
 
     final hasNotice = noticeText.trim().isNotEmpty;
-    final hasMessage = messageText.trim().isNotEmpty && messageText != noticeText;
+    final hasMessage =
+        messageText.trim().isNotEmpty && messageText != noticeText;
 
     if (!hasNotice && !hasMessage) {
       return const SizedBox.shrink();

@@ -5,6 +5,10 @@ class FoodPreferencesEntity {
     this.allergies = const [],
     this.dislikedFoods = const [],
     this.notes,
+    this.allergiesCompletedAtUtc,
+    this.dietaryPreferencesCompletedAtUtc,
+    this.hasNoAllergies = false,
+    this.hasNoDietaryRestriction = false,
   });
 
   final String? dietaryPattern;
@@ -12,6 +16,18 @@ class FoodPreferencesEntity {
   final List<FoodPreferenceItemEntity> allergies;
   final List<FoodPreferenceItemEntity> dislikedFoods;
   final String? notes;
+  final DateTime? allergiesCompletedAtUtc;
+  final DateTime? dietaryPreferencesCompletedAtUtc;
+  final bool hasNoAllergies;
+  final bool hasNoDietaryRestriction;
+
+  bool get isAllergiesConfirmed =>
+      allergies.isNotEmpty || allergiesCompletedAtUtc != null || hasNoAllergies;
+
+  bool get isDietaryPreferencesConfirmed =>
+      dietaryPreferences.isNotEmpty ||
+      dietaryPreferencesCompletedAtUtc != null ||
+      hasNoDietaryRestriction;
 }
 
 class FoodPreferenceItemEntity {

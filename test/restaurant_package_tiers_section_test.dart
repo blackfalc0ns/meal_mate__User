@@ -18,9 +18,7 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Directionality(
         textDirection: textDirection,
-        child: Scaffold(
-          body: SingleChildScrollView(child: child),
-        ),
+        child: Scaffold(body: SingleChildScrollView(child: child)),
       ),
     );
   }
@@ -111,34 +109,37 @@ void main() {
       expect(browsed, 2);
     });
 
-    testWidgets('renders fallback price when price is empty and does not hide it', (tester) async {
-      const packageWithEmptyPrice = [
-        RestaurantPackageTierUiModel(
-          title: 'سيلكت',
-          iconName: 'heart',
-          restaurantCount: 10,
-          price: '',
-          currency: '',
-          priceSubtitle: '',
-          restaurantLogoUrls: [],
-        ),
-      ];
-
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: RestaurantPackageTiersSection(
-            packages: packageWithEmptyPrice,
-            selectedIndex: 0,
-            onSelected: (_) {},
-            onBrowseRestaurants: (_) {},
+    testWidgets(
+      'renders fallback price when price is empty and does not hide it',
+      (tester) async {
+        const packageWithEmptyPrice = [
+          RestaurantPackageTierUiModel(
+            title: 'سيلكت',
+            iconName: 'heart',
+            restaurantCount: 10,
+            price: '',
+            currency: '',
+            priceSubtitle: '',
+            restaurantLogoUrls: [],
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        ];
 
-      expect(find.text('د.ك'), findsOneWidget);
-      expect(find.text('حتى نهاية الاشتراك'), findsOneWidget);
-    });
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: RestaurantPackageTiersSection(
+              packages: packageWithEmptyPrice,
+              selectedIndex: 0,
+              onSelected: (_) {},
+              onBrowseRestaurants: (_) {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('د.ك'), findsOneWidget);
+        expect(find.text('حتى نهاية الاشتراك'), findsOneWidget);
+      },
+    );
 
     testWidgets('renders in English (LTR) correctly', (tester) async {
       await tester.pumpWidget(
@@ -157,7 +158,9 @@ void main() {
 
       expect(find.text('Browse categories'), findsOneWidget);
       expect(
-        find.text('Each category includes a curated selection of featured restaurants.'),
+        find.text(
+          'Each category includes a curated selection of featured restaurants.',
+        ),
         findsOneWidget,
       );
       expect(find.text('Select'), findsOneWidget);
@@ -166,36 +169,41 @@ void main() {
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
     });
 
-    testWidgets('renders shimmer widget for prices when isPriceLoading is true while keeping cards intact', (tester) async {
-      final loadingPackages = samplePackages
-          .map((p) => p.copyWith(isPriceLoading: true))
-          .toList();
+    testWidgets(
+      'renders shimmer widget for prices when isPriceLoading is true while keeping cards intact',
+      (tester) async {
+        final loadingPackages = samplePackages
+            .map((p) => p.copyWith(isPriceLoading: true))
+            .toList();
 
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: RestaurantPackageTiersSection(
-            packages: loadingPackages,
-            selectedIndex: 0,
-            onSelected: (_) {},
-            onBrowseRestaurants: (_) {},
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: RestaurantPackageTiersSection(
+              packages: loadingPackages,
+              selectedIndex: 0,
+              onSelected: (_) {},
+              onBrowseRestaurants: (_) {},
+            ),
           ),
-        ),
-      );
-      await tester.pump();
+        );
+        await tester.pump();
 
-      // Card structure remains intact
-      expect(find.text('سيلكت'), findsOneWidget);
-      expect(find.text('بلس'), findsOneWidget);
-      expect(find.text('ماكس'), findsOneWidget);
-      expect(find.text('استعراض المطاعم'), findsNWidgets(3));
-      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+        // Card structure remains intact
+        expect(find.text('سيلكت'), findsOneWidget);
+        expect(find.text('بلس'), findsOneWidget);
+        expect(find.text('ماكس'), findsOneWidget);
+        expect(find.text('استعراض المطاعم'), findsNWidgets(3));
+        expect(find.byIcon(Icons.check_rounded), findsOneWidget);
 
-      // Price text is NOT shown while loading
-      expect(find.text('6.5'), findsNothing);
+        // Price text is NOT shown while loading
+        expect(find.text('6.5'), findsNothing);
 
-      // Shimmer loading is rendered in the price area
-      expect(find.byKey(const ValueKey('price-shimmer-loading')), findsNWidgets(3));
-    });
+        // Shimmer loading is rendered in the price area
+        expect(
+          find.byKey(const ValueKey('price-shimmer-loading')),
+          findsNWidgets(3),
+        );
+      },
+    );
   });
 }
-

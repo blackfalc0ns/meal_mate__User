@@ -60,8 +60,9 @@ class SubscriptionPackagesState {
       bundles: bundles ?? this.bundles,
       pagination: clearPagination ? null : pagination ?? this.pagination,
       failure: clearFailure ? null : failure ?? this.failure,
-      loadMoreFailure:
-          clearLoadMoreFailure ? null : loadMoreFailure ?? this.loadMoreFailure,
+      loadMoreFailure: clearLoadMoreFailure
+          ? null
+          : loadMoreFailure ?? this.loadMoreFailure,
       hasDeliveryAddress: hasDeliveryAddress ?? this.hasDeliveryAddress,
       hasAllergies: hasAllergies ?? this.hasAllergies,
       hasDietaryPreferences:

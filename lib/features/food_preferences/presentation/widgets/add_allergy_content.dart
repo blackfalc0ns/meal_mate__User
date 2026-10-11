@@ -15,10 +15,7 @@ import 'package:meal_meat_user/features/food_preferences/presentation/widgets/ad
 import 'package:meal_meat_user/features/food_preferences/presentation/widgets/dietary_preferences_option.dart';
 
 class AddAllergyContent extends StatelessWidget {
-  const AddAllergyContent({
-    super.key,
-    this.catalog,
-  });
+  const AddAllergyContent({super.key, this.catalog});
 
   final FoodPreferencesCatalogEntity? catalog;
 
@@ -53,7 +50,11 @@ class AddAllergyContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.md),
-          BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, Set<String>>(
+          BlocSelector<
+            FoodPreferencesViewModel,
+            FoodPreferencesState,
+            Set<String>
+          >(
             selector: (state) => state.selection.activeAllergies,
             builder: (context, activeAllergies) {
               final selectedLabels = activeAllergies
@@ -61,9 +62,7 @@ class AddAllergyContent extends StatelessWidget {
                   .nonNulls
                   .where((label) => label.isNotEmpty)
                   .toList();
-              return AddAllergySummaryCard(
-                selectedAllergies: selectedLabels,
-              );
+              return AddAllergySummaryCard(selectedAllergies: selectedLabels);
             },
           ),
           const SizedBox(height: Spacing.addAllergySectionGap),
@@ -73,7 +72,11 @@ class AddAllergyContent extends StatelessWidget {
                 .doIntent(FoodPreferenceAllergySearchChangedEvent(value)),
           ),
           const SizedBox(height: Spacing.addAllergySectionGap),
-          BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, ({String query, Set<String> selectedCodes})>(
+          BlocSelector<
+            FoodPreferencesViewModel,
+            FoodPreferencesState,
+            ({String query, Set<String> selectedCodes})
+          >(
             selector: (state) => (
               query: state.selection.allergySearchQuery,
               selectedCodes: state.selection.allergies,
@@ -83,11 +86,11 @@ class AddAllergyContent extends StatelessWidget {
               final filteredGridOptions = query.isEmpty
                   ? allOptions
                   : allOptions
-                      .where(
-                        (option) =>
-                            option.label.toLowerCase().contains(query),
-                      )
-                      .toList();
+                        .where(
+                          (option) =>
+                              option.label.toLowerCase().contains(query),
+                        )
+                        .toList();
               return AddAllergyGridSection(
                 options: filteredGridOptions,
                 selectedCodes: data.selectedCodes,
@@ -97,9 +100,8 @@ class AddAllergyContent extends StatelessWidget {
           const SizedBox(height: Spacing.addAllergySectionGap),
           BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, bool>(
             selector: (state) => state.action.isLoading,
-            builder: (context, isLoading) => AddAllergySaveSection(
-              isLoading: isLoading,
-            ),
+            builder: (context, isLoading) =>
+                AddAllergySaveSection(isLoading: isLoading),
           ),
         ],
       ),

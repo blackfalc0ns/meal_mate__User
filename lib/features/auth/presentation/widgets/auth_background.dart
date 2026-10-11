@@ -41,4 +41,3 @@ class AuthBackground extends StatelessWidget {
     );
   }
 }
-

@@ -206,13 +206,16 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     switch (result) {
       case ApiSuccessResult():
         final optionsEntity = result.data;
-        final preparedOptions =
-            optionsEntity.options.asMap().entries.map((entry) {
-          return RestaurantTierOptionViewData.fromEntity(
-            option: entry.value,
-            index: entry.key,
-          );
-        }).toList(growable: false);
+        final preparedOptions = optionsEntity.options
+            .asMap()
+            .entries
+            .map((entry) {
+              return RestaurantTierOptionViewData.fromEntity(
+                option: entry.value,
+                index: entry.key,
+              );
+            })
+            .toList(growable: false);
 
         emit(
           state.copyWith(
@@ -303,7 +306,8 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
     switch (result) {
       case ApiSuccessResult():
         final requestResult = result.data;
-        final isExplicitlyApplied = requestResult.isPaid ||
+        final isExplicitlyApplied =
+            requestResult.isPaid ||
             (requestResult.status.toLowerCase() == 'applied' &&
                 requestResult.amount == 0.0);
 
@@ -357,7 +361,9 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
           ),
         );
         final upId = state.upgradeRequestResult?.upgradeId;
-        if (state.subscriptionId.isNotEmpty && upId != null && upId.isNotEmpty) {
+        if (state.subscriptionId.isNotEmpty &&
+            upId != null &&
+            upId.isNotEmpty) {
           unawaited(
             _verifyStatus(
               subscriptionId: state.subscriptionId,
@@ -379,7 +385,9 @@ class RestaurantTierUpgradeViewModel extends Cubit<RestaurantTierUpgradeState> {
       case PaymentReturnDestination.pending:
         emit(state.copyWith(attemptHandle: paymentReturn.paymentId));
         final upId = state.upgradeRequestResult?.upgradeId;
-        if (state.subscriptionId.isNotEmpty && upId != null && upId.isNotEmpty) {
+        if (state.subscriptionId.isNotEmpty &&
+            upId != null &&
+            upId.isNotEmpty) {
           unawaited(
             _verifyStatus(
               subscriptionId: state.subscriptionId,

@@ -14,6 +14,7 @@ class GetSubscriptionTiersUseCase {
     required String bundleId,
     required int? durationDays,
     required bool includeFriday,
+    String? startDate,
     String? familyMemberId,
   }) {
     return _repository.getTiers(
@@ -21,6 +22,7 @@ class GetSubscriptionTiersUseCase {
       bundleId: bundleId,
       durationDays: durationDays,
       includeFriday: includeFriday,
+      startDate: startDate,
       familyMemberId: familyMemberId,
     );
   }

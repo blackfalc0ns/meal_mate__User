@@ -5,6 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 
@@ -42,13 +43,23 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
         },
         onItemPressed: (item) async {
           Navigator.of(sheetContext).pop();
-          final route = switch (item.actionScreen.toUpperCase()) {
+          final action = item.actionScreen.toUpperCase();
+          final endpoint = item.endpoint?.toLowerCase() ?? '';
+          final route = switch (action) {
             SubscriptionErrorCodes.actionAddress =>
               AppRoutes.addressChooseLocation,
+            SubscriptionErrorCodes.actionAllergies => AppRoutes.addAllergy,
             SubscriptionErrorCodes.actionDietaryPreferences =>
               AppRoutes.dietaryPreferences,
-            SubscriptionErrorCodes.actionAllergies => AppRoutes.addAllergy,
-            _ => null,
+            _ =>
+              endpoint.contains('address')
+                  ? AppRoutes.addressChooseLocation
+                  : endpoint.contains('allerg')
+                  ? AppRoutes.addAllergy
+                  : (endpoint.contains('preference') ||
+                        endpoint.contains('diet'))
+                  ? AppRoutes.dietaryPreferences
+                  : null,
           };
           if (route == null) return;
           final updated = await Navigator.of(
@@ -66,16 +77,52 @@ class SubscriptionReadinessBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final items = readiness.incompleteItems;
+    final items = [...readiness.incompleteItems]
+      ..sort((a, b) {
+        int order(String step, String? endpoint) {
+          final s = step.toUpperCase();
+          final ep = (endpoint ?? '').toLowerCase();
+          if (s == SubscriptionErrorCodes.actionAddress ||
+              s.contains('ADDRESS') ||
+              ep.contains('address')) {
+            return 1;
+          }
+          if (s == SubscriptionErrorCodes.actionAllergies ||
+              s.contains('ALLERG') ||
+              ep.contains('allerg')) {
+            return 2;
+          }
+          if (s == SubscriptionErrorCodes.actionDietaryPreferences ||
+              s.contains('DIET') ||
+              s.contains('PREFER') ||
+              ep.contains('preference') ||
+              ep.contains('diet')) {
+            return 3;
+          }
+          return 4;
+        }
+
+        return order(
+          a.actionScreen,
+          a.endpoint,
+        ).compareTo(order(b.actionScreen, b.endpoint));
+      });
     final hasRestaurantBlock = readiness.hasRestaurantCoverageBlock;
+
     final hasAddressItem = items.any(
       (item) =>
           item.actionScreen.toUpperCase() ==
           SubscriptionErrorCodes.actionAddress,
     );
     final readinessWarning = readiness.warning(locale.localeName).trim();
+    final blockReason = readiness.checkoutBlockReason?.trim();
+    final mappedBlockReason = (blockReason != null && blockReason.isNotEmpty)
+        ? mapFailureMessage(context, blockReason)
+        : '';
     final warning = readinessWarning.isNotEmpty
         ? readinessWarning
+        : mappedBlockReason.isNotEmpty
+        ? mappedBlockReason
         : hasRestaurantBlock
         ? locale.subscription_no_restaurants_for_area
         : '';

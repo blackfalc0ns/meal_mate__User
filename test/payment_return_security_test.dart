@@ -106,149 +106,158 @@ void main() {
   }
 
   group('Payment Return Security Tests', () {
-    test('spoofed success return link does not fulfill payment when server status is unpaid', () async {
-      mockStatusUseCase.response = const ApiSuccessResult(
-        data: PaymentStatusEntity(
-          paymentStatus: 'Pending',
-          isPaid: false,
-          isFailed: false,
-          amount: 100,
-          currencyCode: 'KWD',
-        ),
-      );
-
-      // Initialize checkout
-      mockCheckoutUseCase.response = const ApiSuccessResult(
-        data: PaymentCheckoutEntity(
-          subscriptionId: 'sub-123',
-          paymentUrl: 'https://payzah.net/checkout/123',
-          holdExpiresAtUtc: '',
-          chosenStartDate: '',
-          startDate: '2026-10-10',
-          finalPrice: 100,
-          priceSnapshotId: '',
-          restaurantPoolSnapshotId: '',
-          paymentStatus: 'Pending',
-        ),
-      );
-
-      viewModel.doIntent(
-        const SelectPaymentMethodEvent(
-          PaymentMethodEntity(
-            id: 3,
-            type: PaymentMethodType.payzah,
-            title: 'Payzah',
-            subtitle: '',
-            isAvailable: true,
+    test(
+      'spoofed success return link does not fulfill payment when server status is unpaid',
+      () async {
+        mockStatusUseCase.response = const ApiSuccessResult(
+          data: PaymentStatusEntity(
+            paymentStatus: 'Pending',
+            isPaid: false,
+            isFailed: false,
+            amount: 100,
+            currencyCode: 'KWD',
           ),
-        ),
-      );
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      await Future<void>.delayed(Duration.zero);
+        );
 
-      // Incoming spoofed return
-      const spoofedReturn = PaymentReturn(
-        destination: PaymentReturnDestination.success,
-        paymentId: 'pz-track-spoofed',
-      );
-
-      viewModel.doIntent(const HandlePaymentReturnEvent(spoofedReturn));
-      await Future<void>.delayed(Duration.zero);
-
-      // Verify that fulfillment is NOT marked success
-      expect(viewModel.state.isFulfillmentSuccess, isFalse);
-    });
-
-    test('review return immediately blocks new payments and sets isReviewRequired', () async {
-      mockStatusUseCase.response = const ApiSuccessResult(
-        data: PaymentStatusEntity(
-          paymentStatus: 'SuspendedForReview',
-          isPaid: false,
-          isFailed: false,
-          amount: 100,
-          currencyCode: 'KWD',
-        ),
-      );
-
-      mockCheckoutUseCase.response = const ApiSuccessResult(
-        data: PaymentCheckoutEntity(
-          subscriptionId: 'sub-review-123',
-          paymentUrl: 'https://payzah.net/checkout/123',
-          holdExpiresAtUtc: '',
-          chosenStartDate: '',
-          startDate: '2026-10-10',
-          finalPrice: 100,
-          priceSnapshotId: '',
-          restaurantPoolSnapshotId: '',
-          paymentStatus: 'Pending',
-        ),
-      );
-
-      viewModel.doIntent(
-        const SelectPaymentMethodEvent(
-          PaymentMethodEntity(
-            id: 3,
-            type: PaymentMethodType.payzah,
-            title: 'Payzah',
-            subtitle: '',
-            isAvailable: true,
+        // Initialize checkout
+        mockCheckoutUseCase.response = const ApiSuccessResult(
+          data: PaymentCheckoutEntity(
+            subscriptionId: 'sub-123',
+            paymentUrl: 'https://payzah.net/checkout/123',
+            holdExpiresAtUtc: '',
+            chosenStartDate: '',
+            startDate: '2026-10-10',
+            finalPrice: 100,
+            priceSnapshotId: '',
+            restaurantPoolSnapshotId: '',
+            paymentStatus: 'Pending',
           ),
-        ),
-      );
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      await Future<void>.delayed(Duration.zero);
+        );
 
-      const reviewReturn = PaymentReturn(
-        destination: PaymentReturnDestination.review,
-        paymentId: 'pz-track-review-1',
-      );
-      viewModel.doIntent(const HandlePaymentReturnEvent(reviewReturn));
-      await Future<void>.delayed(Duration.zero);
-
-      expect(viewModel.state.isReviewRequired, isTrue);
-
-      final initialCalls = mockCheckoutUseCase.callCount;
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      await Future<void>.delayed(Duration.zero);
-      expect(mockCheckoutUseCase.callCount, equals(initialCalls));
-    });
-
-    test('review state cannot be cleared by subsequent spoofed error or success return', () async {
-      viewModel.doIntent(
-        const HandlePaymentReturnEvent(
-          PaymentReturn(
-            destination: PaymentReturnDestination.review,
-            paymentId: 'pz-track-1',
+        viewModel.doIntent(
+          const SelectPaymentMethodEvent(
+            PaymentMethodEntity(
+              id: 3,
+              type: PaymentMethodType.payzah,
+              title: 'Payzah',
+              subtitle: '',
+              isAvailable: true,
+            ),
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
-      expect(viewModel.state.isReviewRequired, isTrue);
+        );
+        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await Future<void>.delayed(Duration.zero);
 
-      // Subsequent forged error return
-      viewModel.doIntent(
-        const HandlePaymentReturnEvent(
-          PaymentReturn(
-            destination: PaymentReturnDestination.error,
-            paymentId: 'pz-track-1',
-          ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
-      expect(viewModel.state.isReviewRequired, isTrue);
+        // Incoming spoofed return
+        const spoofedReturn = PaymentReturn(
+          destination: PaymentReturnDestination.success,
+          paymentId: 'pz-track-spoofed',
+        );
 
-      // Subsequent forged success return
-      viewModel.doIntent(
-        const HandlePaymentReturnEvent(
-          PaymentReturn(
-            destination: PaymentReturnDestination.success,
-            paymentId: 'pz-track-1',
+        viewModel.doIntent(const HandlePaymentReturnEvent(spoofedReturn));
+        await Future<void>.delayed(Duration.zero);
+
+        // Verify that fulfillment is NOT marked success
+        expect(viewModel.state.isFulfillmentSuccess, isFalse);
+      },
+    );
+
+    test(
+      'review return immediately blocks new payments and sets isReviewRequired',
+      () async {
+        mockStatusUseCase.response = const ApiSuccessResult(
+          data: PaymentStatusEntity(
+            paymentStatus: 'SuspendedForReview',
+            isPaid: false,
+            isFailed: false,
+            amount: 100,
+            currencyCode: 'KWD',
           ),
-        ),
-      );
-      await Future<void>.delayed(Duration.zero);
-      expect(viewModel.state.isReviewRequired, isTrue);
-    });
+        );
+
+        mockCheckoutUseCase.response = const ApiSuccessResult(
+          data: PaymentCheckoutEntity(
+            subscriptionId: 'sub-review-123',
+            paymentUrl: 'https://payzah.net/checkout/123',
+            holdExpiresAtUtc: '',
+            chosenStartDate: '',
+            startDate: '2026-10-10',
+            finalPrice: 100,
+            priceSnapshotId: '',
+            restaurantPoolSnapshotId: '',
+            paymentStatus: 'Pending',
+          ),
+        );
+
+        viewModel.doIntent(
+          const SelectPaymentMethodEvent(
+            PaymentMethodEntity(
+              id: 3,
+              type: PaymentMethodType.payzah,
+              title: 'Payzah',
+              subtitle: '',
+              isAvailable: true,
+            ),
+          ),
+        );
+        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await Future<void>.delayed(Duration.zero);
+
+        const reviewReturn = PaymentReturn(
+          destination: PaymentReturnDestination.review,
+          paymentId: 'pz-track-review-1',
+        );
+        viewModel.doIntent(const HandlePaymentReturnEvent(reviewReturn));
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isReviewRequired, isTrue);
+
+        final initialCalls = mockCheckoutUseCase.callCount;
+        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await Future<void>.delayed(Duration.zero);
+        expect(mockCheckoutUseCase.callCount, equals(initialCalls));
+      },
+    );
+
+    test(
+      'review state cannot be cleared by subsequent spoofed error or success return',
+      () async {
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.review,
+              paymentId: 'pz-track-1',
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.isReviewRequired, isTrue);
+
+        // Subsequent forged error return
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.error,
+              paymentId: 'pz-track-1',
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.isReviewRequired, isTrue);
+
+        // Subsequent forged success return
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.success,
+              paymentId: 'pz-track-1',
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.isReviewRequired, isTrue);
+      },
+    );
 
     test('error return cannot override an already accepted payment', () async {
       mockStatusUseCase.response = const ApiSuccessResult(
@@ -345,13 +354,16 @@ class _MockCheckoutSubscriptionUseCase implements CheckoutSubscriptionUseCase {
   int callCount = 0;
 
   @override
-  Future<ApiResult<PaymentCheckoutEntity>> call(PaymentCheckoutRequestEntity request) {
+  Future<ApiResult<PaymentCheckoutEntity>> call(
+    PaymentCheckoutRequestEntity request,
+  ) {
     callCount++;
     return futureOverride ?? Future.value(response);
   }
 }
 
-class _MockGetSubscriptionPaymentStatusUseCase implements GetSubscriptionPaymentStatusUseCase {
+class _MockGetSubscriptionPaymentStatusUseCase
+    implements GetSubscriptionPaymentStatusUseCase {
   ApiResult<PaymentStatusEntity> response = const ApiSuccessResult(
     data: PaymentStatusEntity(
       paymentStatus: 'Paid',
@@ -368,14 +380,18 @@ class _MockGetSubscriptionPaymentStatusUseCase implements GetSubscriptionPayment
   }
 }
 
-class _MockGetSubscriptionCalendarUseCase implements GetSubscriptionCalendarUseCase {
+class _MockGetSubscriptionCalendarUseCase
+    implements GetSubscriptionCalendarUseCase {
   @override
-  Future<ApiResult<dynamic>> call(String subscriptionId) async => const ApiSuccessResult(data: true);
+  Future<ApiResult<dynamic>> call(String subscriptionId) async =>
+      const ApiSuccessResult(data: true);
 }
 
-class _MockGetCurrentSubscriptionUseCase implements GetCurrentCustomerSubscriptionUseCase {
-  ApiResult<SubscriptionBillingCurrentEntity> response =
-      ApiSuccessResult(data: PaymentFixtures.activeCurrentEntity());
+class _MockGetCurrentSubscriptionUseCase
+    implements GetCurrentCustomerSubscriptionUseCase {
+  ApiResult<SubscriptionBillingCurrentEntity> response = ApiSuccessResult(
+    data: PaymentFixtures.activeCurrentEntity(),
+  );
 
   @override
   Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async => response;

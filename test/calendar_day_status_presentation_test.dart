@@ -155,38 +155,37 @@ void main() {
       },
     );
 
-    testWidgets(
-      'renders English localized strings in en locale',
-      (tester) async {
-        tester.view.physicalSize = const Size(1080, 2400);
-        tester.view.devicePixelRatio = 2.0;
-        addTearDown(tester.view.reset);
+    testWidgets('renders English localized strings in en locale', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
 
-        final day = CalendarDayEntity(
-          id: 'day-4',
-          dayNumber: 6,
-          weekday: 'Tuesday',
-          date: DateTime(2026, 10, 6),
-          status: 'ConfirmedByRestaurant',
-          uiStatus: 'locked',
-          restaurant: _testRestaurant,
-          meals: const [_testMeal],
-          selectedMealIds: const ['m-1'],
-        );
+      final day = CalendarDayEntity(
+        id: 'day-4',
+        dayNumber: 6,
+        weekday: 'Tuesday',
+        date: DateTime(2026, 10, 6),
+        status: 'ConfirmedByRestaurant',
+        uiStatus: 'locked',
+        restaurant: _testRestaurant,
+        meals: const [_testMeal],
+        selectedMealIds: const ['m-1'],
+      );
 
-        await tester.pumpWidget(
-          _buildTestApp(day: day, locale: const Locale('en')),
-        );
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 300));
+      await tester.pumpWidget(
+        _buildTestApp(day: day, locale: const Locale('en')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
 
-        expect(find.text('Confirm Meal Selection'), findsOneWidget);
-        expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
-        expect(
-          find.byKey(const ValueKey('awaiting_hourglass_lottie')),
-          findsNothing,
-        );
-      },
-    );
+      expect(find.text('Confirm Meal Selection'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('awaiting_hourglass_lottie')),
+        findsNothing,
+      );
+    });
   });
 }

@@ -7,40 +7,46 @@ import 'package:meal_meat_user/features/subscription_upgrade/data/models/respons
 
 void main() {
   group('Payment Method Payzah Mapping', () {
-    test('hosted checkout uses the returned id and keeps unknown fees null', () {
-      final method = PaymentMethodResponseDto.fromJson({
-        'paymentMethodId': 7,
-        'code': 'PAYZAH',
-        'integrationType': 'PAYZAH_HOSTED',
-        'isAvailable': true,
-        'nameEn': 'Payzah hosted checkout',
-        'serviceCharge': null,
-        'totalAmount': null,
-        'currencyCode': 'KWD',
-      }).toEntity();
-      expect(method.id, 7);
-      expect(method.type, PaymentMethodType.payzah);
-      expect(method.serviceCharge, isNull);
-      expect(method.totalAmount, isNull);
-    });
+    test(
+      'hosted checkout uses the returned id and keeps unknown fees null',
+      () {
+        final method = PaymentMethodResponseDto.fromJson({
+          'paymentMethodId': 7,
+          'code': 'PAYZAH',
+          'integrationType': 'PAYZAH_HOSTED',
+          'isAvailable': true,
+          'nameEn': 'Payzah hosted checkout',
+          'serviceCharge': null,
+          'totalAmount': null,
+          'currencyCode': 'KWD',
+        }).toEntity();
+        expect(method.id, 7);
+        expect(method.type, PaymentMethodType.payzah);
+        expect(method.serviceCharge, isNull);
+        expect(method.totalAmount, isNull);
+      },
+    );
 
-    test('maps active Payzah provider with arbitrary positive ID and code PAYZAH', () {
-      const dto = PaymentMethodResponseDto(
-        id: 99,
-        paymentMethodId: 99,
-        code: 'PAYZAH',
-        integrationType: 'PAYZAH_HOSTED',
-        nameAr: 'بايزة',
-        nameEn: 'Payzah',
-        isAvailable: true,
-      );
+    test(
+      'maps active Payzah provider with arbitrary positive ID and code PAYZAH',
+      () {
+        const dto = PaymentMethodResponseDto(
+          id: 99,
+          paymentMethodId: 99,
+          code: 'PAYZAH',
+          integrationType: 'PAYZAH_HOSTED',
+          nameAr: 'بايزة',
+          nameEn: 'Payzah',
+          isAvailable: true,
+        );
 
-      final entity = dto.toEntity();
+        final entity = dto.toEntity();
 
-      expect(entity.id, 99);
-      expect(entity.type, PaymentMethodType.payzah);
-      expect(entity.isAvailable, isTrue);
-    });
+        expect(entity.id, 99);
+        expect(entity.type, PaymentMethodType.payzah);
+        expect(entity.isAvailable, isTrue);
+      },
+    );
 
     test('preserves unavailable Payzah method', () {
       const dto = PaymentMethodResponseDto(
@@ -60,31 +66,37 @@ void main() {
       expect(entity.unavailableReason, 'maintenance');
     });
 
-    test('wallet with null ID maps with isAvailable false and unavailableReason', () {
-      final method = PaymentMethodResponseDto.fromJson({
-        'paymentMethodId': null,
-        'code': 'MEALMATE_WALLET',
-        'integrationType': null,
-        'isAvailable': false,
-        'unavailableReason': 'wallet_not_implemented',
-        'nameEn': 'MealMate Wallet',
-      }).toEntity();
+    test(
+      'wallet with null ID maps with isAvailable false and unavailableReason',
+      () {
+        final method = PaymentMethodResponseDto.fromJson({
+          'paymentMethodId': null,
+          'code': 'MEALMATE_WALLET',
+          'integrationType': null,
+          'isAvailable': false,
+          'unavailableReason': 'wallet_not_implemented',
+          'nameEn': 'MealMate Wallet',
+        }).toEntity();
 
-      expect(method.id, isNull);
-      expect(method.type, PaymentMethodType.wallet);
-      expect(method.isAvailable, isFalse);
-      expect(method.unavailableReason, 'wallet_not_implemented');
-    });
+        expect(method.id, isNull);
+        expect(method.type, PaymentMethodType.wallet);
+        expect(method.isAvailable, isFalse);
+        expect(method.unavailableReason, 'wallet_not_implemented');
+      },
+    );
 
-    test('legacy sandbox method maps to unknown so it cannot bypass real checkout', () {
-      const sandboxDto = PaymentMethodResponseDto(
-        id: -1,
-        paymentMethodId: -1,
-        code: 'SANDBOX',
-        isAvailable: true,
-      );
-      expect(sandboxDto.toEntity().type, PaymentMethodType.unknown);
-    });
+    test(
+      'legacy sandbox method maps to unknown so it cannot bypass real checkout',
+      () {
+        const sandboxDto = PaymentMethodResponseDto(
+          id: -1,
+          paymentMethodId: -1,
+          code: 'SANDBOX',
+          isAvailable: true,
+        );
+        expect(sandboxDto.toEntity().type, PaymentMethodType.unknown);
+      },
+    );
 
     test('unknown provider does not silently become mada or Payzah', () {
       const dto = PaymentMethodResponseDto(

@@ -112,4 +112,3 @@ class SubscriptionTypesLoadingSkeleton extends StatelessWidget {
     );
   }
 }
-

@@ -524,9 +524,7 @@ const _upgradeOptions = SubscriptionUpgradeOptionsEntity(
   totalServiceDays: 12,
   upgradeEndpoint: '/api/v1/customer/subscriptions/sub-1/upgrade-requests',
   options: [_platinumOption],
-  paymentMethods: [
-    _payzahPaymentMethod,
-  ],
+  paymentMethods: [_payzahPaymentMethod],
 );
 
 class _RestaurantTierUpgradeRepositoryFake

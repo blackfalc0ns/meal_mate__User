@@ -33,9 +33,7 @@ class CallingActiveAddressCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.callingAddressCardRadius),
-        border: Border.all(
-          color: color.callCardBorder,
-        ),
+        border: Border.all(color: color.callCardBorder),
         boxShadow: [
           BoxShadow(
             color: color.callShadowSoft,

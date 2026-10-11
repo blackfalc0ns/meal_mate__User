@@ -90,7 +90,8 @@ class PaymentMethodTile extends StatelessWidget {
       PaymentMethodType.visa => locale.payment_method_visa,
       PaymentMethodType.applePay => locale.payment_method_apple,
       PaymentMethodType.wallet => locale.payment_method_wallet,
-      PaymentMethodType.unknown => method.title.isNotEmpty ? method.title : 'Payment',
+      PaymentMethodType.unknown =>
+        method.title.isNotEmpty ? method.title : 'Payment',
     };
   }
 

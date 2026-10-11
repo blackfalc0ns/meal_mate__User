@@ -135,7 +135,7 @@ class RestaurantPackageTierCard extends StatelessWidget {
         height: height,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: onTap,
+          onTap: (package.canSelect && package.isAvailable) ? onTap : null,
           child: CustomPaint(
             painter: _RestaurantPackageTierCardPainter(
               colors: cardGradient,

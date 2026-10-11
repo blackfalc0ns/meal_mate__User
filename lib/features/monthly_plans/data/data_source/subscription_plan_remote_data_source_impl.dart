@@ -48,6 +48,9 @@ class SubscriptionPlanRemoteDataSourceImpl
     required String programId,
     required String bundleId,
     required String tier,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) async {
     try {
       final page = await _apiServices.getSubscriptionTierRestaurantsPage(
@@ -55,6 +58,9 @@ class SubscriptionPlanRemoteDataSourceImpl
         bundleId,
         tier,
         null,
+        durationDays: durationDays,
+        startDate: startDate,
+        includeFriday: includeFriday,
       );
       return page.items ?? const [];
     } catch (_) {
@@ -63,6 +69,9 @@ class SubscriptionPlanRemoteDataSourceImpl
         bundleId,
         tier,
         null,
+        durationDays: durationDays,
+        startDate: startDate,
+        includeFriday: includeFriday,
       );
     }
   }
@@ -75,7 +84,22 @@ class SubscriptionPlanRemoteDataSourceImpl
     required int page,
     required int pageSize,
     String? addressId,
+    int? durationDays,
+    String? startDate,
+    bool? includeFriday,
   }) {
+    if (bundleId.trim().isEmpty) {
+      return _apiServices.getSubscriptionProgramTierRestaurantsPage(
+        programId,
+        tier,
+        null,
+        page: page,
+        pageSize: pageSize,
+        durationDays: durationDays,
+        startDate: startDate,
+        includeFriday: includeFriday,
+      );
+    }
     return _apiServices.getSubscriptionTierRestaurantsPage(
       programId,
       bundleId,
@@ -83,6 +107,9 @@ class SubscriptionPlanRemoteDataSourceImpl
       null,
       page: page,
       pageSize: pageSize,
+      durationDays: durationDays,
+      startDate: startDate,
+      includeFriday: includeFriday,
     );
   }
 

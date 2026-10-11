@@ -16,11 +16,14 @@ void main() {
       expect(failure.errorMessage, 'location_permission_denied');
     });
 
-    test('LocationPermissionDeniedForeverFailure has correct code and message', () {
-      final failure = LocationPermissionDeniedForeverFailure();
-      expect(failure.code, 'location_permission_denied_forever');
-      expect(failure.errorMessage, 'location_permission_denied_forever');
-    });
+    test(
+      'LocationPermissionDeniedForeverFailure has correct code and message',
+      () {
+        final failure = LocationPermissionDeniedForeverFailure();
+        expect(failure.code, 'location_permission_denied_forever');
+        expect(failure.errorMessage, 'location_permission_denied_forever');
+      },
+    );
 
     test('LocationService instance can be created as const', () {
       const service = LocationService();

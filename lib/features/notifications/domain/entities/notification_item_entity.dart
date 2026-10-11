@@ -1,9 +1,4 @@
-enum NotificationCategory {
-  all,
-  subscription,
-  meals,
-  system,
-}
+enum NotificationCategory { all, subscription, meals, system }
 
 enum NotificationCardIcon {
   mealCloche,
@@ -54,9 +49,9 @@ class NotificationItemEntity {
     this._iconType = NotificationCardIcon.mealCloche,
     this._timeText,
     this._isToday = false,
-  })  : _explicitIsRead = isRead,
-        _legacyTitle = title,
-        _legacyBody = body;
+  }) : _explicitIsRead = isRead,
+       _legacyTitle = title,
+       _legacyBody = body;
 
   bool get isRead => readAtUtc != null || _explicitIsRead;
   String get title => _legacyTitle ?? titleAr ?? titleEn ?? '';

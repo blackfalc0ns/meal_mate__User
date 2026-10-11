@@ -27,12 +27,38 @@ class SubscriptionProgramsRemoteDataSourceImpl
   }
 
   @override
+  Future<SubscriptionProgramsPageResponseDto>
+  getSubscriptionCatalogProgramsPage({
+    required int page,
+    required int pageSize,
+  }) async {
+    return _apiServices.getSubscriptionCatalogPrograms(
+      page: page,
+      pageSize: pageSize,
+    );
+  }
+
+  @override
   Future<SubscriptionProgramBundlesResponseDto> getSubscriptionProgramBundles(
     String programId, {
     int? page,
     int? pageSize,
   }) {
     return _apiServices.getSubscriptionProgramBundles(
+      programId,
+      page: page,
+      pageSize: pageSize,
+    );
+  }
+
+  @override
+  Future<SubscriptionProgramBundlesResponseDto>
+  getSubscriptionCatalogProgramBundles(
+    String programId, {
+    int? page,
+    int? pageSize,
+  }) {
+    return _apiServices.getSubscriptionCatalogProgramBundles(
       programId,
       page: page,
       pageSize: pageSize,

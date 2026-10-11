@@ -143,8 +143,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
               appBar: CustomAppBar(title: locale.payment_title),
               body: PaymentUnresolvedStatusView(
                 isReviewRequired: state.isReviewRequired,
-                attemptHandle:
-                    state.attemptHandle ?? args.checkout.paymentId,
+                attemptHandle: state.attemptHandle ?? args.checkout.paymentId,
                 isCheckingStatus: state.isFulfillmentLoading,
                 onCheckStatus: () {
                   if (subId.isNotEmpty) {
@@ -155,7 +154,9 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
                         PaymentReturn(
                           destination: PaymentReturnDestination.pending,
                           paymentId:
-                              args.checkout.paymentId ?? state.attemptHandle ?? '',
+                              args.checkout.paymentId ??
+                              state.attemptHandle ??
+                              '',
                         ),
                       ),
                     );
@@ -169,13 +170,14 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             appBar: CustomAppBar(title: locale.payment_title),
             body: PaymentRedirectWebView(
               paymentUrl: args.checkout.paymentUrl,
-              isProcessing: state.isFulfillmentLoading ||
+              isProcessing:
+                  state.isFulfillmentLoading ||
                   state.isCalendarLoading ||
                   state.isPaidProcessing,
               processingMessage:
                   (state.isCalendarLoading || state.isPaidProcessing)
-                      ? locale.payment_calendar_preparing
-                      : null,
+                  ? locale.payment_calendar_preparing
+                  : null,
               onPaymentReturn: (paymentReturn) {
                 _viewModel.doIntent(HandlePaymentReturnEvent(paymentReturn));
               },

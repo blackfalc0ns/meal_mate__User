@@ -34,7 +34,8 @@ class FamilyAddressLocationStage extends StatefulWidget {
 
   final String memberId;
   final VoidCallback? onSaved;
-  final void Function({String? memberId, CustomerAddressEntity? savedAddress})? onAddressSaved;
+  final void Function({String? memberId, CustomerAddressEntity? savedAddress})?
+  onAddressSaved;
   final CustomerAddressEntity? initialAddress;
 
   @override
@@ -68,8 +69,7 @@ class _FamilyAddressLocationStageState
         memberId: memberId,
         previewFamilyMemberAddressUseCase:
             getIt<PreviewFamilyMemberAddressUseCase>(),
-        addFamilyMemberAddressUseCase:
-            getIt<AddFamilyMemberAddressUseCase>(),
+        addFamilyMemberAddressUseCase: getIt<AddFamilyMemberAddressUseCase>(),
       ),
       getLocationsCatalogUseCase: getIt<GetLocationsCatalogUseCase>(),
       geocodeAddressUseCase: getIt<GeocodeAddressUseCase>(),
@@ -168,11 +168,13 @@ class _FamilyAddressLocationStageState
 
           return Stack(
             children: [
-              BlocSelector<AddressEditorViewModel, AddressEditorState, ({LocationsCatalogState locations, bool isSubmitting})>(
-                selector: (s) => (
-                  locations: s.locations,
-                  isSubmitting: s.action.isLoading,
-                ),
+              BlocSelector<
+                AddressEditorViewModel,
+                AddressEditorState,
+                ({LocationsCatalogState locations, bool isSubmitting})
+              >(
+                selector: (s) =>
+                    (locations: s.locations, isSubmitting: s.action.isLoading),
                 builder: (context, mapData) {
                   return AddressChooseLocationMapView(
                     key: ValueKey(widget.memberId),
@@ -184,7 +186,11 @@ class _FamilyAddressLocationStageState
                   );
                 },
               ),
-              BlocSelector<AddressEditorViewModel, AddressEditorState, AddressCoveragePreviewState>(
+              BlocSelector<
+                AddressEditorViewModel,
+                AddressEditorState,
+                AddressCoveragePreviewState
+              >(
                 selector: (s) => s.coveragePreview,
                 builder: (context, coverage) {
                   final preview = coverage.preview;
@@ -208,52 +214,62 @@ class _FamilyAddressLocationStageState
                         curve: Curves.easeOutCubic,
                         builder: (context, progress, child) =>
                             FractionalTranslation(
-                          translation: Offset(Spacing.zero, progress),
-                          child: child,
-                        ),
-                        child: BlocSelector<AddressEditorViewModel, AddressEditorState, bool>(
-                          selector: (s) => s.action.isLoading,
-                          builder: (context, isSubmitting) {
-                            return AddressCoveragePreviewBottomSheet(
-                              key: ValueKey(coverage.sessionId),
-                              preview: preview,
-                              isSubmitting: isSubmitting,
-                              confirmButtonText: locale.address_coverage_confirm_save,
-                              popOnConfirm: false,
-                              requireFamilyCoverage: true,
-                              isLoadingMore: coverage.isLoadingMore,
-                              hasMoreRestaurants: coverage.canLoadMore,
-                              loadMoreFailure: coverage.loadMoreFailure,
-                              onLoadMoreRestaurants: () => unawaited(
-                                context.read<AddressEditorViewModel>().doIntent(
-                                  const LoadMoreAddressCoverageRestaurantsEvent(),
-                                ),
-                              ),
-                              onConfirm: () {
-                                if (!preview.canSetAsDefault ||
-                                    preview.resolvedRegionId == null ||
-                                    preview.conflictMessage != null ||
-                                    preview.servingRestaurants.isEmpty) {
-                                  return;
-                                }
-                                unawaited(
-                                  context.read<AddressEditorViewModel>().doIntent(
-                                    const ConfirmPendingAddressActionEvent(),
+                              translation: Offset(Spacing.zero, progress),
+                              child: child,
+                            ),
+                        child:
+                            BlocSelector<
+                              AddressEditorViewModel,
+                              AddressEditorState,
+                              bool
+                            >(
+                              selector: (s) => s.action.isLoading,
+                              builder: (context, isSubmitting) {
+                                return AddressCoveragePreviewBottomSheet(
+                                  key: ValueKey(coverage.sessionId),
+                                  preview: preview,
+                                  isSubmitting: isSubmitting,
+                                  confirmButtonText:
+                                      locale.address_coverage_confirm_save,
+                                  popOnConfirm: false,
+                                  requireFamilyCoverage: true,
+                                  isLoadingMore: coverage.isLoadingMore,
+                                  hasMoreRestaurants: coverage.canLoadMore,
+                                  loadMoreFailure: coverage.loadMoreFailure,
+                                  onLoadMoreRestaurants: () => unawaited(
+                                    context.read<AddressEditorViewModel>().doIntent(
+                                      const LoadMoreAddressCoverageRestaurantsEvent(),
+                                    ),
                                   ),
+                                  onConfirm: () {
+                                    if (!preview.canSetAsDefault ||
+                                        preview.resolvedRegionId == null ||
+                                        preview.conflictMessage != null ||
+                                        preview.servingRestaurants.isEmpty) {
+                                      return;
+                                    }
+                                    unawaited(
+                                      context
+                                          .read<AddressEditorViewModel>()
+                                          .doIntent(
+                                            const ConfirmPendingAddressActionEvent(),
+                                          ),
+                                    );
+                                  },
+                                  onChooseAnother: () {
+                                    _shownSessionId = null;
+                                    _entryFlowController.chooseLocation();
+                                    unawaited(
+                                      context
+                                          .read<AddressEditorViewModel>()
+                                          .doIntent(
+                                            const ClearCoveragePreviewEvent(),
+                                          ),
+                                    );
+                                  },
                                 );
                               },
-                              onChooseAnother: () {
-                                _shownSessionId = null;
-                                _entryFlowController.chooseLocation();
-                                unawaited(
-                                  context.read<AddressEditorViewModel>().doIntent(
-                                    const ClearCoveragePreviewEvent(),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                            ),
                       ),
                     );
                   }

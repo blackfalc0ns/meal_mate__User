@@ -86,7 +86,87 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.subscription_flow_profile_incomplete;
     case 'checkout.address_required':
     case 'family.address_required':
+    case 'addressRequired':
       return locale.checkout_address_required;
+    case 'subscription_flow.no_delivery_to_address':
+    case 'noDelivery':
+      return locale.subscription_flow_no_delivery_to_address;
+    case 'no_restaurants_for_address':
+    case 'optionUncovered':
+      return locale.subscription_flow_option_uncovered;
+    case 'subscription_flow.no_prepared_restaurants':
+    case 'no_prepared_restaurants':
+    case 'noPreparedRestaurants':
+      return locale.subscription_flow_no_prepared_restaurants;
+    case 'no_restaurants_for_selection':
+    case 'periodUnavailable':
+      return locale.subscription_flow_period_unavailable;
+    case 'subscription_flow.selection_required':
+    case 'selectionRequired':
+      return locale.subscription_flow_selection_required;
+    case 'subscription_flow.friday_unavailable':
+    case 'fridayUnavailable':
+      return locale.subscription_flow_friday_unavailable;
+    case 'subscription_flow.pricing_unavailable':
+    case 'pricingUnavailable':
+      return locale.subscription_flow_pricing_unavailable;
+    case 'deadline_passed':
+    case 'selection_deadline_passed':
+    case 'calendar.selection_deadline_passed':
+    case 'deadlinePassed':
+      return locale.calendar_selection_deadline_passed;
+    case 'calendar.first_day_deadline':
+    case 'firstDayDeadline':
+      return locale.calendar_first_day_deadline;
+    case 'calendar.ordinary_deadline':
+    case 'ordinaryDeadline':
+      return locale.calendar_ordinary_deadline;
+    case 'fulfillment_pending':
+    case 'fulfillment_not_ready':
+    case 'calendar.fulfillment_not_ready':
+    case 'fulfillmentPending':
+      return locale.calendar_fulfillment_pending;
+    case 'calendar.auto_selection_failed':
+    case 'autoSelectionFailed':
+      return locale.calendar_auto_selection_failed;
+    case 'freeze.preparation_failed':
+    case 'freeze.preparation_unavailable':
+    case 'freezePreparationFailed':
+      return locale.freeze_preparation_failed;
+    case 'freeze.replacement_capacity_unavailable':
+    case 'replacementCapacityUnavailable':
+      return locale.freeze_replacement_capacity_unavailable;
+    case 'freeze.replacement_restaurants_unavailable':
+    case 'replacementRestaurantsUnavailable':
+      return locale.freeze_replacement_restaurants_unavailable;
+    case 'freeze.replacement_pool_unavailable':
+      return locale.freeze_replacement_pool_unavailable;
+    case 'freeze.no_service_days':
+      return locale.freeze_no_service_days;
+    case 'freeze.locked_days_cannot_be_frozen':
+    case 'freezeLockedDaysCannotBeFrozen':
+      return locale.billing_freeze_locked_days_cannot_be_frozen;
+    case 'subscription_flow.empty_options':
+    case 'emptyOptions':
+      return locale.subscription_flow_empty_options;
+    case 'subscription_flow.loading':
+    case 'loading':
+      return locale.subscription_flow_loading;
+    case 'subscription_flow.request_failed':
+    case 'requestFailed':
+      return locale.subscription_flow_request_failed;
+    case 'calendar.restaurant_coverage_unavailable':
+      return locale.calendar_restaurant_coverage_unavailable;
+    case 'calendar.box_not_ready':
+      return locale.calendar_box_not_ready;
+    case 'RESTAURANT_CAPACITY_FULL':
+      return locale.calendar_restaurant_capacity_full;
+    case 'calendar.no_safe_box':
+      return locale.calendar_no_safe_box;
+    case 'calendar.restaurant_busy':
+      return locale.calendar_restaurant_busy;
+    case 'calendar.quota_exhausted':
+      return locale.calendar_quota_exhausted;
     case 'checkout.allergies_required':
     case 'family.allergies_required':
       return locale.checkout_allergies_required;
@@ -126,14 +206,19 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.address_active_delivery_cannot_delete;
     case 'address.restaurant_does_not_service_region':
       return locale.address_restaurant_does_not_service_region;
-    case 'freeze.locked_days_cannot_be_frozen':
-      return locale.billing_freeze_locked_days_cannot_be_frozen;
     case 'freeze.confirm_overwrite_selections':
       return locale.billing_confirm_overwrite_selections_message;
     case 'calendar.selection_locked':
       return locale.calendar_selection_locked;
     case 'subscription.day_frozen':
+    case 'day_frozen':
       return locale.subscription_day_frozen;
+    case 'day_locked':
+    case 'calendar.day_locked':
+      return locale.calendarDayLocked;
+    case 'day_cancelled':
+    case 'calendar.day_cancelled':
+      return locale.calendarDayCancelled;
     case 'address.out_of_kuwait_bounds':
       return locale.addresses_out_of_kuwait_bounds;
     case 'error_server':

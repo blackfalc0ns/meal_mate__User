@@ -239,10 +239,7 @@ class _SubscriptionDurationSelectorState
     return 0;
   }
 
-  String _durationLabel(
-    SubscriptionDurationItem duration,
-    String localeName,
-  ) {
+  String _durationLabel(SubscriptionDurationItem duration, String localeName) {
     if (duration.isCustom) {
       return duration.name(localeName);
     }

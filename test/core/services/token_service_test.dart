@@ -76,47 +76,50 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
     secureStorage = _FakeSecureStorage();
-    tokenService = TokenService(
-      prefs: secureStorage,
-      sharedPreferences: prefs,
-    );
+    tokenService = TokenService(prefs: secureStorage, sharedPreferences: prefs);
   });
 
   group('TokenService - Session persistence and remember', () {
-    test('saveSession with remembered stores tokens, expiry UTC, and marks isRememberedSession', () async {
-      final accessExpiry = DateTime.utc(2026, 12, 1, 10, 0);
-      final refreshExpiry = DateTime.utc(2026, 12, 15, 10, 0);
+    test(
+      'saveSession with remembered stores tokens, expiry UTC, and marks isRememberedSession',
+      () async {
+        final accessExpiry = DateTime.utc(2026, 12, 1, 10, 0);
+        final refreshExpiry = DateTime.utc(2026, 12, 15, 10, 0);
 
-      await tokenService.saveSession(
-        userId: 'user_123',
-        accessToken: 'access_abc',
-        refreshToken: 'refresh_xyz',
-        accessExpiresAtUtc: accessExpiry,
-        refreshExpiresAtUtc: refreshExpiry,
-        persistence: SessionPersistence.remembered,
-      );
+        await tokenService.saveSession(
+          userId: 'user_123',
+          accessToken: 'access_abc',
+          refreshToken: 'refresh_xyz',
+          accessExpiresAtUtc: accessExpiry,
+          refreshExpiresAtUtc: refreshExpiry,
+          persistence: SessionPersistence.remembered,
+        );
 
-      expect(await tokenService.getToken(), 'access_abc');
-      expect(await tokenService.getRefreshToken(), 'refresh_xyz');
-      expect(await tokenService.getCurrentUserId(), 'user_123');
-      expect(await tokenService.isRememberedSession(), isTrue);
-      expect(tokenService.getAccessExpiresAtUtc(), accessExpiry);
-      expect(tokenService.getRefreshExpiresAtUtc(), refreshExpiry);
-    });
+        expect(await tokenService.getToken(), 'access_abc');
+        expect(await tokenService.getRefreshToken(), 'refresh_xyz');
+        expect(await tokenService.getCurrentUserId(), 'user_123');
+        expect(await tokenService.isRememberedSession(), isTrue);
+        expect(tokenService.getAccessExpiresAtUtc(), accessExpiry);
+        expect(tokenService.getRefreshExpiresAtUtc(), refreshExpiry);
+      },
+    );
 
-    test('saveSession with currentRun keeps session tokens but isRememberedSession is false', () async {
-      await tokenService.saveSession(
-        userId: 'user_123',
-        accessToken: 'access_abc',
-        refreshToken: 'refresh_xyz',
-        accessExpiresAtUtc: null,
-        refreshExpiresAtUtc: null,
-        persistence: SessionPersistence.currentRun,
-      );
+    test(
+      'saveSession with currentRun keeps session tokens but isRememberedSession is false',
+      () async {
+        await tokenService.saveSession(
+          userId: 'user_123',
+          accessToken: 'access_abc',
+          refreshToken: 'refresh_xyz',
+          accessExpiresAtUtc: null,
+          refreshExpiresAtUtc: null,
+          persistence: SessionPersistence.currentRun,
+        );
 
-      expect(await tokenService.getToken(), 'access_abc');
-      expect(await tokenService.isRememberedSession(), isFalse);
-    });
+        expect(await tokenService.getToken(), 'access_abc');
+        expect(await tokenService.isRememberedSession(), isFalse);
+      },
+    );
 
     test('remembered session survives service recreation', () async {
       await tokenService.saveSession(
@@ -138,63 +141,72 @@ void main() {
       expect(await freshService.getCurrentUserId(), 'user_123');
     });
 
-    test('flags true with empty secure storage tokens is not a valid session', () async {
-      await prefs.setBool(AppConstants.isRemember, true);
-      await prefs.setBool(AppConstants.isAccessTokenSaved, true);
-      await prefs.setBool(AppConstants.isRefreshTokenSaved, true);
-      await prefs.setString(AppConstants.customerIdKey, 'user_123');
-      // No tokens in secureStorage
+    test(
+      'flags true with empty secure storage tokens is not a valid session',
+      () async {
+        await prefs.setBool(AppConstants.isRemember, true);
+        await prefs.setBool(AppConstants.isAccessTokenSaved, true);
+        await prefs.setBool(AppConstants.isRefreshTokenSaved, true);
+        await prefs.setString(AppConstants.customerIdKey, 'user_123');
+        // No tokens in secureStorage
 
-      expect(await tokenService.getToken(), isNull);
-      expect(await tokenService.getRefreshToken(), isNull);
-      expect(await tokenService.isRememberedSession(), isFalse);
-    });
+        expect(await tokenService.getToken(), isNull);
+        expect(await tokenService.getRefreshToken(), isNull);
+        expect(await tokenService.isRememberedSession(), isFalse);
+      },
+    );
 
-    test('saveSession throws and does not commit when required fields are empty', () async {
-      expect(
-        () => tokenService.saveSession(
-          userId: '',
-          accessToken: 'token',
-          refreshToken: 'refresh',
-          accessExpiresAtUtc: null,
-          refreshExpiresAtUtc: null,
+    test(
+      'saveSession throws and does not commit when required fields are empty',
+      () async {
+        expect(
+          () => tokenService.saveSession(
+            userId: '',
+            accessToken: 'token',
+            refreshToken: 'refresh',
+            accessExpiresAtUtc: null,
+            refreshExpiresAtUtc: null,
+            persistence: SessionPersistence.remembered,
+          ),
+          throwsArgumentError,
+        );
+        expect(await tokenService.isRememberedSession(), isFalse);
+        expect(await tokenService.getToken(), isNull);
+      },
+    );
+
+    test(
+      'clearSession clears session tokens and metadata without deleting biometric credentials',
+      () async {
+        await tokenService.saveSession(
+          userId: 'user_123',
+          accessToken: 'access_abc',
+          refreshToken: 'refresh_xyz',
+          accessExpiresAtUtc: DateTime.utc(2026, 12, 1),
+          refreshExpiresAtUtc: DateTime.utc(2026, 12, 15),
           persistence: SessionPersistence.remembered,
-        ),
-        throwsArgumentError,
-      );
-      expect(await tokenService.isRememberedSession(), isFalse);
-      expect(await tokenService.getToken(), isNull);
-    });
+        );
+        await tokenService.saveBiometricCredentials(
+          phone: '12345678',
+          password: 'secure_password',
+          countryCode: '+965',
+        );
 
-    test('clearSession clears session tokens and metadata without deleting biometric credentials', () async {
-      await tokenService.saveSession(
-        userId: 'user_123',
-        accessToken: 'access_abc',
-        refreshToken: 'refresh_xyz',
-        accessExpiresAtUtc: DateTime.utc(2026, 12, 1),
-        refreshExpiresAtUtc: DateTime.utc(2026, 12, 15),
-        persistence: SessionPersistence.remembered,
-      );
-      await tokenService.saveBiometricCredentials(
-        phone: '12345678',
-        password: 'secure_password',
-        countryCode: '+965',
-      );
+        await tokenService.clearSession();
 
-      await tokenService.clearSession();
+        expect(await tokenService.getToken(), isNull);
+        expect(await tokenService.getRefreshToken(), isNull);
+        expect(await tokenService.getCurrentUserId(), isNull);
+        expect(await tokenService.isRememberedSession(), isFalse);
+        expect(tokenService.getAccessExpiresAtUtc(), isNull);
 
-      expect(await tokenService.getToken(), isNull);
-      expect(await tokenService.getRefreshToken(), isNull);
-      expect(await tokenService.getCurrentUserId(), isNull);
-      expect(await tokenService.isRememberedSession(), isFalse);
-      expect(tokenService.getAccessExpiresAtUtc(), isNull);
-
-      // Biometric credentials MUST remain intact
-      final bio = await tokenService.getBiometricCredentials();
-      expect(bio, isNotNull);
-      expect(bio?.phone, '12345678');
-      expect(bio?.password, 'secure_password');
-    });
+        // Biometric credentials MUST remain intact
+        final bio = await tokenService.getBiometricCredentials();
+        expect(bio, isNotNull);
+        expect(bio?.phone, '12345678');
+        expect(bio?.password, 'secure_password');
+      },
+    );
 
     test('isAccessTokenExpired respects UTC clock', () async {
       final expiry = DateTime.utc(2026, 10, 7, 12, 0);

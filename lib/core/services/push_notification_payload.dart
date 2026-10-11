@@ -37,8 +37,7 @@ class PushNotificationPayload {
     final routeValue = data[routeKey]?.toString().trim();
 
     String? targetRoute;
-    final parsedArgs = Map<String, dynamic>.from(data)
-      ..remove(routeKey);
+    final parsedArgs = Map<String, dynamic>.from(data)..remove(routeKey);
 
     if (deepLinkValue != null && deepLinkValue.isNotEmpty) {
       final resolved = _resolveDeepLink(deepLinkValue);
@@ -84,7 +83,9 @@ class PushNotificationPayload {
     try {
       final uri = Uri.parse(trimmed);
       if (uri.scheme == 'mealmate') {
-        final host = uri.host.isNotEmpty ? uri.host : uri.path.replaceAll('/', '');
+        final host = uri.host.isNotEmpty
+            ? uri.host
+            : uri.path.replaceAll('/', '');
         final targetRoute = _deepLinkHosts[host];
         if (targetRoute != null) {
           final queryArgs = Map<String, dynamic>.from(uri.queryParameters);

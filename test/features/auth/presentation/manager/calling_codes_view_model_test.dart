@@ -56,35 +56,40 @@ void main() {
   });
 
   group('CallingCodesViewModel', () {
-    test('LoadCallingCodesEvent fetches codes, sets loading then success', () async {
-      fakeUseCase.cannedResult = const ApiSuccessResult(data: [kw, sa]);
+    test(
+      'LoadCallingCodesEvent fetches codes, sets loading then success',
+      () async {
+        fakeUseCase.cannedResult = const ApiSuccessResult(data: [kw, sa]);
 
-      expect(viewModel.state.isLoading, isFalse);
-      expect(viewModel.state.items, isEmpty);
+        expect(viewModel.state.isLoading, isFalse);
+        expect(viewModel.state.items, isEmpty);
 
-      viewModel.doIntent(const LoadCallingCodesEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const LoadCallingCodesEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      expect(fakeUseCase.callCount, 1);
-      expect(viewModel.state.isLoading, isFalse);
-      expect(viewModel.state.items.length, 2);
-      expect(viewModel.state.selected?.countryCode, 'KW');
-    });
+        expect(fakeUseCase.callCount, 1);
+        expect(viewModel.state.isLoading, isFalse);
+        expect(viewModel.state.items.length, 2);
+        expect(viewModel.state.selected?.countryCode, 'KW');
+      },
+    );
 
-    test('concurrent LoadCallingCodesEvent produces only ONE in-flight request', () async {
-      fakeUseCase.completer =
-          Completer<ApiResult<List<CallingCodeEntity>>>();
+    test(
+      'concurrent LoadCallingCodesEvent produces only ONE in-flight request',
+      () async {
+        fakeUseCase.completer = Completer<ApiResult<List<CallingCodeEntity>>>();
 
-      viewModel.doIntent(const LoadCallingCodesEvent());
-      viewModel.doIntent(const LoadCallingCodesEvent());
+        viewModel.doIntent(const LoadCallingCodesEvent());
+        viewModel.doIntent(const LoadCallingCodesEvent());
 
-      expect(fakeUseCase.callCount, 1);
+        expect(fakeUseCase.callCount, 1);
 
-      fakeUseCase.completer!.complete(const ApiSuccessResult(data: [kw]));
-      await Future<void>.delayed(Duration.zero);
+        fakeUseCase.completer!.complete(const ApiSuccessResult(data: [kw]));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(fakeUseCase.callCount, 1);
-    });
+        expect(fakeUseCase.callCount, 1);
+      },
+    );
 
     test('selecting the same calling code does NOT emit new state', () async {
       fakeUseCase.cannedResult = const ApiSuccessResult(data: [kw, sa]);
@@ -110,20 +115,23 @@ void main() {
       expect(viewModel.state.selected?.countryCode, 'SA');
     });
 
-    test('reload preserves selected code if still present in refreshed list', () async {
-      fakeUseCase.cannedResult = const ApiSuccessResult(data: [kw, sa]);
-      viewModel.doIntent(const LoadCallingCodesEvent());
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'reload preserves selected code if still present in refreshed list',
+      () async {
+        fakeUseCase.cannedResult = const ApiSuccessResult(data: [kw, sa]);
+        viewModel.doIntent(const LoadCallingCodesEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(const SelectCallingCodeEvent(sa));
-      expect(viewModel.state.selected?.countryCode, 'SA');
+        viewModel.doIntent(const SelectCallingCodeEvent(sa));
+        expect(viewModel.state.selected?.countryCode, 'SA');
 
-      // Reload
-      viewModel.doIntent(const LoadCallingCodesEvent());
-      await Future<void>.delayed(Duration.zero);
+        // Reload
+        viewModel.doIntent(const LoadCallingCodesEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.selected?.countryCode, 'SA');
-    });
+        expect(viewModel.state.selected?.countryCode, 'SA');
+      },
+    );
 
     test('empty country list leaves items empty and selected null', () async {
       fakeUseCase.cannedResult = const ApiSuccessResult(data: []);

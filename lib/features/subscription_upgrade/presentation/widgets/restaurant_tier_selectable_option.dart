@@ -28,8 +28,8 @@ class RestaurantTierSelectableOption extends StatelessWidget {
     final title = option.tierNameAr.isNotEmpty
         ? option.tierNameAr
         : (option.tierNameEn.isNotEmpty
-            ? option.tierNameEn
-            : option.targetTier);
+              ? option.tierNameEn
+              : option.targetTier);
 
     final description = option.isCurrent
         ? locale.restaurant_tier_current_tier_caption
@@ -44,8 +44,8 @@ class RestaurantTierSelectableOption extends StatelessWidget {
         : 'KWD';
     final currencyText =
         (rawCurrency.isEmpty || rawCurrency.toUpperCase() == 'KWD')
-            ? locale.currency
-            : rawCurrency;
+        ? locale.currency
+        : rawCurrency;
 
     final priceText = option.isCurrent
         ? '0.00 $currencyText'
@@ -190,7 +190,10 @@ class RestaurantTierSelectableOption extends StatelessWidget {
         : color.outline;
   }
 
-  Color _actionButtonColor(BuildContext context, RestaurantTierOptionType type) {
+  Color _actionButtonColor(
+    BuildContext context,
+    RestaurantTierOptionType type,
+  ) {
     final color = context.colorScheme;
 
     return type == RestaurantTierOptionType.max
@@ -221,4 +224,3 @@ class RestaurantTierSelectableOption extends StatelessWidget {
         : color.onSurfaceVariant;
   }
 }
-

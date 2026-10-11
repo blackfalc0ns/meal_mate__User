@@ -127,9 +127,8 @@ class _RestaurantTierUpgradeConfirmationScreenState
                   ),
                   body: ApiErrorWidget(
                     exception: state.summaryFailure!.exception,
-                    onRetry: () => _viewModel.doIntent(
-                      InitUpgradeConfirmationEvent(args),
-                    ),
+                    onRetry: () =>
+                        _viewModel.doIntent(InitUpgradeConfirmationEvent(args)),
                   ),
                 );
               }
@@ -151,9 +150,8 @@ class _RestaurantTierUpgradeConfirmationScreenState
                     onPaymentMethodSelected: (method) => _viewModel.doIntent(
                       SelectUpgradePaymentMethodEvent(method),
                     ),
-                    onConfirm: () => _viewModel.doIntent(
-                      const SubmitUpgradeRequestEvent(),
-                    ),
+                    onConfirm: () =>
+                        _viewModel.doIntent(const SubmitUpgradeRequestEvent()),
                     onBack: () => context.pop(),
                   ),
                 ),

@@ -58,8 +58,7 @@ class RestaurantTierLogosRow extends StatelessWidget {
                   ).copyWith(height: 1),
                 ),
               ),
-              if (visibleLogoUrls.isNotEmpty)
-                const SizedBox(width: Spacing.xs),
+              if (visibleLogoUrls.isNotEmpty) const SizedBox(width: Spacing.xs),
             ],
             for (var i = 0; i < visibleLogoUrls.length; i++) ...[
               if (i > 0) const SizedBox(width: Spacing.xs),
@@ -69,10 +68,7 @@ class RestaurantTierLogosRow extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: color.surface,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: borderColor,
-                    width: Spacing.border,
-                  ),
+                  border: Border.all(color: borderColor, width: Spacing.border),
                   boxShadow: [
                     BoxShadow(
                       color: color.shadow.withValues(alpha: 0.08),
@@ -82,7 +78,8 @@ class RestaurantTierLogosRow extends StatelessWidget {
                   ],
                 ),
                 child: ClipOval(
-                  child: (visibleLogoUrls[i] != null &&
+                  child:
+                      (visibleLogoUrls[i] != null &&
                           visibleLogoUrls[i]!.startsWith('assets/'))
                       ? Image.asset(
                           visibleLogoUrls[i]!,

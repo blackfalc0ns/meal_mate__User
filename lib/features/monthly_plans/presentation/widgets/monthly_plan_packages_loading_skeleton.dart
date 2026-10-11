@@ -45,9 +45,7 @@ class MonthlyPlanPackagesLoadingSkeleton extends StatelessWidget {
         for (var index = 0; index < 3; index++)
           Padding(
             padding: EdgeInsets.only(
-              bottom: index == 2
-                  ? Spacing.zero
-                  : Spacing.monthlyPlanPackageGap,
+              bottom: index == 2 ? Spacing.zero : Spacing.monthlyPlanPackageGap,
             ),
             child: RestaurantPackageTierCardSkeleton(
               width: double.infinity,

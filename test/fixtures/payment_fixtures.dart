@@ -106,7 +106,7 @@ abstract class PaymentFixtures {
       'amount': 45.0,
       'isHoldActive': true,
       'holdRemainingSeconds': 900,
-    }
+    },
   ];
 
   static SubscriptionBillingCurrentEntity activeCurrentEntity({

@@ -63,7 +63,7 @@ class AppSubscriptionButton extends StatelessWidget {
       textColor: color.onPrimary,
       fontSize: FontSize.size12,
       iconWidget: Icon(
-        isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+        isRtl ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
         color: color.onPrimary,
         size: Spacing.iconMd,
       ),

@@ -42,8 +42,8 @@ class SubscriptionTypesViewModel extends Cubit<SubscriptionTypesState> {
   void _initializeConversionOptionSelection(ConversionOptionsModel options) {
     final defaultOption =
         options.convertToFamilyManagerOption?.available == true
-            ? options.convertToFamilyManagerOption
-            : null;
+        ? options.convertToFamilyManagerOption
+        : null;
 
     emit(
       state.copyWith(

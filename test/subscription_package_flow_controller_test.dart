@@ -9,7 +9,7 @@ import 'package:meal_meat_user/features/subscription_programs/domain/entities/su
 class FakeSubscriptionPackagesViewModel extends Cubit<SubscriptionPackagesState>
     implements SubscriptionPackagesViewModel {
   FakeSubscriptionPackagesViewModel()
-      : super(const SubscriptionPackagesState());
+    : super(const SubscriptionPackagesState());
 
   SubscriptionPackagesEvent? lastEvent;
 
@@ -60,14 +60,20 @@ void main() {
     expect(controller.selectedPackageNotifier.value, 2);
   });
 
-  test('shouldListenToProfileUpdate returns true only after profile update triggered and loading finishes', () {
-    const previousLoading = SubscriptionPackagesState(isLoading: true);
-    const currentFinished = SubscriptionPackagesState(isLoading: false);
+  test(
+    'shouldListenToProfileUpdate returns true only after profile update triggered and loading finishes',
+    () {
+      const previousLoading = SubscriptionPackagesState(isLoading: true);
+      const currentFinished = SubscriptionPackagesState(isLoading: false);
 
-    // Initial: no profile update pending
-    expect(
-      controller.shouldListenToProfileUpdate(previousLoading, currentFinished),
-      isFalse,
-    );
-  });
+      // Initial: no profile update pending
+      expect(
+        controller.shouldListenToProfileUpdate(
+          previousLoading,
+          currentFinished,
+        ),
+        isFalse,
+      );
+    },
+  );
 }

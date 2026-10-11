@@ -33,7 +33,8 @@ class FakeAddressLocationRepo implements AddressLocationRepository {
     String countryCode, [
     String? areaId,
   ]) async {
-    final catalog = catalogResult ??
+    final catalog =
+        catalogResult ??
         LocationsCatalogEntity(
           countryId: 'country-1',
           countryCode: countryCode,
@@ -71,7 +72,8 @@ class FakeAddressLocationRepo implements AddressLocationRepository {
     String countryCode = 'KW',
   }) async {
     return ApiSuccessResult(
-      data: geocodeResult ??
+      data:
+          geocodeResult ??
           const MapAddressAutofillEntity(
             latitude: 29.35,
             longitude: 48.01,
@@ -87,7 +89,8 @@ class FakeAddressLocationRepo implements AddressLocationRepository {
     double longitude,
   ) async {
     return ApiSuccessResult(
-      data: reverseGeocodeResult ??
+      data:
+          reverseGeocodeResult ??
           MapAddressAutofillEntity(
             latitude: latitude,
             longitude: longitude,
@@ -145,81 +148,97 @@ void main() {
       reverseGeocode = ReverseGeocodeLocationUseCase(fakeRepo);
     });
 
-    test('customer operations add, update, setDefault delegate and emit success', () async {
-      final ops = CustomerAddressEditorOperations(
-        previewNewAddressCoverage: (req, {page, pageSize}) async =>
-            const ApiSuccessResult(data: dummyPreview),
-        previewExistingAddressCoverage: (id, {page, pageSize}) async =>
-            const ApiSuccessResult(data: dummyPreview),
-        addCustomerAddress: (req) async =>
-            const ApiSuccessResult(data: dummyAddress),
-        updateCustomerAddress: (id, req) async =>
-            const ApiSuccessResult(data: dummyAddress),
-        confirmSetDefaultAddress: (id) async =>
-            const ApiSuccessResult(data: dummyAddress),
-      );
+    test(
+      'customer operations add, update, setDefault delegate and emit success',
+      () async {
+        final ops = CustomerAddressEditorOperations(
+          previewNewAddressCoverage: (req, {page, pageSize}) async =>
+              const ApiSuccessResult(data: dummyPreview),
+          previewExistingAddressCoverage: (id, {page, pageSize}) async =>
+              const ApiSuccessResult(data: dummyPreview),
+          addCustomerAddress: (req) async =>
+              const ApiSuccessResult(data: dummyAddress),
+          updateCustomerAddress: (id, req) async =>
+              const ApiSuccessResult(data: dummyAddress),
+          confirmSetDefaultAddress: (id) async =>
+              const ApiSuccessResult(data: dummyAddress),
+        );
 
-      final vm = AddressEditorViewModel(
-        operations: ops,
-        getLocationsCatalogUseCase: getCatalog,
-        geocodeAddressUseCase: geocode,
-        reverseGeocodeLocationUseCase: reverseGeocode,
-      );
+        final vm = AddressEditorViewModel(
+          operations: ops,
+          getLocationsCatalogUseCase: getCatalog,
+          geocodeAddressUseCase: geocode,
+          reverseGeocodeLocationUseCase: reverseGeocode,
+        );
 
-      // Add address
-      await vm.doIntent(const SubmitAddressEvent(request: validRequest));
-      expect(vm.state.action.isSuccess, isTrue);
-      expect(vm.state.action.address?.addressId, 'addr-123');
+        // Add address
+        await vm.doIntent(const SubmitAddressEvent(request: validRequest));
+        expect(vm.state.action.isSuccess, isTrue);
+        expect(vm.state.action.address?.addressId, 'addr-123');
 
-      // Update address
-      await vm.doIntent(const SubmitAddressEvent(
-        request: validRequest,
-        addressId: 'addr-123',
-      ));
-      expect(vm.state.action.isSuccess, isTrue);
+        // Update address
+        await vm.doIntent(
+          const SubmitAddressEvent(
+            request: validRequest,
+            addressId: 'addr-123',
+          ),
+        );
+        expect(vm.state.action.isSuccess, isTrue);
 
-      // Set default
-      await vm.doIntent(const SetDefaultAddressEvent('addr-123'));
-      expect(vm.state.action.isSuccess, isTrue);
+        // Set default
+        await vm.doIntent(const SetDefaultAddressEvent('addr-123'));
+        expect(vm.state.action.isSuccess, isTrue);
 
-      await vm.close();
-    });
+        await vm.close();
+      },
+    );
 
-    test('family operations guard against unsupported update and setDefault', () async {
-      final ops = FamilyAddressEditorOperations(
-        memberId: 'member-1',
-        previewFamilyMemberAddress: (mId, req, {page, pageSize}) async =>
-            const ApiSuccessResult(data: dummyPreview),
-        addFamilyMemberAddress: (mId, req) async =>
-            const ApiSuccessResult(data: dummyAddress),
-      );
+    test(
+      'family operations guard against unsupported update and setDefault',
+      () async {
+        final ops = FamilyAddressEditorOperations(
+          memberId: 'member-1',
+          previewFamilyMemberAddress: (mId, req, {page, pageSize}) async =>
+              const ApiSuccessResult(data: dummyPreview),
+          addFamilyMemberAddress: (mId, req) async =>
+              const ApiSuccessResult(data: dummyAddress),
+        );
 
-      final vm = AddressEditorViewModel(
-        operations: ops,
-        getLocationsCatalogUseCase: getCatalog,
-        geocodeAddressUseCase: geocode,
-        reverseGeocodeLocationUseCase: reverseGeocode,
-      );
+        final vm = AddressEditorViewModel(
+          operations: ops,
+          getLocationsCatalogUseCase: getCatalog,
+          geocodeAddressUseCase: geocode,
+          reverseGeocodeLocationUseCase: reverseGeocode,
+        );
 
-      // Add should succeed
-      await vm.doIntent(const SubmitAddressEvent(request: validRequest));
-      expect(vm.state.action.isSuccess, isTrue);
+        // Add should succeed
+        await vm.doIntent(const SubmitAddressEvent(request: validRequest));
+        expect(vm.state.action.isSuccess, isTrue);
 
-      // Update should immediately fail without calling API
-      await vm.doIntent(const SubmitAddressEvent(
-        request: validRequest,
-        addressId: 'addr-123',
-      ));
-      expect(vm.state.action.isSuccess, isFalse);
-      expect(vm.state.action.failure?.errorMessage, contains('not supported'));
+        // Update should immediately fail without calling API
+        await vm.doIntent(
+          const SubmitAddressEvent(
+            request: validRequest,
+            addressId: 'addr-123',
+          ),
+        );
+        expect(vm.state.action.isSuccess, isFalse);
+        expect(
+          vm.state.action.failure?.errorMessage,
+          contains('not supported'),
+        );
 
-      // Set default should immediately fail without calling API
-      await vm.doIntent(const SetDefaultAddressEvent('addr-123'));
-      expect(vm.state.action.isSuccess, isFalse);
-      expect(vm.state.action.failure?.errorMessage, contains('not supported'));
+        // Set default should immediately fail without calling API
+        await vm.doIntent(const SetDefaultAddressEvent('addr-123'));
+        expect(vm.state.action.isSuccess, isFalse);
+        expect(
+          vm.state.action.failure?.errorMessage,
+          contains('not supported'),
+        );
 
-      await vm.close();
-    });
+        await vm.close();
+      },
+    );
 
     test('validates Kuwait bounds before submit and preview', () async {
       var addCalled = false;
@@ -241,68 +260,81 @@ void main() {
       expect(addCalled, isFalse);
       expect(vm.state.action.failure, isA<AddressOutOfBoundsFailure>());
 
-      await vm.doIntent(const PreviewNewAddressCoverageEvent(outOfBoundsRequest));
-      expect(vm.state.coveragePreview.failure, isA<AddressOutOfBoundsFailure>());
+      await vm.doIntent(
+        const PreviewNewAddressCoverageEvent(outOfBoundsRequest),
+      );
+      expect(
+        vm.state.coveragePreview.failure,
+        isA<AddressOutOfBoundsFailure>(),
+      );
 
       await vm.close();
     });
 
-    test('await doIntent waits for async completion before returning', () async {
-      final completer = Completer<ApiResult<CustomerAddressEntity>>();
+    test(
+      'await doIntent waits for async completion before returning',
+      () async {
+        final completer = Completer<ApiResult<CustomerAddressEntity>>();
 
-      final ops = CustomerAddressEditorOperations(
-        addCustomerAddress: (req) => completer.future,
-      );
+        final ops = CustomerAddressEditorOperations(
+          addCustomerAddress: (req) => completer.future,
+        );
 
-      final vm = AddressEditorViewModel(
-        operations: ops,
-        getLocationsCatalogUseCase: getCatalog,
-        geocodeAddressUseCase: geocode,
-        reverseGeocodeLocationUseCase: reverseGeocode,
-      );
+        final vm = AddressEditorViewModel(
+          operations: ops,
+          getLocationsCatalogUseCase: getCatalog,
+          geocodeAddressUseCase: geocode,
+          reverseGeocodeLocationUseCase: reverseGeocode,
+        );
 
-      var finished = false;
-      final future = vm.doIntent(const SubmitAddressEvent(request: validRequest)).then((_) {
-        finished = true;
-      });
+        var finished = false;
+        final future = vm
+            .doIntent(const SubmitAddressEvent(request: validRequest))
+            .then((_) {
+              finished = true;
+            });
 
-      // Give microtasks time to run
-      await Future<void>.delayed(const Duration(milliseconds: 10));
-      expect(finished, isFalse);
-      expect(vm.state.action.isLoading, isTrue);
+        // Give microtasks time to run
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        expect(finished, isFalse);
+        expect(vm.state.action.isLoading, isTrue);
 
-      completer.complete(const ApiSuccessResult(data: dummyAddress));
-      await future;
+        completer.complete(const ApiSuccessResult(data: dummyAddress));
+        await future;
 
-      expect(finished, isTrue);
-      expect(vm.state.action.isLoading, isFalse);
-      expect(vm.state.action.isSuccess, isTrue);
+        expect(finished, isTrue);
+        expect(vm.state.action.isLoading, isFalse);
+        expect(vm.state.action.isSuccess, isTrue);
 
-      await vm.close();
-    });
+        await vm.close();
+      },
+    );
 
-    test('catalog loading and area selection updates state correctly', () async {
-      final ops = CustomerAddressEditorOperations();
-      final vm = AddressEditorViewModel(
-        operations: ops,
-        getLocationsCatalogUseCase: getCatalog,
-        geocodeAddressUseCase: geocode,
-        reverseGeocodeLocationUseCase: reverseGeocode,
-      );
+    test(
+      'catalog loading and area selection updates state correctly',
+      () async {
+        final ops = CustomerAddressEditorOperations();
+        final vm = AddressEditorViewModel(
+          operations: ops,
+          getLocationsCatalogUseCase: getCatalog,
+          geocodeAddressUseCase: geocode,
+          reverseGeocodeLocationUseCase: reverseGeocode,
+        );
 
-      await vm.doIntent(const GetLocationsCatalogEvent());
-      expect(vm.state.locations.isSuccess, isTrue);
-      expect(vm.state.locations.governorates.length, 1);
+        await vm.doIntent(const GetLocationsCatalogEvent());
+        expect(vm.state.locations.isSuccess, isTrue);
+        expect(vm.state.locations.governorates.length, 1);
 
-      final gov = vm.state.locations.governorates.first;
-      vm.doIntent(SelectAddressGovernorateEvent(gov));
-      expect(vm.state.locations.selectedGovernorate, gov);
+        final gov = vm.state.locations.governorates.first;
+        vm.doIntent(SelectAddressGovernorateEvent(gov));
+        expect(vm.state.locations.selectedGovernorate, gov);
 
-      final area = gov.areas.first;
-      await vm.doIntent(SelectAddressAreaEvent(area));
-      expect(vm.state.locations.selectedArea?.id, area.id);
+        final area = gov.areas.first;
+        await vm.doIntent(SelectAddressAreaEvent(area));
+        expect(vm.state.locations.selectedArea?.id, area.id);
 
-      await vm.close();
-    });
+        await vm.close();
+      },
+    );
   });
 }

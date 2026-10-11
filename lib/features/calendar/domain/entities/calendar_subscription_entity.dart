@@ -13,8 +13,7 @@ class CalendarSubscriptionEntity {
   final bool? hasUnreadNotifications;
   final int? unreadNotificationsCount;
 
-  bool get hasUnread =>
-      unreadNotificationsCount != null
-          ? unreadNotificationsCount! > 0
-          : (hasUnreadNotifications ?? false);
+  bool get hasUnread => unreadNotificationsCount != null
+      ? unreadNotificationsCount! > 0
+      : (hasUnreadNotifications ?? false);
 }

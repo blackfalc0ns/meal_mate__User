@@ -6,16 +6,18 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 
-typedef PreviewFamilyMemberAddressFn = Future<ApiResult<AddressCoveragePreviewEntity>> Function(
-  String memberId,
-  CustomerAddressRequestEntity request, {
-  int? page,
-  int? pageSize,
-});
-typedef AddFamilyMemberAddressFn = Future<ApiResult<CustomerAddressEntity>> Function(
-  String memberId,
-  CustomerAddressRequestEntity request,
-);
+typedef PreviewFamilyMemberAddressFn =
+    Future<ApiResult<AddressCoveragePreviewEntity>> Function(
+      String memberId,
+      CustomerAddressRequestEntity request, {
+      int? page,
+      int? pageSize,
+    });
+typedef AddFamilyMemberAddressFn =
+    Future<ApiResult<CustomerAddressEntity>> Function(
+      String memberId,
+      CustomerAddressRequestEntity request,
+    );
 
 class FamilyAddressEditorOperations implements AddressEditorOperations {
   FamilyAddressEditorOperations({
@@ -24,14 +26,16 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
     AddFamilyMemberAddressFn? addFamilyMemberAddress,
     PreviewFamilyMemberAddressUseCase? previewFamilyMemberAddressUseCase,
     AddFamilyMemberAddressUseCase? addFamilyMemberAddressUseCase,
-  })  : _preview = previewFamilyMemberAddress ??
-            (previewFamilyMemberAddressUseCase != null
-                ? previewFamilyMemberAddressUseCase.call
-                : null),
-        _add = addFamilyMemberAddress ??
-            (addFamilyMemberAddressUseCase != null
-                ? addFamilyMemberAddressUseCase.call
-                : null);
+  }) : _preview =
+           previewFamilyMemberAddress ??
+           (previewFamilyMemberAddressUseCase != null
+               ? previewFamilyMemberAddressUseCase.call
+               : null),
+       _add =
+           addFamilyMemberAddress ??
+           (addFamilyMemberAddressUseCase != null
+               ? addFamilyMemberAddressUseCase.call
+               : null);
 
   final String memberId;
   final PreviewFamilyMemberAddressFn? _preview;
@@ -39,8 +43,8 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
 
   @override
   Set<AddressEditorAction> get supportedActions => const {
-        AddressEditorAction.add,
-      };
+    AddressEditorAction.add,
+  };
 
   @override
   Future<ApiResult<AddressCoveragePreviewEntity>> previewNew(
@@ -51,9 +55,11 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
     if (_preview != null) {
       return _preview(memberId, request, page: page, pageSize: pageSize);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Preview operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Preview operation not configured'),
+      ),
+    );
   }
 
   @override
@@ -64,7 +70,8 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
   }) async {
     return ApiErrorResult(
       failure: Failure(
-        errorMessage: 'Preview existing address is not supported for family members',
+        errorMessage:
+            'Preview existing address is not supported for family members',
       ),
     );
   }
@@ -76,9 +83,11 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
     if (_add != null) {
       return _add(memberId, request);
     }
-    return Future.value(ApiErrorResult(
-      failure: Failure(errorMessage: 'Add operation not configured'),
-    ));
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Add operation not configured'),
+      ),
+    );
   }
 
   @override

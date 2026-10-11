@@ -21,7 +21,10 @@ class NotificationTabBar extends StatelessWidget {
 
     final tabs = [
       (NotificationCategory.all, locale.notifications_tab_all),
-      (NotificationCategory.subscription, locale.notifications_tab_subscription),
+      (
+        NotificationCategory.subscription,
+        locale.notifications_tab_subscription,
+      ),
       (NotificationCategory.meals, locale.notifications_tab_meals),
       (NotificationCategory.system, locale.notifications_tab_system),
     ];
@@ -58,8 +61,12 @@ class NotificationTabBar extends StatelessWidget {
                       tab.$2,
                       style: AppTextStyles.labelMedium.copyWith(
                         fontSize: 12.5,
-                        color: isSelected ? color.primary : color.onSurfaceVariant,
-                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                        color: isSelected
+                            ? color.primary
+                            : color.onSurfaceVariant,
+                        fontWeight: isSelected
+                            ? FontWeight.w700
+                            : FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: Spacing.xxs),

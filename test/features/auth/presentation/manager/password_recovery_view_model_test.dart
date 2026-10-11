@@ -20,20 +20,25 @@ class _FakeForgotPasswordUseCase extends Fake implements ForgotPasswordUseCase {
   ApiResult<ForgotPasswordEntity>? stubbedResult;
 
   @override
-  Future<ApiResult<ForgotPasswordEntity>> call(ForgotPasswordRequestEntity request) async {
+  Future<ApiResult<ForgotPasswordEntity>> call(
+    ForgotPasswordRequestEntity request,
+  ) async {
     callCount++;
     lastRequest = request;
     return stubbedResult!;
   }
 }
 
-class _FakeResendPasswordOtpUseCase extends Fake implements ResendPasswordOtpUseCase {
+class _FakeResendPasswordOtpUseCase extends Fake
+    implements ResendPasswordOtpUseCase {
   int callCount = 0;
   ResendPasswordOtpRequestEntity? lastRequest;
   ApiResult<ResendPasswordOtpEntity>? stubbedResult;
 
   @override
-  Future<ApiResult<ResendPasswordOtpEntity>> call(ResendPasswordOtpRequestEntity request) async {
+  Future<ApiResult<ResendPasswordOtpEntity>> call(
+    ResendPasswordOtpRequestEntity request,
+  ) async {
     callCount++;
     lastRequest = request;
     return stubbedResult!;
@@ -46,7 +51,9 @@ class _FakeResetPasswordUseCase extends Fake implements ResetPasswordUseCase {
   ApiResult<ResetPasswordEntity>? stubbedResult;
 
   @override
-  Future<ApiResult<ResetPasswordEntity>> call(ResetPasswordRequestEntity request) async {
+  Future<ApiResult<ResetPasswordEntity>> call(
+    ResetPasswordRequestEntity request,
+  ) async {
     callCount++;
     lastRequest = request;
     return stubbedResult!;
@@ -86,36 +93,42 @@ void main() {
     await viewModel.close();
   });
 
-  test('RequestRecoveryOtpEvent snapshots phone and countryCode, emits otpSentSuccess', () async {
-    fakeForgotPasswordUseCase.stubbedResult = const ApiSuccessResult(
-      data: ForgotPasswordEntity(
-        success: true,
-        otpSent: true,
-        nextStep: 'verifyOtp',
-        phone: '+96512345678',
-        countryCode: 'KW',
-      ),
-    );
+  test(
+    'RequestRecoveryOtpEvent snapshots phone and countryCode, emits otpSentSuccess',
+    () async {
+      fakeForgotPasswordUseCase.stubbedResult = const ApiSuccessResult(
+        data: ForgotPasswordEntity(
+          success: true,
+          otpSent: true,
+          nextStep: 'verifyOtp',
+          phone: '+96512345678',
+          countryCode: 'KW',
+        ),
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<PasswordRecoveryState>((s) => s.isLoading && s.snapshotPhone == '+96512345678'),
-        predicate<PasswordRecoveryState>((s) =>
-            !s.isLoading &&
-            s.outcome == PasswordRecoveryOutcome.otpSentSuccess &&
-            s.hasActiveRecovery),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<PasswordRecoveryState>(
+            (s) => s.isLoading && s.snapshotPhone == '+96512345678',
+          ),
+          predicate<PasswordRecoveryState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == PasswordRecoveryOutcome.otpSentSuccess &&
+                s.hasActiveRecovery,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const RequestRecoveryOtpEvent(
-      phone: '+96512345678',
-      countryCode: 'KW',
-    ));
-    await expectation;
+      viewModel.doIntent(
+        const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'),
+      );
+      await expectation;
 
-    expect(fakeForgotPasswordUseCase.callCount, 1);
-  });
+      expect(fakeForgotPasswordUseCase.callCount, 1);
+    },
+  );
 
   test('SaveRecoveryOtpEvent saves OTP in state and emits otpCodeReady', () {
     viewModel.doIntent(const SaveRecoveryOtpEvent('654321'));
@@ -124,60 +137,85 @@ void main() {
     expect(viewModel.state.outcome, PasswordRecoveryOutcome.otpCodeReady);
   });
 
-  test('SubmitResetPasswordEvent resets password and invalidates biometric credentials', () async {
-    // Prime recovery snapshot and otp
-    fakeForgotPasswordUseCase.stubbedResult = const ApiSuccessResult(
-      data: ForgotPasswordEntity(
-        success: true,
-        otpSent: true,
-        nextStep: 'verify',
-        phone: '+96512345678',
-        countryCode: 'KW',
-      ),
-    );
-    viewModel.doIntent(const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'));
-    await Future<void>.delayed(Duration.zero);
+  test(
+    'SubmitResetPasswordEvent resets password and invalidates biometric credentials',
+    () async {
+      // Prime recovery snapshot and otp
+      fakeForgotPasswordUseCase.stubbedResult = const ApiSuccessResult(
+        data: ForgotPasswordEntity(
+          success: true,
+          otpSent: true,
+          nextStep: 'verify',
+          phone: '+96512345678',
+          countryCode: 'KW',
+        ),
+      );
+      viewModel.doIntent(
+        const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    viewModel.doIntent(const SaveRecoveryOtpEvent('112233'));
+      viewModel.doIntent(const SaveRecoveryOtpEvent('112233'));
 
-    fakeResetPasswordUseCase.stubbedResult = const ApiSuccessResult(
-      data: ResetPasswordEntity(success: true, passwordReset: true, nextStep: 'login'),
-    );
+      fakeResetPasswordUseCase.stubbedResult = const ApiSuccessResult(
+        data: ResetPasswordEntity(
+          success: true,
+          passwordReset: true,
+          nextStep: 'login',
+        ),
+      );
 
-    final expectation = expectLater(
-      viewModel.stream,
-      emitsInOrder([
-        predicate<PasswordRecoveryState>((s) => s.isLoading),
-        predicate<PasswordRecoveryState>((s) =>
-            !s.isLoading &&
-            s.outcome == PasswordRecoveryOutcome.resetSuccess &&
-            s.otpCode == null),
-      ]),
-    );
+      final expectation = expectLater(
+        viewModel.stream,
+        emitsInOrder([
+          predicate<PasswordRecoveryState>((s) => s.isLoading),
+          predicate<PasswordRecoveryState>(
+            (s) =>
+                !s.isLoading &&
+                s.outcome == PasswordRecoveryOutcome.resetSuccess &&
+                s.otpCode == null,
+          ),
+        ]),
+      );
 
-    viewModel.doIntent(const SubmitResetPasswordEvent(newPassword: 'BrandNewPassword123!'));
-    await expectation;
+      viewModel.doIntent(
+        const SubmitResetPasswordEvent(newPassword: 'BrandNewPassword123!'),
+      );
+      await expectation;
 
-    expect(fakeResetPasswordUseCase.callCount, 1);
-    expect(fakeResetPasswordUseCase.lastRequest?.phone, '+96512345678');
-    expect(fakeResetPasswordUseCase.lastRequest?.otpCode, '112233');
-    expect(fakeResetPasswordUseCase.lastRequest?.newPassword, 'BrandNewPassword123!');
-    expect(fakeResetPasswordUseCase.lastRequest?.countryCode, 'KW');
-    // Spec: Invalidate old biometric credentials upon password reset
-    expect(fakeTokenService.deleteBiometricCalls, 1);
-  });
+      expect(fakeResetPasswordUseCase.callCount, 1);
+      expect(fakeResetPasswordUseCase.lastRequest?.phone, '+96512345678');
+      expect(fakeResetPasswordUseCase.lastRequest?.otpCode, '112233');
+      expect(
+        fakeResetPasswordUseCase.lastRequest?.newPassword,
+        'BrandNewPassword123!',
+      );
+      expect(fakeResetPasswordUseCase.lastRequest?.countryCode, 'KW');
+      // Spec: Invalidate old biometric credentials upon password reset
+      expect(fakeTokenService.deleteBiometricCalls, 1);
+    },
+  );
 
-  test('SubmitResetPasswordEvent without active recovery or OTP emits failure', () async {
-    final expectation = expectLater(
-      viewModel.stream,
-      emits(predicate<PasswordRecoveryState>((s) => s.outcome == PasswordRecoveryOutcome.failure)),
-    );
+  test(
+    'SubmitResetPasswordEvent without active recovery or OTP emits failure',
+    () async {
+      final expectation = expectLater(
+        viewModel.stream,
+        emits(
+          predicate<PasswordRecoveryState>(
+            (s) => s.outcome == PasswordRecoveryOutcome.failure,
+          ),
+        ),
+      );
 
-    viewModel.doIntent(const SubmitResetPasswordEvent(newPassword: 'Password123'));
-    await expectation;
+      viewModel.doIntent(
+        const SubmitResetPasswordEvent(newPassword: 'Password123'),
+      );
+      await expectation;
 
-    expect(fakeResetPasswordUseCase.callCount, 0);
-  });
+      expect(fakeResetPasswordUseCase.callCount, 0);
+    },
+  );
 
   test('ResendRecoveryOtpEvent uses snapshot phone and countryCode', () async {
     fakeForgotPasswordUseCase.stubbedResult = const ApiSuccessResult(
@@ -189,18 +227,26 @@ void main() {
         countryCode: 'KW',
       ),
     );
-    viewModel.doIntent(const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'));
+    viewModel.doIntent(
+      const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'),
+    );
     await Future<void>.delayed(Duration.zero);
 
     fakeResendPasswordOtpUseCase.stubbedResult = const ApiSuccessResult(
-      data: ResendPasswordOtpEntity(success: true, otpSent: true, nextStep: 'verify'),
+      data: ResendPasswordOtpEntity(
+        success: true,
+        otpSent: true,
+        nextStep: 'verify',
+      ),
     );
 
     final expectation = expectLater(
       viewModel.stream,
       emitsInOrder([
         predicate<PasswordRecoveryState>((s) => s.isResending),
-        predicate<PasswordRecoveryState>((s) => !s.isResending && s.resendOtpSent),
+        predicate<PasswordRecoveryState>(
+          (s) => !s.isResending && s.resendOtpSent,
+        ),
       ]),
     );
 
@@ -222,7 +268,9 @@ void main() {
         countryCode: 'KW',
       ),
     );
-    viewModel.doIntent(const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'));
+    viewModel.doIntent(
+      const RequestRecoveryOtpEvent(phone: '+96512345678', countryCode: 'KW'),
+    );
     await Future<void>.delayed(Duration.zero);
 
     expect(viewModel.state.hasActiveRecovery, isTrue);

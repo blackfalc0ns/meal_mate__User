@@ -74,7 +74,8 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
           ),
           body: BlocBuilder<FoodPreferencesViewModel, FoodPreferencesState>(
             buildWhen: (previous, current) =>
-                previous.preferences.isLoading != current.preferences.isLoading ||
+                previous.preferences.isLoading !=
+                    current.preferences.isLoading ||
                 previous.preferences.data != current.preferences.data ||
                 previous.preferences.failure != current.preferences.failure ||
                 previous.catalog.isLoading != current.catalog.isLoading ||
@@ -85,7 +86,8 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
               final catalogState = state.catalog;
               final catalog = catalogState.data;
 
-              if ((preferencesState.isLoading && preferencesState.data == null) ||
+              if ((preferencesState.isLoading &&
+                      preferencesState.data == null) ||
                   (catalogState.isLoading && catalog == null)) {
                 return const DietaryPreferencesLoadingSkeleton();
               }
@@ -123,36 +125,39 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
                   );
             },
           ),
-          bottomNavigationBar: BlocSelector<
-            FoodPreferencesViewModel,
-            FoodPreferencesState,
-            ({bool isReady, bool isLoading})
-          >(
-            selector: (state) => (
-              isReady: state.catalog.data != null && state.preferences.data != null,
-              isLoading: state.action.isLoading,
-            ),
-            builder: (context, data) {
-              if (!data.isReady) return const SizedBox.shrink();
-              final saveSection = DietaryPreferencesSaveSection(
-                isLoading: data.isLoading,
-              );
-
-              if (MediaQuery.disableAnimationsOf(context)) {
-                return saveSection;
-              }
-
-              return saveSection
-                  .animate()
-                  .fadeIn(duration: 300.ms, curve: Curves.easeOut)
-                  .slideY(
-                    begin: 0.08,
-                    end: 0,
-                    duration: 300.ms,
-                    curve: Curves.easeOutCubic,
+          bottomNavigationBar:
+              BlocSelector<
+                FoodPreferencesViewModel,
+                FoodPreferencesState,
+                ({bool isReady, bool isLoading})
+              >(
+                selector: (state) => (
+                  isReady:
+                      state.catalog.data != null &&
+                      state.preferences.data != null,
+                  isLoading: state.action.isLoading,
+                ),
+                builder: (context, data) {
+                  if (!data.isReady) return const SizedBox.shrink();
+                  final saveSection = DietaryPreferencesSaveSection(
+                    isLoading: data.isLoading,
                   );
-            },
-          ),
+
+                  if (MediaQuery.disableAnimationsOf(context)) {
+                    return saveSection;
+                  }
+
+                  return saveSection
+                      .animate()
+                      .fadeIn(duration: 300.ms, curve: Curves.easeOut)
+                      .slideY(
+                        begin: 0.08,
+                        end: 0,
+                        duration: 300.ms,
+                        curve: Curves.easeOutCubic,
+                      );
+                },
+              ),
         ),
         BlocSelector<FoodPreferencesViewModel, FoodPreferencesState, bool>(
           selector: (state) => state.action.isLoading,
@@ -162,9 +167,7 @@ class _DietaryPreferencesScreenBody extends StatelessWidget {
               child: AbsorbPointer(
                 child: ColoredBox(
                   color: color.scrim.withValues(alpha: 0.35),
-                  child: const Center(
-                    child: CustomProgressIndicator(),
-                  ),
+                  child: const Center(child: CustomProgressIndicator()),
                 ),
               ),
             );

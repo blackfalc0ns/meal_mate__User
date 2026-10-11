@@ -27,35 +27,36 @@ void main() {
   }
 
   group('SubscriptionBillingEmptySubscriptionCard', () {
-    testWidgets('renders kit illustration when hasUncompletedSubscriptions is false', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: const SubscriptionBillingEmptySubscriptionCard(
-            hasUncompletedSubscriptions: false,
+    testWidgets(
+      'renders kit illustration when hasUncompletedSubscriptions is false',
+      (tester) async {
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: const SubscriptionBillingEmptySubscriptionCard(
+              hasUncompletedSubscriptions: false,
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('لا يوجد اشتراك نشط'), findsOneWidget);
-      expect(
-        find.text(
-          'لم تشترك في أي باقة حتى الآن.\nاختر الباقة المناسبة لك وابدأ رحلتك الصحية.',
-        ),
-        findsOneWidget,
-      );
-      expect(find.text('استعرض الاشتراكات'), findsOneWidget);
+        expect(find.text('لا يوجد اشتراك نشط'), findsOneWidget);
+        expect(
+          find.text(
+            'لم تشترك في أي باقة حتى الآن.\nاختر الباقة المناسبة لك وابدأ رحلتك الصحية.',
+          ),
+          findsOneWidget,
+        );
+        expect(find.text('استعرض الاشتراكات'), findsOneWidget);
 
-      final imageFinder = find.byType(Image);
-      expect(imageFinder, findsOneWidget);
-      final imageWidget = tester.widget<Image>(imageFinder);
-      expect(
-        (imageWidget.image as AssetImage).assetName,
-        Assets.billingEmptySubscriptionKit,
-      );
-    });
+        final imageFinder = find.byType(Image);
+        expect(imageFinder, findsOneWidget);
+        final imageWidget = tester.widget<Image>(imageFinder);
+        expect(
+          (imageWidget.image as AssetImage).assetName,
+          Assets.billingEmptySubscriptionKit,
+        );
+      },
+    );
 
     testWidgets('calls onBrowseSubscriptions when browse button is tapped', (
       tester,
@@ -75,28 +76,29 @@ void main() {
       expect(browsed, isTrue);
     });
 
-    testWidgets('renders box illustration when hasUncompletedSubscriptions is true', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: const SubscriptionBillingEmptySubscriptionCard(
-            hasUncompletedSubscriptions: true,
+    testWidgets(
+      'renders box illustration when hasUncompletedSubscriptions is true',
+      (tester) async {
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: const SubscriptionBillingEmptySubscriptionCard(
+              hasUncompletedSubscriptions: true,
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('لا يوجد اشتراك نشط'), findsOneWidget);
+        expect(find.text('لا يوجد اشتراك نشط'), findsOneWidget);
 
-      final imageFinder = find.byType(Image);
-      expect(imageFinder, findsOneWidget);
-      final imageWidget = tester.widget<Image>(imageFinder);
-      expect(
-        (imageWidget.image as AssetImage).assetName,
-        Assets.billingEmptySubscriptionBox,
-      );
-    });
+        final imageFinder = find.byType(Image);
+        expect(imageFinder, findsOneWidget);
+        final imageWidget = tester.widget<Image>(imageFinder);
+        expect(
+          (imageWidget.image as AssetImage).assetName,
+          Assets.billingEmptySubscriptionBox,
+        );
+      },
+    );
 
     testWidgets('renders English strings correctly in LTR', (tester) async {
       await tester.pumpWidget(
@@ -145,7 +147,9 @@ void main() {
   });
 
   group('SubscriptionBillingInvoiceHistoryCard integration', () {
-    testWidgets('renders empty card when invoices list is empty', (tester) async {
+    testWidgets('renders empty card when invoices list is empty', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           child: const SubscriptionBillingInvoiceHistoryCard(invoices: []),
@@ -179,7 +183,9 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const SubscriptionBillingInvoiceHistoryCard(invoices: [invoice]),
+          child: const SubscriptionBillingInvoiceHistoryCard(
+            invoices: [invoice],
+          ),
         ),
       );
       await tester.pumpAndSettle();

@@ -98,7 +98,9 @@ class CalendarDayContent extends StatelessWidget {
                                 child: Transform.scale(
                                   scale: 2.3,
                                   child: Lottie.asset(
-                                    key: const ValueKey('awaiting_hourglass_lottie'),
+                                    key: const ValueKey(
+                                      'awaiting_hourglass_lottie',
+                                    ),
                                     repeat: true,
                                     Assets.hourglassAnimation,
                                     fit: BoxFit.contain,

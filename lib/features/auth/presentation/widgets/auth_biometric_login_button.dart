@@ -34,10 +34,10 @@ class AuthBiometricLoginButton extends StatelessWidget {
             ),
             onPressed: () {
               context.read<LoginViewModel>().doIntent(
-                    LoginWithBiometricsEvent(
-                      localizedReason: locale.biometric_auth_reason,
-                    ),
-                  );
+                LoginWithBiometricsEvent(
+                  localizedReason: locale.biometric_auth_reason,
+                ),
+              );
             },
             color: color.primary,
           ),

@@ -52,7 +52,10 @@ class _AuthOtpCountdownState extends State<AuthOtpCountdown> {
 
   int _calculateRemainingSeconds() {
     final nowUtc = widget.now().toUtc();
-    final diff = widget.retryAvailableAtUtc.toUtc().difference(nowUtc).inSeconds;
+    final diff = widget.retryAvailableAtUtc
+        .toUtc()
+        .difference(nowUtc)
+        .inSeconds;
     return diff > 0 ? diff : 0;
   }
 
@@ -92,9 +95,7 @@ class _AuthOtpCountdownState extends State<AuthOtpCountdown> {
         ? locale.auth_resend_code
         : '${locale.auth_resend_code_in} $_secondsLeft ${locale.auth_seconds_label}';
 
-    final textColor = canResend
-        ? color.primary
-        : color.onSurfaceVariant;
+    final textColor = canResend ? color.primary : color.onSurfaceVariant;
 
     return Center(
       child: GestureDetector(

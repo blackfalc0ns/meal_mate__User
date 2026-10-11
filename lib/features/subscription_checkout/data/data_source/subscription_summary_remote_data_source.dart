@@ -8,9 +8,8 @@ abstract interface class SubscriptionSummaryRemoteDataSource {
     SubscriptionSummaryRequestEntity request,
   );
 
-  Future<SubscriptionRestaurantAvailabilityResponseDto> getRestaurantAvailability(
-    SubscriptionSummaryRequestEntity request,
-  );
+  Future<SubscriptionRestaurantAvailabilityResponseDto>
+  getRestaurantAvailability(SubscriptionSummaryRequestEntity request);
 
   Future<SubscriptionReadinessResponseDto> getReadiness(
     SubscriptionSummaryRequestEntity request,

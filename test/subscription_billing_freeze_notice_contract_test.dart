@@ -17,25 +17,29 @@ void main() {
         },
       }).toEntity();
 
-      expect(entity.subscription!.actions.freezeNotice,
-          'Server localized freeze policy');
-      expect(entity.subscription!.actions.freezeNoticeAr,
-          'سياسة التجميد من الخادم');
+      expect(
+        entity.subscription!.actions.freezeNotice,
+        'Server localized freeze policy',
+      );
+      expect(
+        entity.subscription!.actions.freezeNoticeAr,
+        'سياسة التجميد من الخادم',
+      );
     });
 
-    test('actions preserve null or empty freeze notices without inventing text', () {
-      final entity = SubscriptionBillingCurrentResponseDto.fromJson({
-        'subscription': {
-          'subscriptionId': 'subscription-fixture-null',
-          'actions': {
-            'canFreeze': true,
-            'maximumFreezeDays': 7,
+    test(
+      'actions preserve null or empty freeze notices without inventing text',
+      () {
+        final entity = SubscriptionBillingCurrentResponseDto.fromJson({
+          'subscription': {
+            'subscriptionId': 'subscription-fixture-null',
+            'actions': {'canFreeze': true, 'maximumFreezeDays': 7},
           },
-        },
-      }).toEntity();
+        }).toEntity();
 
-      expect(entity.subscription!.actions.freezeNotice, isNull);
-      expect(entity.subscription!.actions.freezeNoticeAr, isNull);
-    });
+        expect(entity.subscription!.actions.freezeNotice, isNull);
+        expect(entity.subscription!.actions.freezeNoticeAr, isNull);
+      },
+    );
   });
 }

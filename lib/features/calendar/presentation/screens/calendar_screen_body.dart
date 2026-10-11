@@ -157,11 +157,16 @@ class CalendarScreenBody extends StatelessWidget {
       return CalendarHeader(
         title: title,
         hasNotification: false,
-        onNotificationPressed: () => activeCoordinator.openNotifications(context),
+        onNotificationPressed: () =>
+            activeCoordinator.openNotifications(context),
       );
     }
 
-    return BlocSelector<NotificationBadgeViewModel, NotificationBadgeState, bool>(
+    return BlocSelector<
+      NotificationBadgeViewModel,
+      NotificationBadgeState,
+      bool
+    >(
       bloc: badgeVm,
       selector: (state) => state.hasUnread,
       builder: (context, hasNotification) {

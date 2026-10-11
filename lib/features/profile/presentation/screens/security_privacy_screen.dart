@@ -64,12 +64,10 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                   AppSettingsTile(
                     icon: Icons.lock_rounded,
                     title: locale.profile_privacy_change_password,
-                    subtitle:
-                        locale.profile_privacy_change_password_subtitle,
+                    subtitle: locale.profile_privacy_change_password_subtitle,
                     showDivider: true,
-                    onTap: () => Navigator.of(
-                      context,
-                    ).pushNamed(AppRoutes.newPassword),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.newPassword),
                   ),
                   AppSettingsTile(
                     icon: Icons.phone_rounded,
@@ -77,8 +75,7 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                     subtitle:
                         locale.profile_privacy_phone_verification_subtitle,
                     showDivider: true,
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.otp),
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.otp),
                   ),
                   AppSettingsTile(
                     icon: Icons.email_rounded,
@@ -86,8 +83,7 @@ class _SecurityPrivacyScreenContent extends StatelessWidget {
                     subtitle:
                         locale.profile_privacy_email_verification_subtitle,
                     showDivider: true,
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.otp),
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.otp),
                   ),
                   const _BiometricSettingsTile(),
                 ],
@@ -205,10 +201,7 @@ class _BiometricSettingsTile extends StatelessWidget {
               locale.biometric_locked_out,
             _ => state.errorMessage ?? locale.biometric_failed,
           };
-          CustomSnackbar.showError(
-            context: context,
-            message: message,
-          );
+          CustomSnackbar.showError(context: context, message: message);
         } else if (state.isSuccess) {
           CustomSnackbar.showSuccess(
             context: context,
@@ -244,23 +237,19 @@ class _BiometricSettingsTile extends StatelessWidget {
               ? const SizedBox(
                   width: 24,
                   height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
+                  child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : Switch.adaptive(
                   value: biometricState.isEnabled,
                   activeThumbColor: color.primary,
-                  activeTrackColor: color.primary.withValues(
-                    alpha: 0.5,
-                  ),
+                  activeTrackColor: color.primary.withValues(alpha: 0.5),
                   onChanged: (value) {
                     context.read<BiometricViewModel>().doIntent(
-                          ToggleBiometricEvent(
-                            enable: value,
-                            localizedReason: locale.biometric_enable_reason,
-                          ),
-                        );
+                      ToggleBiometricEvent(
+                        enable: value,
+                        localizedReason: locale.biometric_enable_reason,
+                      ),
+                    );
                   },
                 ),
         );

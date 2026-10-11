@@ -82,6 +82,7 @@ class FakeTiersUseCase extends GetSubscriptionTiersUseCase {
     required int? durationDays,
     required bool includeFriday,
     String? familyMemberId,
+    String? startDate,
   }) async => const ApiSuccessResult(data: []);
 }
 

@@ -79,12 +79,16 @@ class CalendarRestaurantOptionCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: isExhausted
                                 ? color.error.withValues(alpha: 0.1)
-                                : color.surfaceContainerHighest.withValues(alpha: 0.7),
+                                : color.surfaceContainerHighest.withValues(
+                                    alpha: 0.7,
+                                  ),
                             borderRadius: BorderRadius.circular(Spacing.sm),
                             border: Border.all(
                               color: isExhausted
                                   ? color.error.withValues(alpha: 0.3)
-                                  : color.outlineVariant.withValues(alpha: 0.45),
+                                  : color.outlineVariant.withValues(
+                                      alpha: 0.45,
+                                    ),
                               width: 0.8,
                             ),
                           ),

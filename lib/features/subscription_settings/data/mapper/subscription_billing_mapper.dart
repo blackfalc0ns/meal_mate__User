@@ -206,7 +206,8 @@ extension SubscriptionBillingActionsResponseDtoMapper
       freezeNotice: (freezeNotice != null && freezeNotice!.trim().isNotEmpty)
           ? freezeNotice!.trim()
           : null,
-      freezeNoticeAr: (freezeNoticeAr != null && freezeNoticeAr!.trim().isNotEmpty)
+      freezeNoticeAr:
+          (freezeNoticeAr != null && freezeNoticeAr!.trim().isNotEmpty)
           ? freezeNoticeAr!.trim()
           : null,
     );

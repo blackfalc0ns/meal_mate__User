@@ -127,19 +127,18 @@ class PaymentCheckoutEntity {
   factory PaymentCheckoutEntity.recovery({
     required String subscriptionId,
     required String paymentId,
-  }) =>
-      PaymentCheckoutEntity(
-        subscriptionId: subscriptionId,
-        paymentUrl: '',
-        holdExpiresAtUtc: '',
-        chosenStartDate: '',
-        startDate: '',
-        finalPrice: 0.0,
-        priceSnapshotId: '',
-        restaurantPoolSnapshotId: '',
-        paymentStatus: '',
-        paymentId: paymentId,
-      );
+  }) => PaymentCheckoutEntity(
+    subscriptionId: subscriptionId,
+    paymentUrl: '',
+    holdExpiresAtUtc: '',
+    chosenStartDate: '',
+    startDate: '',
+    finalPrice: 0.0,
+    priceSnapshotId: '',
+    restaurantPoolSnapshotId: '',
+    paymentStatus: '',
+    paymentId: paymentId,
+  );
 }
 
 class PaymentStatusEntity {
@@ -149,6 +148,8 @@ class PaymentStatusEntity {
     required this.isFailed,
     required this.amount,
     required this.currencyCode,
+    this.isFulfillmentReady,
+    this.fulfillmentStatus,
   });
 
   final String paymentStatus;
@@ -156,4 +157,6 @@ class PaymentStatusEntity {
   final bool isFailed;
   final double amount;
   final String currencyCode;
+  final bool? isFulfillmentReady;
+  final String? fulfillmentStatus;
 }

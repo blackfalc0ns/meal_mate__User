@@ -81,7 +81,8 @@ class FamilyAddMemberDialog extends StatefulWidget {
           ),
           BlocProvider<CallingCodesViewModel>(
             create: (_) =>
-                getIt<CallingCodesViewModel>()..doIntent(const LoadCallingCodesEvent()),
+                getIt<CallingCodesViewModel>()
+                  ..doIntent(const LoadCallingCodesEvent()),
           ),
         ],
         child: FamilyAddMemberDialog(

@@ -24,9 +24,7 @@ class RestaurantTierSelectionLoadingSkeleton extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             slivers: [
               SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Spacing.screenH,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: Spacing.screenH),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     SizedBox(height: Spacing.lg),

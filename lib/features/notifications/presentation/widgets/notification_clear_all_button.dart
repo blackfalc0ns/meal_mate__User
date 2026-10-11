@@ -4,10 +4,7 @@ import 'package:meal_meat_user/config/theme/text_styles.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class NotificationClearAllButton extends StatelessWidget {
-  const NotificationClearAllButton({
-    super.key,
-    required this.onPressed,
-  });
+  const NotificationClearAllButton({super.key, required this.onPressed});
 
   final VoidCallback onPressed;
 

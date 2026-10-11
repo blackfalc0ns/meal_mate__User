@@ -19,7 +19,9 @@ class BiometricViewModel extends Cubit<BiometricState> {
       case InitBiometricEvent():
         unawaited(_init());
       case ToggleBiometricEvent(:final enable, :final localizedReason):
-        unawaited(_toggleBiometric(enable: enable, localizedReason: localizedReason));
+        unawaited(
+          _toggleBiometric(enable: enable, localizedReason: localizedReason),
+        );
       case ClearBiometricFeedbackEvent():
         _clearFeedback();
       case DeferBiometricEvent():
@@ -33,11 +35,7 @@ class BiometricViewModel extends Cubit<BiometricState> {
 
   void _clearFeedback() {
     emit(
-      state.copyWith(
-        clearError: true,
-        clearAuthStatus: true,
-        isSuccess: false,
-      ),
+      state.copyWith(clearError: true, clearAuthStatus: true, isSuccess: false),
     );
   }
 

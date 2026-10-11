@@ -46,11 +46,7 @@ class SubscriptionBillingEmptySubscriptionCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            imageAsset,
-            height: 130,
-            fit: BoxFit.contain,
-          ),
+          Image.asset(imageAsset, height: 130, fit: BoxFit.contain),
           const SizedBox(height: Spacing.sm),
           Text(
             locale.billing_no_active_subscription_title,

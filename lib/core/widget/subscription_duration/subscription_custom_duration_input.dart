@@ -72,7 +72,9 @@ class SubscriptionCustomDurationInput extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         side: BorderSide(
-                          color: isSelected ? color.primary : color.outlineVariant,
+                          color: isSelected
+                              ? color.primary
+                              : color.outlineVariant,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(

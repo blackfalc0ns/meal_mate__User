@@ -124,8 +124,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             const CustomPaint(painter: _SplashArcPainter()),
             const _SplashLogo(),
-            if (_isRefreshing)
-              const Center(child: CustomProgressIndicator()),
+            if (_isRefreshing) const Center(child: CustomProgressIndicator()),
             if (_errorMessage != null)
               Center(
                 child: Padding(

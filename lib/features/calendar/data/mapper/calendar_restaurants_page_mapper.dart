@@ -4,7 +4,8 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restau
 
 extension CalendarRestaurantsPageMapper on CalendarRestaurantsResponseDto {
   CalendarRestaurantsPageEntity toEntity({required String localeName}) {
-    final rawRestaurants = restaurants ?? const <CalendarRestaurantResponseDto>[];
+    final rawRestaurants =
+        restaurants ?? const <CalendarRestaurantResponseDto>[];
     final mappedOptions = rawRestaurants
         .map((r) => r.toOptionEntity(localeName))
         .where((r) => r.id.isNotEmpty)
@@ -14,8 +15,7 @@ extension CalendarRestaurantsPageMapper on CalendarRestaurantsResponseDto {
     final resolvedPageSize =
         pageSize ?? (rawRestaurants.isNotEmpty ? rawRestaurants.length : 1);
     final resolvedTotalCount = totalCount ?? rawRestaurants.length;
-    final resolvedTotalPages =
-        totalPages ?? (rawRestaurants.isEmpty ? 0 : 1);
+    final resolvedTotalPages = totalPages ?? (rawRestaurants.isEmpty ? 0 : 1);
     final resolvedHasNextPage = hasNextPage ?? false;
     final resolvedHasPreviousPage = hasPreviousPage ?? false;
 

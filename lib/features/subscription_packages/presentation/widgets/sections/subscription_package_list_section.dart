@@ -38,22 +38,23 @@ class SubscriptionPackageListSection extends StatelessWidget {
             end: Spacing.lg,
           ),
           sliver: SliverToBoxAdapter(
-            child: Text(
-              locale.subscription_choose_plan_title,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size14,
-                color: color.onSurface,
-              ),
-            )
-                .animate()
-                .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-                .slideY(
-                  begin: 0.1,
-                  end: 0,
-                  duration: 350.ms,
-                  curve: Curves.easeOut,
-                ),
+            child:
+                Text(
+                      locale.subscription_choose_plan_title,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size14,
+                        color: color.onSurface,
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                    .slideY(
+                      begin: 0.1,
+                      end: 0,
+                      duration: 350.ms,
+                      curve: Curves.easeOut,
+                    ),
           ),
         ),
         SliverPadding(
@@ -68,23 +69,25 @@ class SubscriptionPackageListSection extends StatelessWidget {
               final bundle = bundles[packageIndex];
 
               return ValueListenableBuilder<int?>(
-                valueListenable: selectedPackageNotifier,
-                builder: (context, selectedIndex, _) {
-                  final isSelected = packageIndex == selectedIndex;
+                    valueListenable: selectedPackageNotifier,
+                    builder: (context, selectedIndex, _) {
+                      final isSelected = packageIndex == selectedIndex;
 
-                  return SubscriptionPackageChoiceCard(
-                    key: ValueKey(bundle.bundleId),
-                    title: bundle.name(locale.localeName),
-                    subtitle: bundle.formattedSubtitle(locale.localeName),
-                    imageUrl: bundle.imageUrl ?? selectedProgram.imageUrl,
-                    restaurantLogoUrls: bundle.restaurantLogoUrls,
-                    badgeLabel: bundle.badge?.name(locale.localeName),
-                    isSelected: isSelected,
-                    isPopular: bundle.isMostSelected,
-                    onTap: () => onPackageSelected(packageIndex),
-                  );
-                },
-              )
+                      return SubscriptionPackageChoiceCard(
+                        key: ValueKey(bundle.bundleId),
+                        title: bundle.name(locale.localeName),
+                        subtitle: bundle.formattedSubtitle(locale.localeName),
+                        imageUrl: bundle.imageUrl ?? selectedProgram.imageUrl,
+                        restaurantLogoUrls: bundle.restaurantLogoUrls,
+                        badgeLabel: bundle.badge?.name(locale.localeName),
+                        isSelected: isSelected,
+                        isPopular: bundle.isMostSelected,
+                        onTap: bundle.canSelect
+                            ? () => onPackageSelected(packageIndex)
+                            : null,
+                      );
+                    },
+                  )
                   .animate()
                   .fadeIn(
                     duration: 350.ms,

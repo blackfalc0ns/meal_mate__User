@@ -19,9 +19,7 @@ import 'package:meal_meat_user/features/subscription_types/presentation/widgets/
 import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_types_action_section.dart';
 
 class _FakeSubscriptionTypesRepository implements SubscriptionTypesRepository {
-  _FakeSubscriptionTypesRepository({
-    this.typesResult,
-  });
+  _FakeSubscriptionTypesRepository({this.typesResult});
 
   final ApiResult<List<SubscriptionTypeEntity>>? typesResult;
 
@@ -51,9 +49,7 @@ class _FakeFamilySubscriptionSetupRepository
     String? familyPackageId,
   }) async {
     return ApiSuccessResult(
-      data: const FamilyFlowCurrentEntity(
-        currentStep: 1,
-      ),
+      data: const FamilyFlowCurrentEntity(currentStep: 1),
     );
   }
 
@@ -112,28 +108,33 @@ void main() {
       expect(FamilyConversionDraftSession.isConvertedFamilyDraft, isFalse);
     });
 
-    test('convertFromIndividual marks converted family draft on success', () async {
-      final repo = _FakeSubscriptionTypesRepository();
-      final viewModel = SubscriptionTypesViewModel(
-        GetSubscriptionTypesUseCase(repo),
-        GetSubscriptionConversionOptionsUseCase(repo),
-        ConvertFromIndividualUseCase(_FakeFamilySubscriptionSetupRepository()),
-      );
+    test(
+      'convertFromIndividual marks converted family draft on success',
+      () async {
+        final repo = _FakeSubscriptionTypesRepository();
+        final viewModel = SubscriptionTypesViewModel(
+          GetSubscriptionTypesUseCase(repo),
+          GetSubscriptionConversionOptionsUseCase(repo),
+          ConvertFromIndividualUseCase(
+            _FakeFamilySubscriptionSetupRepository(),
+          ),
+        );
 
-      const option = ConversionOptionModel(
-        code: 'CONVERT_TO_FAMILY_MANAGER',
-        available: true,
-        titleAr: 'تحويل',
-        titleEn: 'Convert',
-      );
+        const option = ConversionOptionModel(
+          code: 'CONVERT_TO_FAMILY_MANAGER',
+          available: true,
+          titleAr: 'تحويل',
+          titleEn: 'Convert',
+        );
 
-      viewModel.doIntent(const SelectConversionOptionEvent(option));
-      viewModel.doIntent(const ConvertFromIndividualEvent());
-      await Future<void>.delayed(const Duration(milliseconds: 50));
+        viewModel.doIntent(const SelectConversionOptionEvent(option));
+        viewModel.doIntent(const ConvertFromIndividualEvent());
+        await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      expect(viewModel.state.isConvertFromIndividualSuccess, isTrue);
-      expect(FamilyConversionDraftSession.isConvertedFamilyDraft, isTrue);
-    });
+        expect(viewModel.state.isConvertFromIndividualSuccess, isTrue);
+        expect(FamilyConversionDraftSession.isConvertedFamilyDraft, isTrue);
+      },
+    );
   });
 
   group('SubscriptionTypeCard Dynamic Feature List', () {

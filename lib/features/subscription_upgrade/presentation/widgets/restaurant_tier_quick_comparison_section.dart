@@ -35,15 +35,15 @@ class RestaurantTierQuickComparisonSection extends StatelessWidget {
     final currentTierName = currentOption?.tierNameAr.isNotEmpty == true
         ? currentOption!.tierNameAr
         : (currentOption?.tierNameEn.isNotEmpty == true
-            ? currentOption!.tierNameEn
-            : currentTierCode);
+              ? currentOption!.tierNameEn
+              : currentTierCode);
     final currentBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(0);
 
     final newTierName = selectedOption.tierNameAr.isNotEmpty
         ? selectedOption.tierNameAr
         : (selectedOption.tierNameEn.isNotEmpty
-            ? selectedOption.tierNameEn
-            : selectedOption.targetTier);
+              ? selectedOption.tierNameEn
+              : selectedOption.targetTier);
     final newBadgeAsset = RestaurantTierHelpers.badgeAssetForIndex(1);
 
     return Semantics(
@@ -68,10 +68,7 @@ class RestaurantTierQuickComparisonSection extends StatelessWidget {
                     '${currentOption?.accessibleRestaurantCount ?? 0}+',
                 caption: locale.restaurant_tier_your_current_tier,
               ),
-              Divider(
-                height: Spacing.zero,
-                color: color.outlineVariant,
-              ),
+              Divider(height: Spacing.zero, color: color.outlineVariant),
               RestaurantTierComparisonRow(
                 packageLabel: locale.restaurant_tier_new_package_label,
                 tierName: newTierName,

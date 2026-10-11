@@ -34,6 +34,9 @@ class SubscriptionSummaryState {
     if (isSummaryRefreshing || isLoading || isApplyingCoupon) return false;
     final s = summary;
     if (s == null) return false;
+    if (s.availability != null && !s.availability!.effectiveCanSelect) {
+      return false;
+    }
     return s.canCheckout;
   }
 
@@ -62,7 +65,9 @@ class SubscriptionSummaryState {
       failure: clearFailure ? null : (failure ?? this.failure),
       selectedStartDate: selectedStartDate ?? this.selectedStartDate,
       earliestStartDate: earliestStartDate ?? this.earliestStartDate,
-      activeRequest: clearActiveRequest ? null : (activeRequest ?? this.activeRequest),
+      activeRequest: clearActiveRequest
+          ? null
+          : (activeRequest ?? this.activeRequest),
       couponDraft: clearCouponDraft ? '' : (couponDraft ?? this.couponDraft),
       isApplyingCoupon: isApplyingCoupon ?? this.isApplyingCoupon,
       isLoadingMoreRestaurants:

@@ -48,10 +48,9 @@ class BiometricSetupScreen extends StatelessWidget {
                   message: locale.biometric_enabled_success,
                 );
                 unawaited(
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRoutes.home,
-                    (route) => false,
-                  ),
+                  Navigator.of(
+                    context,
+                  ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
                 );
                 return;
               }
@@ -69,10 +68,7 @@ class BiometricSetupScreen extends StatelessWidget {
                     locale.biometric_locked_out,
                   _ => state.errorMessage ?? locale.biometric_failed,
                 };
-                CustomSnackbar.showError(
-                  context: context,
-                  message: message,
-                );
+                CustomSnackbar.showError(context: context, message: message);
               }
             },
             builder: (context, state) {
@@ -110,12 +106,12 @@ class BiometricSetupScreen extends StatelessWidget {
                             text: locale.biometric_enable_button,
                             onPressed: () {
                               context.read<BiometricViewModel>().doIntent(
-                                    ToggleBiometricEvent(
-                                      enable: true,
-                                      localizedReason:
-                                          locale.biometric_enable_reason,
-                                    ),
-                                  );
+                                ToggleBiometricEvent(
+                                  enable: true,
+                                  localizedReason:
+                                      locale.biometric_enable_reason,
+                                ),
+                              );
                             },
                             color: color.primary,
                             gradient: LinearGradient(
@@ -126,8 +122,8 @@ class BiometricSetupScreen extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               context.read<BiometricViewModel>().doIntent(
-                                    const DeferBiometricEvent(),
-                                  );
+                                const DeferBiometricEvent(),
+                              );
                               unawaited(
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   AppRoutes.home,
@@ -151,8 +147,9 @@ class BiometricSetupScreen extends StatelessWidget {
                             style: getRegularStyle(
                               fontFamily: FontConstant.alexandria,
                               fontSize: FontSize.size11,
-                              color:
-                                  color.onSurfaceVariant.withValues(alpha: 0.7),
+                              color: color.onSurfaceVariant.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                           const SizedBox(height: Spacing.md),
@@ -169,4 +166,3 @@ class BiometricSetupScreen extends StatelessWidget {
     );
   }
 }
-

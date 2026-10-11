@@ -27,12 +27,15 @@ class CountingCheckoutUseCase extends CheckoutSubscriptionUseCase {
   ApiResult<PaymentCheckoutEntity>? checkoutResult;
 
   @override
-  Future<ApiResult<PaymentCheckoutEntity>> call(PaymentCheckoutRequestEntity request) async {
+  Future<ApiResult<PaymentCheckoutEntity>> call(
+    PaymentCheckoutRequestEntity request,
+  ) async {
     checkoutCallCount++;
     return checkoutResult ??
         ApiErrorResult(
           failure: Failure(
-            errorMessage: 'Checkout eligibility or restaurant snapshot changed. Refresh and try again.',
+            errorMessage:
+                'Checkout eligibility or restaurant snapshot changed. Refresh and try again.',
             code: SubscriptionErrorCodes.restaurantNotEligible,
           ),
         );
@@ -151,110 +154,117 @@ void main() {
       startDate: '2026-10-08',
     );
 
-    test('400 restaurant.not_eligible performs exactly 1 POST, marks availability changed, does not auto-retry', () async {
-      fakeCheckout.checkoutResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Checkout eligibility or restaurant snapshot changed.',
-          code: SubscriptionErrorCodes.restaurantNotEligible,
-        ),
-      );
-
-      final args = PaymentArgs(
-        summary: _buildSummary(canCheckout: true),
-        summaryRequest: summaryRequest,
-        restaurantId: 'rest-1',
-      );
-
-      viewModel.doIntent(CheckoutPaymentEvent(args));
-      await pumpEventQueue();
-
-      // Exactly 1 POST made
-      expect(fakeCheckout.checkoutCallCount, equals(1));
-      expect(viewModel.state.isAvailabilityChangedFailure, isTrue);
-      expect(viewModel.state.isCheckoutLoading, isFalse);
-
-      // Verify no subsequent automatic retry occurs
-      await Future<void>.delayed(const Duration(milliseconds: 50));
-      expect(fakeCheckout.checkoutCallCount, equals(1));
-    });
-
-    test('Double tap while checkout in flight does not send concurrent POSTs', () async {
-      final completer = Completer<ApiResult<PaymentCheckoutEntity>>();
-      final slowCheckout = _SlowCheckoutUseCase(completer);
-
-      final vm = PaymentViewModel(
-        _FakeMethodsUseCase(),
-        slowCheckout,
-        _FakeStatusUseCase(),
-        _FakeCalendarUseCase(),
-        _FakeCurrentSubUseCase(),
-        prefHelper,
-      );
-
-      final method = const PaymentMethodEntity(
-        id: 1,
-        type: PaymentMethodType.payzah,
-        title: 'Payzah',
-        subtitle: '',
-        isAvailable: true,
-      );
-      vm.doIntent(SelectPaymentMethodEvent(method));
-      await pumpEventQueue();
-
-      final args = PaymentArgs(
-        summary: _buildSummary(canCheckout: true),
-        summaryRequest: summaryRequest,
-        restaurantId: 'rest-1',
-      );
-
-      // Trigger twice immediately
-      vm.doIntent(CheckoutPaymentEvent(args));
-      vm.doIntent(CheckoutPaymentEvent(args));
-      await pumpEventQueue();
-
-      expect(slowCheckout.callCount, equals(1));
-
-      completer.complete(
-        const ApiSuccessResult(
-          data: PaymentCheckoutEntity(
-            subscriptionId: 'sub-1',
-            paymentUrl: 'https://pay.example.com',
-            holdExpiresAtUtc: '2026-10-08T12:00:00Z',
-            chosenStartDate: '2026-10-08',
-            startDate: '2026-10-11',
-            finalPrice: 100.0,
-            priceSnapshotId: 'snap-1',
-            restaurantPoolSnapshotId: 'pool-1',
-            paymentStatus: 'PendingPayment',
+    test(
+      '400 restaurant.not_eligible performs exactly 1 POST, marks availability changed, does not auto-retry',
+      () async {
+        fakeCheckout.checkoutResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage:
+                'Checkout eligibility or restaurant snapshot changed.',
+            code: SubscriptionErrorCodes.restaurantNotEligible,
           ),
-        ),
-      );
-      await pumpEventQueue();
-      expect(slowCheckout.callCount, equals(1));
-      vm.close();
-    });
+        );
 
-    test('Timeout or 5xx does not trigger automatic POST retry or leave safe recovery open', () async {
-      fakeCheckout.checkoutResult = ApiErrorResult(
-        failure: Failure(
-          errorMessage: 'Gateway timeout',
-          code: 'timeout',
-        ),
-      );
+        final args = PaymentArgs(
+          summary: _buildSummary(canCheckout: true),
+          summaryRequest: summaryRequest,
+          restaurantId: 'rest-1',
+        );
 
-      final args = PaymentArgs(
-        summary: _buildSummary(canCheckout: true),
-        summaryRequest: summaryRequest,
-        restaurantId: 'rest-1',
-      );
+        viewModel.doIntent(CheckoutPaymentEvent(args));
+        await pumpEventQueue();
 
-      viewModel.doIntent(CheckoutPaymentEvent(args));
-      await pumpEventQueue();
+        // Exactly 1 POST made
+        expect(fakeCheckout.checkoutCallCount, equals(1));
+        expect(viewModel.state.isAvailabilityChangedFailure, isTrue);
+        expect(viewModel.state.isCheckoutLoading, isFalse);
 
-      expect(fakeCheckout.checkoutCallCount, equals(1));
-      expect(viewModel.state.isAvailabilityChangedFailure, isFalse);
-      expect(viewModel.state.checkoutFailure?.code, equals('timeout'));
-    });
+        // Verify no subsequent automatic retry occurs
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        expect(fakeCheckout.checkoutCallCount, equals(1));
+      },
+    );
+
+    test(
+      'Double tap while checkout in flight does not send concurrent POSTs',
+      () async {
+        final completer = Completer<ApiResult<PaymentCheckoutEntity>>();
+        final slowCheckout = _SlowCheckoutUseCase(completer);
+
+        final vm = PaymentViewModel(
+          _FakeMethodsUseCase(),
+          slowCheckout,
+          _FakeStatusUseCase(),
+          _FakeCalendarUseCase(),
+          _FakeCurrentSubUseCase(),
+          prefHelper,
+        );
+
+        final method = const PaymentMethodEntity(
+          id: 1,
+          type: PaymentMethodType.payzah,
+          title: 'Payzah',
+          subtitle: '',
+          isAvailable: true,
+        );
+        vm.doIntent(SelectPaymentMethodEvent(method));
+        await pumpEventQueue();
+
+        final args = PaymentArgs(
+          summary: _buildSummary(canCheckout: true),
+          summaryRequest: summaryRequest,
+          restaurantId: 'rest-1',
+        );
+
+        // Trigger twice immediately
+        vm.doIntent(CheckoutPaymentEvent(args));
+        vm.doIntent(CheckoutPaymentEvent(args));
+        await pumpEventQueue();
+
+        expect(slowCheckout.callCount, equals(1));
+
+        completer.complete(
+          const ApiSuccessResult(
+            data: PaymentCheckoutEntity(
+              subscriptionId: 'sub-1',
+              paymentUrl: 'https://pay.example.com',
+              holdExpiresAtUtc: '2026-10-08T12:00:00Z',
+              chosenStartDate: '2026-10-08',
+              startDate: '2026-10-11',
+              finalPrice: 100.0,
+              priceSnapshotId: 'snap-1',
+              restaurantPoolSnapshotId: 'pool-1',
+              paymentStatus: 'PendingPayment',
+            ),
+          ),
+        );
+        await pumpEventQueue();
+        expect(slowCheckout.callCount, equals(1));
+        vm.close();
+      },
+    );
+
+    test(
+      'Timeout or 5xx does not trigger automatic POST retry or leave safe recovery open',
+      () async {
+        fakeCheckout.checkoutResult = ApiErrorResult(
+          failure: Failure(errorMessage: 'Gateway timeout', code: 'timeout'),
+        );
+
+        final args = PaymentArgs(
+          summary: _buildSummary(canCheckout: true),
+          summaryRequest: summaryRequest,
+          restaurantId: 'rest-1',
+        );
+
+        viewModel.doIntent(CheckoutPaymentEvent(args));
+        await pumpEventQueue();
+
+        expect(fakeCheckout.checkoutCallCount, equals(1));
+        expect(viewModel.state.isAvailabilityChangedFailure, isFalse);
+        expect(viewModel.state.checkoutFailure?.code, equals('timeout'));
+      },
+    );
   });
 }
 
@@ -264,7 +274,9 @@ class _SlowCheckoutUseCase extends CheckoutSubscriptionUseCase {
   int callCount = 0;
 
   @override
-  Future<ApiResult<PaymentCheckoutEntity>> call(PaymentCheckoutRequestEntity request) {
+  Future<ApiResult<PaymentCheckoutEntity>> call(
+    PaymentCheckoutRequestEntity request,
+  ) {
     callCount++;
     return completer.future;
   }
@@ -275,8 +287,9 @@ class _FakeMethodsUseCase extends GetPaymentMethodsUseCase {
   List<PaymentMethodEntity> methods = [];
 
   @override
-  Future<ApiResult<List<PaymentMethodEntity>>> call({required double amount}) async =>
-      ApiSuccessResult(data: methods);
+  Future<ApiResult<List<PaymentMethodEntity>>> call({
+    required double amount,
+  }) async => ApiSuccessResult(data: methods);
 }
 
 class _FakeStatusUseCase extends GetSubscriptionPaymentStatusUseCase {

@@ -135,9 +135,9 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
         final uniqueNewPrograms = newPrograms
             .where((p) => !existingIds.contains(p.programId))
             .toList();
-        final updatedPrograms =
-            List<SubscriptionProgramEntity>.from(state.programs)
-              ..addAll(uniqueNewPrograms);
+        final updatedPrograms = List<SubscriptionProgramEntity>.from(
+          state.programs,
+        )..addAll(uniqueNewPrograms);
 
         int? progIdx = state.selectedProgramIndex;
         final memberProgramId = state.selectedMember?.programId;

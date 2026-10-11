@@ -59,7 +59,10 @@ void main() {
         ),
       );
 
-      expect(find.byType(RestaurantTierSelectionLoadingSkeleton), findsOneWidget);
+      expect(
+        find.byType(RestaurantTierSelectionLoadingSkeleton),
+        findsOneWidget,
+      );
       expect(find.byType(ShimmerPlaceholder), findsWidgets);
     },
   );
@@ -76,7 +79,10 @@ void main() {
         ),
       );
 
-      expect(find.byType(RestaurantTierConfirmationLoadingSkeleton), findsOneWidget);
+      expect(
+        find.byType(RestaurantTierConfirmationLoadingSkeleton),
+        findsOneWidget,
+      );
       expect(find.byType(ShimmerPlaceholder), findsWidgets);
     },
   );

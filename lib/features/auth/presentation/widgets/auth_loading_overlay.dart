@@ -21,10 +21,7 @@ class AuthLoadingOverlay extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          AbsorbPointer(
-            absorbing: isLoading,
-            child: child,
-          ),
+          AbsorbPointer(absorbing: isLoading, child: child),
           if (isLoading)
             Positioned.fill(
               child: ModalBarrier(
@@ -33,12 +30,9 @@ class AuthLoadingOverlay extends StatelessWidget {
               ),
             ),
           if (isLoading)
-            const Positioned.fill(
-              child: CustomProgressIndicator(),
-            ),
+            const Positioned.fill(child: CustomProgressIndicator()),
         ],
       ),
     );
   }
 }
-

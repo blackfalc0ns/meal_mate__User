@@ -44,12 +44,14 @@ void main() {
       operations: CustomerAddressEditorOperations(
         addCustomerAddressUseCase: AddCustomerAddressUseCase(repository),
         updateCustomerAddressUseCase: UpdateCustomerAddressUseCase(repository),
-        previewNewAddressCoverageUseCase:
-            PreviewNewAddressCoverageUseCase(repository),
+        previewNewAddressCoverageUseCase: PreviewNewAddressCoverageUseCase(
+          repository,
+        ),
         previewExistingAddressCoverageUseCase:
             PreviewExistingAddressCoverageUseCase(repository),
-        confirmSetDefaultAddressUseCase:
-            ConfirmSetDefaultAddressUseCase(repository),
+        confirmSetDefaultAddressUseCase: ConfirmSetDefaultAddressUseCase(
+          repository,
+        ),
       ),
       getLocationsCatalogUseCase: GetLocationsCatalogUseCase(repository),
       geocodeAddressUseCase: GeocodeAddressUseCase(repository),
@@ -89,12 +91,14 @@ void main() {
       operations: CustomerAddressEditorOperations(
         addCustomerAddressUseCase: AddCustomerAddressUseCase(repository),
         updateCustomerAddressUseCase: UpdateCustomerAddressUseCase(repository),
-        previewNewAddressCoverageUseCase:
-            PreviewNewAddressCoverageUseCase(repository),
+        previewNewAddressCoverageUseCase: PreviewNewAddressCoverageUseCase(
+          repository,
+        ),
         previewExistingAddressCoverageUseCase:
             PreviewExistingAddressCoverageUseCase(repository),
-        confirmSetDefaultAddressUseCase:
-            ConfirmSetDefaultAddressUseCase(repository),
+        confirmSetDefaultAddressUseCase: ConfirmSetDefaultAddressUseCase(
+          repository,
+        ),
       ),
       getLocationsCatalogUseCase: GetLocationsCatalogUseCase(repository),
       geocodeAddressUseCase: GeocodeAddressUseCase(repository),

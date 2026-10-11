@@ -182,9 +182,7 @@ class CalendarMealSaveButton extends StatelessWidget {
                                     fontFamily: FontConstant.alexandria,
                                     fontSize: fontSize,
                                     color: color.onPrimary,
-                                  ).copyWith(
-                                    decoration: TextDecoration.none,
-                                  ),
+                                  ).copyWith(decoration: TextDecoration.none),
                                 ),
                               ),
                             ),

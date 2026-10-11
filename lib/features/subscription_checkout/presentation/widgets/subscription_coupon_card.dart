@@ -58,8 +58,8 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
     if (code.isNotEmpty) {
       try {
         context.read<SubscriptionSummaryViewModel>().doIntent(
-              ApplySubscriptionPromoCodeEvent(code),
-            );
+          ApplySubscriptionPromoCodeEvent(code),
+        );
       } catch (_) {}
     }
   }
@@ -69,8 +69,8 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
     _controller.clear();
     try {
       context.read<SubscriptionSummaryViewModel>().doIntent(
-            const RemoveSubscriptionPromoCodeEvent(),
-          );
+        const RemoveSubscriptionPromoCodeEvent(),
+      );
     } catch (_) {}
   }
 
@@ -84,7 +84,10 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
     }
 
     if (viewModel != null) {
-      return BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
+      return BlocBuilder<
+        SubscriptionSummaryViewModel,
+        SubscriptionSummaryState
+      >(
         buildWhen: (previous, current) =>
             previous.isApplyingCoupon != current.isApplyingCoupon ||
             previous.summary?.coupon != current.summary?.coupon,
@@ -175,8 +178,9 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                         ),
                         decoration: BoxDecoration(
                           color: color.primary,
-                          borderRadius:
-                              BorderRadius.circular(Spacing.radiusPill),
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
                         ),
                         child: Text(
                           locale.coupon_applied_label,
@@ -281,16 +285,14 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                       filled: true,
                       fillColor: color.surfaceContainerLowest,
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(Spacing.radiusMd),
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
                         borderSide: BorderSide(
                           color: color.outlineVariant,
                           width: Spacing.border,
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(Spacing.radiusMd),
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
                         borderSide: BorderSide(
                           color: isRejected
                               ? color.error
@@ -299,8 +301,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(Spacing.radiusMd),
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
                         borderSide: BorderSide(
                           color: isRejected ? color.error : color.primary,
                           width: Spacing.border * 1.5,
@@ -319,12 +320,9 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                   style: FilledButton.styleFrom(
                     backgroundColor: color.primary,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(Spacing.radiusMd),
+                      borderRadius: BorderRadius.circular(Spacing.radiusMd),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.lg,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
                   ),
                   child: isApplying
                       ? const SizedBox(
