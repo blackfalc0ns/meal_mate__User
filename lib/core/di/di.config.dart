@@ -13,11 +13,12 @@
 import 'package:dio/dio.dart' as _i361;
 import 'package:firebase_messaging/firebase_messaging.dart' as _i892;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as _i164;
+    as _i163;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:local_auth/local_auth.dart' as _i152;
+import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import '../../features/addresses/data/data_source/addresses_remote_data_source.dart'
@@ -116,7 +117,7 @@ import '../../features/calling/data/repo/voice_call_repository_impl.dart'
     as _i435;
 import '../../features/calling/domain/repo/voice_call_repository.dart' as _i937;
 import '../../features/calling/domain/usecase/ack_voice_call_ringing_usecase.dart'
-    as _i495;
+    as _i494;
 import '../../features/calling/domain/usecase/answer_voice_call_usecase.dart'
     as _i614;
 import '../../features/calling/domain/usecase/end_voice_call_usecase.dart'
@@ -140,7 +141,7 @@ import '../../features/calling/domain/usecase/report_voice_connected_usecase.dar
 import '../../features/calling/domain/usecase/report_voice_connecting_usecase.dart'
     as _i501;
 import '../../features/calling/domain/usecase/revoke_voice_device_usecase.dart'
-    as _i939;
+    as _i938;
 import '../../features/calling/domain/usecase/send_voice_heartbeat_usecase.dart'
     as _i17;
 import '../../features/calling/presentation/manager/calling_view_model.dart'
@@ -285,7 +286,7 @@ import '../../features/food_preferences/data/repo/food_preferences_repository_im
 import '../../features/food_preferences/domain/repo/food_preferences_repository.dart'
     as _i62;
 import '../../features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart'
-    as _i32;
+    as _i33;
 import '../../features/food_preferences/domain/usecase/get_food_preferences_usecase.dart'
     as _i608;
 import '../../features/food_preferences/domain/usecase/update_food_preferences_allergies_usecase.dart'
@@ -319,7 +320,7 @@ import '../../features/influencer/bank_account/domain/usecase/delete_influencer_
 import '../../features/influencer/bank_account/domain/usecase/get_influencer_bank_account_usecase.dart'
     as _i327;
 import '../../features/influencer/bank_account/domain/usecase/get_influencer_banks_usecase.dart'
-    as _i938;
+    as _i939;
 import '../../features/influencer/bank_account/domain/usecase/save_influencer_bank_account_usecase.dart'
     as _i602;
 import '../../features/influencer/bank_account/presentation/manager/influencer_bank_account_view_model.dart'
@@ -335,7 +336,7 @@ import '../../features/influencer/dashboard/domain/repo/influencer_dashboard_rep
 import '../../features/influencer/dashboard/domain/usecase/get_influencer_activities_usecase.dart'
     as _i900;
 import '../../features/influencer/dashboard/domain/usecase/get_influencer_home_usecase.dart'
-    as _i494;
+    as _i495;
 import '../../features/influencer/dashboard/domain/usecase/get_influencer_links_usecase.dart'
     as _i461;
 import '../../features/influencer/dashboard/presentation/manager/influencer_dashboard_view_model.dart'
@@ -375,7 +376,7 @@ import '../../features/influencer/wallet/domain/usecase/get_influencer_withdrawa
 import '../../features/influencer/wallet/presentation/manager/influencer_wallet_view_model.dart'
     as _i224;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source.dart'
-    as _i557;
+    as _i559;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source_impl.dart'
     as _i90;
 import '../../features/meal_details/data/repo/meal_details_repository_impl.dart'
@@ -621,18 +622,19 @@ import '../address/data/data_source/address_location_remote_data_source.dart'
 import '../address/data/data_source/address_location_remote_data_source_impl.dart'
     as _i235;
 import '../address/data/repo/address_location_repository_impl.dart' as _i833;
-import '../address/domain/repo/address_location_repository.dart' as _i559;
+import '../address/domain/repo/address_location_repository.dart' as _i557;
 import '../address/domain/usecase/geocode_address_usecase.dart' as _i1073;
-import '../address/domain/usecase/get_locations_catalog_usecase.dart' as _i163;
+import '../address/domain/usecase/get_locations_catalog_usecase.dart' as _i164;
 import '../address/domain/usecase/reverse_geocode_location_usecase.dart'
     as _i1058;
 import '../biometric/biometric_service.dart' as _i43;
 import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
+import '../network/external_modules.dart' as _i580;
 import '../payment/payment_attempt_store.dart' as _i1028;
 import '../services/app_navigator_service.dart' as _i179;
 import '../services/device_id_service.dart' as _i148;
-import '../services/language_interceptor.dart' as _i33;
+import '../services/language_interceptor.dart' as _i32;
 import '../services/language_service.dart' as _i819;
 import '../services/location_service.dart' as _i669;
 import '../services/push_notification_service.dart' as _i65;
@@ -663,12 +665,32 @@ import '../upload_file/domain/usecase/upload_file_usecase.dart' as _i995;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final externalModules = _$ExternalModules();
+    await gh.factoryAsync<_i460.SharedPreferences>(
+      () => externalModules.provideSharedPreferences,
+      preResolve: true,
+    );
     gh.factory<_i844.RetryInterceptor>(() => _i844.RetryInterceptor());
+    gh.lazySingleton<_i528.PrettyDioLogger>(
+      () => externalModules.providePrettyDioLogger(),
+    );
+    gh.lazySingleton<_i558.FlutterSecureStorage>(
+      () => externalModules.flutterSecureStorage(),
+    );
+    gh.lazySingleton<_i152.LocalAuthentication>(
+      () => externalModules.provideLocalAuthentication(),
+    );
+    gh.lazySingleton<_i892.FirebaseMessaging>(
+      () => externalModules.provideFirebaseMessaging(),
+    );
+    gh.lazySingleton<_i163.FlutterLocalNotificationsPlugin>(
+      () => externalModules.provideFlutterLocalNotificationsPlugin(),
+    );
     gh.lazySingleton<_i179.AppNavigatorService>(
       () => _i179.AppNavigatorService(),
     );
@@ -707,6 +729,71 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.lazySingleton<_i827.VoiceDeviceSessionStorage>(
+      () => _i827.VoiceDeviceSessionStorage(
+        gh<_i558.FlutterSecureStorage>(),
+        gh<_i460.SharedPreferences>(),
+      ),
+    );
+    gh.lazySingleton<_i227.TokenService>(
+      () => _i227.TokenService(
+        prefs: gh<_i558.FlutterSecureStorage>(),
+        sharedPreferences: gh<_i460.SharedPreferences>(),
+      ),
+    );
+    gh.lazySingleton<_i148.DeviceIdService>(
+      () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i819.LanguageService>(
+      () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i807.CalendarFlowViewModel>(
+      () => _i807.CalendarFlowViewModel(
+        overviewViewModel: gh<_i568.CalendarOverviewViewModel>(),
+        restaurantPickerViewModel: gh<_i154.RestaurantPickerViewModel>(),
+        mealSelectionViewModel: gh<_i1020.MealSelectionViewModel>(),
+        overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
+        restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
+        mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
+      ),
+    );
+    gh.lazySingleton<_i43.BiometricService>(
+      () => _i43.BiometricService(
+        gh<_i152.LocalAuthentication>(),
+        gh<_i460.SharedPreferences>(),
+        gh<_i227.TokenService>(),
+      ),
+    );
+    gh.factory<_i162.BiometricViewModel>(
+      () => _i162.BiometricViewModel(gh<_i43.BiometricService>()),
+    );
+    gh.lazySingleton<_i1056.TokenInterceptor>(
+      () => _i1056.TokenInterceptor(
+        tokenService: gh<_i227.TokenService>(),
+        navigatorService: gh<_i179.AppNavigatorService>(),
+      ),
+    );
+    gh.factory<_i32.LanguageInterceptor>(
+      () => _i32.LanguageInterceptor(gh<_i819.LanguageService>()),
+    );
+    gh.lazySingleton<_i177.AddressLocationCache>(
+      () => _i177.AddressLocationCache(
+        languageService: gh<_i819.LanguageService>(),
+      ),
+    );
+    gh.lazySingleton<_i493.VoiceCallSignalRService>(
+      () => _i493.VoiceCallSignalRService(
+        gh<_i227.TokenService>(),
+        hubConnectionFactory: gh<_i493.HubConnectionFactory>(),
+      ),
+    );
+    gh.lazySingleton<_i361.Dio>(
+      () => externalModules.provideDio(
+        gh<_i528.PrettyDioLogger>(),
+        gh<_i1056.TokenInterceptor>(),
+        gh<_i32.LanguageInterceptor>(),
+      ),
+    );
     gh.factory<_i804.ApiServices>(() => _i804.ApiServices(gh<_i361.Dio>()));
     gh.factory<_i322.FamilyAllergiesRemoteDataSource>(
       () => _i492.FamilyAllergiesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -714,12 +801,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i963.InfluencerSocialLinksRemoteDataSource>(
       () => _i54.InfluencerSocialLinksRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
-      ),
-    );
-    gh.lazySingleton<_i827.VoiceDeviceSessionStorage>(
-      () => _i827.VoiceDeviceSessionStorage(
-        gh<_i558.FlutterSecureStorage>(),
-        gh<_i460.SharedPreferences>(),
       ),
     );
     gh.factory<_i74.AddressLocationRemoteDataSource>(
@@ -805,23 +886,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1038.SubscriptionTierRemoteDataSource>(),
       ),
     );
-    gh.lazySingleton<_i227.TokenService>(
-      () => _i227.TokenService(
-        prefs: gh<_i558.FlutterSecureStorage>(),
-        sharedPreferences: gh<_i460.SharedPreferences>(),
+    gh.factory<_i937.VoiceCallRepository>(
+      () => _i435.VoiceCallRepositoryImpl(
+        gh<_i712.VoiceCallRemoteDataSource>(),
+        gh<_i827.VoiceDeviceSessionStorage>(),
+        gh<_i148.DeviceIdService>(),
       ),
     );
     gh.factory<_i996.PaymentRepository>(
       () => _i914.PaymentRepositoryImpl(gh<_i957.PaymentRemoteDataSource>()),
-    );
-    gh.lazySingleton<_i493.VoiceCallSignalRService>(
-      () => _i493.VoiceCallSignalRService(gh<_i227.TokenService>()),
-    );
-    gh.lazySingleton<_i148.DeviceIdService>(
-      () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
-    );
-    gh.lazySingleton<_i819.LanguageService>(
-      () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
     );
     gh.factory<_i306.FamilyPackageDaysRepository>(
       () => _i471.FamilyPackageDaysRepositoryImpl(
@@ -857,16 +930,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i963.InfluencerSocialLinksRemoteDataSource>(),
       ),
     );
-    gh.factory<_i807.CalendarFlowViewModel>(
-      () => _i807.CalendarFlowViewModel(
-        overviewViewModel: gh<_i568.CalendarOverviewViewModel>(),
-        restaurantPickerViewModel: gh<_i154.RestaurantPickerViewModel>(),
-        mealSelectionViewModel: gh<_i1020.MealSelectionViewModel>(),
-        overviewCubit: gh<_i568.CalendarOverviewViewModel>(),
-        restaurantPickerCubit: gh<_i154.RestaurantPickerViewModel>(),
-        mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
-      ),
-    );
     gh.factory<_i223.FamilyAllergiesRepository>(
       () => _i145.FamilyAllergiesRepositoryImpl(
         gh<_i322.FamilyAllergiesRemoteDataSource>(),
@@ -882,7 +945,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
-    gh.factory<_i557.MealDetailsRemoteDataSource>(
+    gh.factory<_i557.AddressLocationRepository>(
+      () => _i833.AddressLocationRepositoryImpl(
+        gh<_i74.AddressLocationRemoteDataSource>(),
+        gh<_i177.AddressLocationCache>(),
+      ),
+    );
+    gh.factory<_i559.MealDetailsRemoteDataSource>(
       () => _i90.MealDetailsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.factory<_i570.GetFamilyPlanDurationsUseCase>(
@@ -1010,12 +1079,47 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i851.FamilyManagementRepository>(),
       ),
     );
-    gh.lazySingleton<_i43.BiometricService>(
-      () => _i43.BiometricService(
-        gh<_i152.LocalAuthentication>(),
-        gh<_i460.SharedPreferences>(),
-        gh<_i227.TokenService>(),
-      ),
+    gh.factory<_i494.AckVoiceCallRingingUseCase>(
+      () => _i494.AckVoiceCallRingingUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i614.AnswerVoiceCallUseCase>(
+      () => _i614.AnswerVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i329.EndVoiceCallUseCase>(
+      () => _i329.EndVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i641.GetActiveVoiceCallUseCase>(
+      () => _i641.GetActiveVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i940.GetVoiceCallDetailsUseCase>(
+      () => _i940.GetVoiceCallDetailsUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i343.GetVoiceCallDisplayUseCase>(
+      () => _i343.GetVoiceCallDisplayUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i510.GetVoiceCallEventsUseCase>(
+      () => _i510.GetVoiceCallEventsUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i518.GetVoiceIceServersUseCase>(
+      () => _i518.GetVoiceIceServersUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i923.RegisterVoiceDeviceUseCase>(
+      () => _i923.RegisterVoiceDeviceUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i1059.RejectVoiceCallUseCase>(
+      () => _i1059.RejectVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i136.ReportVoiceConnectedUseCase>(
+      () => _i136.ReportVoiceConnectedUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i501.ReportVoiceConnectingUseCase>(
+      () => _i501.ReportVoiceConnectingUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i938.RevokeVoiceDeviceUseCase>(
+      () => _i938.RevokeVoiceDeviceUseCase(gh<_i937.VoiceCallRepository>()),
+    );
+    gh.factory<_i17.SendVoiceHeartbeatUseCase>(
+      () => _i17.SendVoiceHeartbeatUseCase(gh<_i937.VoiceCallRepository>()),
     );
     gh.factory<_i466.SubscriptionPackagesRemoteDataSource>(
       () => _i415.SubscriptionPackagesRemoteDataSourceImpl(
@@ -1056,15 +1160,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i845.ChangeCustomerPasswordUseCase>(
       () => _i845.ChangeCustomerPasswordUseCase(
         gh<_i229.ChangePasswordRepository>(),
-      ),
-    );
-    gh.factory<_i162.BiometricViewModel>(
-      () => _i162.BiometricViewModel(gh<_i43.BiometricService>()),
-    );
-    gh.lazySingleton<_i1056.TokenInterceptor>(
-      () => _i1056.TokenInterceptor(
-        tokenService: gh<_i227.TokenService>(),
-        navigatorService: gh<_i179.AppNavigatorService>(),
       ),
     );
     gh.factory<_i70.FamilyManagementViewModel>(
@@ -1123,8 +1218,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i996.PaymentRepository>(),
       ),
     );
-    gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
-      () => _i32.GetFoodPreferencesCatalogUseCase(
+    gh.factory<_i33.GetFoodPreferencesCatalogUseCase>(
+      () => _i33.GetFoodPreferencesCatalogUseCase(
         gh<_i62.FoodPreferencesRepository>(),
       ),
     );
@@ -1142,16 +1237,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i62.FoodPreferencesRepository>(),
       ),
     );
-    gh.factory<_i33.LanguageInterceptor>(
-      () => _i33.LanguageInterceptor(gh<_i819.LanguageService>()),
-    );
-    gh.factory<_i937.VoiceCallRepository>(
-      () => _i435.VoiceCallRepositoryImpl(
-        gh<_i712.VoiceCallRemoteDataSource>(),
-        gh<_i827.VoiceDeviceSessionStorage>(),
-        gh<_i148.DeviceIdService>(),
-      ),
-    );
     gh.factory<_i311.ProfileRepository>(
       () => _i1015.ProfileRepositoryImpl(gh<_i998.ProfileRemoteDataSource>()),
     );
@@ -1162,12 +1247,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i63.MealDetailsRepository>(
       () => _i49.MealDetailsRepositoryImpl(
-        gh<_i557.MealDetailsRemoteDataSource>(),
-      ),
-    );
-    gh.lazySingleton<_i177.AddressLocationCache>(
-      () => _i177.AddressLocationCache(
-        languageService: gh<_i819.LanguageService>(),
+        gh<_i559.MealDetailsRemoteDataSource>(),
       ),
     );
     gh.lazySingleton<_i925.FamilySubscriptionSetupRepository>(
@@ -1191,8 +1271,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i577.InfluencerBankAccountRepository>(),
       ),
     );
-    gh.factory<_i938.GetInfluencerBanksUseCase>(
-      () => _i938.GetInfluencerBanksUseCase(
+    gh.factory<_i939.GetInfluencerBanksUseCase>(
+      () => _i939.GetInfluencerBanksUseCase(
         gh<_i577.InfluencerBankAccountRepository>(),
       ),
     );
@@ -1238,7 +1318,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i420.FoodPreferencesViewModel>(
       () => _i420.FoodPreferencesViewModel(
         gh<_i608.GetFoodPreferencesUseCase>(),
-        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
+        gh<_i33.GetFoodPreferencesCatalogUseCase>(),
         gh<_i635.UpdateFoodPreferencesUseCase>(),
         gh<_i401.UpdateFoodPreferencesAllergiesUseCase>(),
       ),
@@ -1290,6 +1370,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i333.CalendarRepository>(
       () => _i787.CalendarRepositoryImpl(gh<_i583.CalendarRemoteDataSource>()),
     );
+    gh.factory<_i1073.GeocodeAddressUseCase>(
+      () => _i1073.GeocodeAddressUseCase(gh<_i557.AddressLocationRepository>()),
+    );
+    gh.factory<_i164.GetLocationsCatalogUseCase>(
+      () => _i164.GetLocationsCatalogUseCase(
+        gh<_i557.AddressLocationRepository>(),
+      ),
+    );
+    gh.factory<_i1058.ReverseGeocodeLocationUseCase>(
+      () => _i1058.ReverseGeocodeLocationUseCase(
+        gh<_i557.AddressLocationRepository>(),
+      ),
+    );
     gh.factory<_i987.SubscriptionPlanRepository>(
       () => _i738.SubscriptionPlanRepositoryImpl(
         gh<_i755.SubscriptionPlanRemoteDataSource>(),
@@ -1305,6 +1398,30 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i466.SubscriptionPackagesRemoteDataSource>(),
       ),
     );
+    gh.lazySingleton<_i613.VoiceCallManager>(
+      () => _i613.VoiceCallManager(
+        gh<_i923.RegisterVoiceDeviceUseCase>(),
+        gh<_i938.RevokeVoiceDeviceUseCase>(),
+        gh<_i641.GetActiveVoiceCallUseCase>(),
+        gh<_i940.GetVoiceCallDetailsUseCase>(),
+        gh<_i510.GetVoiceCallEventsUseCase>(),
+        gh<_i494.AckVoiceCallRingingUseCase>(),
+        gh<_i614.AnswerVoiceCallUseCase>(),
+        gh<_i1059.RejectVoiceCallUseCase>(),
+        gh<_i329.EndVoiceCallUseCase>(),
+        gh<_i518.GetVoiceIceServersUseCase>(),
+        gh<_i501.ReportVoiceConnectingUseCase>(),
+        gh<_i136.ReportVoiceConnectedUseCase>(),
+        gh<_i17.SendVoiceHeartbeatUseCase>(),
+        gh<_i343.GetVoiceCallDisplayUseCase>(),
+        gh<_i819.LanguageService>(),
+        gh<_i493.VoiceCallSignalRService>(),
+        gh<_i698.VoiceWebRtcService>(),
+        gh<_i1045.VoiceCallKitService>(),
+        gh<_i827.VoiceDeviceSessionStorage>(),
+        gh<_i179.AppNavigatorService>(),
+      ),
+    );
     gh.factory<_i965.FamilyProgramsRepository>(
       () => _i378.FamilyProgramsRepositoryImpl(
         gh<_i603.FamilyProgramsRemoteDataSource>(),
@@ -1315,8 +1432,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i601.InfluencerDashboardRepository>(),
       ),
     );
-    gh.factory<_i494.GetInfluencerHomeUseCase>(
-      () => _i494.GetInfluencerHomeUseCase(
+    gh.factory<_i495.GetInfluencerHomeUseCase>(
+      () => _i495.GetInfluencerHomeUseCase(
         gh<_i601.InfluencerDashboardRepository>(),
       ),
     );
@@ -1325,15 +1442,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i601.InfluencerDashboardRepository>(),
       ),
     );
-    gh.factory<_i559.AddressLocationRepository>(
-      () => _i833.AddressLocationRepositoryImpl(
-        gh<_i74.AddressLocationRemoteDataSource>(),
-        gh<_i177.AddressLocationCache>(),
-      ),
-    );
     gh.factory<_i907.InfluencerBankAccountViewModel>(
       () => _i907.InfluencerBankAccountViewModel(
-        gh<_i938.GetInfluencerBanksUseCase>(),
+        gh<_i939.GetInfluencerBanksUseCase>(),
         gh<_i327.GetInfluencerBankAccountUseCase>(),
         gh<_i602.SaveInfluencerBankAccountUseCase>(),
         gh<_i5.DeleteInfluencerBankAccountUseCase>(),
@@ -1419,48 +1530,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
-    gh.factory<_i495.AckVoiceCallRingingUseCase>(
-      () => _i495.AckVoiceCallRingingUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i614.AnswerVoiceCallUseCase>(
-      () => _i614.AnswerVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i329.EndVoiceCallUseCase>(
-      () => _i329.EndVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i641.GetActiveVoiceCallUseCase>(
-      () => _i641.GetActiveVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i940.GetVoiceCallDetailsUseCase>(
-      () => _i940.GetVoiceCallDetailsUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i343.GetVoiceCallDisplayUseCase>(
-      () => _i343.GetVoiceCallDisplayUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i510.GetVoiceCallEventsUseCase>(
-      () => _i510.GetVoiceCallEventsUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i518.GetVoiceIceServersUseCase>(
-      () => _i518.GetVoiceIceServersUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i923.RegisterVoiceDeviceUseCase>(
-      () => _i923.RegisterVoiceDeviceUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i1059.RejectVoiceCallUseCase>(
-      () => _i1059.RejectVoiceCallUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i136.ReportVoiceConnectedUseCase>(
-      () => _i136.ReportVoiceConnectedUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i501.ReportVoiceConnectingUseCase>(
-      () => _i501.ReportVoiceConnectingUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i939.RevokeVoiceDeviceUseCase>(
-      () => _i939.RevokeVoiceDeviceUseCase(gh<_i937.VoiceCallRepository>()),
-    );
-    gh.factory<_i17.SendVoiceHeartbeatUseCase>(
-      () => _i17.SendVoiceHeartbeatUseCase(gh<_i937.VoiceCallRepository>()),
-    );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
         gh<_i311.ProfileRepository>(),
@@ -1509,6 +1578,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i832.GetSubscriptionMealDetailsUseCase>(
       () => _i832.GetSubscriptionMealDetailsUseCase(
         gh<_i63.MealDetailsRepository>(),
+      ),
+    );
+    gh.factory<_i653.CallingViewModel>(
+      () => _i653.CallingViewModel(
+        gh<_i613.VoiceCallManager>(),
+        gh<_i698.VoiceWebRtcService>(),
       ),
     );
     gh.factory<_i490.CreateSubscriptionCancellationRequestUseCase>(
@@ -1593,7 +1668,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i911.FamilyAllergiesViewModel>(
       () => _i911.FamilyAllergiesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i32.GetFoodPreferencesCatalogUseCase>(),
+        gh<_i33.GetFoodPreferencesCatalogUseCase>(),
         gh<_i515.SaveFamilyMemberAllergiesUseCase>(),
         gh<_i758.SaveFamilyMemberDislikedIngredientsUseCase>(),
       ),
@@ -1746,22 +1821,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i588.InfluencerAnalyticsRepository>(),
       ),
     );
-    gh.factory<_i1073.GeocodeAddressUseCase>(
-      () => _i1073.GeocodeAddressUseCase(gh<_i559.AddressLocationRepository>()),
-    );
-    gh.factory<_i163.GetLocationsCatalogUseCase>(
-      () => _i163.GetLocationsCatalogUseCase(
-        gh<_i559.AddressLocationRepository>(),
-      ),
-    );
-    gh.factory<_i1058.ReverseGeocodeLocationUseCase>(
-      () => _i1058.ReverseGeocodeLocationUseCase(
-        gh<_i559.AddressLocationRepository>(),
-      ),
-    );
     gh.factory<_i760.InfluencerDashboardViewModel>(
       () => _i760.InfluencerDashboardViewModel(
-        gh<_i494.GetInfluencerHomeUseCase>(),
+        gh<_i495.GetInfluencerHomeUseCase>(),
         gh<_i461.GetInfluencerLinksUseCase>(),
       ),
     );
@@ -1773,7 +1835,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i65.PushNotificationService>(
       () => _i65.PushNotificationService(
         gh<_i892.FirebaseMessaging>(),
-        gh<_i164.FlutterLocalNotificationsPlugin>(),
+        gh<_i163.FlutterLocalNotificationsPlugin>(),
         gh<_i179.AppNavigatorService>(),
         gh<_i227.TokenService>(),
         gh<_i148.DeviceIdService>(),
@@ -1788,30 +1850,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i42.SharedPrefHelper>(),
         gh<_i65.PushNotificationService>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
-      ),
-    );
-    gh.lazySingleton<_i613.VoiceCallManager>(
-      () => _i613.VoiceCallManager(
-        gh<_i923.RegisterVoiceDeviceUseCase>(),
-        gh<_i939.RevokeVoiceDeviceUseCase>(),
-        gh<_i641.GetActiveVoiceCallUseCase>(),
-        gh<_i940.GetVoiceCallDetailsUseCase>(),
-        gh<_i510.GetVoiceCallEventsUseCase>(),
-        gh<_i495.AckVoiceCallRingingUseCase>(),
-        gh<_i614.AnswerVoiceCallUseCase>(),
-        gh<_i1059.RejectVoiceCallUseCase>(),
-        gh<_i329.EndVoiceCallUseCase>(),
-        gh<_i518.GetVoiceIceServersUseCase>(),
-        gh<_i501.ReportVoiceConnectingUseCase>(),
-        gh<_i136.ReportVoiceConnectedUseCase>(),
-        gh<_i17.SendVoiceHeartbeatUseCase>(),
-        gh<_i343.GetVoiceCallDisplayUseCase>(),
-        gh<_i819.LanguageService>(),
-        gh<_i493.VoiceCallSignalRService>(),
-        gh<_i698.VoiceWebRtcService>(),
-        gh<_i1045.VoiceCallKitService>(),
-        gh<_i827.VoiceDeviceSessionStorage>(),
-        gh<_i179.AppNavigatorService>(),
       ),
     );
     gh.factory<_i372.SubscriptionBillingViewModel>(
@@ -1903,7 +1941,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
         gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i163.GetLocationsCatalogUseCase>(),
+        gh<_i164.GetLocationsCatalogUseCase>(),
         gh<_i901.AddCustomerAddressUseCase>(),
         gh<_i241.UpdateCustomerAddressUseCase>(),
         gh<_i624.DeleteCustomerAddressUseCase>(),
@@ -1926,12 +1964,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i610.ResendPasswordOtpUseCase>(),
         gh<_i1029.ResetPasswordUseCase>(),
         gh<_i227.TokenService>(),
-      ),
-    );
-    gh.factory<_i653.CallingViewModel>(
-      () => _i653.CallingViewModel(
-        gh<_i613.VoiceCallManager>(),
-        gh<_i698.VoiceWebRtcService>(),
       ),
     );
     gh.factory<_i1020.MealSelectionViewModel>(
@@ -1988,3 +2020,5 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
+
+class _$ExternalModules extends _i580.ExternalModules {}

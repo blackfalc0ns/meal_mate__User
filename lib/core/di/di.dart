@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../services/location_service.dart';
-import '../services/server_time_service.dart';
 import '../../features/calendar/domain/usecase/get_calendar_usecase.dart';
 import '../../features/notifications/domain/usecase/get_notifications_usecase.dart';
 import '../../features/notifications/domain/usecase/mark_all_notifications_read_usecase.dart';
@@ -24,14 +22,11 @@ import '../../features/auth/domain/usecase/resend_password_otp_usecase.dart';
 import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart';
 import '../../features/auth/domain/usecase/reset_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart';
-import '../../features/auth/presentation/manager/biometric_view_model.dart';
 import '../../features/auth/presentation/manager/calling_codes_view_model.dart';
 import '../../features/auth/presentation/manager/login_view_model.dart';
 import '../../features/auth/presentation/manager/logout_view_model.dart';
 import '../../features/auth/presentation/manager/password_recovery_view_model.dart';
 import '../../features/auth/presentation/manager/register_view_model.dart';
-import '../../features/change_password/domain/usecase/change_customer_password_usecase.dart';
-import '../../features/change_password/presentation/manager/change_password_view_model.dart';
 import '../../features/notifications/presentation/manager/notifications_view_model.dart';
 import '../../features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import '../../features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
@@ -47,6 +42,7 @@ import '../payment/payment_deep_link_coordinator.dart';
 import '../services/app_navigator_service.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/token_service.dart';
+import '../../features/calling/service/voice_call_signalr_service.dart';
 import 'di.config.dart';
 
 final getIt = GetIt.instance;
@@ -55,13 +51,12 @@ final getIt = GetIt.instance;
   preferRelativeImports: true, // default
 )
 Future<void> configureDependencies() async {
-  getIt.init();
-  if (!getIt.isRegistered<ServerTimeService>()) {
-    getIt.registerLazySingleton<ServerTimeService>(ServerTimeService.new);
+  if (!getIt.isRegistered<HubConnectionFactory>()) {
+    getIt.registerLazySingleton<HubConnectionFactory>(
+      () => VoiceCallSignalRService.defaultHubConnectionFactory,
+    );
   }
-  if (!getIt.isRegistered<LocationService>()) {
-    getIt.registerLazySingleton<LocationService>(() => const LocationService());
-  }
+  await getIt.init();
   if (!getIt.isRegistered<NotificationBadgeViewModel>()) {
     getIt.registerLazySingleton<NotificationBadgeViewModel>(
       () => NotificationBadgeViewModel(getIt<GetCalendarUseCase>()),
@@ -136,21 +131,6 @@ Future<void> configureDependencies() async {
         getIt<ForgotPasswordUseCase>(),
         getIt<ResendPasswordOtpUseCase>(),
         getIt<ResetPasswordUseCase>(),
-        getIt<TokenService>(),
-      ),
-    );
-  }
-  if (!getIt.isRegistered<BiometricViewModel>()) {
-    getIt.registerFactory<BiometricViewModel>(
-      () => BiometricViewModel(
-        getIt<BiometricService>(),
-      ),
-    );
-  }
-  if (!getIt.isRegistered<ChangePasswordViewModel>()) {
-    getIt.registerFactory<ChangePasswordViewModel>(
-      () => ChangePasswordViewModel(
-        getIt<ChangeCustomerPasswordUseCase>(),
         getIt<TokenService>(),
       ),
     );

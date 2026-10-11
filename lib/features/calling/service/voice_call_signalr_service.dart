@@ -52,12 +52,12 @@ class VoiceCallSignalRService {
     this._tokenService, {
     @visibleForTesting HubConnectionFactory? hubConnectionFactory,
   }) : _hubConnectionFactory =
-           hubConnectionFactory ?? _defaultHubConnectionFactory;
+           hubConnectionFactory ?? defaultHubConnectionFactory;
 
   final TokenService _tokenService;
   final HubConnectionFactory _hubConnectionFactory;
 
-  static HubConnection _defaultHubConnectionFactory(
+  static HubConnection defaultHubConnectionFactory(
     String url, {
     HttpConnectionOptions? options,
   }) {
