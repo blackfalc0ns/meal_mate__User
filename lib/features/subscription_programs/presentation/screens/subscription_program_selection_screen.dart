@@ -11,11 +11,14 @@ import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
+import 'package:meal_meat_user/core/widget/app_wolt_modal_sheet.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_flow_args.dart';
 import 'package:meal_meat_user/features/subscription_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_event.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_state.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/manager/subscription_programs_view_model.dart';
+import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_address_required_sheet.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_program_selection_view.dart';
 import 'package:meal_meat_user/features/subscription_programs/presentation/widgets/subscription_programs_loading_skeleton.dart';
 
@@ -32,6 +35,8 @@ class _SubscriptionProgramSelectionScreenState
   final ValueNotifier<int?> _selectedProgramNotifier = ValueNotifier<int?>(
     null,
   );
+  bool _isAddressPromptShown = false;
+  bool _isAddressSheetOpen = false;
 
   @override
   void dispose() {
@@ -50,77 +55,109 @@ class _SubscriptionProgramSelectionScreenState
             ..doIntent(const GetSubscriptionProgramsEvent()),
       child: Semantics(
         label: locale.nav_subscription,
-        child: Scaffold(
-          backgroundColor: color.surface,
-          body: Stack(
-            children: [
-              BlocBuilder<
-                SubscriptionProgramsViewModel,
-                SubscriptionProgramsState
-              >(
-                buildWhen: (previous, current) =>
-                    previous.isLoading != current.isLoading ||
-                    previous.isRefreshing != current.isRefreshing ||
-                    previous.isLoadingMore != current.isLoadingMore ||
-                    previous.isSuccess != current.isSuccess ||
-                    previous.failure != current.failure ||
-                    previous.loadMoreFailure != current.loadMoreFailure ||
-                    previous.programs != current.programs,
-                builder: _buildBody,
-              ),
-              CustomBackButton(
-                top: MediaQuery.paddingOf(context).top + Spacing.base,
-                onPressed: () => Navigator.maybePop(context),
-              ),
-              BlocSelector<
-                SubscriptionProgramsViewModel,
-                SubscriptionProgramsState,
-                List<SubscriptionProgramEntity>
-              >(
-                selector: (state) => state.programs,
-                builder: (context, programs) {
-                  return PositionedDirectional(
-                    start: Spacing.subscriptionProgramsHorizontalPadding,
-                    end: Spacing.subscriptionProgramsHorizontalPadding,
-                    bottom: Spacing.lg,
-                    child:
-                        SafeArea(
-                              top: false,
-                              child: ValueListenableBuilder<int?>(
-                                valueListenable: _selectedProgramNotifier,
-                                builder: (context, selectedProgramIndex, _) {
-                                  final selectedProgram =
-                                      (selectedProgramIndex != null &&
-                                          selectedProgramIndex >= 0 &&
-                                          selectedProgramIndex <
-                                              programs.length)
-                                      ? programs[selectedProgramIndex]
-                                      : null;
-                                  final isEnabled =
-                                      selectedProgram != null &&
-                                      selectedProgram.canSelect;
+        child: BlocListener<
+          SubscriptionProgramsViewModel,
+          SubscriptionProgramsState
+        >(
+          listenWhen: (previous, current) =>
+              (!previous.isSuccess && current.isSuccess) ||
+              (previous.hasDeliveryAddress != current.hasDeliveryAddress),
+          listener: (context, state) {
+            if (state.isAddressRequired && !_isAddressPromptShown) {
+              _isAddressPromptShown = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  unawaited(_openAddressRequiredFlow());
+                }
+              });
+            }
+          },
+          child: Scaffold(
+            backgroundColor: color.surface,
+            body: Stack(
+              children: [
+                BlocBuilder<
+                  SubscriptionProgramsViewModel,
+                  SubscriptionProgramsState
+                >(
+                  buildWhen: (previous, current) =>
+                      previous.isLoading != current.isLoading ||
+                      previous.isRefreshing != current.isRefreshing ||
+                      previous.isLoadingMore != current.isLoadingMore ||
+                      previous.isSuccess != current.isSuccess ||
+                      previous.failure != current.failure ||
+                      previous.loadMoreFailure != current.loadMoreFailure ||
+                      previous.programs != current.programs,
+                  builder: _buildBody,
+                ),
+                CustomBackButton(
+                  top: MediaQuery.paddingOf(context).top + Spacing.base,
+                  onPressed: () => Navigator.maybePop(context),
+                ),
+                BlocSelector<
+                  SubscriptionProgramsViewModel,
+                  SubscriptionProgramsState,
+                  ({List<SubscriptionProgramEntity> programs, bool isAddressRequired})
+                >(
+                  selector: (state) => (
+                    programs: state.programs,
+                    isAddressRequired: state.isAddressRequired,
+                  ),
+                  builder: (context, data) {
+                    final programs = data.programs;
+                    final isAddressRequired = data.isAddressRequired;
 
-                                  return AppSubscriptionButton.next(
-                                    text: locale.family_next_package_days,
-                                    onPressed: isEnabled
-                                        ? () => _openPackageSelection(programs)
-                                        : null,
-                                  );
-                                },
+                    return PositionedDirectional(
+                      start: Spacing.subscriptionProgramsHorizontalPadding,
+                      end: Spacing.subscriptionProgramsHorizontalPadding,
+                      bottom: Spacing.lg,
+                      child:
+                          SafeArea(
+                                top: false,
+                                child: ValueListenableBuilder<int?>(
+                                  valueListenable: _selectedProgramNotifier,
+                                  builder: (context, selectedProgramIndex, _) {
+                                    if (isAddressRequired) {
+                                      return AppSubscriptionButton.next(
+                                        text: locale
+                                            .subscription_program_address_required_action,
+                                        onPressed: _openAddressRequiredFlow,
+                                      );
+                                    }
+
+                                    final selectedProgram =
+                                        (selectedProgramIndex != null &&
+                                            selectedProgramIndex >= 0 &&
+                                            selectedProgramIndex <
+                                                programs.length)
+                                        ? programs[selectedProgramIndex]
+                                        : null;
+                                    final isEnabled =
+                                        selectedProgram != null &&
+                                        selectedProgram.canSelect;
+
+                                    return AppSubscriptionButton.next(
+                                      text: locale.family_next_package_days,
+                                      onPressed: isEnabled
+                                          ? () => _openPackageSelection(programs)
+                                          : null,
+                                    );
+                                  },
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                              .slideY(
+                                begin: 0.15,
+                                end: 0,
+                                duration: 350.ms,
+                                curve: Curves.easeOutCubic,
                               ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 350.ms, curve: Curves.easeOut)
-                            .slideY(
-                              begin: 0.15,
-                              end: 0,
-                              duration: 350.ms,
-                              curve: Curves.easeOutCubic,
-                            ),
-                  );
-                },
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -158,6 +195,7 @@ class _SubscriptionProgramSelectionScreenState
       onProgramSelected: _selectProgram,
       isLoadingMore: state.isLoadingMore,
       loadMoreFailure: state.loadMoreFailure,
+      onAddressRequired: _openAddressRequiredFlow,
       onLoadMore: () => context.read<SubscriptionProgramsViewModel>().doIntent(
         const LoadMoreSubscriptionProgramsEvent(),
       ),
@@ -170,6 +208,45 @@ class _SubscriptionProgramSelectionScreenState
   void _selectProgram(int index) {
     if (_selectedProgramNotifier.value == index) return;
     _selectedProgramNotifier.value = index;
+  }
+
+  Future<void> _openAddressRequiredFlow() async {
+    if (_isAddressSheetOpen || !mounted) return;
+    _isAddressSheetOpen = true;
+
+    try {
+      final shouldAddAddress = await AppWoltModalSheet.show<bool>(
+        context: context,
+        title: context
+            .localization.subscription_program_address_required_title,
+        child: SubscriptionProgramAddressRequiredSheet(
+          onAddAddress: () => Navigator.of(context).pop(true),
+          onDismiss: () => Navigator.of(context).pop(false),
+        ),
+      );
+
+      if (!mounted) return;
+
+      if (shouldAddAddress == true) {
+        final result = await Navigator.of(context).pushNamed(
+          AppRoutes.addressChooseLocation,
+          arguments: const SubscriptionFlowArgs(),
+        );
+
+        if (!mounted) return;
+
+        if (result == true) {
+          _isAddressPromptShown = false;
+          if (mounted) {
+            context.read<SubscriptionProgramsViewModel>().doIntent(
+              const GetSubscriptionProgramsEvent(isRefresh: true),
+            );
+          }
+        }
+      }
+    } finally {
+      _isAddressSheetOpen = false;
+    }
   }
 
   void _openPackageSelection(List<SubscriptionProgramEntity> programs) {

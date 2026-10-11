@@ -25,6 +25,7 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
     this.loadMoreFailure,
     this.onLoadMore,
     this.onRetryLoadMore,
+    this.onAddressRequired,
   });
 
   final bool showBottomSpace;
@@ -35,6 +36,7 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
   final Failure? loadMoreFailure;
   final VoidCallback? onLoadMore;
   final VoidCallback? onRetryLoadMore;
+  final VoidCallback? onAddressRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +125,15 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                               final isSelected =
                                                   index == selectedProgramIndex;
 
+                                              final isAddressRequired =
+                                                  !program.canSelect &&
+                                                  (program.availability
+                                                              ?.isAddressRequired ==
+                                                          true ||
+                                                      program.availability
+                                                              ?.status ==
+                                                          'address_required');
+
                                               return SubscriptionProgramGoalCard(
                                                 key: ValueKey(
                                                   program.programId,
@@ -147,10 +158,16 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                                 canSelect: program.canSelect,
                                                 disabledNotice: program.canSelect
                                                     ? null
-                                                    : locale.subscription_program_no_restaurants_in_area,
+                                                    : isAddressRequired
+                                                        ? locale
+                                                            .subscription_program_address_required_badge
+                                                        : locale
+                                                            .subscription_program_no_restaurants_in_area,
                                                 onTap: () {
                                                   if (program.canSelect) {
                                                     onProgramSelected(index);
+                                                  } else if (isAddressRequired) {
+                                                    onAddressRequired?.call();
                                                   } else {
                                                     final messenger =
                                                         ScaffoldMessenger.of(

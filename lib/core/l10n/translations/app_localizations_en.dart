@@ -6983,4 +6983,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get subscription_program_no_prepared_restaurants_notice =>
       'This program is currently unavailable as there are no prepared restaurants in your area.';
+
+  @override
+  String get subscription_program_address_required_title =>
+      'Set Delivery Address';
+
+  @override
+  String get subscription_program_address_required_description =>
+      'Please set your delivery address to view available programs and restaurants in your area.';
+
+  @override
+  String get subscription_program_address_required_action =>
+      'Set Delivery Address';
+
+  @override
+  String get subscription_program_address_required_badge => 'Address required';
 }

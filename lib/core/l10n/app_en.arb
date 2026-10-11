@@ -2684,5 +2684,9 @@
   "calendar_restaurant_busy": "The selected restaurant is busy on the delivery day.",
   "calendar_quota_exhausted": "The selected restaurant has reached its selection repetition limit.",
   "subscription_program_no_restaurants_in_area": "No restaurants available in your area",
-  "subscription_program_no_prepared_restaurants_notice": "This program is currently unavailable as there are no prepared restaurants in your area."
+  "subscription_program_no_prepared_restaurants_notice": "This program is currently unavailable as there are no prepared restaurants in your area.",
+  "subscription_program_address_required_title": "Set Delivery Address",
+  "subscription_program_address_required_description": "Please set your delivery address to view available programs and restaurants in your area.",
+  "subscription_program_address_required_action": "Set Delivery Address",
+  "subscription_program_address_required_badge": "Address required"
 }

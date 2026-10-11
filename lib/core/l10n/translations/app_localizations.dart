@@ -12817,6 +12817,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This program is currently unavailable as there are no prepared restaurants in your area.'**
   String get subscription_program_no_prepared_restaurants_notice;
+
+  /// No description provided for @subscription_program_address_required_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Delivery Address'**
+  String get subscription_program_address_required_title;
+
+  /// No description provided for @subscription_program_address_required_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Please set your delivery address to view available programs and restaurants in your area.'**
+  String get subscription_program_address_required_description;
+
+  /// No description provided for @subscription_program_address_required_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Delivery Address'**
+  String get subscription_program_address_required_action;
+
+  /// No description provided for @subscription_program_address_required_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Address required'**
+  String get subscription_program_address_required_badge;
 }
 
 class _AppLocalizationsDelegate

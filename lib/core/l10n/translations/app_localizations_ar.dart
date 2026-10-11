@@ -6863,4 +6863,20 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get subscription_program_no_prepared_restaurants_notice =>
       'هذا البرنامج غير متاح حاليًا لعدم توفر مطاعم جاهزة في منطقتك.';
+
+  @override
+  String get subscription_program_address_required_title =>
+      'اضافه عنوان التوصيل';
+
+  @override
+  String get subscription_program_address_required_description =>
+      'يرجى تحديد عنوان التوصيل لعرض البرامج والمطاعم المتاحة في منطقتك';
+
+  @override
+  String get subscription_program_address_required_action =>
+      'تحديد عنوان التوصيل';
+
+  @override
+  String get subscription_program_address_required_badge =>
+      'يتطلب تحديد العنوان';
 }
