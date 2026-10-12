@@ -58,10 +58,18 @@ class CallingViewModel extends Cubit<CallingState> {
             display: () => null,
             status: VoiceCallStatus.ended,
             durationSeconds: 0,
+            hasAudioPermissionError: false,
           ),
         );
       } else {
-        emit(state.copyWith(snapshot: () => snapshot, status: snapshot.status));
+        emit(
+          state.copyWith(
+            snapshot: () => snapshot,
+            status: snapshot.status,
+            hasAudioPermissionError:
+                _webrtcService?.hasAudioPermissionError ?? false,
+          ),
+        );
       }
     });
 
@@ -75,9 +83,18 @@ class CallingViewModel extends Cubit<CallingState> {
           durationSeconds: seconds,
           isMuted: _webrtcService?.isMuted ?? state.isMuted,
           isSpeakerOn: _webrtcService?.isSpeakerOn ?? state.isSpeakerOn,
+          hasAudioPermissionError:
+              _webrtcService?.hasAudioPermissionError ?? false,
         ),
       );
     });
+  }
+
+  Future<void> retryMicrophonePermission() async {
+    final success = await _webrtcService?.retryAcquiringLocalAudio() ?? false;
+    if (success) {
+      emit(state.copyWith(hasAudioPermissionError: false));
+    }
   }
 
   void setDriver(CallDriverEntity? driver) {
@@ -92,16 +109,22 @@ class CallingViewModel extends Cubit<CallingState> {
         final callId = event.callId ?? state.snapshot?.callId;
         if (callId != null) {
           unawaited(answerCall(callId));
+        } else if (_voiceCallManager == null) {
+          unawaited(answerCall('preview'));
         }
       case RejectCallEvent():
         final callId = event.callId ?? state.snapshot?.callId;
         if (callId != null) {
           unawaited(rejectCall(callId));
+        } else if (_voiceCallManager == null) {
+          unawaited(rejectCall('preview'));
         }
       case EndCallEvent():
         final callId = event.callId ?? state.snapshot?.callId;
         if (callId != null) {
           unawaited(endCall(callId));
+        } else if (_voiceCallManager == null) {
+          unawaited(endCall('preview'));
         }
       case ToggleMuteEvent():
         unawaited(toggleMute());

@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/di/di.dart';
 import '../../../../core/network/api_results.dart';
 import '../../../../core/services/app_navigator_service.dart';
 import '../../../../core/services/language_service.dart';
 import '../../../../core/services/server_time_service.dart';
+import '../../../../core/services/voice_permission_service.dart';
 import '../../../../config/routing/app_routes.dart';
 import '../data/data_source/voice_device_session_storage.dart';
 import '../data/models/request/voice_media_report_request_dto.dart';
@@ -122,8 +123,8 @@ class VoiceCallManager with WidgetsBindingObserver {
 
   ServerTimeService get _serverTimeService =>
       customServerTimeService ??
-      (getIt.isRegistered<ServerTimeService>()
-          ? getIt<ServerTimeService>()
+      (GetIt.instance.isRegistered<ServerTimeService>()
+          ? GetIt.instance<ServerTimeService>()
           : ServerTimeService());
 
   static const _uuid = Uuid();
@@ -142,6 +143,9 @@ class VoiceCallManager with WidgetsBindingObserver {
   final Set<String> _processedEventIds = {};
   final Set<String> _processingMessageIds = {};
   final Set<String> _processedMessageIds = {};
+  final Set<String> _terminalCallIds = {};
+  final Map<String, int> _lastSequenceByCallId = {};
+  final List<Map<String, dynamic>> _outboundIceCandidates = [];
   int _lastCommittedSequence = 0;
   int _currentGeneration = 0;
 
@@ -189,6 +193,11 @@ class VoiceCallManager with WidgetsBindingObserver {
     if (_isInitialized) return;
     _isInitialized = true;
 
+    _terminalCallIds.addAll(_sessionStorage.getTerminalCallIds());
+    _lastSequenceByCallId.addAll(_sessionStorage.getLastSequences());
+    _processedEventIds.addAll(_sessionStorage.getProcessedEventIds());
+    _processedMessageIds.addAll(_sessionStorage.getProcessedMessageIds());
+
     WidgetsBinding.instance.addObserver(this);
 
     _callKitService.initialize();
@@ -216,19 +225,26 @@ class VoiceCallManager with WidgetsBindingObserver {
   }
 
   Future<void> _reconcileAfterResume() async {
+    final epoch = _callSessionEpoch;
+    final expectedCallId = _currentSnapshot?.callId;
     final activeResult = await _getActiveVoiceCallUseCase();
+    if (epoch != _callSessionEpoch) return;
     if (activeResult is ApiSuccessResult<VoiceCallSnapshotEntity?>) {
       final active = activeResult.data;
       if (active == null) {
-        if (_currentSnapshot != null && !_currentSnapshot!.status.isTerminal) {
+        if (_currentSnapshot != null &&
+            _currentSnapshot!.callId == expectedCallId &&
+            !_currentSnapshot!.status.isTerminal) {
           debugPrint(
             '[VoiceCallManager] Resume reconciliation: server reports no active call',
           );
           await _callKitService.endAllCalls();
-          await _cleanupCall();
+          await _cleanupCall(targetCallId: expectedCallId);
         }
       } else {
-        await _applySnapshot(active);
+        if (epoch == _callSessionEpoch) {
+          await _applySnapshot(active);
+        }
       }
     }
   }
@@ -238,23 +254,27 @@ class VoiceCallManager with WidgetsBindingObserver {
     String? apnsVoipToken,
     bool force = false,
   }) async {
-    final existing = await _sessionStorage.getSession();
-    if (!force && existing != null && existing.isValid) {
-      _currentDeviceSession = existing;
-      unawaited(_connectSignalR());
-      return existing;
-    }
+    try {
+      final existing = await _sessionStorage.getSession();
+      if (!force && existing != null && existing.isValid) {
+        _currentDeviceSession = existing;
+        unawaited(_connectSignalR());
+        return existing;
+      }
 
-    final result = await _registerVoiceDeviceUseCase(
-      fcmDeviceTokenId: fcmDeviceTokenId,
-      apnsVoipToken: apnsVoipToken,
-      force: force,
-    );
+      final result = await _registerVoiceDeviceUseCase(
+        fcmDeviceTokenId: fcmDeviceTokenId,
+        apnsVoipToken: apnsVoipToken,
+        force: force,
+      );
 
-    if (result is ApiSuccessResult<VoiceDeviceSessionEntity>) {
-      _currentDeviceSession = result.data;
-      unawaited(_connectSignalR());
-      return result.data;
+      if (result is ApiSuccessResult<VoiceDeviceSessionEntity>) {
+        _currentDeviceSession = result.data;
+        unawaited(_connectSignalR());
+        return result.data;
+      }
+    } catch (e) {
+      debugPrint('[VoiceCallManager] Device registration failed: $e');
     }
 
     return null;
@@ -269,6 +289,7 @@ class VoiceCallManager with WidgetsBindingObserver {
         deviceSessionId: session.deviceSessionId,
         controlProof: session.controlProof,
       );
+      await _drainOutboundIceCandidates();
     } catch (e) {
       debugPrint('[VoiceCallManager] SignalR connect failed: $e');
     }
@@ -304,9 +325,17 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
     if (eventId.isNotEmpty) {
       _processedEventIds.add(eventId);
+      unawaited(_sessionStorage.saveProcessedEventId(eventId));
     }
 
     final callId = envelope['callId']?.toString() ?? '';
+    if (callId.isNotEmpty && _terminalCallIds.contains(callId)) {
+      debugPrint(
+        '[VoiceCallManager] Discarding event for terminal call $callId',
+      );
+      return;
+    }
+
     final envelopeSequence = (envelope['sequence'] as num?)?.toInt() ?? 0;
     final payload = envelope['payload'] is Map
         ? Map<String, dynamic>.from(envelope['payload'] as Map)
@@ -318,16 +347,17 @@ class VoiceCallManager with WidgetsBindingObserver {
         ? payloadSequence
         : envelopeSequence;
 
-    if (_currentSnapshot != null &&
-        _currentSnapshot!.callId == callId &&
-        authoritativeSequence < _currentSnapshot!.sequence) {
+    final lastSeq = _lastSequenceByCallId[callId] ?? 0;
+    if (authoritativeSequence < lastSeq) {
       debugPrint(
-        '[VoiceCallManager] Discarding outdated sequence: $authoritativeSequence < ${_currentSnapshot!.sequence}',
+        '[VoiceCallManager] Discarding outdated sequence: $authoritativeSequence < $lastSeq for call $callId',
       );
       return;
     }
 
+    _lastSequenceByCallId[callId] = authoritativeSequence;
     _lastCommittedSequence = authoritativeSequence;
+    unawaited(_sessionStorage.saveLastSequence(callId, authoritativeSequence));
 
     VoiceCallSnapshotEntity? snapshot;
     if (payload.isNotEmpty && payload.containsKey('status')) {
@@ -375,6 +405,25 @@ class VoiceCallManager with WidgetsBindingObserver {
     debugPrint(
       '[VoiceCallManager] Applying snapshot: callId=${snapshot.callId}, status=${snapshot.status}, seq=${snapshot.sequence}',
     );
+
+    if (_terminalCallIds.contains(snapshot.callId) &&
+        !snapshot.status.isTerminal) {
+      debugPrint(
+        '[VoiceCallManager] Discarding revive attempt for terminal call ${snapshot.callId}',
+      );
+      return;
+    }
+
+    if (_currentSnapshot != null &&
+        _currentSnapshot!.callId == snapshot.callId &&
+        _currentSnapshot!.status.isLive &&
+        snapshot.status == VoiceCallStatus.ringing) {
+      debugPrint(
+        '[VoiceCallManager] Discarding stale Ringing snapshot for live call ${snapshot.callId}',
+      );
+      return;
+    }
+
     if (_currentSnapshot != null &&
         _currentSnapshot!.callId != snapshot.callId) {
       debugPrint(
@@ -422,14 +471,24 @@ class VoiceCallManager with WidgetsBindingObserver {
       debugPrint(
         '[VoiceCallManager] Terminal call state: ${snapshot.status} for call ${snapshot.callId}',
       );
+      _terminalCallIds.add(snapshot.callId);
+      unawaited(_sessionStorage.saveTerminalCallId(snapshot.callId));
       _ringDeadlineTimer?.cancel();
       _ringDeadlineTimer = null;
       await _callKitService.endCall(snapshot.callId);
-      await _cleanupCall();
+      await _cleanupCall(targetCallId: snapshot.callId);
       return;
     }
 
     if (snapshot.status == VoiceCallStatus.ringing) {
+      if (_currentSnapshot != null &&
+          _currentSnapshot!.callId == snapshot.callId &&
+          _currentSnapshot!.status.isLive) {
+        debugPrint(
+          '[VoiceCallManager] Ignoring Ringing snapshot for live call ${snapshot.callId}',
+        );
+        return;
+      }
       final nowServer = _serverTimeService.nowUtc;
       final deadline = snapshot.deadlineAtUtc;
 
@@ -499,6 +558,13 @@ class VoiceCallManager with WidgetsBindingObserver {
     debugPrint(
       '[VoiceCallManager] CallKit action: ${event.type} for callId: ${event.callId}',
     );
+    if (event.callId.isEmpty) return;
+    if (_currentSnapshot != null && event.callId != _currentSnapshot!.callId) {
+      debugPrint(
+        '[VoiceCallManager] Discarding native CallKit action ${event.type} for old/mismatch call ${event.callId} (current: ${_currentSnapshot!.callId})',
+      );
+      return;
+    }
     switch (event.type) {
       case CallKitActionType.accept:
         unawaited(answerCall(event.callId));
@@ -515,22 +581,31 @@ class VoiceCallManager with WidgetsBindingObserver {
 
   Future<void> _handleRingTimeout(String callId) async {
     debugPrint('[VoiceCallManager] CallKit ring timeout for $callId');
+    if (_currentSnapshot != null && _currentSnapshot!.callId != callId) return;
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
     await _reconcileCall(callId);
-    if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
-      await _cleanupCall();
+    if (_currentSnapshot?.callId == callId &&
+        _currentSnapshot?.status == VoiceCallStatus.ringing) {
+      await _cleanupCall(targetCallId: callId);
     }
   }
 
   Future<ApiResult<void>> handleReceiverHangup(String callId) async {
+    if (_currentSnapshot != null && _currentSnapshot!.callId != callId) {
+      debugPrint(
+        '[VoiceCallManager] Hangup for call $callId ignored because current call is ${_currentSnapshot!.callId}',
+      );
+      await _callKitService.endCall(callId);
+      return const ApiSuccessResult<void>(data: null);
+    }
     final current = _currentSnapshot;
     if (current == null || current.status.isTerminal) {
       debugPrint(
         '[VoiceCallManager] Hangup on terminal or null call; performing idempotent cleanup',
       );
       await _callKitService.endCall(callId);
-      await _cleanupCall();
+      await _cleanupCall(targetCallId: callId);
       return const ApiSuccessResult<void>(data: null);
     }
 
@@ -805,6 +880,18 @@ class VoiceCallManager with WidgetsBindingObserver {
         'sdpMLineIndex': candidate.sdpMLineIndex,
     };
 
+    if (!_signalRService.isConnected || !_signalRService.isBound) {
+      debugPrint(
+        '[VoiceCallManager] SignalR not bound yet; queueing outbound ICE candidate',
+      );
+      _outboundIceCandidates.add({
+        'callId': snapshot.callId,
+        'candidateData': candidateMap,
+        'generation': _currentGeneration,
+      });
+      return;
+    }
+
     unawaited(
       _signalRService.sendIceCandidate(
         callId: snapshot.callId,
@@ -813,6 +900,33 @@ class VoiceCallManager with WidgetsBindingObserver {
         generation: _currentGeneration,
       ),
     );
+  }
+
+  Future<void> _drainOutboundIceCandidates() async {
+    if (_outboundIceCandidates.isEmpty) return;
+    final current = _currentSnapshot;
+    if (current == null || current.status.isTerminal) {
+      _outboundIceCandidates.clear();
+      return;
+    }
+
+    final toDrain = List<Map<String, dynamic>>.from(_outboundIceCandidates);
+    _outboundIceCandidates.clear();
+
+    for (final item in toDrain) {
+      final callId = item['callId'] as String;
+      final candidateData = item['candidateData'] as Map<String, dynamic>;
+      final generation = item['generation'] as int;
+
+      if (callId == current.callId && generation == _currentGeneration) {
+        await _signalRService.sendIceCandidate(
+          callId: callId,
+          candidateData: candidateData,
+          messageId: _uuid.v4(),
+          generation: generation,
+        );
+      }
+    }
   }
 
   void _handleWebRtcConnectionStateChange(RTCPeerConnectionState state) {
@@ -1041,35 +1155,49 @@ class VoiceCallManager with WidgetsBindingObserver {
   Future<void> _reconcileAfterReconnect() async {
     final session = _currentDeviceSession;
     if (session == null || !session.isValid) return;
+    final epoch = _callSessionEpoch;
+    final expectedCallId = _currentSnapshot?.callId;
 
     try {
       await _signalRService.bindDeviceSession(
         session.deviceSessionId,
         session.controlProof,
       );
+      await _drainOutboundIceCandidates();
     } catch (_) {}
+    if (epoch != _callSessionEpoch) return;
 
     final activeResult = await _getActiveVoiceCallUseCase();
+    if (epoch != _callSessionEpoch) return;
+
     if (activeResult is ApiSuccessResult<VoiceCallSnapshotEntity?>) {
       final active = activeResult.data;
       if (active == null) {
-        if (_currentSnapshot != null && !_currentSnapshot!.status.isTerminal) {
+        if (_currentSnapshot != null &&
+            _currentSnapshot!.callId == expectedCallId &&
+            !_currentSnapshot!.status.isTerminal) {
           debugPrint(
             '[VoiceCallManager] Active call reconciliation: No active call on server',
           );
           await _callKitService.endAllCalls();
-          await _cleanupCall();
+          await _cleanupCall(targetCallId: expectedCallId);
         }
       } else {
-        await _applySnapshot(active);
-        final eventsRes = await _getVoiceCallEventsUseCase(
-          active.callId,
-          afterSequence: _lastCommittedSequence,
-        );
-        if (eventsRes is ApiSuccessResult<List<VoiceCallEventEntity>>) {
-          for (final event in eventsRes.data) {
-            if (event.payloadSnapshot != null) {
-              await _applySnapshot(event.payloadSnapshot!);
+        if (epoch == _callSessionEpoch) {
+          await _applySnapshot(active);
+          if (epoch == _callSessionEpoch) {
+            final eventsRes = await _getVoiceCallEventsUseCase(
+              active.callId,
+              afterSequence: _lastCommittedSequence,
+            );
+            if (epoch == _callSessionEpoch &&
+                eventsRes is ApiSuccessResult<List<VoiceCallEventEntity>>) {
+              for (final event in eventsRes.data) {
+                if (epoch != _callSessionEpoch) break;
+                if (event.payloadSnapshot != null) {
+                  await _applySnapshot(event.payloadSnapshot!);
+                }
+              }
             }
           }
         }
@@ -1080,8 +1208,16 @@ class VoiceCallManager with WidgetsBindingObserver {
   Future<ApiResult<VoiceCallSnapshotEntity>> _reconcileCall(
     String callId,
   ) async {
+    final epoch = _callSessionEpoch;
     debugPrint('[VoiceCallManager] Reconciling call details for $callId');
     final res = await _getVoiceCallDetailsUseCase(callId);
+    if (epoch != _callSessionEpoch) return res;
+    if (_currentSnapshot != null && _currentSnapshot!.callId != callId) {
+      debugPrint(
+        '[VoiceCallManager] Discarding reconciled details for $callId because current call is ${_currentSnapshot!.callId}',
+      );
+      return res;
+    }
     if (res is ApiSuccessResult<VoiceCallSnapshotEntity>) {
       await _applySnapshot(res.data);
     }
@@ -1165,6 +1301,22 @@ class VoiceCallManager with WidgetsBindingObserver {
       return false;
     }
 
+    // Ensure microphone permission is requested before initializing audio
+    try {
+      final isGranted =
+          await VoicePermissionService.instance.isMicrophoneGranted();
+      if (!isGranted) {
+        debugPrint(
+          '[VoiceCallManager] Requesting microphone permission before answering call $callId',
+        );
+        await VoicePermissionService.instance.requestMicrophone();
+      }
+    } catch (e) {
+      debugPrint(
+        '[VoiceCallManager] Error checking/requesting microphone permission: $e',
+      );
+    }
+
     try {
       await _webrtcService.initializePeerConnection(
         iceServers: iceResult.data.iceServers,
@@ -1178,7 +1330,6 @@ class VoiceCallManager with WidgetsBindingObserver {
         '[VoiceCallManager] WebRTC initializePeerConnection failed: $e',
       );
       _isWebRtcReady = false;
-      return false;
     }
 
     await _drainPendingRtcQueue(callId, epoch);
@@ -1370,8 +1521,17 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _cleanupCall() async {
+  Future<void> _cleanupCall({String? targetCallId}) async {
+    if (targetCallId != null &&
+        _currentSnapshot != null &&
+        _currentSnapshot!.callId != targetCallId) {
+      debugPrint(
+        '[VoiceCallManager] Ignoring cleanup for call $targetCallId because current call is ${_currentSnapshot!.callId}',
+      );
+      return;
+    }
     _callSessionEpoch++;
+    _outboundIceCandidates.clear();
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
     _heartbeatTimer?.cancel();
@@ -1419,6 +1579,11 @@ class VoiceCallManager with WidgetsBindingObserver {
     await _signalRService.disconnect();
     await _revokeVoiceDeviceUseCase();
     _currentDeviceSession = null;
+    _terminalCallIds.clear();
+    _lastSequenceByCallId.clear();
+    _processedEventIds.clear();
+    _processedMessageIds.clear();
+    await _sessionStorage.clearOnLogout();
   }
 
   void dispose() {

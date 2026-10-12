@@ -9,10 +9,12 @@ class CallingIncomingActions extends StatelessWidget {
     super.key,
     required this.onAccept,
     required this.onDecline,
+    this.isLoading = false,
   });
 
   final VoidCallback onAccept;
   final VoidCallback onDecline;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class CallingIncomingActions extends StatelessWidget {
           backgroundColor: color.callAccept,
           labelColor: color.callAccept,
           onTap: onAccept,
+          isLoading: isLoading,
         ),
         CallingIncomingActionButton(
           iconAsset: Assets.callEnd,
@@ -35,6 +38,7 @@ class CallingIncomingActions extends StatelessWidget {
           backgroundColor: color.callDecline,
           labelColor: color.callDecline,
           onTap: onDecline,
+          isLoading: false,
         ),
       ],
     );

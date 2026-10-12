@@ -13,6 +13,7 @@ class CallingState {
     this.isMuted = false,
     this.isSpeakerOn = false,
     this.isLoading = false,
+    this.hasAudioPermissionError = false,
     this.errorMessage,
   });
 
@@ -24,6 +25,7 @@ class CallingState {
   final bool isMuted;
   final bool isSpeakerOn;
   final bool isLoading;
+  final bool hasAudioPermissionError;
   final String? errorMessage;
 
   String get formattedDuration {
@@ -77,6 +79,7 @@ class CallingState {
     bool? isMuted,
     bool? isSpeakerOn,
     bool? isLoading,
+    bool? hasAudioPermissionError,
     String? Function()? errorMessage,
   }) {
     return CallingState(
@@ -88,6 +91,8 @@ class CallingState {
       isMuted: isMuted ?? this.isMuted,
       isSpeakerOn: isSpeakerOn ?? this.isSpeakerOn,
       isLoading: isLoading ?? this.isLoading,
+      hasAudioPermissionError:
+          hasAudioPermissionError ?? this.hasAudioPermissionError,
       errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
     );
   }

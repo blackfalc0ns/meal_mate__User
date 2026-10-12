@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/device_id_service.dart';
@@ -13,7 +15,6 @@ import 'package:meal_meat_user/core/services/push_notification_payload.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:flutter_callkit_incoming/entities/entities.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/features/calling/service/voice_call_manager.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_response_entity.dart';
@@ -25,6 +26,7 @@ import 'package:meal_meat_user/firebase_options.dart';
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  logPushNotificationMessage('background', message);
 
   if (message.data.containsKey('envelope') ||
       message.data['type'] == 'voice-call') {
@@ -48,8 +50,23 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
               if (deadlineStr != null && deadlineStr.isNotEmpty) {
                 final deadline = DateTime.tryParse(deadlineStr)?.toUtc();
                 if (deadline != null) {
-                  final diff = deadline.difference(DateTime.now().toUtc());
+                  int serverOffsetMs = 0;
+                  try {
+                    final prefs = await SharedPreferences.getInstance();
+                    serverOffsetMs = prefs.getInt('server_time_offset_ms') ?? 0;
+                  } catch (e) {
+                    debugPrint(
+                      '[PushNotification] Failed reading server offset in bg: $e',
+                    );
+                  }
+                  final nowServer = DateTime.now().toUtc().add(
+                        Duration(milliseconds: serverOffsetMs),
+                      );
+                  final diff = deadline.difference(nowServer);
                   if (diff.isNegative || diff.inMilliseconds <= 0) {
+                    debugPrint(
+                      '[PushNotification] Call ring deadline already expired: $deadline vs serverNow: $nowServer',
+                    );
                     return; // already expired
                   }
                   durationMs = diff.inMilliseconds;
@@ -94,17 +111,20 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
             } else if (status == 'rejected' ||
                 status == 'cancelled' ||
                 status == 'missed' ||
+                status == 'failed' ||
                 status == 'ended') {
               await FlutterCallkitIncoming.endCall(callId);
             }
           }
         }
-      } catch (_) {}
+      } catch (e) {
+        debugPrint(
+          '[PushNotification] Error processing background voice envelope: $e',
+        );
+      }
     }
     return;
   }
-
-  logPushNotificationMessage('background', message);
 }
 
 void logPushNotificationMessage(String source, RemoteMessage message) {
@@ -157,6 +177,10 @@ Map<String, dynamic> _sanitizePushNotificationData(Map<String, dynamic> data) {
 }
 
 Object? _sanitizeDebugValue(String key, Object? value) {
+  if (key.toLowerCase() == 'envelope') {
+    return '[REDACTED_ENVELOPE]';
+  }
+
   if (value is Map) {
     return value.map(
       (nestedKey, nestedValue) => MapEntry(
@@ -183,7 +207,12 @@ bool _looksSensitivePushKey(String key) {
   final normalized = key.toLowerCase();
   return normalized.contains('token') ||
       normalized.contains('secret') ||
-      normalized.contains('password');
+      normalized.contains('password') ||
+      normalized.contains('authorization') ||
+      normalized.contains('controlproof') ||
+      normalized.contains('sdp') ||
+      normalized.contains('ice') ||
+      normalized.contains('address');
 }
 
 String _maskDebugValue(String value) {
@@ -254,7 +283,7 @@ class PushNotificationService {
     final token = await _messaging.getToken();
     await registerCurrentToken(token: token);
     try {
-      unawaited(getIt<VoiceCallManager>().initialize());
+      unawaited(GetIt.instance<VoiceCallManager>().initialize());
     } catch (_) {}
     return token;
   }
@@ -292,11 +321,11 @@ class PushNotificationService {
               voipToken = await FlutterCallkitIncoming.getDevicePushTokenVoIP();
             } catch (_) {}
           }
-          if (getIt.isRegistered<VoiceCallManager>()) {
-            await getIt<VoiceCallManager>().ensureDeviceRegistered(
+          if (GetIt.instance.isRegistered<VoiceCallManager>()) {
+            await GetIt.instance<VoiceCallManager>().ensureDeviceRegistered(
               fcmDeviceTokenId: fcmDeviceTokenId,
               apnsVoipToken: voipToken,
-              force: true,
+              force: false,
             );
           }
         }
@@ -320,8 +349,8 @@ class PushNotificationService {
         return;
       }
 
-      if (getIt.isRegistered<VoiceCallManager>()) {
-        await getIt<VoiceCallManager>().onLogout();
+      if (GetIt.instance.isRegistered<VoiceCallManager>()) {
+        await GetIt.instance<VoiceCallManager>().onLogout();
       }
 
       await _unregisterDeviceTokenUseCase(
@@ -373,7 +402,7 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await getIt<VoiceCallManager>().handleFcmPushMessage(message.data);
+        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(message.data);
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push: $e');
       }
@@ -417,7 +446,7 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await getIt<VoiceCallManager>().handleFcmPushMessage(message.data);
+        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(message.data);
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push tap: $e');
       }

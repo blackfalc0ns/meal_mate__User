@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
@@ -8,7 +9,6 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/features/calling/domain/entities/call_driver_entity.dart';
@@ -43,8 +43,8 @@ class IncomingCallScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (_) {
-        if (getIt.isRegistered<CallingViewModel>()) {
-          final vm = getIt<CallingViewModel>();
+        if (GetIt.instance.isRegistered<CallingViewModel>()) {
+          final vm = GetIt.instance<CallingViewModel>();
           if (driver != null) {
             vm.setDriver(driver);
           }
@@ -92,6 +92,17 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
         if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
+          }
+        } else if (state.status == VoiceCallStatus.accepted ||
+            state.status == VoiceCallStatus.connecting ||
+            state.status == VoiceCallStatus.active) {
+          if (ModalRoute.of(context)?.isCurrent == true) {
+            unawaited(
+              context.pushReplacementNamed(
+                AppRoutes.activeCall,
+                arguments: state.driver ?? widget.driver,
+              ),
+            );
           }
         }
       },
@@ -171,18 +182,15 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
                     ),
                     const SizedBox(height: Spacing.xs),
                     CallingIncomingActions(
+                      isLoading: state.isLoading,
                       onAccept: () {
+                        if (state.isLoading) return;
                         context
                             .read<CallingViewModel>()
                             .doIntent(const AnswerCallEvent());
-                        unawaited(
-                          context.pushReplacementNamed(
-                            AppRoutes.activeCall,
-                            arguments: activeDriver,
-                          ),
-                        );
                       },
                       onDecline: () {
+                        if (state.isLoading) return;
                         context
                             .read<CallingViewModel>()
                             .doIntent(const RejectCallEvent());

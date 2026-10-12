@@ -153,7 +153,11 @@ abstract class ExternalModules {
 
   @lazySingleton
   FlutterSecureStorage flutterSecureStorage() {
-    return const FlutterSecureStorage();
+    return const FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        resetOnError: true,
+      ),
+    );
   }
 
   @lazySingleton

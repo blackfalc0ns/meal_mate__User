@@ -102,9 +102,11 @@ class FakeVoiceCallRepository implements VoiceCallRepository {
   Future<ApiResult<void>> revokeDevice() async =>
       const ApiSuccessResult<void>(data: null);
 
+  ApiResult<VoiceCallSnapshotEntity?>? activeCallResult;
+
   @override
   Future<ApiResult<VoiceCallSnapshotEntity?>> getActiveCall() async =>
-      const ApiSuccessResult<VoiceCallSnapshotEntity?>(data: null);
+      activeCallResult ?? const ApiSuccessResult<VoiceCallSnapshotEntity?>(data: null);
 
   @override
   Future<ApiResult<VoiceCallSnapshotEntity>> getCallDetails(
@@ -218,16 +220,23 @@ class FakeVoiceCallRepository implements VoiceCallRepository {
 class FakeCallKitService extends Fake implements VoiceCallKitService {
   final List<String> endedCalls = [];
   final List<String> shownCalls = [];
+  final actionController = StreamController<CallKitActionEvent>.broadcast();
 
   @override
   void initialize() {}
 
   @override
-  Stream<CallKitActionEvent> get onAction => const Stream.empty();
+  Stream<CallKitActionEvent> get onAction => actionController.stream;
 
   @override
   Future<void> endCall(String callId) async {
     endedCalls.add(callId);
+  }
+
+  int endAllCallsCount = 0;
+  @override
+  Future<void> endAllCalls() async {
+    endAllCallsCount++;
   }
 
   @override
@@ -243,7 +252,9 @@ class FakeCallKitService extends Fake implements VoiceCallKitService {
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    unawaited(actionController.close());
+  }
 }
 
 class FakeSignalRService extends Fake implements VoiceCallSignalRService {
@@ -269,6 +280,29 @@ class FakeSignalRService extends Fake implements VoiceCallSignalRService {
   @override
   bool get isBound => _isBound;
   set isBound(bool val) => _isBound = val;
+
+  @override
+  Future<void> connectAndBind({
+    required String deviceSessionId,
+    required String controlProof,
+  }) async {
+    if (!_isConnected) {
+      throw Exception('SignalR connect failed');
+    }
+    _isConnected = true;
+    _isBound = true;
+    bindCount++;
+    lastBoundSessionId = deviceSessionId;
+    lastBoundControlProof = controlProof;
+  }
+
+  int disconnectCount = 0;
+  @override
+  Future<void> disconnect() async {
+    disconnectCount++;
+    _isConnected = false;
+    _isBound = false;
+  }
 
   final List<Map<String, dynamic>> sentAnswers = [];
   final List<Map<String, dynamic>> sentIceCandidates = [];
@@ -369,6 +403,12 @@ class FakeDeviceSessionStorage extends Fake
     expiresAtUtc: DateTime.utc(2030),
   );
 
+  final Set<String> terminalCallIds = {};
+  final Map<String, int> lastSequences = {};
+  final Set<String> processedEventIds = {};
+  final Set<String> processedMessageIds = {};
+  String? fcmDeviceTokenId;
+
   @override
   Future<VoiceDeviceSessionEntity?> getSession() async => session;
 
@@ -380,7 +420,57 @@ class FakeDeviceSessionStorage extends Fake
   @override
   Future<void> clearSession() async {
     session = null;
+    fcmDeviceTokenId = null;
   }
+
+  @override
+  Future<void> clearOnLogout() async {
+    await clearSession();
+    terminalCallIds.clear();
+    lastSequences.clear();
+    processedEventIds.clear();
+    processedMessageIds.clear();
+  }
+
+  @override
+  Future<void> saveTerminalCallId(String callId) async {
+    terminalCallIds.add(callId);
+  }
+
+  @override
+  Set<String> getTerminalCallIds() => Set.from(terminalCallIds);
+
+  @override
+  Future<void> saveLastSequence(String callId, int sequence) async {
+    lastSequences[callId] = sequence;
+  }
+
+  @override
+  Map<String, int> getLastSequences() => Map.from(lastSequences);
+
+  @override
+  Future<void> saveProcessedEventId(String eventId) async {
+    processedEventIds.add(eventId);
+  }
+
+  @override
+  Set<String> getProcessedEventIds() => Set.from(processedEventIds);
+
+  @override
+  Future<void> saveProcessedMessageId(String messageId) async {
+    processedMessageIds.add(messageId);
+  }
+
+  @override
+  Set<String> getProcessedMessageIds() => Set.from(processedMessageIds);
+
+  @override
+  Future<void> saveFcmDeviceTokenId(String tokenId) async {
+    fcmDeviceTokenId = tokenId;
+  }
+
+  @override
+  Future<String?> getFcmDeviceTokenId() async => fcmDeviceTokenId;
 }
 
 class FakeNavigatorService extends Fake implements AppNavigatorService {
@@ -1799,5 +1889,231 @@ void main() {
         expect(repo.endCount, equals(initialEndCount + 1));
       },
     );
+
+    group('VoiceCallManager V2 Backend Alignment & Integrity (Tasks 1-10)', () {
+      test('stale /active null result cannot end a newer call B', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Call A starts
+        final envelopeA = {
+          'eventId': 'ev-a-1',
+          'callId': 'call-A',
+          'sequence': 1,
+          'payload': {
+            'status': 'Ringing',
+            'deadlineAtUtc': DateTime.now()
+                .toUtc()
+                .add(const Duration(seconds: 30))
+                .toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(envelopeA);
+        await pumpEventQueue();
+
+        // Call B arrives and becomes Active
+        final envelopeB = {
+          'eventId': 'ev-b-1',
+          'callId': 'call-B',
+          'sequence': 1,
+          'payload': {
+            'status': 'Active',
+            'connectedAtUtc': DateTime.now().toUtc().toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(envelopeB);
+        await pumpEventQueue();
+
+        expect(manager.currentSnapshot?.callId, equals('call-B'));
+
+        // Cleanup targeted at call-A must not tear down call-B
+        await manager.handleReceiverHangup('call-A');
+        await pumpEventQueue();
+
+        expect(manager.currentSnapshot?.callId, equals('call-B'));
+        expect(callKit.endedCalls.contains('call-B'), isFalse);
+      });
+
+      test('stale details cannot roll live Active call back to Ringing', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Call A is Active
+        final activeEnv = {
+          'eventId': 'ev-act-1',
+          'callId': 'call-roll-1',
+          'sequence': 2,
+          'payload': {
+            'status': 'Active',
+            'connectedAtUtc': DateTime.now().toUtc().toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(activeEnv);
+        await pumpEventQueue();
+
+        expect(manager.currentSnapshot?.status, equals(VoiceCallStatus.active));
+
+        // Stale Ringing envelope arrives with sequence 1
+        final staleRingEnv = {
+          'eventId': 'ev-ring-old',
+          'callId': 'call-roll-1',
+          'sequence': 1,
+          'payload': {
+            'status': 'Ringing',
+            'deadlineAtUtc': DateTime.now()
+                .toUtc()
+                .add(const Duration(seconds: 30))
+                .toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(staleRingEnv);
+        await pumpEventQueue();
+
+        // Status must remain Active
+        expect(manager.currentSnapshot?.status, equals(VoiceCallStatus.active));
+      });
+
+      test('terminal call cannot be revived by incoming event or older snapshot', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Call ends
+        final endEnv = {
+          'eventId': 'ev-term-1',
+          'callId': 'call-term-revive',
+          'sequence': 5,
+          'payload': {'status': 'Ended'},
+        };
+        manager.handleSignalRCallEventForTesting(endEnv);
+        await pumpEventQueue();
+
+        expect(manager.currentSnapshot, isNull);
+
+        // Attempt to revive with Ringing
+        final reviveEnv = {
+          'eventId': 'ev-revive-attempt',
+          'callId': 'call-term-revive',
+          'sequence': 6,
+          'payload': {
+            'status': 'Ringing',
+            'deadlineAtUtc': DateTime.now()
+                .toUtc()
+                .add(const Duration(seconds: 30))
+                .toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(reviveEnv);
+        await pumpEventQueue();
+
+        // Still null, not revived
+        expect(manager.currentSnapshot, isNull);
+      });
+
+      test('CallKit native event for mismatching callId is ignored', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Current call is B
+        final envelopeB = {
+          'eventId': 'ev-b-active',
+          'callId': 'call-B-live',
+          'sequence': 2,
+          'payload': {
+            'status': 'Active',
+            'connectedAtUtc': DateTime.now().toUtc().toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(envelopeB);
+        await pumpEventQueue();
+
+        expect(manager.currentSnapshot?.callId, equals('call-B-live'));
+
+        // Native CallKit ends call-A (delayed event from previous call)
+        callKit.actionController.add(
+          const CallKitActionEvent(
+            type: CallKitActionType.ended,
+            callId: 'call-A-old',
+          ),
+        );
+        await pumpEventQueue();
+
+        // Call B must remain Active and repo.end must not be called
+        expect(manager.currentSnapshot?.callId, equals('call-B-live'));
+        expect(repo.endCount, equals(0));
+      });
+
+      test('onLogout clears session storage and resets in-memory sequence/terminal tracking', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Mark a terminal call
+        final endEnv = {
+          'eventId': 'ev-term-logout',
+          'callId': 'call-term-logout',
+          'sequence': 3,
+          'payload': {'status': 'Ended'},
+        };
+        manager.handleSignalRCallEventForTesting(endEnv);
+        await pumpEventQueue();
+
+        expect(storage.terminalCallIds.contains('call-term-logout'), isTrue);
+
+        await manager.onLogout();
+        await pumpEventQueue();
+
+        expect(storage.session, isNull);
+        expect(storage.terminalCallIds, isEmpty);
+        expect(storage.lastSequences, isEmpty);
+        expect(storage.processedEventIds, isEmpty);
+      });
+
+      test('Outbound ICE candidate queues when SignalR is not bound and drains upon bind', () async {
+        await manager.initialize();
+        await pumpEventQueue();
+
+        // Call is Ringing
+        final envelope = {
+          'eventId': 'ev-ice-queue',
+          'callId': 'call-ice-queue',
+          'sequence': 1,
+          'payload': {
+            'status': 'Ringing',
+            'deadlineAtUtc': DateTime.now()
+                .toUtc()
+                .add(const Duration(seconds: 30))
+                .toIso8601String(),
+          },
+        };
+        manager.handleSignalRCallEventForTesting(envelope);
+        await pumpEventQueue();
+
+        // Make SignalR not bound
+        signalR.isBound = false;
+
+        // WebRTC produces local candidate
+        final candidate = RTCIceCandidate('candidate:dummy', 'audio', 0);
+        webrtc.onLocalIceCandidate!(candidate);
+        await pumpEventQueue();
+
+        // Candidate was queued, not sent yet
+        expect(
+          signalR.sentIceCandidates.where((c) => c['callId'] == 'call-ice-queue'),
+          isEmpty,
+        );
+
+        // Server reports this call as still active
+        repo.activeCallResult = ApiSuccessResult(data: manager.currentSnapshot);
+
+        // SignalR reconnects and binds
+        manager.handleSignalRReconnectedForTesting();
+        await pumpEventQueue();
+
+        // Outbound queue drained
+        expect(
+          signalR.sentIceCandidates.where((c) => c['callId'] == 'call-ice-queue'),
+          hasLength(1),
+        );
+      });
+    });
   });
 }

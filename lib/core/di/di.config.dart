@@ -643,6 +643,7 @@ import '../services/server_time_interceptor.dart' as _i605;
 import '../services/server_time_service.dart' as _i1039;
 import '../services/token_interceptor.dart' as _i1056;
 import '../services/token_service.dart' as _i227;
+import '../services/voice_permission_service.dart' as _i161;
 import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source.dart'
     as _i1038;
 import '../subscription_tiers/data/data_source/subscription_tier_remote_data_source_impl.dart'
@@ -699,6 +700,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1039.ServerTimeService>(
       () => _i1039.ServerTimeService(),
+    );
+    gh.lazySingleton<_i161.VoicePermissionService>(
+      () => const _i161.VoicePermissionService(),
     );
     gh.lazySingleton<_i1045.VoiceCallKitService>(
       () => _i1045.VoiceCallKitService(),

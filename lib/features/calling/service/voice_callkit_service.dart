@@ -161,14 +161,14 @@ class VoiceCallKitService {
     } catch (e) {
       debugPrint('[CallKit] Failed to end all calls: $e');
     } finally {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        _isEndingAllCalls = false;
-        _programmaticEndedCallIds.clear();
-      });
+      _isEndingAllCalls = false;
+      _programmaticEndedCallIds.clear();
     }
   }
 
   void dispose() {
+    _isEndingAllCalls = false;
+    _programmaticEndedCallIds.clear();
     unawaited(_callKitSubscription?.cancel());
     unawaited(_actionController.close());
   }

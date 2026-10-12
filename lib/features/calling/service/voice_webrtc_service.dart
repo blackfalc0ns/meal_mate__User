@@ -20,10 +20,13 @@ class VoiceWebRtcService {
   bool _isSpeakerOn = false;
   int _resourceEpoch = 0;
 
+  bool _hasAudioPermissionError = false;
+
   bool get isMuted => _isMuted;
   bool get isSpeakerOn => _isSpeakerOn;
   bool get isInitialized => _peerConnection != null;
   bool get isRemoteDescriptionSet => _isRemoteDescriptionSet;
+  bool get hasAudioPermissionError => _hasAudioPermissionError;
   int get bufferedCandidatesCount => _earlyIceCandidates.length;
 
   OnLocalIceCandidateCallback? onLocalIceCandidate;
@@ -34,6 +37,7 @@ class VoiceWebRtcService {
   }) async {
     await cleanup();
     final epoch = _resourceEpoch;
+    _hasAudioPermissionError = false;
 
     final rtcIceServers = <Map<String, dynamic>>[];
     for (final server in iceServers) {
@@ -115,8 +119,48 @@ class VoiceWebRtcService {
       }
     } catch (e) {
       debugPrint('[WebRTC] Failed to acquire local audio stream or add audio track: $e');
-      if (epoch == _resourceEpoch) await cleanup();
-      rethrow;
+      final errLower = e.toString().toLowerCase();
+      final isPermissionError = errLower.contains('notallowed') ||
+          errLower.contains('permission') ||
+          errLower.contains('security');
+      if (isPermissionError) {
+        _hasAudioPermissionError = true;
+        debugPrint(
+          '[WebRTC] Microphone permission denied; keeping peer connection active for downlink audio',
+        );
+      } else {
+        if (epoch == _resourceEpoch) await cleanup();
+        rethrow;
+      }
+    }
+  }
+
+  Future<bool> retryAcquiringLocalAudio() async {
+    if (_localStream != null || _peerConnection == null) return false;
+    final epoch = _resourceEpoch;
+    try {
+      final stream = await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': false,
+      });
+      if (epoch != _resourceEpoch) {
+        for (final track in stream.getTracks()) {
+          track.stop();
+        }
+        await stream.dispose();
+        return false;
+      }
+      _localStream = stream;
+      _hasAudioPermissionError = false;
+      for (final track in stream.getAudioTracks()) {
+        if (epoch != _resourceEpoch) return false;
+        await _peerConnection!.addTrack(track, _localStream!);
+      }
+      debugPrint('[WebRTC] Successfully acquired local audio stream on retry');
+      return true;
+    } catch (e) {
+      debugPrint('[WebRTC] retryAcquiringLocalAudio failed: $e');
+      return false;
     }
   }
 
@@ -242,5 +286,6 @@ class VoiceWebRtcService {
 
     _isMuted = false;
     _isSpeakerOn = false;
+    _hasAudioPermissionError = false;
   }
 }

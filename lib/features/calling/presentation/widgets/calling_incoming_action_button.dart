@@ -12,6 +12,7 @@ class CallingIncomingActionButton extends StatelessWidget {
     required this.backgroundColor,
     required this.labelColor,
     required this.onTap,
+    this.isLoading = false,
   });
 
   final String iconAsset;
@@ -19,11 +20,12 @@ class CallingIncomingActionButton extends StatelessWidget {
   final Color backgroundColor;
   final Color labelColor;
   final VoidCallback onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -36,11 +38,20 @@ class CallingIncomingActionButton extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: SvgPicture.asset(
-              iconAsset,
-              width: Spacing.callingActionBigButtonIconSize,
-              height: Spacing.callingActionBigButtonIconSize,
-            ),
+            child: isLoading
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : SvgPicture.asset(
+                    iconAsset,
+                    width: Spacing.callingActionBigButtonIconSize,
+                    height: Spacing.callingActionBigButtonIconSize,
+                  ),
           ),
           const SizedBox(height: Spacing.sm),
           Text(

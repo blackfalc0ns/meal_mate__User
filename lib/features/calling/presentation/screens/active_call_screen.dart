@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:meal_meat_user/core/services/voice_permission_service.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/features/calling/domain/entities/call_driver_entity.dart';
@@ -41,8 +43,8 @@ class ActiveCallScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (_) {
-        if (getIt.isRegistered<CallingViewModel>()) {
-          final vm = getIt<CallingViewModel>();
+        if (GetIt.instance.isRegistered<CallingViewModel>()) {
+          final vm = GetIt.instance<CallingViewModel>();
           if (driver != null) {
             vm.setDriver(driver);
           }
@@ -66,6 +68,21 @@ class _ActiveCallView extends StatefulWidget {
 
 class _ActiveCallViewState extends State<_ActiveCallView> {
   String? _lastLanguageCode;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final vm = context.read<CallingViewModel>();
+      if (vm.state.hasAudioPermissionError) {
+        final granted =
+            await VoicePermissionService.instance.requestMicrophone();
+        if (granted && mounted) {
+          unawaited(vm.retryMicrophonePermission());
+        }
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -123,6 +140,60 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                         title: locale.calling_active_title,
                         timerText: state.formattedDuration,
                       ),
+                      if (state.hasAudioPermissionError) ...[
+                        const SizedBox(height: Spacing.xs),
+                        GestureDetector(
+                          onTap: () async {
+                            final granted =
+                                await VoicePermissionService.instance
+                                    .requestMicrophone();
+                            if (granted && context.mounted) {
+                              unawaited(
+                                context
+                                    .read<CallingViewModel>()
+                                    .retryMicrophonePermission(),
+                              );
+                            } else {
+                              unawaited(
+                                VoicePermissionService.instance
+                                    .openAppSettings(),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.md,
+                              vertical: Spacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: color.error.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(Spacing.sm),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.mic_off,
+                                  size: 16,
+                                  color: color.error,
+                                ),
+                                const SizedBox(width: Spacing.xs),
+                                Text(
+                                  Localizations.localeOf(context).languageCode ==
+                                          'ar'
+                                      ? 'يرجى تفعيل إذن الميكروفون للتحدث (اضغط هنا)'
+                                      : 'Tap to grant microphone permission to speak',
+                                  style: getMediumStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size12,
+                                    color: color.error,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
