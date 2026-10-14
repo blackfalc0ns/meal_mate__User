@@ -71,8 +71,8 @@ class _FakeAddressesRepo
 
   @override
   Future<ApiResult<List<CustomerAddressEntity>>> getCustomerAddresses() async {
-    return ApiSuccessResult(
-      data: const [
+    return const ApiSuccessResult(
+      data: [
         CustomerAddressEntity(
           addressId: 'addr-1',
           label: 'Home',
@@ -94,8 +94,8 @@ class _FakeAddressesRepo
   Future<ApiResult<LocationsCatalogEntity>> getLocationsCatalog(
     String countryCode,
     String? areaId,
-  ) async => ApiSuccessResult(
-    data: const LocationsCatalogEntity(
+  ) async => const ApiSuccessResult(
+    data: LocationsCatalogEntity(
       countryId: '1',
       countryCode: 'KW',
       governorates: [],
