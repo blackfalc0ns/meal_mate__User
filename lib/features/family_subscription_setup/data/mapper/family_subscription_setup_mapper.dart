@@ -24,6 +24,9 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
     return FamilyMemberEntity(
       memberId: memberId ?? '',
       memberSubscriptionId: memberSubscriptionId,
+      currentSubscriptionId: currentSubscriptionId,
+      upcomingSubscriptionId: upcomingSubscriptionId,
+      customerUserId: customerUserId,
       phoneNumber: phoneNumber,
       occupation: occupation,
       startDate: startDate,
@@ -34,6 +37,7 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
       ageYears: ageYears ?? 0,
       deliveryAddressId: deliveryAddressId,
       setupStatus: setupStatus ?? 0,
+      readinessBlocker: readinessBlocker,
       programId: programId,
       bundleId: bundleId,
       selectedTier: selectedTier,
@@ -51,6 +55,9 @@ extension FamilyMemberResponseDtoMapper on FamilyMemberResponseDto {
       dietaryCompleted: dietaryCompleted ?? false,
       hasNoAllergies: hasNoAllergies ?? false,
       hasNoDietaryRestriction: hasNoDietaryRestriction ?? false,
+      subscribeNow: subscribeNow ?? false,
+      checkoutSelected: lifecycle?.checkoutSelected ?? subscribeNow ?? false,
+      lifecycleStatus: lifecycle?.status,
     );
   }
 }
@@ -70,6 +77,12 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
       currentStep: currentStep,
       managerPrepaid: managerPrepaid ?? false,
       members: members?.map((member) => member.toEntity()).toList() ?? const [],
+      sessionExpired: sessionExpired ?? false,
+      sessionExpiresAtUtc: sessionExpiresAtUtc != null
+          ? DateTime.tryParse(sessionExpiresAtUtc!)
+          : null,
+      sessionMessage: sessionMessage,
+      packageAvailable: packageAvailable ?? false,
     );
   }
 }

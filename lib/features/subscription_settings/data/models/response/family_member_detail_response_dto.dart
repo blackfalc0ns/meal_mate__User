@@ -12,6 +12,8 @@ class FamilyMemberDetailResponseDto {
     this.ageYears,
     this.setupStatus,
     this.memberSubscriptionId,
+    this.currentSubscriptionId,
+    this.upcomingSubscriptionId,
     this.programNameAr,
     this.programNameEn,
     this.programName,
@@ -24,6 +26,7 @@ class FamilyMemberDetailResponseDto {
     this.canRenew,
     this.renewalPath,
     this.todayNutrition,
+    this.lifecycle,
   });
   final String? memberId;
   final String? displayName;
@@ -32,6 +35,8 @@ class FamilyMemberDetailResponseDto {
   final int? ageYears;
   final Object? setupStatus;
   final String? memberSubscriptionId;
+  final String? currentSubscriptionId;
+  final String? upcomingSubscriptionId;
   final String? programNameAr;
   final String? programNameEn;
   final String? programName;
@@ -44,9 +49,35 @@ class FamilyMemberDetailResponseDto {
   final bool? canRenew;
   final String? renewalPath;
   final FamilyNutritionResponseDto? todayNutrition;
+  final FamilyMemberLifecycleResponseDto? lifecycle;
   factory FamilyMemberDetailResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberDetailResponseDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FamilyMemberDetailResponseDtoToJson(this);
+}
+
+@JsonSerializable()
+class FamilyMemberLifecycleResponseDto {
+  const FamilyMemberLifecycleResponseDto({
+    this.status,
+    this.checkoutSelected,
+    this.paymentStatus,
+    this.fulfillmentStatus,
+    this.serviceStatus,
+    this.accessStatus,
+    this.displayStatus,
+  });
+
+  final String? status;
+  final bool? checkoutSelected;
+  final String? paymentStatus;
+  final String? fulfillmentStatus;
+  final String? serviceStatus;
+  final String? accessStatus;
+  final String? displayStatus;
+
+  factory FamilyMemberLifecycleResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyMemberLifecycleResponseDtoFromJson(json);
+  Map<String, dynamic> toJson() => _$FamilyMemberLifecycleResponseDtoToJson(this);
 }
 
 @JsonSerializable()

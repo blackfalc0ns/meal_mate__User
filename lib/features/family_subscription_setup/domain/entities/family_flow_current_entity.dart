@@ -13,6 +13,10 @@ class FamilyFlowCurrentEntity {
   final int? currentStep;
   final bool managerPrepaid;
   final List<FamilyMemberEntity> members;
+  final bool sessionExpired;
+  final DateTime? sessionExpiresAtUtc;
+  final String? sessionMessage;
+  final bool packageAvailable;
 
   const FamilyFlowCurrentEntity({
     this.familyGroupId,
@@ -27,6 +31,10 @@ class FamilyFlowCurrentEntity {
     this.currentStep,
     this.managerPrepaid = false,
     this.members = const [],
+    this.sessionExpired = false,
+    this.sessionExpiresAtUtc,
+    this.sessionMessage,
+    this.packageAvailable = false,
   });
 
   String packageName(String languageCode) {
@@ -52,6 +60,10 @@ class FamilyFlowCurrentEntity {
     int? currentStep,
     bool? managerPrepaid,
     List<FamilyMemberEntity>? members,
+    bool? sessionExpired,
+    DateTime? sessionExpiresAtUtc,
+    String? sessionMessage,
+    bool? packageAvailable,
   }) {
     return FamilyFlowCurrentEntity(
       familyGroupId: familyGroupId ?? this.familyGroupId,
@@ -67,6 +79,10 @@ class FamilyFlowCurrentEntity {
       currentStep: currentStep ?? this.currentStep,
       managerPrepaid: managerPrepaid ?? this.managerPrepaid,
       members: members ?? this.members,
+      sessionExpired: sessionExpired ?? this.sessionExpired,
+      sessionExpiresAtUtc: sessionExpiresAtUtc ?? this.sessionExpiresAtUtc,
+      sessionMessage: sessionMessage ?? this.sessionMessage,
+      packageAvailable: packageAvailable ?? this.packageAvailable,
     );
   }
 }

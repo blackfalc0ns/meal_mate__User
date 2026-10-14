@@ -4,6 +4,8 @@ import 'package:meal_meat_user/core/address/data/models/request/address_coverage
 import 'package:meal_meat_user/core/address/data/models/request/customer_address_request_dto.dart';
 import 'package:meal_meat_user/core/address/data/models/response/address_coverage_preview_response_dto.dart';
 import 'package:meal_meat_user/core/address/data/models/response/customer_address_response_dto.dart';
+import 'package:meal_meat_user/features/family_addresses/data/models/request/family_delivery_address_request_dto.dart';
+import 'package:meal_meat_user/features/family_addresses/data/models/response/family_delivery_address_response_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/data_source/family_addresses_remote_data_source.dart';
 
 @Injectable(as: FamilyAddressesRemoteDataSource)
@@ -51,4 +53,14 @@ class FamilyAddressesRemoteDataSourceImpl
     addressId,
     const <String, dynamic>{},
   );
+  @override
+  Future<FamilyDeliveryAddressSnapshotResponseDto>
+  getSubscriptionDeliveryAddress(String subscriptionId) =>
+      _api.getSubscriptionDeliveryAddress(subscriptionId);
+  @override
+  Future<FamilyDeliveryAddressResultResponseDto>
+  updateSubscriptionDeliveryAddress(
+    String subscriptionId,
+    FamilyDeliveryAddressRequestDto request,
+  ) => _api.updateSubscriptionDeliveryAddress(subscriptionId, request);
 }

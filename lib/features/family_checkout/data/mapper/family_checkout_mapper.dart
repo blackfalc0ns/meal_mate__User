@@ -41,6 +41,7 @@ extension FamilySelectedMemberSummaryDtoMapper
       dinner: dinner ?? false,
       mealsPerDay: mealsPerDay ?? 0,
       memberPrice: memberPrice ?? 0.0,
+      startDate: startDate,
     );
   }
 }
@@ -57,6 +58,22 @@ extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
       mealsPerDay: mealsPerDay ?? 0,
       isReady: isReady ?? false,
       isManager: isManager ?? false,
+    );
+  }
+}
+
+extension FamilyMemberScheduleDtoMapper on FamilyMemberScheduleDto {
+  FamilyMemberScheduleEntity toEntity() {
+    return FamilyMemberScheduleEntity(
+      memberId: memberId ?? '',
+      paymentDate: paymentDate,
+      firstDeliveryDate: firstDeliveryDate,
+      endDate: endDate,
+      deliveryDaysCount: deliveryDaysCount ?? 0,
+      mealsPerDay: mealsPerDay ?? 0,
+      totalMeals: totalMeals ?? 0,
+      restaurants:
+          restaurants?.map((item) => item.toString()).toList() ?? const [],
     );
   }
 }
@@ -82,7 +99,21 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       selectedMember: selectedMember?.toEntity(),
       mealOverview:
           mealOverview?.map((meal) => meal.toEntity()).toList() ?? const [],
+      memberSchedules:
+          memberSchedules?.map((schedule) => schedule.toEntity()).toList() ??
+              const [],
+      participantCount: participantCount ??
+          selectedNewSubscriberCount ??
+          newMembersCount ??
+          0,
       checkoutEndpoint: checkoutEndpoint,
+      batchId: batchId,
+      batchVersion: batchVersion,
+      rosterCount: rosterCount ?? (members?.length ?? 0),
+      selectedNewSubscriberCount: selectedNewSubscriberCount ?? (newMembersCount ?? 0),
+      eligibleExistingSubscriberCount: eligibleExistingSubscriberCount ?? 0,
+      unsubscribedCount: unsubscribedCount ?? 0,
+      lockedQuote: lockedQuote ?? false,
     );
   }
 }

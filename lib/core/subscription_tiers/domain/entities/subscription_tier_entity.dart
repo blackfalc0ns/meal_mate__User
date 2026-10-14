@@ -29,6 +29,7 @@ class SubscriptionTierEntity {
     this.canSelect = true,
     this.isAvailable = true,
     this.disabledReason,
+    this.durationPrices,
     // ignore: prefer_initializing_formals
   }) : _restaurants = restaurants;
 
@@ -57,36 +58,34 @@ class SubscriptionTierEntity {
   final bool canSelect;
   final bool isAvailable;
   final String? disabledReason;
+  final List<DurationPriceEntity>? durationPrices;
 
   String name(String localeName) {
-    final lower = tier.toLowerCase();
     final isAr = localeName == 'ar';
 
-    if (lower.contains('platinum') || lower.contains('plus')) {
-      return isAr ? 'بلس' : 'Plus';
-    }
-    if (lower.contains('elite') ||
-        lower.contains('max') ||
-        lower.contains('diamond')) {
-      return isAr ? 'ماكس' : 'Max';
-    }
-    if (lower.contains('basic') || lower.contains('select')) {
-      return isAr ? 'سيلكت' : 'Select';
-    }
-
     if (isAr) {
-      if (nameAr.trim().isNotEmpty && nameAr != tier) return nameAr;
-      if (nameEn.trim().isNotEmpty && nameEn != tier) return nameEn;
+      if (nameAr.trim().isNotEmpty) return nameAr.trim();
+      if (nameEn.trim().isNotEmpty) return nameEn.trim();
     } else {
-      if (nameEn.trim().isNotEmpty && nameEn != tier) return nameEn;
-      if (nameAr.trim().isNotEmpty && nameAr != tier) return nameAr;
+      if (nameEn.trim().isNotEmpty) return nameEn.trim();
+      if (nameAr.trim().isNotEmpty) return nameAr.trim();
     }
 
-    return isAr ? 'سيلكت' : 'Select';
+    if (tier.trim().isNotEmpty) return tier.trim();
+    return '';
   }
 
-  String description(String localeName) =>
-      localeName == 'ar' ? descriptionAr : descriptionEn;
+  String description(String localeName) {
+    final isAr = localeName == 'ar';
+    if (isAr) {
+      if (descriptionAr.trim().isNotEmpty) return descriptionAr.trim();
+      if (descriptionEn.trim().isNotEmpty) return descriptionEn.trim();
+    } else {
+      if (descriptionEn.trim().isNotEmpty) return descriptionEn.trim();
+      if (descriptionAr.trim().isNotEmpty) return descriptionAr.trim();
+    }
+    return '';
+  }
 
   bool get effectiveCanSelect {
     if (!canSelect) return false;
@@ -192,4 +191,18 @@ class SubscriptionTierRestaurantEntity {
 
   final String restaurantId;
   final String? logoUrl;
+}
+
+class DurationPriceEntity {
+  const DurationPriceEntity({
+    required this.durationDays,
+    required this.totalPrice,
+    required this.dailyPrice,
+    required this.currencyCode,
+  });
+
+  final int durationDays;
+  final double totalPrice;
+  final double dailyPrice;
+  final String currencyCode;
 }

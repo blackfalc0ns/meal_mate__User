@@ -158,6 +158,12 @@ import '../../features/family_checkout/domain/usecase/get_family_payment_methods
     as _i605;
 import '../../features/family_checkout/domain/usecase/get_family_summary_usecase.dart'
     as _i408;
+import '../../features/family_checkout/domain/usecase/retry_family_subscription_payment_usecase.dart'
+    as _i639;
+import '../../features/family_checkout/domain/usecase/save_family_member_start_date_usecase.dart'
+    as _i561;
+import '../../features/family_checkout/domain/usecase/select_family_member_checkout_usecase.dart'
+    as _i707;
 import '../../features/family_checkout/presentation/manager/family_checkout_view_model.dart'
     as _i665;
 import '../../features/family_package_days/data/data_source/family_package_days_remote_data_source.dart'
@@ -844,6 +850,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i408.GetFamilySummaryUseCase>(
       () => _i408.GetFamilySummaryUseCase(gh<_i802.FamilyCheckoutRepository>()),
     );
+    gh.factory<_i639.RetryFamilySubscriptionPaymentUseCase>(
+      () => _i639.RetryFamilySubscriptionPaymentUseCase(
+        gh<_i802.FamilyCheckoutRepository>(),
+      ),
+    );
+    gh.factory<_i561.SaveFamilyMemberStartDateUseCase>(
+      () => _i561.SaveFamilyMemberStartDateUseCase(
+        gh<_i802.FamilyCheckoutRepository>(),
+      ),
+    );
+    gh.factory<_i707.SelectFamilyMemberCheckoutUseCase>(
+      () => _i707.SelectFamilyMemberCheckoutUseCase(
+        gh<_i802.FamilyCheckoutRepository>(),
+      ),
+    );
     gh.factory<_i897.InfluencerSocialLinksRepository>(
       () => _i100.InfluencerSocialLinksRepositoryImpl(
         gh<_i963.InfluencerSocialLinksRemoteDataSource>(),
@@ -1433,6 +1454,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i62.MealDetailsRepository>(),
       ),
     );
+    gh.factory<_i665.FamilyCheckoutViewModel>(
+      () => _i665.FamilyCheckoutViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i408.GetFamilySummaryUseCase>(),
+        gh<_i605.GetFamilyPaymentMethodsUseCase>(),
+        gh<_i856.CheckoutFamilySubscriptionUseCase>(),
+        gh<_i707.SelectFamilyMemberCheckoutUseCase>(),
+        gh<_i561.SaveFamilyMemberStartDateUseCase>(),
+        gh<_i639.RetryFamilySubscriptionPaymentUseCase>(),
+      ),
+    );
     gh.factory<_i490.CreateSubscriptionCancellationRequestUseCase>(
       () => _i490.CreateSubscriptionCancellationRequestUseCase(
         gh<_i812.SubscriptionBillingRepository>(),
@@ -1581,6 +1613,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i982.FamilyAddressesRepository>(),
       ),
     );
+    gh.factory<_i643.UpdateFamilyMemberAddressUseCase>(
+      () => _i643.UpdateFamilyMemberAddressUseCase(
+        gh<_i982.FamilyAddressesRepository>(),
+      ),
+    );
     gh.factory<_i448.GetFamilyProgramBundlesUseCase>(
       () => _i448.GetFamilyProgramBundlesUseCase(
         gh<_i964.FamilyProgramsRepository>(),
@@ -1653,14 +1690,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i462.GetSubscriptionReadinessUseCase>(),
         gh<_i343.GetSubscriptionTierRestaurantsPageUseCase>(),
         gh<_i656.GetSubscriptionRestaurantAvailabilityUseCase>(),
-      ),
-    );
-    gh.factory<_i665.FamilyCheckoutViewModel>(
-      () => _i665.FamilyCheckoutViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i408.GetFamilySummaryUseCase>(),
-        gh<_i605.GetFamilyPaymentMethodsUseCase>(),
-        gh<_i856.CheckoutFamilySubscriptionUseCase>(),
       ),
     );
     gh.factory<_i502.GetInfluencerAnalyticsUseCase>(

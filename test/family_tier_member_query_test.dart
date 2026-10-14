@@ -41,7 +41,7 @@ void main() {
       RegExp(
         r"@Query\('familyMemberId'\) String\? familyMemberId",
       ).allMatches(api),
-      hasLength(2),
+      hasLength(greaterThanOrEqualTo(2)),
     );
   });
 

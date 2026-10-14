@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = "https://maelmate.runasp.net";
+  static const String baseUrl = "https://api.trymealmate.com";
   static const String authorization = 'Authorization';
   static const String bearer = "Bearer";
 }
@@ -182,12 +182,22 @@ abstract class EndPoints {
       '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/{addressId}/preview-coverage';
   static const String familyMemberAddressSetDefault =
       '/api/v1/customer/family-subscription-flow/members/{memberId}/addresses/{addressId}/set-default';
+  static const String familyMemberCheckoutSelection =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/checkout-selection';
+  static const String familySubscriptionFlowMemberStartDate =
+      '/api/v1/customer/family-subscription-flow/members/{memberId}/start-date';
   static const String familySubscriptionFlowSummary =
       '/api/v1/customer/family-subscription-flow/summary';
   static const String familySubscriptionFlowPaymentMethods =
       '/api/v1/customer/family-subscription-flow/payment-methods';
   static const String familySubscriptionFlowCheckout =
       '/api/v1/customer/family-subscription-flow/checkout';
+  static const String familySubscriptionFlowRetryPayment =
+      '/api/v1/customer/family-subscription-flow/retry-payment';
+  static const String familyRenewalCheckout =
+      '/api/v1/customer/family-subscription-flow/renewals/{renewalRequestId}/checkout';
+  static const String customerSubscriptionDeliveryAddress =
+      '/api/v1/customer/subscriptions/{subscriptionId}/delivery-address';
   static const String familyHome = '/api/v1/customer/family/home';
   static const String familyMembers = '/api/v1/customer/family/members';
   static const String familyMember =

@@ -126,6 +126,18 @@ class _FamilyMemberCalendarScreenState
     return BlocProvider<FamilyCalendarViewModel>.value(
       value: _viewModel,
       child: BlocBuilder<FamilyCalendarViewModel, FamilyCalendarState>(
+        buildWhen: (previous, current) =>
+            previous.members != current.members ||
+            previous.selectedMemberIndex != current.selectedMemberIndex ||
+            previous.displayName != current.displayName ||
+            previous.isLoadingMembers != current.isLoadingMembers ||
+            previous.isLoadingCalendar != current.isLoadingCalendar ||
+            previous.activeSubscriptionId != current.activeSubscriptionId ||
+            previous.selectedDay != current.selectedDay ||
+            previous.visibleMonth != current.visibleMonth ||
+            previous.days != current.days ||
+            previous.calendarFailure != current.calendarFailure ||
+            previous.dayFailure != current.dayFailure,
         builder: (context, state) {
           final selectorMembers = _buildSelectorMembers(context, state);
           final safeSelectedMemberIndex = selectorMembers.isEmpty

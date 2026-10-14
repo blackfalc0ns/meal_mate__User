@@ -196,4 +196,85 @@ class SubscriptionErrorCodes {
   /// Upgrade request already pending.
   static const String upgradeRequestAlreadyPending =
       'subscription.upgrade_request_already_pending';
+
+  // ── Family Domain Error Codes ──
+  /// Permissions conflict (409) - Permissions changed on server.
+  static const String familyPermissionsChanged = 'family.permissions_changed';
+
+  /// Delivery version conflict (409) - Delivery version mismatch.
+  static const String familyDeliveryVersionChanged =
+      'family.delivery_version_changed';
+
+  /// Quote changed - Package pricing updated, review required.
+  static const String familyQuoteChanged = 'family.quote_changed';
+
+  /// Idempotency key already used for a different intent.
+  static const String familyIdempotencyKeyUsed = 'family.idempotency_key_used';
+
+  /// Client app update required to continue subscription/checkout.
+  static const String familyClientUpdateRequired =
+      'family.client_update_required';
+
+  /// Invoice creation stopped temporarily on backend.
+  static const String familyInvoiceCreationStopped =
+      'family.invoice_creation_stopped';
+
+  /// Member must have a linked account before subscribing.
+  static const String familyMemberAccountRequired =
+      'family.member_account_required';
+
+  /// Payment method is unavailable.
+  static const String familyPaymentMethodUnavailable =
+      'family.payment_method_unavailable';
+
+  /// Payment currency is not supported.
+  static const String familyPaymentCurrencyUnsupported =
+      'family.payment_currency_unsupported';
+
+  /// Provider refund required - operations/provider processing needed.
+  static const String familyProviderRefundRequired =
+      'family.provider_refund_required';
+
+  /// Delivery snapshot review required - amendment cannot overwrite paid schedule.
+  static const String familyDeliverySnapshotReviewRequired =
+      'family.delivery_snapshot_review_required';
+
+  /// Action not available for current member or capability state.
+  static const String familyActionNotAvailable = 'family.action_not_available';
+
+  /// Payment initialization failed (502).
+  static const String paymentInitializationFailed =
+      'payment.initialization_failed';
+
+  /// Auto renewal price changed on backend.
+  static const String autoRenewalPriceChanged = 'auto_renewal.price_changed';
+
+  /// Member setup incomplete blocker.
+  static const String familyMemberIncomplete = 'family.member_incomplete';
+
+  /// Cannot remove family manager.
+  static const String familyCannotRemoveManager =
+      'family.cannot_remove_manager';
+
+  /// Family member not found.
+  static const String familyMemberNotFound = 'family.member_not_found';
+
+  /// Member already in family.
+  static const String familyAlreadyInFamily = 'family.already_in_family';
+
+  /// Family max members reached.
+  static const String familyMaxMembers = 'family.max_members';
+
+  /// Family plan locked.
+  static const String familyPlanLocked = 'family.plan_locked';
+
+  /// Family plan incomplete.
+  static const String familyPlanIncomplete = 'family.plan_incomplete';
+
+  /// Member is paused.
+  static const String familyMemberPaused = 'family.member_paused';
+
+  /// Permission denied.
+  static const String familyPermissionDenied = 'family.permission_denied';
 }
+

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
+import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/repo/family_allergies_repository.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
@@ -18,13 +19,21 @@ import 'package:meal_meat_user/features/food_preferences/domain/repo/food_prefer
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 
 void main() {
+  test('NONE is sent as the selected allergy code', () {
+    const request = FamilyMemberAllergiesRequestDto(
+      allergies: [FamilyMemberAllergyRequestDto(code: 'NONE')],
+    );
+    expect(request.toJson(), {
+      'selectedCodes': ['NONE'],
+    });
+  });
   test(
     'saves disliked ingredients without making them checkout required',
     () async {
       final repository = _FamilyAllergiesRepository();
       final viewModel = FamilyAllergiesViewModel(
         GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
-        GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+        GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
         SaveFamilyMemberAllergiesUseCase(repository),
         SaveFamilyMemberDislikedIngredientsUseCase(repository),
       );
@@ -46,7 +55,7 @@ void main() {
       final repository = _FamilyAllergiesRepository()..failDislikedSave = true;
       final viewModel = FamilyAllergiesViewModel(
         GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
-        GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+        GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
         SaveFamilyMemberAllergiesUseCase(repository),
         SaveFamilyMemberDislikedIngredientsUseCase(repository),
       );
@@ -69,8 +78,8 @@ void main() {
     final viewModel = FamilyAllergiesViewModel(
       GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
       GetFoodPreferencesCatalogUseCase(
-        _FoodPreferencesRepository(
-          catalog: const FoodPreferencesCatalogEntity(
+        const _FoodPreferencesRepository(
+          catalog: FoodPreferencesCatalogEntity(
             ingredients: [
               FoodPreferenceCatalogItemEntity(
                 code: 'INGREDIENT:avocado',
@@ -137,7 +146,7 @@ void main() {
           ],
         ),
       ),
-      GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+      GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
       SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
       SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
     );
@@ -165,7 +174,7 @@ void main() {
       final allergiesRepository = _FamilyAllergiesRepository();
       final viewModel = FamilyAllergiesViewModel(
         GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
-        GetFoodPreferencesCatalogUseCase(_FoodPreferencesRepository()),
+        GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
         SaveFamilyMemberAllergiesUseCase(allergiesRepository),
         SaveFamilyMemberDislikedIngredientsUseCase(allergiesRepository),
       );
@@ -178,13 +187,16 @@ void main() {
 
       viewModel.toggle('NONE');
       viewModel.toggle('NONE');
+      allergiesRepository.pauseSave = true;
       final secondSave = viewModel.saveCurrent();
       await Future<void>.delayed(Duration.zero);
 
       expect(viewModel.state.completed, isFalse);
       expect(viewModel.state.isSaving, isTrue);
 
-      allergiesRepository.pendingSave.complete(ApiSuccessResult(data: true));
+      allergiesRepository.pendingSave.complete(
+        const ApiSuccessResult(data: true),
+      );
       await secondSave;
       expect(viewModel.state.completed, isTrue);
     },
@@ -243,9 +255,9 @@ class _FoodPreferencesRepository implements FoodPreferencesRepository {
 }
 
 class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
-  int _saveCount = 0;
   List<String>? savedIngredientCodes;
   bool failDislikedSave = false;
+  bool pauseSave = false;
   final pendingSave = Completer<ApiResult<bool>>();
 
   @override
@@ -253,11 +265,10 @@ class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
     required String memberId,
     required List<FamilyMemberAllergySelection> allergies,
   }) {
-    _saveCount++;
-    if (_saveCount == 1) {
-      return Future.value(ApiSuccessResult(data: true));
+    if (pauseSave) {
+      return pendingSave.future;
     }
-    return pendingSave.future;
+    return Future.value(const ApiSuccessResult(data: true));
   }
 
   @override
@@ -271,6 +282,6 @@ class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
         failure: Failure(errorMessage: 'Preference save failed'),
       );
     }
-    return ApiSuccessResult<void>(data: null);
+    return const ApiSuccessResult<void>(data: null);
   }
 }

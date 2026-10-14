@@ -14,12 +14,20 @@ class CheckoutFamilySubscriptionUseCase {
     required String errorUrl,
     required String correlationId,
     required int paymentMethodId,
+    String? batchId,
+    int? batchVersion,
+    String? idempotencyKey,
+    int? clientContractVersion,
   }) {
     return _repository.checkoutFamilySubscription(
       callbackUrl: callbackUrl,
       errorUrl: errorUrl,
       correlationId: correlationId,
       paymentMethodId: paymentMethodId,
+      batchId: batchId,
+      batchVersion: batchVersion,
+      idempotencyKey: idempotencyKey,
+      clientContractVersion: clientContractVersion,
     );
   }
 }

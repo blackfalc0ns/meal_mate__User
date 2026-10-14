@@ -16,6 +16,7 @@ class FamilyMemberAccessResponseDto {
     this.phoneNumber,
     this.hasExistingLogin,
     this.generatedPassword,
+    this.version,
   });
   final String? memberId;
   final bool? hasSeparateAccount;
@@ -28,7 +29,13 @@ class FamilyMemberAccessResponseDto {
   final String? phoneNumber;
   final bool? hasExistingLogin;
   final String? generatedPassword;
+  @JsonKey(readValue: _readAccessVersion)
+  final int? version;
   factory FamilyMemberAccessResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberAccessResponseDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FamilyMemberAccessResponseDtoToJson(this);
+}
+
+Object? _readAccessVersion(Map json, String key) {
+  return json['version'] ?? json['currentVersion'];
 }

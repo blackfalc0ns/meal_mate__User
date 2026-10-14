@@ -65,6 +65,11 @@ import 'package:meal_meat_user/features/subscription_programs/data/models/respon
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_programs_page_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_selection_request_dto.dart';
+import 'package:meal_meat_user/features/family_checkout/data/models/request/family_renewal_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_checkout/data/models/response/family_checkout_selection_response_dto.dart';
+import 'package:meal_meat_user/features/family_addresses/data/models/request/family_delivery_address_request_dto.dart';
+import 'package:meal_meat_user/features/family_addresses/data/models/response/family_delivery_address_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_group_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
@@ -618,6 +623,12 @@ abstract class ApiServices {
   @GET(EndPoints.familySubscriptionFlowPackages)
   Future<List<FamilySizePackageResponseDto>> getFamilySizePackages();
 
+  @GET(EndPoints.familySubscriptionFlowMetadata)
+  /// Metadata is intentionally untyped because the endpoint returns a
+  /// dynamically shaped catalog object. Keeping the Retrofit return type
+  /// dynamic avoids generating an invalid `dynamic.fromJson` call.
+  Future<dynamic> getFamilySubscriptionMetadata();
+
   @GET(EndPoints.familySubscriptionFlowRelationships)
   Future<List<FamilyRelationshipResponseDto>> getFamilyRelationships();
 
@@ -763,6 +774,18 @@ abstract class ApiServices {
     @Body() Map<String, dynamic> body,
   );
 
+  @PUT(EndPoints.familyMemberCheckoutSelection)
+  Future<FamilyCheckoutSelectionResponseDto> selectFamilyMemberForCheckout(
+    @Path('memberId') String memberId,
+    @Body() FamilyCheckoutSelectionRequestDto request,
+  );
+
+  @PUT(EndPoints.familySubscriptionFlowMemberStartDate)
+  Future<void> saveFamilyMemberStartDate(
+    @Path('memberId') String memberId,
+    @Body() Map<String, dynamic> request,
+  );
+
   @GET(EndPoints.familySubscriptionFlowSummary)
   Future<FamilySummaryResponseDto> getFamilySummary({
     @Query('memberId') String? memberId,
@@ -776,6 +799,28 @@ abstract class ApiServices {
   @POST(EndPoints.familySubscriptionFlowCheckout)
   Future<PaymentCheckoutResponseDto> checkoutFamilySubscription(
     @Body() FamilyCheckoutRequestDto request,
+  );
+
+  @POST(EndPoints.familySubscriptionFlowRetryPayment)
+  Future<PaymentCheckoutResponseDto> retryFamilySubscriptionPayment(
+    @Body() FamilyCheckoutRequestDto request,
+  );
+
+  @POST(EndPoints.familyRenewalCheckout)
+  Future<PaymentCheckoutResponseDto> checkoutFamilyRenewal(
+    @Path('renewalRequestId') String renewalRequestId,
+    @Body() FamilyRenewalCheckoutRequestDto request,
+  );
+
+  @GET(EndPoints.customerSubscriptionDeliveryAddress)
+  Future<FamilyDeliveryAddressSnapshotResponseDto>
+  getSubscriptionDeliveryAddress(@Path('subscriptionId') String subscriptionId);
+
+  @PUT(EndPoints.customerSubscriptionDeliveryAddress)
+  Future<FamilyDeliveryAddressResultResponseDto>
+  updateSubscriptionDeliveryAddress(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() FamilyDeliveryAddressRequestDto request,
   );
 
   @GET(EndPoints.familyHome)

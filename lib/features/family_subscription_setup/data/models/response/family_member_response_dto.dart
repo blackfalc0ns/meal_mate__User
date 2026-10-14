@@ -9,6 +9,9 @@ class FamilyMemberResponseDto {
   const FamilyMemberResponseDto({
     this.memberId,
     this.memberSubscriptionId,
+    this.currentSubscriptionId,
+    this.upcomingSubscriptionId,
+    this.customerUserId,
     this.phoneNumber,
     this.occupation,
     this.startDate,
@@ -19,6 +22,7 @@ class FamilyMemberResponseDto {
     this.ageYears,
     this.deliveryAddressId,
     this.setupStatus,
+    this.readinessBlocker,
     this.programId,
     this.bundleId,
     this.selectedTier,
@@ -33,10 +37,15 @@ class FamilyMemberResponseDto {
     this.dietaryCompleted,
     this.hasNoAllergies,
     this.hasNoDietaryRestriction,
+    this.subscribeNow,
+    this.lifecycle,
   });
 
   final String? memberId;
   final String? memberSubscriptionId;
+  final String? currentSubscriptionId;
+  final String? upcomingSubscriptionId;
+  final String? customerUserId;
   final String? phoneNumber;
   final String? occupation;
   final String? startDate;
@@ -50,6 +59,7 @@ class FamilyMemberResponseDto {
   final String? deliveryAddressId;
   @JsonKey(fromJson: _setupStatusFromJson)
   final int? setupStatus;
+  final String? readinessBlocker;
   final String? programId;
   final String? bundleId;
   @JsonKey(fromJson: _tierFromJson)
@@ -66,9 +76,35 @@ class FamilyMemberResponseDto {
   final bool? dietaryCompleted;
   final bool? hasNoAllergies;
   final bool? hasNoDietaryRestriction;
+  final bool? subscribeNow;
+  final FamilyMemberLifecycleResponseDto? lifecycle;
 
   factory FamilyMemberResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberResponseDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class FamilyMemberLifecycleResponseDto {
+  const FamilyMemberLifecycleResponseDto({
+    this.status,
+    this.checkoutSelected,
+    this.paymentStatus,
+    this.fulfillmentStatus,
+    this.serviceStatus,
+    this.accessStatus,
+    this.displayStatus,
+  });
+
+  final String? status;
+  final bool? checkoutSelected;
+  final String? paymentStatus;
+  final String? fulfillmentStatus;
+  final String? serviceStatus;
+  final String? accessStatus;
+  final String? displayStatus;
+
+  factory FamilyMemberLifecycleResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyMemberLifecycleResponseDtoFromJson(json);
 }
 
 int? _roleFromJson(dynamic value) {

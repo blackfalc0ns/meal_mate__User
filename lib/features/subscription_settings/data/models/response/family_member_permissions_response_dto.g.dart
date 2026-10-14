@@ -25,6 +25,7 @@ FamilyMemberPermissionsResponseDto _$FamilyMemberPermissionsResponseDtoFromJson(
         ),
       )
       .toList(),
+  version: (_readVersion(json, 'version') as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$FamilyMemberPermissionsResponseDtoToJson(
@@ -40,6 +41,7 @@ Map<String, dynamic> _$FamilyMemberPermissionsResponseDtoToJson(
   'unitExchange': instance.unitExchange,
   'changePassword': instance.changePassword,
   'groups': instance.groups,
+  'version': instance.version,
 };
 
 FamilyPermissionGroupResponseDto _$FamilyPermissionGroupResponseDtoFromJson(

@@ -99,32 +99,26 @@ class FamilyProgramCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
-                  if (program.imageAsset.startsWith('http'))
-                    AppCachedNetworkImage(
-                      imageUrl: program.imageAsset,
-                      width: Spacing.familyProgramImageSize,
-                      height: Spacing.familyProgramImageSize,
-                      fit: BoxFit.cover,
-                      semanticLabel: program.title,
-                    )
-                  else if (program.imageAsset.isNotEmpty)
-                    Image.asset(
-                      program.imageAsset,
-                      width: Spacing.familyProgramImageSize,
-                      height: Spacing.familyProgramImageSize,
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, _, _) => Icon(
-                        Icons.restaurant_rounded,
-                        color: color.primary,
-                        size: Spacing.familyProgramImageSize,
-                      ),
-                    )
-                  else
-                    Icon(
-                      Icons.restaurant_rounded,
-                      color: color.primary,
-                      size: Spacing.familyProgramImageSize,
-                    ),
+                  // if (program.imageAsset.startsWith('assets/'))
+                  //   Image.asset(
+                  //     program.imageAsset,
+                  //     width: Spacing.familyProgramImageSize,
+                  //     height: Spacing.familyProgramImageSize,
+                  //     fit: BoxFit.contain,
+                  //     errorBuilder: (_, _, _) => Icon(
+                  //       Icons.restaurant_rounded,
+                  //       color: color.primary,
+                  //       size: Spacing.familyProgramImageSize,
+                  //     ),
+                  //   )
+                  // else
+                  AppCachedNetworkImage(
+                    imageUrl: program.imageAsset,
+                    width: Spacing.familyProgramImageSize,
+                    height: Spacing.familyProgramImageSize,
+                    fit: BoxFit.cover,
+                    semanticLabel: program.title,
+                  ),
                 ],
               ),
             ),

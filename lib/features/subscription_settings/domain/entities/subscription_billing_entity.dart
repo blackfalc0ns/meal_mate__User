@@ -17,6 +17,8 @@ class SubscriptionBillingEntity {
 
 class SubscriptionBillingUncompletedSubscriptionEntity {
   const SubscriptionBillingUncompletedSubscriptionEntity({
+    this.kind = 'INDIVIDUAL',
+    this.familyGroupId,
     required this.subscriptionId,
     required this.status,
     required this.statusNameAr,
@@ -45,6 +47,9 @@ class SubscriptionBillingUncompletedSubscriptionEntity {
     required this.holdExpiresAtUtc,
     required this.actions,
   });
+
+  final String kind;
+  final String? familyGroupId;
 
   final String subscriptionId;
   final String status;
@@ -81,12 +86,16 @@ class SubscriptionBillingUncompletedActionsEntity {
     required this.canResume,
     required this.deleteEndpoint,
     required this.resumeEndpoint,
+    this.nextScreen,
+    this.retryPaymentEndpoint,
   });
 
   final bool canDelete;
   final bool canResume;
   final String deleteEndpoint;
   final String resumeEndpoint;
+  final String? nextScreen;
+  final String? retryPaymentEndpoint;
 }
 
 class SubscriptionBillingResumePreviewEntity {
@@ -547,6 +556,13 @@ class SubscriptionBillingCancellationQuoteEntity {
     required this.currencyCode,
     required this.effectiveCancellationDate,
     required this.policyMessageAr,
+    this.cancellationFeeAmount = 0.0,
+    this.netRefundAmount = 0.0,
+    this.refundToCashWallet = true,
+    this.policyMessageEn,
+    this.messageCode,
+    this.payerCustomerUserId,
+    this.batchId,
   });
 
   final String subscriptionId;
@@ -559,6 +575,13 @@ class SubscriptionBillingCancellationQuoteEntity {
   final String currencyCode;
   final String effectiveCancellationDate;
   final String policyMessageAr;
+  final double cancellationFeeAmount;
+  final double netRefundAmount;
+  final bool refundToCashWallet;
+  final String? policyMessageEn;
+  final String? messageCode;
+  final String? payerCustomerUserId;
+  final String? batchId;
 }
 
 class SubscriptionBillingCancellationResultEntity {
@@ -577,6 +600,14 @@ class SubscriptionBillingCancellationResultEntity {
     required this.effectiveCancellationDate,
     required this.messageAr,
     required this.timestampUtc,
+    this.cancellationFeeAmount = 0.0,
+    this.netRefundAmount = 0.0,
+    this.refundedToWallet = false,
+    this.messageEn,
+    this.messageCode,
+    this.payerCustomerUserId,
+    this.settlementId,
+    this.batchId,
   });
 
   final String requestId;
@@ -593,6 +624,14 @@ class SubscriptionBillingCancellationResultEntity {
   final String effectiveCancellationDate;
   final String messageAr;
   final String timestampUtc;
+  final double cancellationFeeAmount;
+  final double netRefundAmount;
+  final bool refundedToWallet;
+  final String? messageEn;
+  final String? messageCode;
+  final String? payerCustomerUserId;
+  final String? settlementId;
+  final String? batchId;
 }
 
 class SubscriptionBillingFreezeResponseEntity {

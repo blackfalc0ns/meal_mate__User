@@ -17,6 +17,7 @@ FamilyMemberPermissionsRequestDto _$FamilyMemberPermissionsRequestDtoFromJson(
   editAddress: json['editAddress'] as bool,
   unitExchange: json['unitExchange'] as bool,
   changePassword: json['changePassword'] as bool,
+  expectedVersion: (json['expectedVersion'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$FamilyMemberPermissionsRequestDtoToJson(
@@ -30,4 +31,5 @@ Map<String, dynamic> _$FamilyMemberPermissionsRequestDtoToJson(
   'editAddress': instance.editAddress,
   'unitExchange': instance.unitExchange,
   'changePassword': instance.changePassword,
+  'expectedVersion': instance.expectedVersion,
 };

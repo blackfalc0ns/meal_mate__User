@@ -3037,6 +3037,21 @@ class AppLocalizationsEn extends AppLocalizations {
       '3. Payment and subscription confirmation';
 
   @override
+  String get family_schedule_section_title => 'Subscription Schedule';
+
+  @override
+  String get family_payment_date => 'Payment Date';
+
+  @override
+  String get family_start_date => 'Subscription Start Date';
+
+  @override
+  String get family_end_date => 'Subscription End Date';
+
+  @override
+  String get family_start_date_picker_help => 'Select subscription start date';
+
+  @override
   String get family_subscription_summary => 'Subscription summary';
 
   @override
@@ -5963,6 +5978,102 @@ class AppLocalizationsEn extends AppLocalizations {
       'This action is only available to customers.';
 
   @override
+  String get family_error_permissions_changed =>
+      'Permissions were updated on the server. Please try again.';
+
+  @override
+  String get family_error_delivery_version_changed =>
+      'Delivery information was updated on the server. Please review the changes.';
+
+  @override
+  String get family_error_quote_changed =>
+      'Subscription pricing has changed. Please review the updated summary.';
+
+  @override
+  String get family_error_idempotency_key_used =>
+      'This payment request was already processed. Please start a new checkout.';
+
+  @override
+  String get family_error_client_update_required =>
+      'Please update the app to the latest version to proceed with subscription.';
+
+  @override
+  String get family_error_invoice_creation_stopped =>
+      'Invoice creation is temporarily paused. Please try again later.';
+
+  @override
+  String get family_error_member_account_required =>
+      'Member must have a linked account before completing subscription.';
+
+  @override
+  String get family_error_payment_method_unavailable =>
+      'Selected payment method is currently unavailable. Please choose another method.';
+
+  @override
+  String get family_error_payment_currency_unsupported =>
+      'The selected currency is not supported for payment.';
+
+  @override
+  String get family_error_provider_refund_required =>
+      'Refund requires manual processing by the provider. Please contact support.';
+
+  @override
+  String get family_error_delivery_snapshot_review_required =>
+      'Delivery schedule amendment is under review and cannot be modified directly.';
+
+  @override
+  String get family_error_action_not_available =>
+      'This action is currently not available for this member or subscription.';
+
+  @override
+  String get payment_error_initialization_failed =>
+      'Payment gateway initialization failed. Please try again.';
+
+  @override
+  String auto_renewal_price_changed(String amount, String currency) {
+    return 'Auto-renewal price changed to $amount $currency.';
+  }
+
+  @override
+  String get family_error_invoice_unavailable =>
+      'The requested invoice is not available.';
+
+  @override
+  String get family_status_review_required => 'Paid (Review Required)';
+
+  @override
+  String get family_status_pending_activation => 'Pending Activation';
+
+  @override
+  String family_delivery_amendment_result(int affected, int skipped) {
+    return 'Delivery address updated. $affected days updated, $skipped protected days kept.';
+  }
+
+  @override
+  String get family_delivery_protected_notice =>
+      'Protected days cannot be updated locally.';
+
+  @override
+  String get family_checkout_stale_batch =>
+      'Your selection has changed. Refreshing summary...';
+
+  @override
+  String get family_member_not_linked_account_warning =>
+      'This member does not have a linked account yet.';
+
+  @override
+  String get family_calendar_action_disabled_cutoff =>
+      'Editing is closed for this day because the cutoff deadline has passed.';
+
+  @override
+  String get family_calendar_action_disabled_frozen =>
+      'This day is frozen and meals cannot be selected.';
+
+  @override
+  String get family_calendar_action_disabled_locked =>
+      'This day is locked and cannot be edited.';
+
+  @override
   String get family_member_no_plan => 'No plan';
 
   @override
@@ -6539,6 +6650,32 @@ class AppLocalizationsEn extends AppLocalizations {
       'View Subscription';
 
   @override
+  String get payment_failed_screen_title => 'Payment Failed';
+
+  @override
+  String get payment_failed_card_title => 'Payment Incomplete';
+
+  @override
+  String get payment_failed_card_subtitle =>
+      'Payment failed for some reason. Please retry or change payment method';
+
+  @override
+  String get payment_failed_info_title => 'Transaction Not Completed';
+
+  @override
+  String get payment_failed_info_desc =>
+      'No amount was deducted from your account';
+
+  @override
+  String get payment_failed_retry_button => 'Retry';
+
+  @override
+  String get payment_failed_change_method_button => 'Change Payment Method';
+
+  @override
+  String get payment_failed_contact_support_button => 'Contact Support';
+
+  @override
   String get sandbox_badge => 'Sandbox';
 
   @override
@@ -6998,4 +7135,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscription_program_address_required_badge => 'Address required';
+
+  @override
+  String get family_member_unsubscribed_status => 'Unsubscribed';
+
+  @override
+  String get family_member_subscribe_later => 'Subscribe Later';
+
+  @override
+  String get family_include_in_subscription =>
+      'Activate subscription for this member';
+
+  @override
+  String get family_min_one_subscriber_warning =>
+      'At least one member must be included in the subscription';
+
+  @override
+  String get family_error_min_members =>
+      'At least 2 members must be selected for this family package';
+
+  @override
+  String get family_error_checkout_no_selection =>
+      'Please select members to include in checkout before proceeding';
 }

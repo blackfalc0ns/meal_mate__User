@@ -40,6 +40,7 @@ class FamilySelectedMemberSummaryEntity {
   final bool dinner;
   final int mealsPerDay;
   final double memberPrice;
+  final String? startDate;
 
   const FamilySelectedMemberSummaryEntity({
     required this.memberId,
@@ -65,6 +66,7 @@ class FamilySelectedMemberSummaryEntity {
     this.dinner = false,
     this.mealsPerDay = 0,
     this.memberPrice = 0.0,
+    this.startDate,
   });
 
   String programName(String languageCode) {
@@ -155,6 +157,28 @@ class FamilyMealOverviewEntity {
   List<bool> get mealChecks => [breakfast, lunch, snack, dinner];
 }
 
+class FamilyMemberScheduleEntity {
+  final String memberId;
+  final String? paymentDate;
+  final String? firstDeliveryDate;
+  final String? endDate;
+  final int deliveryDaysCount;
+  final int mealsPerDay;
+  final int totalMeals;
+  final List<String> restaurants;
+
+  const FamilyMemberScheduleEntity({
+    required this.memberId,
+    this.paymentDate,
+    this.firstDeliveryDate,
+    this.endDate,
+    this.deliveryDaysCount = 0,
+    this.mealsPerDay = 0,
+    this.totalMeals = 0,
+    this.restaurants = const [],
+  });
+}
+
 class FamilySummaryEntity {
   final String? familyGroupId;
   final String? familyName;
@@ -173,7 +197,16 @@ class FamilySummaryEntity {
   final List<FamilySummaryMemberEntity> members;
   final FamilySelectedMemberSummaryEntity? selectedMember;
   final List<FamilyMealOverviewEntity> mealOverview;
+  final List<FamilyMemberScheduleEntity> memberSchedules;
+  final int participantCount;
   final String? checkoutEndpoint;
+  final String? batchId;
+  final int? batchVersion;
+  final int rosterCount;
+  final int selectedNewSubscriberCount;
+  final int eligibleExistingSubscriberCount;
+  final int unsubscribedCount;
+  final bool lockedQuote;
 
   const FamilySummaryEntity({
     this.familyGroupId,
@@ -193,8 +226,25 @@ class FamilySummaryEntity {
     this.members = const [],
     this.selectedMember,
     this.mealOverview = const [],
+    this.memberSchedules = const [],
+    this.participantCount = 0,
     this.checkoutEndpoint,
+    this.batchId,
+    this.batchVersion,
+    this.rosterCount = 0,
+    this.selectedNewSubscriberCount = 0,
+    this.eligibleExistingSubscriberCount = 0,
+    this.unsubscribedCount = 0,
+    this.lockedQuote = false,
   });
+
+  /// The scope of new subscriptions on this checkout invoice.
+  int get invoiceSubscribersCount =>
+      participantCount > 0
+          ? participantCount
+          : (selectedNewSubscriberCount > 0
+              ? selectedNewSubscriberCount
+              : newMembersCount);
 
   String get discountLabel {
     final percent = familyDiscountPercent * 100;

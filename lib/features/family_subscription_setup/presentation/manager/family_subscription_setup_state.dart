@@ -155,6 +155,11 @@ class FamilyPlanState {
 
   List<FamilyMemberEntity> get members => currentFlow?.members ?? const [];
 
+  int get rosterCount => members.length;
+
+  int get selectedNewSubscriberCount =>
+      members.where((m) => m.isInCheckoutBasket).length;
+
   FamilyMemberEntity? get selectedMember {
     final list = members;
     if (list.isEmpty ||

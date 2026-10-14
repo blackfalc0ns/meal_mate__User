@@ -5,6 +5,8 @@ import 'package:meal_meat_user/core/address/domain/entities/address_coverage_pre
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/data/data_source/family_addresses_remote_data_source.dart';
+import 'package:meal_meat_user/features/family_addresses/data/mapper/family_delivery_address_mapper.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/entities/family_delivery_address_entity.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/repo/family_addresses_repository.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 
@@ -85,4 +87,24 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
     _snapshotStore.invalidate();
     return entity;
   });
+
+  @override
+  Future<ApiResult<FamilyDeliveryAddressSnapshotEntity>>
+  getSubscriptionDeliveryAddress(String subscriptionId) => safeApiCall(
+    () async =>
+        (await _remote.getSubscriptionDeliveryAddress(subscriptionId))
+            .toEntity(),
+  );
+
+  @override
+  Future<ApiResult<FamilyDeliveryAddressResultEntity>>
+  updateSubscriptionDeliveryAddress(
+    String subscriptionId,
+    FamilyDeliveryAddressRequestEntity request,
+  ) => safeApiCall(
+    () async => (await _remote.updateSubscriptionDeliveryAddress(
+      subscriptionId,
+      request.toDto(),
+    )).toEntity(),
+  );
 }

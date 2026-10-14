@@ -5690,6 +5690,36 @@ abstract class AppLocalizations {
   /// **'3. Payment and subscription confirmation'**
   String get family_payment_confirm_title;
 
+  /// No description provided for @family_schedule_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Schedule'**
+  String get family_schedule_section_title;
+
+  /// No description provided for @family_payment_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Date'**
+  String get family_payment_date;
+
+  /// No description provided for @family_start_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Start Date'**
+  String get family_start_date;
+
+  /// No description provided for @family_end_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription End Date'**
+  String get family_end_date;
+
+  /// No description provided for @family_start_date_picker_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Select subscription start date'**
+  String get family_start_date_picker_help;
+
   /// No description provided for @family_subscription_summary.
   ///
   /// In en, this message translates to:
@@ -11036,6 +11066,150 @@ abstract class AppLocalizations {
   /// **'This action is only available to customers.'**
   String get family_error_customer_only;
 
+  /// No description provided for @family_error_permissions_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions were updated on the server. Please try again.'**
+  String get family_error_permissions_changed;
+
+  /// No description provided for @family_error_delivery_version_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery information was updated on the server. Please review the changes.'**
+  String get family_error_delivery_version_changed;
+
+  /// No description provided for @family_error_quote_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription pricing has changed. Please review the updated summary.'**
+  String get family_error_quote_changed;
+
+  /// No description provided for @family_error_idempotency_key_used.
+  ///
+  /// In en, this message translates to:
+  /// **'This payment request was already processed. Please start a new checkout.'**
+  String get family_error_idempotency_key_used;
+
+  /// No description provided for @family_error_client_update_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please update the app to the latest version to proceed with subscription.'**
+  String get family_error_client_update_required;
+
+  /// No description provided for @family_error_invoice_creation_stopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice creation is temporarily paused. Please try again later.'**
+  String get family_error_invoice_creation_stopped;
+
+  /// No description provided for @family_error_member_account_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Member must have a linked account before completing subscription.'**
+  String get family_error_member_account_required;
+
+  /// No description provided for @family_error_payment_method_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected payment method is currently unavailable. Please choose another method.'**
+  String get family_error_payment_method_unavailable;
+
+  /// No description provided for @family_error_payment_currency_unsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected currency is not supported for payment.'**
+  String get family_error_payment_currency_unsupported;
+
+  /// No description provided for @family_error_provider_refund_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund requires manual processing by the provider. Please contact support.'**
+  String get family_error_provider_refund_required;
+
+  /// No description provided for @family_error_delivery_snapshot_review_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery schedule amendment is under review and cannot be modified directly.'**
+  String get family_error_delivery_snapshot_review_required;
+
+  /// No description provided for @family_error_action_not_available.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is currently not available for this member or subscription.'**
+  String get family_error_action_not_available;
+
+  /// No description provided for @payment_error_initialization_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment gateway initialization failed. Please try again.'**
+  String get payment_error_initialization_failed;
+
+  /// No description provided for @auto_renewal_price_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renewal price changed to {amount} {currency}.'**
+  String auto_renewal_price_changed(String amount, String currency);
+
+  /// No description provided for @family_error_invoice_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested invoice is not available.'**
+  String get family_error_invoice_unavailable;
+
+  /// No description provided for @family_status_review_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid (Review Required)'**
+  String get family_status_review_required;
+
+  /// No description provided for @family_status_pending_activation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Activation'**
+  String get family_status_pending_activation;
+
+  /// No description provided for @family_delivery_amendment_result.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address updated. {affected} days updated, {skipped} protected days kept.'**
+  String family_delivery_amendment_result(int affected, int skipped);
+
+  /// No description provided for @family_delivery_protected_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected days cannot be updated locally.'**
+  String get family_delivery_protected_notice;
+
+  /// No description provided for @family_checkout_stale_batch.
+  ///
+  /// In en, this message translates to:
+  /// **'Your selection has changed. Refreshing summary...'**
+  String get family_checkout_stale_batch;
+
+  /// No description provided for @family_member_not_linked_account_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'This member does not have a linked account yet.'**
+  String get family_member_not_linked_account_warning;
+
+  /// No description provided for @family_calendar_action_disabled_cutoff.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing is closed for this day because the cutoff deadline has passed.'**
+  String get family_calendar_action_disabled_cutoff;
+
+  /// No description provided for @family_calendar_action_disabled_frozen.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is frozen and meals cannot be selected.'**
+  String get family_calendar_action_disabled_frozen;
+
+  /// No description provided for @family_calendar_action_disabled_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'This day is locked and cannot be edited.'**
+  String get family_calendar_action_disabled_locked;
+
   /// No description provided for @family_member_no_plan.
   ///
   /// In en, this message translates to:
@@ -12068,6 +12242,54 @@ abstract class AppLocalizations {
   /// **'View Subscription'**
   String get subscription_success_view_subscription_button;
 
+  /// No description provided for @payment_failed_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Failed'**
+  String get payment_failed_screen_title;
+
+  /// No description provided for @payment_failed_card_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Incomplete'**
+  String get payment_failed_card_title;
+
+  /// No description provided for @payment_failed_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed for some reason. Please retry or change payment method'**
+  String get payment_failed_card_subtitle;
+
+  /// No description provided for @payment_failed_info_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Not Completed'**
+  String get payment_failed_info_title;
+
+  /// No description provided for @payment_failed_info_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No amount was deducted from your account'**
+  String get payment_failed_info_desc;
+
+  /// No description provided for @payment_failed_retry_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get payment_failed_retry_button;
+
+  /// No description provided for @payment_failed_change_method_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Payment Method'**
+  String get payment_failed_change_method_button;
+
+  /// No description provided for @payment_failed_contact_support_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get payment_failed_contact_support_button;
+
   /// No description provided for @sandbox_badge.
   ///
   /// In en, this message translates to:
@@ -12841,6 +13063,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address required'**
   String get subscription_program_address_required_badge;
+
+  /// No description provided for @family_member_unsubscribed_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribed'**
+  String get family_member_unsubscribed_status;
+
+  /// No description provided for @family_member_subscribe_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Later'**
+  String get family_member_subscribe_later;
+
+  /// No description provided for @family_include_in_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate subscription for this member'**
+  String get family_include_in_subscription;
+
+  /// No description provided for @family_min_one_subscriber_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one member must be included in the subscription'**
+  String get family_min_one_subscriber_warning;
+
+  /// No description provided for @family_error_min_members.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 2 members must be selected for this family package'**
+  String get family_error_min_members;
+
+  /// No description provided for @family_error_checkout_no_selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select members to include in checkout before proceeding'**
+  String get family_error_checkout_no_selection;
 }
 
 class _AppLocalizationsDelegate

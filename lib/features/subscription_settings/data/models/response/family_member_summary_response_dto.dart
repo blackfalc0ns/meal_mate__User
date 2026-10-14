@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
 
 part 'family_member_summary_response_dto.g.dart';
 
@@ -22,6 +23,7 @@ class FamilyMemberSummaryResponseDto {
     this.todayUiStatus,
     this.todayFilledCount,
     this.todayRequiredCount,
+    this.lifecycle,
   });
   final String? memberId;
   final String? displayName;
@@ -40,6 +42,7 @@ class FamilyMemberSummaryResponseDto {
   final String? todayUiStatus;
   final int? todayFilledCount;
   final int? todayRequiredCount;
+  final FamilyMemberLifecycleResponseDto? lifecycle;
 
   factory FamilyMemberSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberSummaryResponseDtoFromJson(json);

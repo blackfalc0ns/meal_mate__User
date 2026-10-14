@@ -10,6 +10,11 @@ class FoodPreferencesDietaryRequestDto {
 
   final List<String> dietaryPreferenceCodes;
 
-  Map<String, dynamic> toJson() =>
-      _$FoodPreferencesDietaryRequestDtoToJson(this);
+  Map<String, dynamic> toJson() {
+    final codes =
+        dietaryPreferenceCodes.where((c) => c.trim().isNotEmpty).toList();
+    return {
+      'dietaryPreferenceCodes': codes.isEmpty ? const ['NONE'] : codes,
+    };
+  }
 }

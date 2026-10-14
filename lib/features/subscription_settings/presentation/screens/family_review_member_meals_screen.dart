@@ -287,7 +287,7 @@ class _FamilyReviewMemberMealsScreenState
         if (isSaving)
           Positioned.fill(
             child: AbsorbPointer(
-              child: Container(
+              child: ColoredBox(
                 color: color.scrim.withValues(alpha: 0.35),
                 child: const Center(child: CustomProgressIndicator()),
               ),

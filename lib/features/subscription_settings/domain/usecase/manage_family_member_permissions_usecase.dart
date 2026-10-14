@@ -15,9 +15,11 @@ class ManageFamilyMemberPermissionsUseCase {
     required String memberId,
     required Map<String, bool> values,
     required String localeName,
+    int? expectedVersion,
   }) => _repository.updatePermissions(
     memberId: memberId,
     values: values,
     localeName: localeName,
+    expectedVersion: expectedVersion,
   );
 }

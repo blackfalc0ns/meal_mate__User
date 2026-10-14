@@ -2983,6 +2983,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_payment_confirm_title => '3. الدفع وتأكيد الاشتراك';
 
   @override
+  String get family_schedule_section_title => 'مواعيد الاشتراك';
+
+  @override
+  String get family_payment_date => 'تاريخ الدفع';
+
+  @override
+  String get family_start_date => 'تاريخ بدء الاشتراك';
+
+  @override
+  String get family_end_date => 'تاريخ انتهاء الاشتراك';
+
+  @override
+  String get family_start_date_picker_help => 'اختر تاريخ بدء الاشتراك';
+
+  @override
   String get family_subscription_summary => 'ملخص الاشتراك';
 
   @override
@@ -5858,6 +5873,101 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_error_customer_only => 'هذا الإجراء متاح للعملاء فقط.';
 
   @override
+  String get family_error_permissions_changed =>
+      'تم تحديث الصلاحيات من قِبل مدير العائلة، يرجى إعادة المحاولة.';
+
+  @override
+  String get family_error_delivery_version_changed =>
+      'تم تحديث بيانات التوصيل على الخادم، يرجى مراجعة التغييرات.';
+
+  @override
+  String get family_error_quote_changed =>
+      'تم تحديث أسعار الاشتراك، يرجى مراجعة الملخص الجديد قبل المتابعة.';
+
+  @override
+  String get family_error_idempotency_key_used =>
+      'تم استخدام طلب الدفع هذا مسبقاً، يرجى بدء عملية دفع جديدة.';
+
+  @override
+  String get family_error_client_update_required =>
+      'يرجى تحديث التطبيق إلى أحدث إصدار لمتابعة الاشتراك.';
+
+  @override
+  String get family_error_invoice_creation_stopped =>
+      'تم إيقاف إنشاء فواتير جديدة مؤقتاً، يرجى المحاولة لاحقاً.';
+
+  @override
+  String get family_error_member_account_required =>
+      'يجب ربط حساب الفرد برقم هاتف أو حساب مستقل قبل إتمام الاشتراك.';
+
+  @override
+  String get family_error_payment_method_unavailable =>
+      'طريقة الدفع المحددة غير متاحة حالياً، يرجى اختيار طريقة أخرى.';
+
+  @override
+  String get family_error_payment_currency_unsupported =>
+      'العملة المحددة غير مدعومة للدفع.';
+
+  @override
+  String get family_error_provider_refund_required =>
+      'عملية الاسترداد تتطلب مراجعة من مزود الخدمة، يرجى التواصل مع الدعم.';
+
+  @override
+  String get family_error_delivery_snapshot_review_required =>
+      'تعديل جدول التوصيل قيد المراجعة ولا يمكن تغييره مباشرة.';
+
+  @override
+  String get family_error_action_not_available =>
+      'هذا الإجراء غير متاح حالياً لهذا الفرد أو الاشتراك.';
+
+  @override
+  String get payment_error_initialization_failed =>
+      'فشل في تهيئة بوابة الدفع، يرجى المحاولة مرة أخرى.';
+
+  @override
+  String auto_renewal_price_changed(String amount, String currency) {
+    return 'تغير سعر التجديد التلقائي إلى $amount $currency.';
+  }
+
+  @override
+  String get family_error_invoice_unavailable => 'الفاتورة المطلوبة غير متاحة.';
+
+  @override
+  String get family_status_review_required => 'مدفوع (قيد المراجعة)';
+
+  @override
+  String get family_status_pending_activation => 'قيد التفعيل';
+
+  @override
+  String family_delivery_amendment_result(int affected, int skipped) {
+    return 'تم تحديث عنوان التوصيل. تم تحديث $affected يوماً، والاحتفاظ بـ $skipped يوماً محمياً.';
+  }
+
+  @override
+  String get family_delivery_protected_notice =>
+      'الأيام المحمية لا يمكن تعديلها محلياً.';
+
+  @override
+  String get family_checkout_stale_batch =>
+      'تم تغيير اختيارك، جاري تحديث الملخص...';
+
+  @override
+  String get family_member_not_linked_account_warning =>
+      'هذا الفرد ليس لديه حساب مرتبط بعد.';
+
+  @override
+  String get family_calendar_action_disabled_cutoff =>
+      'تم إغلاق التعديل لهذا اليوم لانتهاء موعد التعديل المحدد.';
+
+  @override
+  String get family_calendar_action_disabled_frozen =>
+      'هذا اليوم مجمّد ولا يمكن اختيار وجبات له.';
+
+  @override
+  String get family_calendar_action_disabled_locked =>
+      'هذا اليوم مقفل ولا يمكن تعديله.';
+
+  @override
   String get family_member_no_plan => 'من غير خطة';
 
   @override
@@ -6426,6 +6536,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_success_view_subscription_button => 'عرض الاشتراك';
 
   @override
+  String get payment_failed_screen_title => 'فشل الدفع';
+
+  @override
+  String get payment_failed_card_title => 'تعذر إتمام الدفع';
+
+  @override
+  String get payment_failed_card_subtitle =>
+      'فشل الدفع لسبب ما. يرجى إعادة المحاولة أو تغيير وسيلة الدفع';
+
+  @override
+  String get payment_failed_info_title => 'لم تكتمل العملية';
+
+  @override
+  String get payment_failed_info_desc => 'لم يتم خصم أي مبلغ من حسابك';
+
+  @override
+  String get payment_failed_retry_button => 'إعادة المحاولة';
+
+  @override
+  String get payment_failed_change_method_button => 'تغيير وسيلة الدفع';
+
+  @override
+  String get payment_failed_contact_support_button => 'اتصل بالدعم';
+
+  @override
   String get sandbox_badge => 'تجربة';
 
   @override
@@ -6879,4 +7014,25 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get subscription_program_address_required_badge =>
       'يتطلب تحديد العنوان';
+
+  @override
+  String get family_member_unsubscribed_status => 'غير مشترك';
+
+  @override
+  String get family_member_subscribe_later => 'اشترك له لاحقاً';
+
+  @override
+  String get family_include_in_subscription => 'تفعيل الاشتراك لهذا الفرد';
+
+  @override
+  String get family_min_one_subscriber_warning =>
+      'يجب اختيار فرد واحد على الأقل في الاشتراك';
+
+  @override
+  String get family_error_min_members =>
+      'يجب اختيار عضوين على الأقل للاشتراك في هذه الباقة العائلية';
+
+  @override
+  String get family_error_checkout_no_selection =>
+      'يرجى تحديد الأعضاء المشمولين بالدفع أولاً قبل المتابعة';
 }

@@ -6,6 +6,8 @@ extension SubscriptionBillingUncompletedSubscriptionResponseDtoMapper
     on SubscriptionBillingUncompletedSubscriptionResponseDto {
   SubscriptionBillingUncompletedSubscriptionEntity toEntity() {
     return SubscriptionBillingUncompletedSubscriptionEntity(
+      kind: kind ?? 'INDIVIDUAL',
+      familyGroupId: familyGroupId,
       subscriptionId: subscriptionId ?? '',
       status: status ?? '',
       statusNameAr: statusNameAr ?? '',
@@ -52,6 +54,8 @@ extension SubscriptionBillingUncompletedActionsResponseDtoMapper
       canResume: canResume ?? false,
       deleteEndpoint: deleteEndpoint ?? '',
       resumeEndpoint: resumeEndpoint ?? '',
+      nextScreen: nextScreen,
+      retryPaymentEndpoint: retryPaymentEndpoint,
     );
   }
 }
@@ -389,6 +393,13 @@ extension SubscriptionBillingCancellationQuoteResponseDtoMapper
       currencyCode: currencyCode ?? '',
       effectiveCancellationDate: effectiveCancellationDate ?? '',
       policyMessageAr: policyMessageAr ?? '',
+      cancellationFeeAmount: cancellationFeeAmount ?? 0.0,
+      netRefundAmount: netRefundAmount ?? 0.0,
+      refundToCashWallet: refundToCashWallet ?? true,
+      policyMessageEn: policyMessageEn,
+      messageCode: messageCode,
+      payerCustomerUserId: payerCustomerUserId,
+      batchId: batchId,
     );
   }
 }
@@ -411,6 +422,14 @@ extension SubscriptionBillingCancellationResultResponseDtoMapper
       effectiveCancellationDate: effectiveCancellationDate ?? '',
       messageAr: messageAr ?? '',
       timestampUtc: timestampUtc ?? '',
+      cancellationFeeAmount: cancellationFeeAmount ?? 0.0,
+      netRefundAmount: netRefundAmount ?? 0.0,
+      refundedToWallet: refundedToWallet ?? false,
+      messageEn: messageEn,
+      messageCode: messageCode,
+      payerCustomerUserId: payerCustomerUserId,
+      settlementId: settlementId,
+      batchId: batchId,
     );
   }
 }

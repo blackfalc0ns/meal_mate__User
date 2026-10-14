@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -84,9 +85,20 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
       return;
     }
     if (state.checkoutResult == null) return;
-    Navigator.of(context, rootNavigator: true).pushNamed(
-      AppRoutes.paymentWebView,
-      arguments: PaymentWebViewArgs(checkout: state.checkoutResult!),
+    unawaited(
+      Navigator.of(context, rootNavigator: true).pushNamed(
+        AppRoutes.paymentWebView,
+        arguments: PaymentWebViewArgs(checkout: state.checkoutResult!),
+      ).then((_) {
+        if (context.mounted) {
+          context.read<FamilyCheckoutViewModel>().doIntent(
+            const GetFamilySubscriptionCurrentEvent(),
+          );
+          context.read<FamilyCheckoutViewModel>().doIntent(
+            const GetFamilySummaryEvent(),
+          );
+        }
+      }),
     );
   }
 

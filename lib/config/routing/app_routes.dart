@@ -50,6 +50,7 @@ abstract class AppRoutes {
   static const String payment = '/payment';
   static const String paymentWebView = '/payment-web-view';
   static const String paymentSuccess = '/payment-success';
+  static const String paymentFailed = '/payment-failed';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
   static const String signIn = '/sign-in';

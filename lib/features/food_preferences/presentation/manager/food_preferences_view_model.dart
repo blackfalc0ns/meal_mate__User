@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -28,9 +29,9 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
   void doIntent(FoodPreferencesEvent event) {
     switch (event) {
       case GetFoodPreferencesEvent():
-        _getFoodPreferences();
+        unawaited(_getFoodPreferences());
       case GetFoodPreferencesCatalogEvent():
-        _getFoodPreferencesCatalog();
+        unawaited(_getFoodPreferencesCatalog());
       case ToggleDietaryPreferenceEvent():
         _toggleDietaryPreference(event.code);
       case ToggleDislikedFoodEvent():
@@ -42,9 +43,9 @@ class FoodPreferencesViewModel extends Cubit<FoodPreferencesState> {
       case FoodPreferenceAllergySearchChangedEvent():
         _changeAllergySearchQuery(event.query);
       case SaveFoodPreferencesEvent():
-        _updateFoodPreferences();
+        unawaited(_updateFoodPreferences());
       case SaveFoodPreferencesAllergiesEvent():
-        _updateFoodPreferencesAllergies();
+        unawaited(_updateFoodPreferencesAllergies());
     }
   }
 

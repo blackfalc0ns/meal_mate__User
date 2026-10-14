@@ -32,6 +32,7 @@ class FamilyProgramMemberUiModel {
     this.status = '',
     this.isSelected = false,
     this.isInProgress = false,
+    this.isExcluded = false,
   });
 
   final String name;
@@ -39,6 +40,7 @@ class FamilyProgramMemberUiModel {
   final String status;
   final bool isSelected;
   final bool isInProgress;
+  final bool isExcluded;
 }
 
 class FamilyProgramMemberDetailsUiModel {

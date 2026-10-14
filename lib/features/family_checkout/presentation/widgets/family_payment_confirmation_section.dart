@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_event.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_confirmation_summary_card.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 
@@ -21,6 +24,15 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     final summary = state.summary;
     final selectedMemberSummary = summary?.selectedMember;
     final activeMemberDetails = _activeMemberDetails(context);
+    final activeMemberId =
+        selectedMemberSummary?.memberId ??
+        state.selectedSummaryMemberId ??
+        summary?.selectedMemberId ??
+        state.members.firstOrNull?.memberId;
+    final matchingFlowMember = state.members
+        .where((m) => m.memberId == activeMemberId)
+        .firstOrNull;
+    final isSubscribed = matchingFlowMember?.subscribeNow ?? false;
     final selectionSummary = selectedMemberSummary == null
         ? null
         : _selectionSummary(
@@ -29,6 +41,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
             currency: _currency(context, summary),
             managerPrepaid: summary?.managerPrepaid ?? false,
             selectedMemberSummary: selectedMemberSummary,
+            startDate: matchingFlowMember?.startDate,
           );
 
     return Column(
@@ -47,6 +60,16 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
           FamilyPaymentConfirmationSummaryCard(
             member: activeMemberDetails,
             summary: selectionSummary,
+            isSubscribed: isSubscribed,
+            onToggleSubscription: (value) {
+              if (activeMemberId == null) return;
+              context.read<FamilyCheckoutViewModel>().doIntent(
+                SelectFamilyMemberCheckoutEvent(
+                  memberId: activeMemberId,
+                  subscribeNow: value,
+                ),
+              );
+            },
           ),
         ],
       ],
@@ -93,6 +116,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     required String currency,
     required bool managerPrepaid,
     required FamilySelectedMemberSummaryEntity selectedMemberSummary,
+    String? startDate,
   }) {
     final rows = <FamilySelectionSummaryRowData>[];
     final programName = selectedMemberSummary.programName(languageCode);

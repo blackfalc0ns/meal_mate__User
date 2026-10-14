@@ -194,7 +194,7 @@ class FamilyMealSelectionCard extends StatelessWidget {
                               height: imageHeight,
                               fit: BoxFit.cover,
                             )
-                          : Container(
+                          : ColoredBox(
                               color: color.surfaceContainerHighest,
                               child: Icon(
                                 Icons.restaurant_rounded,

@@ -13,6 +13,7 @@ class FamilyMemberPermissionsRequestDto {
     required this.editAddress,
     required this.unitExchange,
     required this.changePassword,
+    this.expectedVersion,
   });
   final bool editDailyMeals;
   final bool changeDeliveryTime;
@@ -22,9 +23,12 @@ class FamilyMemberPermissionsRequestDto {
   final bool editAddress;
   final bool unitExchange;
   final bool changePassword;
+  final int? expectedVersion;
   factory FamilyMemberPermissionsRequestDto.fromJson(
     Map<String, dynamic> json,
   ) => _$FamilyMemberPermissionsRequestDtoFromJson(json);
-  Map<String, dynamic> toJson() =>
-      _$FamilyMemberPermissionsRequestDtoToJson(this);
+  Map<String, dynamic> toJson() => {
+    ..._$FamilyMemberPermissionsRequestDtoToJson(this),
+    if (expectedVersion != null) 'expectedVersion': expectedVersion,
+  };
 }

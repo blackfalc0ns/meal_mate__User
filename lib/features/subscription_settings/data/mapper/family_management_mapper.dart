@@ -64,6 +64,8 @@ extension FamilyMemberSummaryResponseDtoMapper
         todayUiStatus: todayUiStatus,
         todayFilledCount: todayFilledCount ?? 0,
         todayRequiredCount: todayRequiredCount ?? 0,
+        lifecycleStatus: lifecycle?.status,
+        checkoutSelected: lifecycle?.checkoutSelected ?? false,
       );
 }
 
@@ -78,6 +80,12 @@ extension FamilyMemberDetailResponseDtoMapper on FamilyMemberDetailResponseDto {
         subscriptionId: memberSubscriptionId?.trim().isEmpty == true
             ? null
             : memberSubscriptionId,
+        currentSubscriptionId: currentSubscriptionId?.trim().isEmpty == true
+            ? null
+            : (currentSubscriptionId ?? memberSubscriptionId),
+        upcomingSubscriptionId: upcomingSubscriptionId?.trim().isEmpty == true
+            ? null
+            : upcomingSubscriptionId,
         programName: localeName == 'ar'
             ? programNameAr ?? programNameEn ?? programName ?? ''
             : programNameEn ?? programNameAr ?? programName ?? '',
@@ -91,6 +99,8 @@ extension FamilyMemberDetailResponseDtoMapper on FamilyMemberDetailResponseDto {
         renewalPath: renewalPath,
         hasSeparateAccount: hasSeparateAccount ?? false,
         todayNutrition: todayNutrition?.toEntity(),
+        lifecycleStatus: lifecycle?.status,
+        checkoutSelected: lifecycle?.checkoutSelected ?? false,
       );
 }
 
@@ -143,6 +153,7 @@ extension FamilyMemberAccessResponseDtoMapper on FamilyMemberAccessResponseDto {
     inviteExpiresAtUtc: DateTime.tryParse(inviteExpiresAtUtc ?? ''),
     phoneNumber: phoneNumber,
     generatedPassword: generatedPassword,
+    version: version,
   );
 }
 
@@ -151,6 +162,7 @@ extension FamilyMemberPermissionsResponseDtoMapper
   FamilyMemberPermissionsEntity toEntity(String localeName) =>
       FamilyMemberPermissionsEntity(
         memberId: memberId ?? '',
+        version: version,
         values: {
           'editDailyMeals': editDailyMeals ?? false,
           'changeDeliveryTime': changeDeliveryTime ?? false,

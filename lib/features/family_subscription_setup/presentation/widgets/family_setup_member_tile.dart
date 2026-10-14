@@ -59,7 +59,7 @@ class FamilySetupMemberTile extends StatelessWidget {
                         color: color.onSurface,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     if (member.isManager) ...[
                       const SizedBox(width: Spacing.xs),
                       Container(
@@ -79,6 +79,29 @@ class FamilySetupMemberTile extends StatelessWidget {
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size10,
                             color: color.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                    if (member.isUnsubscribed && !member.isManager) ...[
+                      const SizedBox(width: Spacing.xs),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                          vertical: Spacing.xss,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
+                        ),
+                        child: Text(
+                          locale.family_member_unsubscribed_status,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size10,
+                            color: color.onSurfaceVariant,
                           ),
                         ),
                       ),

@@ -101,6 +101,9 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
     return BlocProvider.value(
       value: _viewModel,
       child: BlocConsumer<FamilyManagementViewModel, FamilyManagementState>(
+        buildWhen: (previous, current) =>
+            previous.access != current.access ||
+            previous.isSaving != current.isSaving,
         listenWhen: (previous, current) =>
             previous.saveSuccessCount != current.saveSuccessCount ||
             previous.failure != current.failure ||
@@ -247,7 +250,7 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
               if (state.isSaving)
                 Positioned.fill(
                   child: AbsorbPointer(
-                    child: Container(
+                    child: ColoredBox(
                       color: color.scrim.withValues(alpha: 0.35),
                       child: const Center(child: CustomProgressIndicator()),
                     ),

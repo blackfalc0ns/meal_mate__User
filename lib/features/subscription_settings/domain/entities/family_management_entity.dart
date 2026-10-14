@@ -44,6 +44,8 @@ class FamilyMemberSummaryEntity {
     this.todayUiStatus,
     this.todayFilledCount = 0,
     this.todayRequiredCount = 0,
+    this.lifecycleStatus,
+    this.checkoutSelected = false,
   });
 
   final String memberId;
@@ -58,9 +60,20 @@ class FamilyMemberSummaryEntity {
   final String? todayUiStatus;
   final int todayFilledCount;
   final int todayRequiredCount;
+  final String? lifecycleStatus;
+  final bool checkoutSelected;
 
   bool get isManager => role == 1;
   bool get hasPlan => subscriptionId?.isNotEmpty == true;
+  bool get isUnsubscribed =>
+      (lifecycleStatus?.toLowerCase() == 'unsubscribed') ||
+      (!hasPlan && setupStatus == 0);
+  bool get isSetupIncomplete =>
+      (lifecycleStatus?.toLowerCase() == 'setupincomplete') ||
+      (!hasPlan && setupStatus == 1);
+  bool get isReadyToPay =>
+      (lifecycleStatus?.toLowerCase() == 'readytopay') ||
+      (!hasPlan && setupStatus == 2);
 }
 
 class FamilyMemberDetailEntity {
@@ -75,6 +88,8 @@ class FamilyMemberDetailEntity {
     required this.remainingDays,
     required this.setupStatus,
     required this.canRenew,
+    this.currentSubscriptionId,
+    this.upcomingSubscriptionId,
     this.relationshipCode,
     this.phoneNumber,
     this.startDate,
@@ -82,6 +97,8 @@ class FamilyMemberDetailEntity {
     this.renewalPath,
     this.todayNutrition,
     this.hasSeparateAccount = false,
+    this.lifecycleStatus,
+    this.checkoutSelected = false,
   });
 
   final String memberId;
@@ -90,6 +107,8 @@ class FamilyMemberDetailEntity {
   final int? ageYears;
   final bool isPaused;
   final String? subscriptionId;
+  final String? currentSubscriptionId;
+  final String? upcomingSubscriptionId;
   final String programName;
   final int remainingDays;
   final int setupStatus;
@@ -101,9 +120,37 @@ class FamilyMemberDetailEntity {
   final String? renewalPath;
   final FamilyNutritionEntity? todayNutrition;
   final bool hasSeparateAccount;
+  final String? lifecycleStatus;
+  final bool checkoutSelected;
 
-  bool get hasPlan => subscriptionId?.isNotEmpty == true;
+  bool get hasPlan => (subscriptionId?.isNotEmpty == true) || (currentSubscriptionId?.isNotEmpty == true);
+  bool get hasUpcomingSubscription => upcomingSubscriptionId?.isNotEmpty == true;
   bool get isManager => role == 1;
+  bool get isUnsubscribed =>
+      (lifecycleStatus?.toLowerCase() == 'unsubscribed') ||
+      (!hasPlan && setupStatus == 0);
+  bool get isSetupIncomplete =>
+      (lifecycleStatus?.toLowerCase() == 'setupincomplete') ||
+      (!hasPlan && setupStatus == 1);
+  bool get isReadyToPay =>
+      (lifecycleStatus?.toLowerCase() == 'readytopay') ||
+      (!hasPlan && setupStatus == 2);
+
+  /// Returns true if current service remains active through its inclusive end date.
+  bool isServiceActive({DateTime? atDate}) {
+    if (endDate == null) return hasPlan;
+    final checkDate = atDate ?? DateTime.now();
+    final endOfDay = DateTime(endDate!.year, endDate!.month, endDate!.day, 23, 59, 59);
+    return !checkDate.isAfter(endOfDay);
+  }
+
+  /// Evaluates whether an upcoming subscription has officially begun.
+  /// Current subscription remains the authoritative active service until upcoming starts.
+  bool isUpcomingActive({DateTime? atDate, DateTime? upcomingStartDate}) {
+    if (!hasUpcomingSubscription || upcomingStartDate == null) return false;
+    final checkDate = atDate ?? DateTime.now();
+    return !checkDate.isBefore(upcomingStartDate);
+  }
 }
 
 class FamilyNutritionEntity {
@@ -132,6 +179,7 @@ class FamilyMemberAccessEntityV2 {
     this.inviteExpiresAtUtc,
     this.phoneNumber,
     this.generatedPassword,
+    this.version,
   });
   final String memberId;
   final bool hasSeparateAccount;
@@ -144,6 +192,7 @@ class FamilyMemberAccessEntityV2 {
   final DateTime? inviteExpiresAtUtc;
   final String? phoneNumber;
   final String? generatedPassword;
+  final int? version;
 
   FamilyMemberAccessEntityV2 clearGeneratedPassword() =>
       FamilyMemberAccessEntityV2(
@@ -157,6 +206,7 @@ class FamilyMemberAccessEntityV2 {
         inviteDeepLink: inviteDeepLink,
         inviteExpiresAtUtc: inviteExpiresAtUtc,
         phoneNumber: phoneNumber,
+        version: version,
       );
 }
 
@@ -165,10 +215,12 @@ class FamilyMemberPermissionsEntity {
     required this.memberId,
     required this.values,
     required this.groups,
+    this.version,
   });
   final String memberId;
   final Map<String, bool> values;
   final List<FamilyPermissionGroupEntity> groups;
+  final int? version;
 }
 
 class FamilyPermissionGroupEntity {

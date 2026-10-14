@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -57,7 +58,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
 
   @override
   void dispose() {
-    _viewModel.close();
+    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -68,6 +69,9 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
     return BlocProvider.value(
       value: _viewModel,
       child: BlocConsumer<FamilyManagementViewModel, FamilyManagementState>(
+        buildWhen: (previous, current) =>
+            previous.memberDetail != current.memberDetail ||
+            previous.isSaving != current.isSaving,
         listenWhen: (previous, current) =>
             previous.failure != current.failure ||
             previous.saveFailure != current.saveFailure ||
@@ -133,9 +137,11 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       ageLabel: detail.ageYears == null
           ? ''
           : locale.family_member_age_years(detail.ageYears!),
-      statusLabel: detail.isPaused
-          ? locale.family_member_paused_label
-          : locale.family_member_active_label,
+      statusLabel: detail.isUnsubscribed
+          ? locale.family_member_unsubscribed_status
+          : (detail.isPaused
+              ? locale.family_member_paused_label
+              : locale.family_member_active_label),
       roleLabel: detail.isManager
           ? locale.family_member_manager_label
           : locale.family_member_member_label,
@@ -176,13 +182,15 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
               );
               return;
             }
-            Navigator.of(context).pushNamed(
-              AppRoutes.familyMemberDailyMeals,
-              arguments: FamilyMemberCalendarArgs(
-                memberId: detail.memberId,
-                displayName: detail.displayName,
-                subscriptionId: detail.subscriptionId,
-                isManager: detail.isManager,
+            unawaited(
+              Navigator.of(context).pushNamed(
+                AppRoutes.familyMemberDailyMeals,
+                arguments: FamilyMemberCalendarArgs(
+                  memberId: detail.memberId,
+                  displayName: detail.displayName,
+                  subscriptionId: detail.subscriptionId,
+                  isManager: detail.isManager,
+                ),
               ),
             );
           },
@@ -191,9 +199,11 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           title: locale.family_member_shortcut_permissions,
           subtitle: locale.family_member_shortcut_permissions_subtitle,
           type: ui.FamilyMemberDetailShortcutType.permissions,
-          onTap: () => Navigator.of(context).pushNamed(
-            AppRoutes.familyMemberAccess,
-            arguments: (detail.memberId, detail.isManager, detail.displayName),
+          onTap: () => unawaited(
+            Navigator.of(context).pushNamed(
+              AppRoutes.familyMemberAccess,
+              arguments: (detail.memberId, detail.isManager, detail.displayName),
+            ),
           ),
         ),
       ],
@@ -238,7 +248,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                 );
               },
               icon: const Icon(Icons.add_shopping_cart_outlined),
-              label: Text(locale.subscription_details_subscribe_now),
+              label: Text(locale.family_member_subscribe_later),
             ),
           ],
           const SizedBox(height: Spacing.familyMemberDetailCardGap),

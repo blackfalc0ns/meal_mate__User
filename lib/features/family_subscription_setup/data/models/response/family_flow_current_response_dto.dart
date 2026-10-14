@@ -19,6 +19,10 @@ class FamilyFlowCurrentResponseDto {
     this.currentStep,
     this.managerPrepaid,
     this.members,
+    this.sessionExpired,
+    this.sessionExpiresAtUtc,
+    this.sessionMessage,
+    this.packageAvailable,
   });
 
   final String? familyGroupId;
@@ -38,6 +42,10 @@ class FamilyFlowCurrentResponseDto {
   final int? currentStep;
   final bool? managerPrepaid;
   final List<FamilyMemberResponseDto>? members;
+  final bool? sessionExpired;
+  final String? sessionExpiresAtUtc;
+  final String? sessionMessage;
+  final bool? packageAvailable;
 
   factory FamilyFlowCurrentResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyFlowCurrentResponseDtoFromJson(json);

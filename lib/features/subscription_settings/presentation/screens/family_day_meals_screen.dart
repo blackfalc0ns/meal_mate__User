@@ -332,7 +332,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
                     FamilyDayCurrentRestaurantCard(
                       restaurantName: restaurantName,
-                      onChangeRestaurant: () => _openRestaurants(),
+                      onChangeRestaurant: _openRestaurants,
                     ),
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
                     if (state.isLoadingCalendar && !state.hasCalendarData)

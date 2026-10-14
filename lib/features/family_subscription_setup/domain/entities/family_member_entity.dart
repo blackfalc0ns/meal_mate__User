@@ -4,6 +4,9 @@ import 'package:meal_meat_user/features/food_preferences/domain/entities/food_pr
 class FamilyMemberEntity {
   final String memberId;
   final String? memberSubscriptionId;
+  final String? currentSubscriptionId;
+  final String? upcomingSubscriptionId;
+  final String? customerUserId;
   final String? phoneNumber;
   final String? occupation;
   final String? startDate;
@@ -14,6 +17,7 @@ class FamilyMemberEntity {
   final int ageYears;
   final String? deliveryAddressId;
   final int setupStatus;
+  final String? readinessBlocker;
   final String? programId;
   final String? bundleId;
   final int? selectedTier;
@@ -28,10 +32,16 @@ class FamilyMemberEntity {
   final bool dietaryCompleted;
   final bool hasNoAllergies;
   final bool hasNoDietaryRestriction;
+  final bool subscribeNow;
+  final String? lifecycleStatus;
+  final bool checkoutSelected;
 
   const FamilyMemberEntity({
     required this.memberId,
     this.memberSubscriptionId,
+    this.currentSubscriptionId,
+    this.upcomingSubscriptionId,
+    this.customerUserId,
     this.phoneNumber,
     this.occupation,
     this.startDate,
@@ -42,6 +52,7 @@ class FamilyMemberEntity {
     required this.ageYears,
     this.deliveryAddressId,
     required this.setupStatus,
+    this.readinessBlocker,
     this.programId,
     this.bundleId,
     this.selectedTier,
@@ -56,6 +67,9 @@ class FamilyMemberEntity {
     this.dietaryCompleted = false,
     this.hasNoAllergies = false,
     this.hasNoDietaryRestriction = false,
+    this.subscribeNow = true,
+    this.lifecycleStatus,
+    this.checkoutSelected = false,
   });
 
   bool get isManager => role == 1 || isCurrentUser;
@@ -67,17 +81,39 @@ class FamilyMemberEntity {
       (durationDays != null && durationDays! > 0);
 
   bool get isReady => setupStatus == 2;
+  bool get hasLinkedAccount =>
+      (customerUserId != null && customerUserId!.isNotEmpty) ||
+      (phoneNumber != null && phoneNumber!.trim().isNotEmpty);
+
+  bool get isUnsubscribed =>
+      (lifecycleStatus?.toLowerCase() == 'unsubscribed') ||
+      (memberSubscriptionId == null && !isPlanCompleted && !subscribeNow);
+
+  bool get isSetupIncomplete =>
+      (lifecycleStatus?.toLowerCase() == 'setupincomplete') ||
+      (memberSubscriptionId == null && !isPlanCompleted);
+
+  bool get isReadyToPay =>
+      (lifecycleStatus?.toLowerCase() == 'readytopay') ||
+      (memberSubscriptionId == null && isPlanCompleted);
+
   bool get canDeleteFromSetupFlow =>
       !isManager &&
       !isReady &&
       !isPlanCompleted &&
       (memberSubscriptionId == null || memberSubscriptionId!.isEmpty);
+
   bool get isInCheckoutBasket =>
-      memberSubscriptionId == null && isPlanCompleted;
+      (memberSubscriptionId == null || memberSubscriptionId!.isEmpty) &&
+      isPlanCompleted &&
+      subscribeNow;
 
   FamilyMemberEntity copyWith({
     String? memberId,
     String? memberSubscriptionId,
+    String? currentSubscriptionId,
+    String? upcomingSubscriptionId,
+    String? customerUserId,
     String? phoneNumber,
     String? occupation,
     String? startDate,
@@ -88,6 +124,7 @@ class FamilyMemberEntity {
     int? ageYears,
     String? deliveryAddressId,
     int? setupStatus,
+    String? readinessBlocker,
     String? programId,
     String? bundleId,
     int? selectedTier,
@@ -102,6 +139,9 @@ class FamilyMemberEntity {
     bool? dietaryCompleted,
     bool? hasNoAllergies,
     bool? hasNoDietaryRestriction,
+    bool? subscribeNow,
+    String? lifecycleStatus,
+    bool? checkoutSelected,
     bool clearProgramId = false,
     bool clearBundleId = false,
     bool clearSelectedTier = false,
@@ -110,6 +150,11 @@ class FamilyMemberEntity {
     return FamilyMemberEntity(
       memberId: memberId ?? this.memberId,
       memberSubscriptionId: memberSubscriptionId ?? this.memberSubscriptionId,
+      currentSubscriptionId:
+          currentSubscriptionId ?? this.currentSubscriptionId,
+      upcomingSubscriptionId:
+          upcomingSubscriptionId ?? this.upcomingSubscriptionId,
+      customerUserId: customerUserId ?? this.customerUserId,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       occupation: occupation ?? this.occupation,
       startDate: startDate ?? this.startDate,
@@ -120,6 +165,7 @@ class FamilyMemberEntity {
       ageYears: ageYears ?? this.ageYears,
       deliveryAddressId: deliveryAddressId ?? this.deliveryAddressId,
       setupStatus: setupStatus ?? this.setupStatus,
+      readinessBlocker: readinessBlocker ?? this.readinessBlocker,
       programId: clearProgramId ? null : (programId ?? this.programId),
       bundleId: clearBundleId ? null : (bundleId ?? this.bundleId),
       selectedTier: clearSelectedTier
@@ -139,6 +185,9 @@ class FamilyMemberEntity {
       hasNoAllergies: hasNoAllergies ?? this.hasNoAllergies,
       hasNoDietaryRestriction:
           hasNoDietaryRestriction ?? this.hasNoDietaryRestriction,
+      subscribeNow: subscribeNow ?? this.subscribeNow,
+      lifecycleStatus: lifecycleStatus ?? this.lifecycleStatus,
+      checkoutSelected: checkoutSelected ?? this.checkoutSelected,
     );
   }
 }

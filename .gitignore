@@ -55,3 +55,5 @@ app.*.map.json
 !lib/features/subscription_settings/data/models/response/family_member_detail_response_dto.g.dart
 !lib/features/subscription_settings/data/models/response/family_member_permissions_response_dto.g.dart
 !lib/features/subscription_settings/data/models/response/family_member_summary_response_dto.g.dart
+
+.superpowers/

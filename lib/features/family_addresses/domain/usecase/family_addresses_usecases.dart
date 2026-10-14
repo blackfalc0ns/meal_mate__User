@@ -61,3 +61,14 @@ class SetDefaultFamilyMemberAddressUseCase {
     String addressId,
   ) => _repo.setDefaultAddress(memberId, addressId);
 }
+
+@injectable
+class UpdateFamilyMemberAddressUseCase {
+  const UpdateFamilyMemberAddressUseCase(this._repo);
+  final FamilyAddressesRepository _repo;
+  Future<ApiResult<CustomerAddressEntity>> call(
+    String memberId,
+    String addressId,
+    CustomerAddressRequestEntity request,
+  ) => _repo.updateAddress(memberId, addressId, request);
+}

@@ -16,6 +16,7 @@ abstract interface class FamilyManagementRepository {
     bool? hasSeparateAccount,
     bool? isPaused,
     bool? remove,
+    int? expectedVersion,
   });
   Future<ApiResult<FamilyMemberPermissionsEntity>> getPermissions(
     String memberId,
@@ -25,6 +26,7 @@ abstract interface class FamilyManagementRepository {
     required String memberId,
     required Map<String, bool> values,
     required String localeName,
+    int? expectedVersion,
   });
   Future<ApiResult<void>> renewSubscription(String renewalPath);
 }

@@ -34,6 +34,7 @@ class SubscriptionTierResponseDto {
     this.isAvailable,
     this.disabledReason,
     this.option,
+    this.durationPrices,
   });
 
   final String? tier;
@@ -63,6 +64,7 @@ class SubscriptionTierResponseDto {
   final bool? isAvailable;
   final String? disabledReason;
   final SubscriptionTierResponseDto? option;
+  final List<DurationPriceResponseDto>? durationPrices;
 
   factory SubscriptionTierResponseDto.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionTierResponseDtoFromJson(json);
@@ -135,3 +137,26 @@ class SubscriptionTiersPageResponseDto {
     Map<String, dynamic> json,
   ) => _$SubscriptionTiersPageResponseDtoFromJson(json);
 }
+
+class DurationPriceResponseDto {
+  const DurationPriceResponseDto({
+    this.durationDays,
+    this.totalPrice,
+    this.dailyPrice,
+    this.currencyCode,
+  });
+
+  final int? durationDays;
+  final double? totalPrice;
+  final double? dailyPrice;
+  final String? currencyCode;
+
+  factory DurationPriceResponseDto.fromJson(Map<String, dynamic> json) =>
+      DurationPriceResponseDto(
+        durationDays: (json['durationDays'] as num?)?.toInt(),
+        totalPrice: (json['totalPrice'] as num?)?.toDouble(),
+        dailyPrice: (json['dailyPrice'] as num?)?.toDouble(),
+        currencyCode: json['currencyCode'] as String?,
+      );
+}
+

@@ -31,7 +31,9 @@ import 'package:meal_meat_user/features/payment/domain/entities/activation_succe
 import 'package:meal_meat_user/features/payment/presentation/screens/promo_applied_checkout_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/activation_success_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_failed_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
+import 'package:meal_meat_user/features/payment/presentation/screens/payment_failed_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_web_view_screen.dart';
@@ -463,6 +465,14 @@ class RouteGenerator {
           settings: settings,
           page: PaymentSuccessScreen(args: args),
         );
+      case AppRoutes.paymentFailed:
+        final args = settings.arguments is PaymentFailedArgs
+            ? settings.arguments! as PaymentFailedArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: PaymentFailedScreen(args: args),
+        );
       case AppRoutes.splash:
         return _buildRoute(settings: settings, page: const SplashScreen());
       case AppRoutes.onboarding:
@@ -561,6 +571,10 @@ class RouteGenerator {
                     getIt<PreviewFamilyMemberAddressUseCase>(),
                 addFamilyMemberAddressUseCase:
                     getIt<AddFamilyMemberAddressUseCase>(),
+                updateFamilyMemberAddressUseCase:
+                    getIt.isRegistered<UpdateFamilyMemberAddressUseCase>()
+                        ? getIt<UpdateFamilyMemberAddressUseCase>()
+                        : null,
               )
             : getIt<CustomerAddressEditorOperations>();
         return _buildRoute(

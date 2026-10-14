@@ -15,6 +15,7 @@ class FamilyMemberPermissionsResponseDto {
     this.unitExchange,
     this.changePassword,
     this.groups,
+    this.version,
   });
   final String? memberId;
   final bool? editDailyMeals;
@@ -26,11 +27,17 @@ class FamilyMemberPermissionsResponseDto {
   final bool? unitExchange;
   final bool? changePassword;
   final List<FamilyPermissionGroupResponseDto>? groups;
+  @JsonKey(readValue: _readVersion)
+  final int? version;
   factory FamilyMemberPermissionsResponseDto.fromJson(
     Map<String, dynamic> json,
   ) => _$FamilyMemberPermissionsResponseDtoFromJson(json);
   Map<String, dynamic> toJson() =>
       _$FamilyMemberPermissionsResponseDtoToJson(this);
+}
+
+Object? _readVersion(Map json, String key) {
+  return json['version'] ?? json['currentVersion'];
 }
 
 @JsonSerializable()

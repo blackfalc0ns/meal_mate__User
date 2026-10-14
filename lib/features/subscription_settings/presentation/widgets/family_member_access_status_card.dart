@@ -55,7 +55,7 @@ class FamilyMemberAccessStatusCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.md),
-          Container(
+          DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Spacing.radiusMd),
               border: Border.all(

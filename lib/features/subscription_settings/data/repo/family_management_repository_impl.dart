@@ -43,6 +43,7 @@ class FamilyManagementRepositoryImpl implements FamilyManagementRepository {
     bool? hasSeparateAccount,
     bool? isPaused,
     bool? remove,
+    int? expectedVersion,
   }) => safeApiCall(
     () async => (await _remoteDataSource.updateAccess(
       memberId,
@@ -50,6 +51,7 @@ class FamilyManagementRepositoryImpl implements FamilyManagementRepository {
         hasSeparateAccount: hasSeparateAccount,
         isPaused: isPaused,
         remove: remove,
+        expectedVersion: expectedVersion,
       ),
     )).toEntity(),
   );
@@ -66,6 +68,7 @@ class FamilyManagementRepositoryImpl implements FamilyManagementRepository {
     required String memberId,
     required Map<String, bool> values,
     required String localeName,
+    int? expectedVersion,
   }) => safeApiCall(
     () async => (await _remoteDataSource.updatePermissions(
       memberId,
@@ -78,6 +81,7 @@ class FamilyManagementRepositoryImpl implements FamilyManagementRepository {
         editAddress: values['editAddress'] ?? false,
         unitExchange: values['unitExchange'] ?? false,
         changePassword: values['changePassword'] ?? false,
+        expectedVersion: expectedVersion,
       ),
     )).toEntity(localeName),
   );

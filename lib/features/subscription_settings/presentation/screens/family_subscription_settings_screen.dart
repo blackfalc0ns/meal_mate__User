@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -53,7 +54,7 @@ class _FamilySubscriptionSettingsScreenState
 
   @override
   void dispose() {
-    _viewModel.close();
+    unawaited(_viewModel.close());
     super.dispose();
   }
 
@@ -64,6 +65,10 @@ class _FamilySubscriptionSettingsScreenState
     return BlocProvider.value(
       value: _viewModel,
       child: BlocConsumer<FamilyManagementViewModel, FamilyManagementState>(
+        buildWhen: (previous, current) =>
+            previous.home != current.home ||
+            previous.isLoading != current.isLoading ||
+            previous.failure != current.failure,
         listenWhen: (previous, current) =>
             previous.failure != current.failure && current.failure != null,
         listener: (context, state) => CustomSnackbar.showError(
@@ -128,14 +133,16 @@ class _FamilySubscriptionSettingsScreenState
             (member) => ui.FamilySubscriptionMemberEntity(
               name: member.displayName,
               imageAsset: Assets.profileAvatar,
-              statusLabel:
-                  member.todayFilledCount >= member.todayRequiredCount &&
-                      member.todayRequiredCount > 0
-                  ? locale.family_member_completed
-                  : locale.family_manage_missing_selection,
-              isComplete:
-                  member.todayFilledCount >= member.todayRequiredCount &&
-                  member.todayRequiredCount > 0,
+              statusLabel: member.isUnsubscribed
+                  ? locale.family_member_unsubscribed_status
+                  : (member.todayFilledCount >= member.todayRequiredCount &&
+                          member.todayRequiredCount > 0
+                      ? locale.family_member_completed
+                      : locale.family_manage_missing_selection),
+              isComplete: member.isUnsubscribed
+                  ? false
+                  : (member.todayFilledCount >= member.todayRequiredCount &&
+                          member.todayRequiredCount > 0),
             ),
           )
           .toList(),

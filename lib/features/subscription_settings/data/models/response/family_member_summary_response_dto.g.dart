@@ -26,6 +26,11 @@ FamilyMemberSummaryResponseDto _$FamilyMemberSummaryResponseDtoFromJson(
   todayUiStatus: json['todayUiStatus'] as String?,
   todayFilledCount: (json['todayFilledCount'] as num?)?.toInt(),
   todayRequiredCount: (json['todayRequiredCount'] as num?)?.toInt(),
+  lifecycle: json['lifecycle'] == null
+      ? null
+      : FamilyMemberLifecycleResponseDto.fromJson(
+          json['lifecycle'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$FamilyMemberSummaryResponseDtoToJson(
@@ -48,4 +53,5 @@ Map<String, dynamic> _$FamilyMemberSummaryResponseDtoToJson(
   'todayUiStatus': instance.todayUiStatus,
   'todayFilledCount': instance.todayFilledCount,
   'todayRequiredCount': instance.todayRequiredCount,
+  'lifecycle': instance.lifecycle,
 };

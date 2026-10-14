@@ -116,6 +116,19 @@ class SubscriptionBillingUncompletedSubscriptionCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Spacing.sm),
+          if (subscription.kind.toUpperCase() == 'FAMILY') ...[
+            Text(
+              subscription.statusNameAr.isNotEmpty
+                  ? subscription.statusNameAr
+                  : subscription.status,
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size11,
+                color: color.tertiary,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+          ],
           Row(
             children: [
               Icon(

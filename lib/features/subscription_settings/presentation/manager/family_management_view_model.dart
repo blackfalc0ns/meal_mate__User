@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_home_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_member_usecase.dart';
@@ -150,6 +151,7 @@ class FamilyManagementViewModel extends Cubit<FamilyManagementState> {
       hasSeparateAccount: event.hasSeparateAccount,
       isPaused: event.isPaused,
       remove: event.remove,
+      expectedVersion: state.access?.version,
     );
     if (isClosed) return;
     switch (result) {
@@ -163,6 +165,11 @@ class FamilyManagementViewModel extends Cubit<FamilyManagementState> {
         );
       case ApiErrorResult():
         emit(state.copyWith(isSaving: false, saveFailure: result.failure));
+        if (result.failure.code ==
+                SubscriptionErrorCodes.familyPermissionsChanged ||
+            result.failure.code == 'family.permissions_changed') {
+          await _loadAccess(event.memberId);
+        }
     }
   }
 
@@ -195,6 +202,7 @@ class FamilyManagementViewModel extends Cubit<FamilyManagementState> {
       memberId: event.memberId,
       values: event.values,
       localeName: event.localeName,
+      expectedVersion: state.permissions?.version,
     );
     if (isClosed) return;
     switch (result) {
@@ -209,6 +217,11 @@ class FamilyManagementViewModel extends Cubit<FamilyManagementState> {
         );
       case ApiErrorResult():
         emit(state.copyWith(isSaving: false, saveFailure: result.failure));
+        if (result.failure.code ==
+                SubscriptionErrorCodes.familyPermissionsChanged ||
+            result.failure.code == 'family.permissions_changed') {
+          await _loadPermissions(event.memberId, event.localeName);
+        }
     }
   }
 

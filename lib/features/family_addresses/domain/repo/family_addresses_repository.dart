@@ -2,6 +2,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/address/domain/entities/address_coverage_preview_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/entities/family_delivery_address_entity.dart';
 
 abstract interface class FamilyAddressesRepository {
   Future<ApiResult<List<CustomerAddressEntity>>> getAddresses(String memberId);
@@ -29,5 +30,12 @@ abstract interface class FamilyAddressesRepository {
   Future<ApiResult<CustomerAddressEntity>> setDefaultAddress(
     String memberId,
     String addressId,
+  );
+  Future<ApiResult<FamilyDeliveryAddressSnapshotEntity>>
+  getSubscriptionDeliveryAddress(String subscriptionId);
+  Future<ApiResult<FamilyDeliveryAddressResultEntity>>
+  updateSubscriptionDeliveryAddress(
+    String subscriptionId,
+    FamilyDeliveryAddressRequestEntity request,
   );
 }

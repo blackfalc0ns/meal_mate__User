@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/widgets/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_members_section.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_methods_actions_section.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_price_section.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_schedule_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
@@ -52,8 +53,13 @@ class FamilyPaymentContent extends StatelessWidget {
                 const FamilyMemberContentLoadingSkeleton()
               else ...[
                 FamilyPaymentConfirmationSection(state: state),
+                const SizedBox(height: Spacing.lg),
+                FamilyPaymentScheduleSection(state: state),
                 FamilyPaymentPriceSection(summary: state.summary),
-                FamilyPaymentMealOverviewSection(summary: state.summary),
+                FamilyPaymentMealOverviewSection(
+                  summary: state.summary,
+                  flowMembers: state.members,
+                ),
                 FamilyPaymentMethodsActionsSection(state: state),
               ],
               const SizedBox(height: Spacing.xxxl),

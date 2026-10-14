@@ -67,8 +67,9 @@ class SubscriptionBillingUncompletedSection extends StatelessWidget {
                       data.actionSubId == item.subscriptionId,
                   onDelete: () =>
                       coordinator.confirmDeleteUncompleted(context, item),
-                  onResume: () =>
-                      coordinator.onResumePreview(item.subscriptionId),
+                  onResume: () => item.kind.toUpperCase() == 'FAMILY'
+                      ? coordinator.onResumeFamily(item)
+                      : coordinator.onResumePreview(item.subscriptionId),
                 ),
                 const SizedBox(height: Spacing.sm),
               ],

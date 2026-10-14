@@ -11,8 +11,9 @@ class FoodPreferencesDislikedIngredientsRequestDto {
   final List<String> ingredientCodes;
 
   Map<String, dynamic> toJson() {
-    final json = _$FoodPreferencesDislikedIngredientsRequestDtoToJson(this);
-    json['dislikedIngredients'] = ingredientCodes;
-    return json;
+    final codes = ingredientCodes.where((c) => c.trim().isNotEmpty).toList();
+    return {
+      'ingredientCodes': codes.isEmpty ? const ['NONE'] : codes,
+    };
   }
 }

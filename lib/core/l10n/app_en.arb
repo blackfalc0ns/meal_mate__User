@@ -1080,6 +1080,11 @@
   "family_member_selection_summary": "Ahmed selection summary",
   "family_payment_note": "After payment, each member can choose their favorite restaurants and meals from the restaurants available in each city",
   "family_payment_confirm_title": "3. Payment and subscription confirmation",
+  "family_schedule_section_title": "Subscription Schedule",
+  "family_payment_date": "Payment Date",
+  "family_start_date": "Subscription Start Date",
+  "family_end_date": "Subscription End Date",
+  "family_start_date_picker_help": "Select subscription start date",
   "family_subscription_summary": "Subscription summary",
   "family_primary_member": "Primary member",
   "family_subscription_program_label": "Program",
@@ -2242,6 +2247,50 @@
   "family_error_renewal_not_available": "This subscription cannot be renewed right now.",
   "family_error_subscription_not_found": "The requested family subscription was not found.",
   "family_error_customer_only": "This action is only available to customers.",
+  "family_error_permissions_changed": "Permissions were updated on the server. Please try again.",
+  "family_error_delivery_version_changed": "Delivery information was updated on the server. Please review the changes.",
+  "family_error_quote_changed": "Subscription pricing has changed. Please review the updated summary.",
+  "family_error_idempotency_key_used": "This payment request was already processed. Please start a new checkout.",
+  "family_error_client_update_required": "Please update the app to the latest version to proceed with subscription.",
+  "family_error_invoice_creation_stopped": "Invoice creation is temporarily paused. Please try again later.",
+  "family_error_member_account_required": "Member must have a linked account before completing subscription.",
+  "family_error_payment_method_unavailable": "Selected payment method is currently unavailable. Please choose another method.",
+  "family_error_payment_currency_unsupported": "The selected currency is not supported for payment.",
+  "family_error_provider_refund_required": "Refund requires manual processing by the provider. Please contact support.",
+  "family_error_delivery_snapshot_review_required": "Delivery schedule amendment is under review and cannot be modified directly.",
+  "family_error_action_not_available": "This action is currently not available for this member or subscription.",
+  "payment_error_initialization_failed": "Payment gateway initialization failed. Please try again.",
+  "auto_renewal_price_changed": "Auto-renewal price changed to {amount} {currency}.",
+  "@auto_renewal_price_changed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "family_error_invoice_unavailable": "The requested invoice is not available.",
+  "family_status_review_required": "Paid (Review Required)",
+  "family_status_pending_activation": "Pending Activation",
+  "family_delivery_amendment_result": "Delivery address updated. {affected} days updated, {skipped} protected days kept.",
+  "@family_delivery_amendment_result": {
+    "placeholders": {
+      "affected": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "family_delivery_protected_notice": "Protected days cannot be updated locally.",
+  "family_checkout_stale_batch": "Your selection has changed. Refreshing summary...",
+  "family_member_not_linked_account_warning": "This member does not have a linked account yet.",
+  "family_calendar_action_disabled_cutoff": "Editing is closed for this day because the cutoff deadline has passed.",
+  "family_calendar_action_disabled_frozen": "This day is frozen and meals cannot be selected.",
+  "family_calendar_action_disabled_locked": "This day is locked and cannot be edited.",
   "family_member_no_plan": "No plan",
   "family_member_paused_label": "Paused",
   "family_member_active_label": "Active",
@@ -2497,6 +2546,14 @@
   "subscription_success_next_step_desc": "Choose your meals for upcoming days and select the restaurant that suits you.",
   "subscription_success_start_meals_button": "Start choosing your meals",
   "subscription_success_view_subscription_button": "View Subscription",
+  "payment_failed_screen_title": "Payment Failed",
+  "payment_failed_card_title": "Payment Incomplete",
+  "payment_failed_card_subtitle": "Payment failed for some reason. Please retry or change payment method",
+  "payment_failed_info_title": "Transaction Not Completed",
+  "payment_failed_info_desc": "No amount was deducted from your account",
+  "payment_failed_retry_button": "Retry",
+  "payment_failed_change_method_button": "Change Payment Method",
+  "payment_failed_contact_support_button": "Contact Support",
   "sandbox_badge": "Sandbox",
   "sandbox_checkout_title": "Complete without payment — Sandbox",
   "sandbox_checkout_subtitle": "Test environment without actual charge",
@@ -2688,5 +2745,11 @@
   "subscription_program_address_required_title": "Set Delivery Address",
   "subscription_program_address_required_description": "Please set your delivery address to view available programs and restaurants in your area.",
   "subscription_program_address_required_action": "Set Delivery Address",
-  "subscription_program_address_required_badge": "Address required"
+  "subscription_program_address_required_badge": "Address required",
+  "family_member_unsubscribed_status": "Unsubscribed",
+  "family_member_subscribe_later": "Subscribe Later",
+  "family_include_in_subscription": "Activate subscription for this member",
+  "family_min_one_subscriber_warning": "At least one member must be included in the subscription",
+  "family_error_min_members": "At least 2 members must be selected for this family package",
+  "family_error_checkout_no_selection": "Please select members to include in checkout before proceeding"
 }

@@ -79,6 +79,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'location_permission_denied_forever':
       return locale.location_permission_denied_forever;
     case 'checkout.start_date_required':
+    case 'family.start_date_required':
       return locale.checkout_start_date_required;
     case 'checkout.start_date_invalid':
       return locale.checkout_start_date_invalid;
@@ -254,6 +255,10 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.family_error_already_in_family;
     case 'family.max_members':
       return locale.family_members_max_reached;
+    case 'family.min_members':
+      return locale.family_error_min_members;
+    case 'family.checkout_no_selection':
+      return locale.family_error_checkout_no_selection;
     case 'family.plan_locked':
       return locale.family_error_plan_locked;
     case 'family.plan_incomplete':
@@ -282,6 +287,34 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.error_not_found;
     case 'auth.forbidden':
       return locale.family_error_customer_only;
+    case 'family.permissions_changed':
+      return locale.family_error_permissions_changed;
+    case 'family.delivery_version_changed':
+      return locale.family_error_delivery_version_changed;
+    case 'family.quote_changed':
+      return locale.family_error_quote_changed;
+    case 'family.idempotency_key_used':
+      return locale.family_error_idempotency_key_used;
+    case 'family.client_update_required':
+      return locale.family_error_client_update_required;
+    case 'family.invoice_creation_stopped':
+      return locale.family_error_invoice_creation_stopped;
+    case 'family.member_account_required':
+      return locale.family_error_member_account_required;
+    case 'family.payment_method_unavailable':
+      return locale.family_error_payment_method_unavailable;
+    case 'family.payment_currency_unsupported':
+      return locale.family_error_payment_currency_unsupported;
+    case 'family.provider_refund_required':
+      return locale.family_error_provider_refund_required;
+    case 'family.delivery_snapshot_review_required':
+      return locale.family_error_delivery_snapshot_review_required;
+    case 'family.action_not_available':
+      return locale.family_error_action_not_available;
+    case 'payment.initialization_failed':
+      return locale.payment_error_initialization_failed;
+    case 'invoice.not_found':
+      return locale.family_error_invoice_unavailable;
     default:
       return message;
   }

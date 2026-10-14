@@ -95,4 +95,17 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
       ),
     );
   }
+
+  void proceedToNextStep() {
+    if (state.members.isEmpty) return;
+    final allCompleted =
+        state.completedMemberIds.length == state.members.length;
+    if (!allCompleted) return;
+    emit(
+      state.copyWith(
+        completed: true,
+        addressSaveRevision: state.addressSaveRevision + 1,
+      ),
+    );
+  }
 }

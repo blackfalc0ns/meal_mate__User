@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -17,6 +19,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilyAddressesScreen extends StatelessWidget {
@@ -29,9 +32,11 @@ class FamilyAddressesScreen extends StatelessWidget {
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider(
-      create: (_) =>
-          getIt<FamilyAddressesViewModel>()
-            ..load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
+      create: (_) {
+        final vm = getIt<FamilyAddressesViewModel>();
+        unawaited(vm.load(memberId: FamilyFlowScope.targetMemberIdOf(context)));
+        return vm;
+      },
       child: BlocConsumer<FamilyAddressesViewModel, FamilyAddressesState>(
         listenWhen: (previous, current) =>
             (previous.familyName != current.familyName &&
@@ -43,7 +48,7 @@ class FamilyAddressesScreen extends StatelessWidget {
             FamilyFlowScope.updateFamilyName(context, state.familyName);
           }
           if (state.completed) {
-            context.pushNamed(AppRoutes.familyAllergies);
+            unawaited(context.pushNamed(AppRoutes.familyAllergies));
           }
         },
         builder: (context, state) {
@@ -89,6 +94,7 @@ class FamilyAddressesScreen extends StatelessWidget {
           }).toList();
 
           final content = Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ColoredBox(
                 color: color.surface,
@@ -129,6 +135,27 @@ class FamilyAddressesScreen extends StatelessWidget {
                       .addressSaved,
                 ),
               ),
+              if (state.completed ||
+                  (state.members.isNotEmpty &&
+                      state.completedMemberIds.length == state.members.length))
+                ColoredBox(
+                  color: color.surface,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: Spacing.familySetupHorizontalPadding,
+                      end: Spacing.familySetupHorizontalPadding,
+                      top: Spacing.xs,
+                      bottom: Spacing.sm,
+                    ),
+                    child: FamilyProgramActions(
+                      nextText: locale.family_step_allergies,
+                      nextIcon: Icons.arrow_forward_ios_rounded,
+                      onNextPressed: context
+                          .read<FamilyAddressesViewModel>()
+                          .proceedToNextStep,
+                    ),
+                  ),
+                ),
             ],
           );
           if (isInFamilyFlow) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/failuer_mapper.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 
@@ -43,6 +44,20 @@ class ErrorMessagePresenter {
     final couponMessage = _tryExtractCouponMessage(context, exception);
     if (couponMessage != null) {
       return couponMessage;
+    }
+
+    // Safe unavailable state for invoice 404
+    if (exception.statusCode == 404 &&
+        (exception.instance?.contains('invoices') == true ||
+            exception.backendErrorCode == 'invoice.not_found')) {
+      return context.localization.family_error_invoice_unavailable;
+    }
+
+    // Safe unavailable state for 403: never leak raw details
+    if (exception.statusCode == 403) {
+      final codeMsg = localizedBackendCodeMessage(context, exception);
+      if (codeMsg != null) return codeMsg;
+      return context.localization.error_forbidden;
     }
 
     final backendCodeMessage = localizedBackendCodeMessage(context, exception);
@@ -98,6 +113,13 @@ class ErrorMessagePresenter {
     BuildContext context,
     ApiException exception,
   ) {
+    if (exception.backendErrorCode == 'auto_renewal.price_changed' ||
+        exception.message == 'auto_renewal.price_changed') {
+      final amount = exception.amount?.toString() ?? '';
+      final currency = exception.currency ?? '';
+      return context.localization.auto_renewal_price_changed(amount, currency);
+    }
+
     for (final code in [exception.backendErrorCode, exception.message]) {
       if (code == null || code.trim().isEmpty) {
         continue;

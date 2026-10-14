@@ -52,6 +52,7 @@ class FamilySelectedMemberSummaryDto {
     this.dinner,
     this.mealsPerDay,
     this.memberPrice,
+    this.startDate,
   });
 
   @JsonKey(readValue: _readMemberId)
@@ -83,6 +84,7 @@ class FamilySelectedMemberSummaryDto {
   final int? mealsPerDay;
   @JsonKey(readValue: _readMemberPrice)
   final double? memberPrice;
+  final String? startDate;
 
   factory FamilySelectedMemberSummaryDto.fromJson(Map<String, dynamic> json) =>
       _$FamilySelectedMemberSummaryDtoFromJson(json);
@@ -119,6 +121,36 @@ class FamilyMealOverviewDto {
 }
 
 @JsonSerializable(createToJson: false)
+class FamilyMemberScheduleDto {
+  const FamilyMemberScheduleDto({
+    this.memberId,
+    this.paymentDate,
+    this.firstDeliveryDate,
+    this.endDate,
+    this.deliveryDaysCount,
+    this.mealsPerDay,
+    this.totalMeals,
+    this.restaurants,
+  });
+
+  @JsonKey(readValue: _readMemberId)
+  final String? memberId;
+  final String? paymentDate;
+  final String? firstDeliveryDate;
+  final String? endDate;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? deliveryDaysCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? mealsPerDay;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? totalMeals;
+  final List<dynamic>? restaurants;
+
+  factory FamilyMemberScheduleDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyMemberScheduleDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class FamilySummaryResponseDto {
   const FamilySummaryResponseDto({
     this.familyGroupId,
@@ -138,7 +170,16 @@ class FamilySummaryResponseDto {
     this.members,
     this.selectedMember,
     this.mealOverview,
+    this.memberSchedules,
+    this.participantCount,
     this.checkoutEndpoint,
+    this.batchId,
+    this.batchVersion,
+    this.rosterCount,
+    this.selectedNewSubscriberCount,
+    this.eligibleExistingSubscriberCount,
+    this.unsubscribedCount,
+    this.lockedQuote,
   });
 
   final String? familyGroupId;
@@ -165,7 +206,22 @@ class FamilySummaryResponseDto {
   final List<FamilySummaryMemberDto>? members;
   final FamilySelectedMemberSummaryDto? selectedMember;
   final List<FamilyMealOverviewDto>? mealOverview;
+  final List<FamilyMemberScheduleDto>? memberSchedules;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? participantCount;
   final String? checkoutEndpoint;
+  final String? batchId;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? batchVersion;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? rosterCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? selectedNewSubscriberCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? eligibleExistingSubscriberCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? unsubscribedCount;
+  final bool? lockedQuote;
 
   factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilySummaryResponseDtoFromJson(json);

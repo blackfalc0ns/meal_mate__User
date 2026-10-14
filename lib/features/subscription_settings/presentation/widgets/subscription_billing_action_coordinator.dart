@@ -29,6 +29,7 @@ class SubscriptionBillingActionCoordinator {
     required this.onResetAction,
     required this.onDeleteUncompleted,
     required this.onResumePreview,
+    required this.onResumeFamily,
     required this.onResume,
   });
 
@@ -47,6 +48,8 @@ class SubscriptionBillingActionCoordinator {
   final VoidCallback onResetAction;
   final void Function(String subscriptionId) onDeleteUncompleted;
   final void Function(String subscriptionId) onResumePreview;
+  final void Function(SubscriptionBillingUncompletedSubscriptionEntity)
+  onResumeFamily;
   final void Function(String subscriptionId, [String? startDate]) onResume;
 
   bool _isFreezeFlowOpen = false;

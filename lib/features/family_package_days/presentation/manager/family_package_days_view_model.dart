@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -37,6 +38,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   final GetSubscriptionTierRestaurantsUseCase
   _getSubscriptionTierRestaurantsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
+  int _tiersRequestToken = 0;
 
   void _emit(FamilyPlanState state) {
     if (isClosed) return;
@@ -47,11 +49,11 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     if (isClosed) return;
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent(memberId: event.memberId);
+        unawaited(_getFamilySubscriptionCurrent(memberId: event.memberId));
       case GetFamilyProgramsEvent():
-        _getPrograms();
+        unawaited(_getPrograms());
       case GetFamilyBundlesEvent():
-        _getBundles(event.programId);
+        unawaited(_getBundles(event.programId));
       case SelectFamilyBundleEvent():
         _selectBundle(event.bundleIndex);
       case SelectFamilyDurationEvent():
@@ -63,7 +65,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       case SelectFamilyTierEvent():
         _selectTier(event.tierIndex);
       case BrowseFamilyTierRestaurantsEvent():
-        _browseTierRestaurants(event.tierIndex);
+        unawaited(_browseTierRestaurants(event.tierIndex));
       case CloseFamilyBrowseRestaurantsEvent():
         _emit(state.copyWith(isRestaurantsView: false));
       case SelectFamilyMemberEvent():
@@ -71,17 +73,19 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
       case SelectFamilyMemberPackageDaysEvent():
         _selectMemberInPackageDays(event.memberIndex);
       case SaveFamilyMemberPlanEvent():
-        _saveMemberPlan(
-          memberId: event.memberId,
-          programId: event.programId,
-          bundleId: event.bundleId,
-          tier: event.tier,
-          durationDays: event.durationDays,
-          includeFriday: event.includeFriday,
-          startDate: event.startDate,
+        unawaited(
+          _saveMemberPlan(
+            memberId: event.memberId,
+            programId: event.programId,
+            bundleId: event.bundleId,
+            tier: event.tier,
+            durationDays: event.durationDays,
+            includeFriday: event.includeFriday,
+            startDate: event.startDate,
+          ),
         );
       case ClearFamilyMemberPlanEvent():
-        _saveMemberPlan(memberId: event.memberId, clearPlan: true);
+        unawaited(_saveMemberPlan(memberId: event.memberId, clearPlan: true));
     }
   }
 
@@ -194,7 +198,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         isRestaurantsView: false,
       ),
     );
-    _loadMemberBundlesAndSelections(member);
+    unawaited(_loadMemberBundlesAndSelections(member));
   }
 
   Future<void> _loadMemberBundlesAndSelections(
@@ -390,6 +394,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         currentFlow: updatedFlow ?? state.currentFlow,
       ),
     );
+    unawaited(_reloadTiersForCurrentPlan(durationDays: days));
   }
 
   void _updateCustomDuration(int days) {
@@ -404,6 +409,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         currentFlow: updatedFlow ?? state.currentFlow,
       ),
     );
+    unawaited(_reloadTiersForCurrentPlan(durationDays: days));
   }
 
   void _toggleFriday(bool include) {
@@ -415,6 +421,50 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         currentFlow: updatedFlow ?? state.currentFlow,
       ),
     );
+    unawaited(_reloadTiersForCurrentPlan(includeFriday: include));
+  }
+
+  Future<void> _reloadTiersForCurrentPlan({
+    int? durationDays,
+    bool? includeFriday,
+  }) async {
+    final member = state.selectedMember;
+    if (member == null) return;
+    final programId = state.selectedProgram?.programId ?? member.programId;
+    if (programId == null || programId.isEmpty) return;
+    final bundleId = state.selectedBundle?.bundleId ?? member.bundleId;
+    final days =
+        durationDays ?? state.customDurationDays ?? member.durationDays;
+    final friday = includeFriday ?? state.includeFriday;
+    final requestToken = ++_tiersRequestToken;
+
+    _emit(
+      state.copyWith(
+        isTiersLoading: true,
+        tiers: const [],
+        clearSelectedTier: true,
+      ),
+    );
+
+    final result = await _getFamilyPlanTiersUseCase(
+      programId: programId,
+      bundleId: bundleId,
+      durationDays: days,
+      includeFriday: friday,
+      familyMemberId: member.memberId,
+    );
+    if (isClosed || requestToken != _tiersRequestToken) return;
+    if (result case ApiSuccessResult(:final data)) {
+      if (state.selectedMember?.memberId != member.memberId ||
+          state.selectedBundle?.bundleId != bundleId ||
+          state.customDurationDays != days ||
+          state.includeFriday != friday) {
+        return;
+      }
+      _emit(state.copyWith(isTiersLoading: false, tiers: data));
+    } else {
+      _emit(state.copyWith(isTiersLoading: false));
+    }
   }
 
   void _selectTier(int tierIndex) {

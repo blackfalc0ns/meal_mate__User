@@ -70,6 +70,10 @@ class _FamilyAddressLocationStageState
         previewFamilyMemberAddressUseCase:
             getIt<PreviewFamilyMemberAddressUseCase>(),
         addFamilyMemberAddressUseCase: getIt<AddFamilyMemberAddressUseCase>(),
+        updateFamilyMemberAddressUseCase:
+            getIt.isRegistered<UpdateFamilyMemberAddressUseCase>()
+                ? getIt<UpdateFamilyMemberAddressUseCase>()
+                : null,
       ),
       getLocationsCatalogUseCase: getIt<GetLocationsCatalogUseCase>(),
       geocodeAddressUseCase: getIt<GeocodeAddressUseCase>(),
@@ -167,24 +171,27 @@ class _FamilyAddressLocationStageState
           }
 
           return Stack(
+            fit: StackFit.expand,
             children: [
-              BlocSelector<
-                AddressEditorViewModel,
-                AddressEditorState,
-                ({LocationsCatalogState locations, bool isSubmitting})
-              >(
-                selector: (s) =>
-                    (locations: s.locations, isSubmitting: s.action.isLoading),
-                builder: (context, mapData) {
-                  return AddressChooseLocationMapView(
-                    key: ValueKey(widget.memberId),
-                    locations: mapData.locations,
-                    flowController: _entryFlowController,
-                    initialAddress: widget.initialAddress,
-                    showInitialAddressDetails: false,
-                    isSubmitting: mapData.isSubmitting,
-                  );
-                },
+              Positioned.fill(
+                child: BlocSelector<
+                  AddressEditorViewModel,
+                  AddressEditorState,
+                  ({LocationsCatalogState locations, bool isSubmitting})
+                >(
+                  selector: (s) =>
+                      (locations: s.locations, isSubmitting: s.action.isLoading),
+                  builder: (context, mapData) {
+                    return AddressChooseLocationMapView(
+                      key: ValueKey(widget.memberId),
+                      locations: mapData.locations,
+                      flowController: _entryFlowController,
+                      initialAddress: widget.initialAddress,
+                      showInitialAddressDetails: false,
+                      isSubmitting: mapData.isSubmitting,
+                    );
+                  },
+                ),
               ),
               BlocSelector<
                 AddressEditorViewModel,

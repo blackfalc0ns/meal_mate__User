@@ -12,6 +12,7 @@ FamilyMemberAccessRequestDto _$FamilyMemberAccessRequestDtoFromJson(
   hasSeparateAccount: json['hasSeparateAccount'] as bool?,
   isPaused: json['isPaused'] as bool?,
   remove: json['remove'] as bool?,
+  expectedVersion: (json['expectedVersion'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
   'hasSeparateAccount': ?instance.hasSeparateAccount,
   'isPaused': ?instance.isPaused,
   'remove': ?instance.remove,
+  'expectedVersion': ?instance.expectedVersion,
 };

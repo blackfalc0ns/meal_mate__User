@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_checkout/domain/usecase/save_family_member_start_date_usecase.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/usecase/checkout_family_subscription_usecase.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/usecase/get_family_payment_methods_usecase.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/usecase/get_family_summary_usecase.dart';
+import 'package:meal_meat_user/features/family_checkout/domain/usecase/select_family_member_checkout_usecase.dart';
+import 'package:meal_meat_user/features/family_checkout/domain/usecase/retry_family_subscription_payment_usecase.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_event.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
@@ -16,30 +20,146 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     this._getFamilySummaryUseCase,
     this._getFamilyPaymentMethodsUseCase,
     this._checkoutFamilySubscriptionUseCase,
-  ) : super(const FamilyPlanState());
+    this._selectFamilyMemberCheckoutUseCase,
+    this._saveFamilyMemberStartDateUseCase, [
+    this._retryFamilySubscriptionPaymentUseCase,
+  ]) : super(const FamilyPlanState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilySummaryUseCase _getFamilySummaryUseCase;
   final GetFamilyPaymentMethodsUseCase _getFamilyPaymentMethodsUseCase;
   final CheckoutFamilySubscriptionUseCase _checkoutFamilySubscriptionUseCase;
+  final SelectFamilyMemberCheckoutUseCase _selectFamilyMemberCheckoutUseCase;
+  final SaveFamilyMemberStartDateUseCase _saveFamilyMemberStartDateUseCase;
+  final RetryFamilySubscriptionPaymentUseCase?
+  _retryFamilySubscriptionPaymentUseCase;
   final String correlationId =
       'family-pay-${DateTime.now().microsecondsSinceEpoch}';
+
+  String? _lastIdempotencyKey;
+  String? _lastIntentSignature;
+
+  String _getOrCreateIdempotencyKey({
+    required String? batchId,
+    required int? batchVersion,
+    required double amount,
+    required int paymentMethodId,
+  }) {
+    final intentSignature = '$batchId-$batchVersion-$amount-$paymentMethodId';
+    if (_lastIdempotencyKey != null &&
+        _lastIntentSignature == intentSignature) {
+      return _lastIdempotencyKey!;
+    }
+    _lastIntentSignature = intentSignature;
+    _lastIdempotencyKey = 'fam-idemp-${DateTime.now().microsecondsSinceEpoch}';
+    return _lastIdempotencyKey!;
+  }
 
   void doIntent(FamilyPlanEvent event) {
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent();
+        unawaited(_getFamilySubscriptionCurrent());
       case GetFamilySummaryEvent():
-        _getFamilySummary(memberId: event.memberId);
+        unawaited(_getFamilySummary(memberId: event.memberId));
+      case SelectFamilyMemberCheckoutEvent():
+        unawaited(_selectMemberForCheckout(event.memberId, event.subscribeNow));
       case SelectFamilyPaymentMethodEvent():
         emit(state.copyWith(selectedPaymentMethod: event.paymentMethod));
       case CheckoutFamilySubscriptionEvent():
-        _checkoutFamilySubscription(
-          callbackUrl: event.callbackUrl,
-          errorUrl: event.errorUrl,
-          correlationId: event.correlationId,
-          paymentMethodId: event.paymentMethodId,
+        unawaited(
+          _checkoutFamilySubscription(
+            callbackUrl: event.callbackUrl,
+            errorUrl: event.errorUrl,
+            correlationId: event.correlationId,
+            paymentMethodId: event.paymentMethodId,
+          ),
         );
+      case RetryFamilySubscriptionPaymentEvent():
+        unawaited(_retryFamilyPayment(event));
+      case UpdateMemberStartDateEvent():
+        unawaited(_updateMemberStartDate(event.memberId, event.startDate));
+    }
+  }
+
+  Future<void> _retryFamilyPayment(
+    RetryFamilySubscriptionPaymentEvent event,
+  ) async {
+    final summary = state.summary;
+    final retryUseCase = _retryFamilySubscriptionPaymentUseCase;
+    if (retryUseCase == null) return;
+    final batchId = summary?.batchId;
+    final batchVersion = summary?.batchVersion;
+    if (batchId == null || batchVersion == null) return;
+    final key = _getOrCreateIdempotencyKey(
+      batchId: batchId,
+      batchVersion: batchVersion,
+      amount: summary?.finalPrice ?? 0,
+      paymentMethodId: event.paymentMethodId,
+    );
+    emit(state.copyWith(isCheckoutLoading: true, clearFailure: true));
+    final result = await retryUseCase(
+      callbackUrl: event.callbackUrl,
+      errorUrl: event.errorUrl,
+      correlationId: event.correlationId,
+      paymentMethodId: event.paymentMethodId,
+      batchId: batchId,
+      batchVersion: batchVersion,
+      idempotencyKey: key,
+    );
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(isCheckoutLoading: false, checkoutResult: result.data),
+        );
+      case ApiErrorResult():
+        emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
+    }
+  }
+
+  Future<void> _updateMemberStartDate(String memberId, String startDate) async {
+    final updatedMembers = state.members.map((m) {
+      if (m.memberId == memberId) {
+        return m.copyWith(startDate: startDate);
+      }
+      return m;
+    }).toList();
+    final updatedFlow = state.currentFlow?.copyWith(members: updatedMembers);
+
+    emit(
+      state.copyWith(
+        currentFlow: updatedFlow,
+        isSummaryLoading: true,
+        clearFailure: true,
+      ),
+    );
+
+    final result = await _saveFamilyMemberStartDateUseCase(
+      memberId: memberId,
+      startDate: startDate,
+    );
+    switch (result) {
+      case ApiSuccessResult():
+        await _getFamilySummary(memberId: memberId);
+      case ApiErrorResult():
+        emit(state.copyWith(isSummaryLoading: false, failure: result.failure));
+    }
+  }
+
+  Future<void> _selectMemberForCheckout(
+    String memberId,
+    bool subscribeNow,
+  ) async {
+    emit(state.copyWith(isSummaryLoading: true, clearFailure: true));
+    final result = await _selectFamilyMemberCheckoutUseCase(
+      memberId: memberId,
+      subscribeNow: subscribeNow,
+    );
+    switch (result) {
+      case ApiSuccessResult():
+        await _getFamilySubscriptionCurrent();
+        await _getFamilySummary(memberId: memberId);
+      case ApiErrorResult():
+        emit(state.copyWith(isSummaryLoading: false, failure: result.failure));
     }
   }
 
@@ -133,12 +253,26 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     required String correlationId,
     required int paymentMethodId,
   }) async {
+    final summary = state.summary;
+    if (summary != null && !summary.canCheckout) {
+      return;
+    }
+    final key = _getOrCreateIdempotencyKey(
+      batchId: summary?.batchId,
+      batchVersion: summary?.batchVersion,
+      amount: summary?.finalPrice ?? 0.0,
+      paymentMethodId: paymentMethodId,
+    );
     emit(state.copyWith(isCheckoutLoading: true, clearFailure: true));
     final result = await _checkoutFamilySubscriptionUseCase(
       callbackUrl: callbackUrl,
       errorUrl: errorUrl,
       correlationId: correlationId,
       paymentMethodId: paymentMethodId,
+      batchId: summary?.batchId,
+      batchVersion: summary?.batchVersion,
+      idempotencyKey: key,
+      clientContractVersion: 1,
     );
     switch (result) {
       case ApiSuccessResult():
@@ -147,7 +281,14 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         );
       case ApiErrorResult():
         emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
-        if (result.failure.code == 'payment.initialization_failed') {
+        if (result.failure.code == 'payment.initialization_failed' ||
+            result.failure.code == 'family.quote_changed' ||
+            result.failure.code == 'family.idempotency_key_used') {
+          if (result.failure.code == 'family.quote_changed' ||
+              result.failure.code == 'family.idempotency_key_used') {
+            _lastIdempotencyKey = null;
+            _lastIntentSignature = null;
+          }
           _getFamilySummary(memberId: state.selectedSummaryMemberId);
         }
     }

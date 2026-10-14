@@ -9,6 +9,9 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_action_coordinator.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_body.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_entrance_registry.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 
 class SubscriptionBillingContent extends StatefulWidget {
   const SubscriptionBillingContent({super.key});
@@ -67,6 +70,15 @@ class _SubscriptionBillingContentState
         context.read<SubscriptionBillingViewModel>().doIntent(
           GetSubscriptionResumePreviewEvent(subscriptionId),
         );
+      },
+      onResumeFamily: (item) {
+        final next = item.actions.nextScreen?.toLowerCase();
+        final route =
+            next == 'family_payment' ||
+                item.status.toLowerCase() == 'checkoutpending'
+            ? AppRoutes.familyPaymentSetup
+            : AppRoutes.familySubscriptionSetup;
+        context.pushNamed(route);
       },
       onResume: (subscriptionId, [startDate]) {
         context.read<SubscriptionBillingViewModel>().doIntent(

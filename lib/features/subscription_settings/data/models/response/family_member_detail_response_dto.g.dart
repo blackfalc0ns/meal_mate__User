@@ -16,6 +16,8 @@ FamilyMemberDetailResponseDto _$FamilyMemberDetailResponseDtoFromJson(
   ageYears: (json['ageYears'] as num?)?.toInt(),
   setupStatus: json['setupStatus'],
   memberSubscriptionId: json['memberSubscriptionId'] as String?,
+  currentSubscriptionId: json['currentSubscriptionId'] as String?,
+  upcomingSubscriptionId: json['upcomingSubscriptionId'] as String?,
   programNameAr: json['programNameAr'] as String?,
   programNameEn: json['programNameEn'] as String?,
   programName: json['programName'] as String?,
@@ -32,6 +34,11 @@ FamilyMemberDetailResponseDto _$FamilyMemberDetailResponseDtoFromJson(
       : FamilyNutritionResponseDto.fromJson(
           json['todayNutrition'] as Map<String, dynamic>,
         ),
+  lifecycle: json['lifecycle'] == null
+      ? null
+      : FamilyMemberLifecycleResponseDto.fromJson(
+          json['lifecycle'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$FamilyMemberDetailResponseDtoToJson(
@@ -44,6 +51,8 @@ Map<String, dynamic> _$FamilyMemberDetailResponseDtoToJson(
   'ageYears': instance.ageYears,
   'setupStatus': instance.setupStatus,
   'memberSubscriptionId': instance.memberSubscriptionId,
+  'currentSubscriptionId': instance.currentSubscriptionId,
+  'upcomingSubscriptionId': instance.upcomingSubscriptionId,
   'programNameAr': instance.programNameAr,
   'programNameEn': instance.programNameEn,
   'programName': instance.programName,
@@ -56,6 +65,31 @@ Map<String, dynamic> _$FamilyMemberDetailResponseDtoToJson(
   'canRenew': instance.canRenew,
   'renewalPath': instance.renewalPath,
   'todayNutrition': instance.todayNutrition,
+  'lifecycle': instance.lifecycle,
+};
+
+FamilyMemberLifecycleResponseDto _$FamilyMemberLifecycleResponseDtoFromJson(
+  Map<String, dynamic> json,
+) => FamilyMemberLifecycleResponseDto(
+  status: json['status'] as String?,
+  checkoutSelected: json['checkoutSelected'] as bool?,
+  paymentStatus: json['paymentStatus'] as String?,
+  fulfillmentStatus: json['fulfillmentStatus'] as String?,
+  serviceStatus: json['serviceStatus'] as String?,
+  accessStatus: json['accessStatus'] as String?,
+  displayStatus: json['displayStatus'] as String?,
+);
+
+Map<String, dynamic> _$FamilyMemberLifecycleResponseDtoToJson(
+  FamilyMemberLifecycleResponseDto instance,
+) => <String, dynamic>{
+  'status': instance.status,
+  'checkoutSelected': instance.checkoutSelected,
+  'paymentStatus': instance.paymentStatus,
+  'fulfillmentStatus': instance.fulfillmentStatus,
+  'serviceStatus': instance.serviceStatus,
+  'accessStatus': instance.accessStatus,
+  'displayStatus': instance.displayStatus,
 };
 
 FamilyNutritionResponseDto _$FamilyNutritionResponseDtoFromJson(

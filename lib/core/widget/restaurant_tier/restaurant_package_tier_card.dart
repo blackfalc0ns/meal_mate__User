@@ -47,7 +47,9 @@ class RestaurantPackageTierCard extends StatelessWidget {
         tierLower.contains('max') ||
         tierLower.contains('elite') ||
         titleLower.contains('max') ||
-        title.contains('ماكس');
+        titleLower.contains('elite') ||
+        title.contains('ماكس') ||
+        title.contains('إيليت');
 
     final isPlus =
         !isMax &&
@@ -59,14 +61,20 @@ class RestaurantPackageTierCard extends StatelessWidget {
             tierLower.contains('platinum') ||
             titleLower.contains('plus') ||
             titleLower.contains('platinum') ||
-            title.contains('بلس'));
+            title.contains('بلس') ||
+            title.contains('بلاتينيوم'));
 
     final isAr = locale.localeName == 'ar';
-    final String displayTitle = isMax
-        ? (isAr ? 'ماكس' : 'Max')
-        : isPlus
-        ? (isAr ? 'بلس' : 'Plus')
-        : (isAr ? 'سيلكت' : 'Select');
+    final String resolvedTitle = title.trim().isNotEmpty
+        ? title.trim()
+        : package.title.trim();
+    final String displayTitle = resolvedTitle.isNotEmpty
+        ? resolvedTitle
+        : (isMax
+            ? (isAr ? 'ماكس' : 'Max')
+            : isPlus
+                ? (isAr ? 'بلس' : 'Plus')
+                : (isAr ? 'سيلكت' : 'Select'));
 
     final countLabel = package.restaurantCount > 0
         ? '+${package.restaurantCount}'

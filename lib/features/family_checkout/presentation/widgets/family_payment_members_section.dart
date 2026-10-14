@@ -28,7 +28,12 @@ class FamilyPaymentMembersSection extends StatelessWidget {
     final summaryMembers = summary?.members ?? const [];
     final fallbackMembers = state.members;
     final displayedMembers = summaryMembers.isNotEmpty
-        ? _summaryMemberUiModels(summaryMembers, activeMemberId, locale)
+        ? _summaryMemberUiModels(
+            summaryMembers,
+            fallbackMembers,
+            activeMemberId,
+            locale,
+          )
         : _fallbackMemberUiModels(fallbackMembers, locale);
 
     if (displayedMembers.isEmpty) {
@@ -55,24 +60,39 @@ class FamilyPaymentMembersSection extends StatelessWidget {
 
   List<FamilyProgramMemberUiModel> _summaryMemberUiModels(
     List<FamilySummaryMemberEntity> members,
+    List<FamilyMemberEntity> fallbackMembers,
     String? activeMemberId,
     dynamic locale,
   ) {
-    return members.map((member) {
+    return members.asMap().entries.map((entry) {
+      final index = entry.key;
+      final member = entry.value;
+      final matchingFlowMember = fallbackMembers
+          .where((m) => m.memberId == member.memberId)
+          .firstOrNull;
+      final isManager =
+          member.isManager ||
+          matchingFlowMember?.isManager == true ||
+          (fallbackMembers.firstOrNull?.memberId == member.memberId) ||
+          index == 0;
       final isSelected = activeMemberId != null
           ? member.memberId == activeMemberId
-          : member.isManager;
+          : isManager;
+      final isSubscribed = matchingFlowMember?.subscribeNow ?? false;
       final isReady = member.isReady || member.setupStatus == 2;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
         imageAsset: '',
-        status: member.setupStatus == 0
+        status: !isSubscribed
+            ? locale.family_member_unsubscribed_status
+            : member.setupStatus == 0
             ? locale.family_member_no_plan_selected
             : isReady
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,
-        isInProgress: !isReady,
+        isInProgress: !isReady && isSubscribed,
+        isExcluded: !isSubscribed,
       );
     }).toList();
   }
@@ -85,17 +105,21 @@ class FamilyPaymentMembersSection extends StatelessWidget {
       final index = entry.key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
+      final isSubscribed = member.subscribeNow;
       final isReady = member.isReady;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
         imageAsset: '',
-        status: member.setupStatus == 0
+        status: !isSubscribed
+            ? locale.family_member_unsubscribed_status
+            : member.setupStatus == 0
             ? locale.family_member_no_plan_selected
             : isReady
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,
-        isInProgress: !isReady,
+        isInProgress: !isReady && isSubscribed,
+        isExcluded: !isSubscribed,
       );
     }).toList();
   }

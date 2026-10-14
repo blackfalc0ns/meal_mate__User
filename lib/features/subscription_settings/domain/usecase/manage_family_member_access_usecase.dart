@@ -14,10 +14,12 @@ class ManageFamilyMemberAccessUseCase {
     bool? hasSeparateAccount,
     bool? isPaused,
     bool? remove,
+    int? expectedVersion,
   }) => _repository.updateAccess(
     memberId: memberId,
     hasSeparateAccount: hasSeparateAccount,
     isPaused: isPaused,
     remove: remove,
+    expectedVersion: expectedVersion,
   );
 }

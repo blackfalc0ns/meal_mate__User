@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -55,7 +56,9 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
             final route = familyCheckoutBlockerRoute(
               state.summary?.checkoutBlockReason,
             );
-            if (route != null) context.pushReplacementNamed(route);
+            if (route != null) {
+              unawaited(context.pushReplacementNamed(route));
+            }
           },
           onConfirmPayment: state.selectedPaymentMethod?.id == null
               ? null

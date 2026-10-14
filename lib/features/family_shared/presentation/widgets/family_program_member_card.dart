@@ -14,7 +14,9 @@ class FamilyProgramMemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final statusColor = member.isInProgress
+    final statusColor = member.isExcluded
+        ? color.onSurfaceVariant.withValues(alpha: 0.7)
+        : member.isInProgress
         ? color.onSurfaceVariant
         : color.primary;
 
@@ -24,108 +26,132 @@ class FamilyProgramMemberCard extends StatelessWidget {
       label: member.name,
       child: GestureDetector(
         onTap: onTap,
-        child: AnimatedContainer(
+        child: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
-          width: Spacing.familyProgramMemberCardWidth,
-          height: Spacing.familyProgramMemberCardHeight,
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
-          decoration: BoxDecoration(
-            color: member.isSelected
-                ? color.primary.withValues(alpha: 0.08)
-                : color.surface,
-            border: Border.all(
-              color: member.isSelected ? color.primary : color.outlineVariant,
-              width: member.isSelected ? 1.5 : 1.0,
-            ),
-            borderRadius: BorderRadius.circular(
-              Spacing.familyProgramMemberCardRadius,
-            ),
-          ),
-          child: Row(
-            children: [
-              ClipOval(
-                child: member.imageAsset.isNotEmpty
-                    ? Image.asset(
-                        member.imageAsset,
-                        width: Spacing.familyProgramMemberAvatarSize,
-                        height: Spacing.familyProgramMemberAvatarSize,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => Icon(
-                          Icons.person_rounded,
-                          color: color.primary,
-                          size: Spacing.familyProgramMemberAvatarSize,
-                        ),
-                      )
-                    : Container(
-                        width: Spacing.familyProgramMemberAvatarSize,
-                        height: Spacing.familyProgramMemberAvatarSize,
-                        color: member.isSelected
-                            ? color.primary.withValues(alpha: 0.15)
-                            : color.surfaceContainerHighest,
-                        child: Icon(
-                          Icons.person_rounded,
-                          color: color.primary,
-                          size: Spacing.iconSm,
-                        ),
-                      ),
+          opacity: member.isExcluded ? 0.6 : 1.0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: Spacing.familyProgramMemberCardWidth,
+            height: Spacing.familyProgramMemberCardHeight,
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+            decoration: BoxDecoration(
+              color: member.isExcluded
+                  ? color.surfaceContainerHighest.withValues(alpha: 0.35)
+                  : member.isSelected
+                  ? color.primary.withValues(alpha: 0.08)
+                  : color.surface,
+              border: Border.all(
+                color: member.isExcluded
+                    ? color.outlineVariant.withValues(alpha: 0.5)
+                    : member.isSelected
+                    ? color.primary
+                    : color.outlineVariant,
+                width: member.isSelected && !member.isExcluded ? 1.5 : 1.0,
               ),
-              const SizedBox(width: Spacing.xs),
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      member.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size9,
-                        color: member.isSelected
-                            ? color.primary
-                            : color.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (!member.isInProgress) ...[
-                          Icon(
-                            Icons.check_circle_rounded,
-                            size: Spacing.iconSm,
-                            color: color.primary,
+              borderRadius: BorderRadius.circular(
+                Spacing.familyProgramMemberCardRadius,
+              ),
+            ),
+            child: Row(
+              children: [
+                ClipOval(
+                  child: member.imageAsset.isNotEmpty
+                      ? Image.asset(
+                          member.imageAsset,
+                          width: Spacing.familyProgramMemberAvatarSize,
+                          height: Spacing.familyProgramMemberAvatarSize,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => Icon(
+                            Icons.person_rounded,
+                            color: member.isExcluded
+                                ? color.onSurfaceVariant.withValues(alpha: 0.7)
+                                : color.primary,
+                            size: Spacing.familyProgramMemberAvatarSize,
                           ),
-                        ] else ...[
-                          Container(
-                            width: Spacing.xs,
-                            height: Spacing.xs,
-                            decoration: BoxDecoration(
+                        )
+                      : Container(
+                          width: Spacing.familyProgramMemberAvatarSize,
+                          height: Spacing.familyProgramMemberAvatarSize,
+                          color: member.isExcluded
+                              ? color.surfaceContainerHighest
+                              : member.isSelected
+                              ? color.primary.withValues(alpha: 0.15)
+                              : color.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.person_rounded,
+                            color: member.isExcluded
+                                ? color.onSurfaceVariant.withValues(alpha: 0.7)
+                                : color.primary,
+                            size: Spacing.iconSm,
+                          ),
+                        ),
+                ),
+                const SizedBox(width: Spacing.xs),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        member.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size9,
+                          color: member.isExcluded
+                              ? color.onSurfaceVariant.withValues(alpha: 0.7)
+                              : member.isSelected
+                              ? color.primary
+                              : color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (member.isExcluded) ...[
+                            Icon(
+                              Icons.pause_circle_outline_rounded,
+                              size: Spacing.iconSm,
                               color: statusColor,
-                              shape: BoxShape.circle,
+                            ),
+                          ] else if (!member.isInProgress) ...[
+                            Icon(
+                              Icons.check_circle_rounded,
+                              size: Spacing.iconSm,
+                              color: color.primary,
+                            ),
+                          ] else ...[
+                            Container(
+                              width: Spacing.xs,
+                              height: Spacing.xs,
+                              decoration: BoxDecoration(
+                                color: statusColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ],
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              member.status,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: getSemiBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size9,
+                                color: statusColor,
+                              ),
                             ),
                           ),
                         ],
-                        const SizedBox(width: Spacing.xs),
-                        Flexible(
-                          child: Text(
-                            member.status,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: getSemiBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size9,
-                              color: statusColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

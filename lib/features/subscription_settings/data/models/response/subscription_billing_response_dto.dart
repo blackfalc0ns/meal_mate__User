@@ -5,6 +5,8 @@ part 'subscription_billing_response_dto.g.dart';
 @JsonSerializable()
 class SubscriptionBillingUncompletedSubscriptionResponseDto {
   const SubscriptionBillingUncompletedSubscriptionResponseDto({
+    this.kind,
+    this.familyGroupId,
     this.subscriptionId,
     this.status,
     this.statusNameAr,
@@ -33,6 +35,9 @@ class SubscriptionBillingUncompletedSubscriptionResponseDto {
     this.holdExpiresAtUtc,
     this.actions,
   });
+
+  final String? kind;
+  final String? familyGroupId;
 
   final String? subscriptionId;
   final String? status;
@@ -77,12 +82,16 @@ class SubscriptionBillingUncompletedActionsResponseDto {
     this.canResume,
     this.deleteEndpoint,
     this.resumeEndpoint,
+    this.nextScreen,
+    this.retryPaymentEndpoint,
   });
 
   final bool? canDelete;
   final bool? canResume;
   final String? deleteEndpoint;
   final String? resumeEndpoint;
+  final String? nextScreen;
+  final String? retryPaymentEndpoint;
 
   factory SubscriptionBillingUncompletedActionsResponseDto.fromJson(
     Map<String, dynamic> json,
@@ -601,6 +610,13 @@ class SubscriptionBillingCancellationQuoteResponseDto {
     this.currencyCode,
     this.effectiveCancellationDate,
     this.policyMessageAr,
+    this.cancellationFeeAmount,
+    this.netRefundAmount,
+    this.refundToCashWallet,
+    this.policyMessageEn,
+    this.messageCode,
+    this.payerCustomerUserId,
+    this.batchId,
   });
 
   final String? subscriptionId;
@@ -613,6 +629,13 @@ class SubscriptionBillingCancellationQuoteResponseDto {
   final String? currencyCode;
   final String? effectiveCancellationDate;
   final String? policyMessageAr;
+  final double? cancellationFeeAmount;
+  final double? netRefundAmount;
+  final bool? refundToCashWallet;
+  final String? policyMessageEn;
+  final String? messageCode;
+  final String? payerCustomerUserId;
+  final String? batchId;
 
   factory SubscriptionBillingCancellationQuoteResponseDto.fromJson(
     Map<String, dynamic> json,
@@ -639,6 +662,14 @@ class SubscriptionBillingCancellationResultResponseDto {
     this.effectiveCancellationDate,
     this.messageAr,
     this.timestampUtc,
+    this.cancellationFeeAmount,
+    this.netRefundAmount,
+    this.refundedToWallet,
+    this.messageEn,
+    this.messageCode,
+    this.payerCustomerUserId,
+    this.settlementId,
+    this.batchId,
   });
 
   final String? requestId;
@@ -655,6 +686,14 @@ class SubscriptionBillingCancellationResultResponseDto {
   final String? effectiveCancellationDate;
   final String? messageAr;
   final String? timestampUtc;
+  final double? cancellationFeeAmount;
+  final double? netRefundAmount;
+  final bool? refundedToWallet;
+  final String? messageEn;
+  final String? messageCode;
+  final String? payerCustomerUserId;
+  final String? settlementId;
+  final String? batchId;
 
   factory SubscriptionBillingCancellationResultResponseDto.fromJson(
     Map<String, dynamic> json,

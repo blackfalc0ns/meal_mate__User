@@ -18,32 +18,41 @@ typedef AddFamilyMemberAddressFn =
       String memberId,
       CustomerAddressRequestEntity request,
     );
+typedef UpdateFamilyMemberAddressFn =
+    Future<ApiResult<CustomerAddressEntity>> Function(
+      String memberId,
+      String addressId,
+      CustomerAddressRequestEntity request,
+    );
 
 class FamilyAddressEditorOperations implements AddressEditorOperations {
   FamilyAddressEditorOperations({
     required this.memberId,
     PreviewFamilyMemberAddressFn? previewFamilyMemberAddress,
     AddFamilyMemberAddressFn? addFamilyMemberAddress,
+    UpdateFamilyMemberAddressFn? updateFamilyMemberAddress,
     PreviewFamilyMemberAddressUseCase? previewFamilyMemberAddressUseCase,
     AddFamilyMemberAddressUseCase? addFamilyMemberAddressUseCase,
+    UpdateFamilyMemberAddressUseCase? updateFamilyMemberAddressUseCase,
   }) : _preview =
            previewFamilyMemberAddress ??
-           (previewFamilyMemberAddressUseCase != null
-               ? previewFamilyMemberAddressUseCase.call
-               : null),
+           previewFamilyMemberAddressUseCase?.call,
        _add =
            addFamilyMemberAddress ??
-           (addFamilyMemberAddressUseCase != null
-               ? addFamilyMemberAddressUseCase.call
-               : null);
+           addFamilyMemberAddressUseCase?.call,
+       _update =
+           updateFamilyMemberAddress ??
+           updateFamilyMemberAddressUseCase?.call;
 
   final String memberId;
   final PreviewFamilyMemberAddressFn? _preview;
   final AddFamilyMemberAddressFn? _add;
+  final UpdateFamilyMemberAddressFn? _update;
 
   @override
   Set<AddressEditorAction> get supportedActions => const {
     AddressEditorAction.add,
+    AddressEditorAction.update,
   };
 
   @override
@@ -94,10 +103,16 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
   Future<ApiResult<CustomerAddressEntity>> update(
     String addressId,
     CustomerAddressRequestEntity request,
-  ) async {
-    return ApiErrorResult(
-      failure: Failure(
-        errorMessage: 'Update address is not supported for family members',
+  ) {
+    if (_update != null) {
+      return _update(memberId, addressId, request);
+    }
+    if (_add != null) {
+      return _add(memberId, request);
+    }
+    return Future.value(
+      ApiErrorResult(
+        failure: Failure(errorMessage: 'Update operation not configured'),
       ),
     );
   }

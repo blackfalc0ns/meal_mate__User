@@ -20,6 +20,7 @@ FamilyMemberAccessResponseDto _$FamilyMemberAccessResponseDtoFromJson(
   phoneNumber: json['phoneNumber'] as String?,
   hasExistingLogin: json['hasExistingLogin'] as bool?,
   generatedPassword: json['generatedPassword'] as String?,
+  version: (_readAccessVersion(json, 'version') as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$FamilyMemberAccessResponseDtoToJson(
@@ -36,4 +37,5 @@ Map<String, dynamic> _$FamilyMemberAccessResponseDtoToJson(
   'phoneNumber': instance.phoneNumber,
   'hasExistingLogin': instance.hasExistingLogin,
   'generatedPassword': instance.generatedPassword,
+  'version': instance.version,
 };

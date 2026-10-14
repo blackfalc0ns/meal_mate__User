@@ -2,12 +2,23 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'family_member_allergies_request_dto.g.dart';
 
-@JsonSerializable(createFactory: false, explicitToJson: true)
 class FamilyMemberAllergiesRequestDto {
-  const FamilyMemberAllergiesRequestDto({required this.allergies});
+  const FamilyMemberAllergiesRequestDto({
+    this.allergies = const [],
+    this.selectedCodes,
+  });
+
   final List<FamilyMemberAllergyRequestDto> allergies;
-  Map<String, dynamic> toJson() =>
-      _$FamilyMemberAllergiesRequestDtoToJson(this);
+  final List<String>? selectedCodes;
+
+  Map<String, dynamic> toJson() {
+    final rawCodes =
+        selectedCodes ?? allergies.map((item) => item.code).toList();
+    final codes = rawCodes.where((item) => item.trim().isNotEmpty).toList();
+    return {
+      'selectedCodes': codes.isEmpty ? const ['NONE'] : codes,
+    };
+  }
 }
 
 @JsonSerializable(createFactory: false, includeIfNull: false)
