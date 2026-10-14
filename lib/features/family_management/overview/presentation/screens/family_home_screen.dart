@@ -42,10 +42,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     super.initState();
     _viewModel = getIt.isRegistered<FamilyOverviewViewModel>()
         ? getIt<FamilyOverviewViewModel>()
-        : FamilyOverviewViewModel(
-            getIt(),
-            getIt(),
-          );
+        : FamilyOverviewViewModel(getIt(), getIt());
   }
 
   @override
@@ -102,19 +99,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                     ),
                   )
                 : home == null
-                    ? const FamilySubscriptionSettingsLoadingSkeleton()
-                    : RefreshIndicator(
-                        color: color.primary,
-                        onRefresh: () async {
-                          _viewModel.doIntent(
-                            LoadFamilyHomeEvent(locale: locale.localeName),
-                          );
-                          await _viewModel.stream.firstWhere(
-                            (next) => !next.isLoadingHome,
-                          );
-                        },
-                        child: _content(context, home),
-                      ),
+                ? const FamilySubscriptionSettingsLoadingSkeleton()
+                : RefreshIndicator(
+                    color: color.primary,
+                    onRefresh: () async {
+                      _viewModel.doIntent(
+                        LoadFamilyHomeEvent(locale: locale.localeName),
+                      );
+                      await _viewModel.stream.firstWhere(
+                        (next) => !next.isLoadingHome,
+                      );
+                    },
+                    child: _content(context, home),
+                  ),
           );
         },
       ),
@@ -144,13 +141,13 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
               statusLabel: member.isUnsubscribed
                   ? locale.family_member_unsubscribed_status
                   : (member.todayFilledCount >= member.todayRequiredCount &&
-                          member.todayRequiredCount > 0
-                      ? locale.family_member_completed
-                      : locale.family_manage_missing_selection),
+                            member.todayRequiredCount > 0
+                        ? locale.family_member_completed
+                        : locale.family_manage_missing_selection),
               isComplete: member.isUnsubscribed
                   ? false
                   : (member.todayFilledCount >= member.todayRequiredCount &&
-                          member.todayRequiredCount > 0),
+                        member.todayRequiredCount > 0),
             ),
           )
           .toList(),
@@ -179,21 +176,21 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         final String statusLabel = complete
             ? locale.family_manage_completed_status
             : isStarted
-                ? locale.family_manage_selected_status
-                : (member.todayUiStatus?.trim().isNotEmpty == true
-                    ? member.todayUiStatus!
-                    : locale.family_manage_not_started_status);
+            ? locale.family_manage_selected_status
+            : (member.todayUiStatus?.trim().isNotEmpty == true
+                  ? member.todayUiStatus!
+                  : locale.family_manage_not_started_status);
         final String mealsLabel = required <= 0
             ? '$filled/$required'
             : filled == 0
-                ? locale.family_manage_meal_count_0.replaceFirst(
-                    '0/4',
-                    '$filled/$required',
-                  )
-                : locale.family_manage_meal_count_4.replaceFirst(
-                    '4/4',
-                    '$filled/$required',
-                  );
+            ? locale.family_manage_meal_count_0.replaceFirst(
+                '0/4',
+                '$filled/$required',
+              )
+            : locale.family_manage_meal_count_4.replaceFirst(
+                '4/4',
+                '$filled/$required',
+              );
         return ui.FamilySubscriptionMealStatusEntity(
           memberName: member.displayName,
           memberImageAsset: Assets.profileAvatar,
@@ -203,14 +200,16 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
           status: complete
               ? ui.FamilySubscriptionMealStatus.completed
               : isStarted
-                  ? ui.FamilySubscriptionMealStatus.selected
-                  : ui.FamilySubscriptionMealStatus.missing,
+              ? ui.FamilySubscriptionMealStatus.selected
+              : ui.FamilySubscriptionMealStatus.missing,
         );
       }).toList(),
-      warningTitle:
-          hasIncompleteMeals ? locale.family_manage_warning_title : '',
-      warningMessage:
-          hasIncompleteMeals ? locale.family_manage_warning_message : '',
+      warningTitle: hasIncompleteMeals
+          ? locale.family_manage_warning_title
+          : '',
+      warningMessage: hasIncompleteMeals
+          ? locale.family_manage_warning_message
+          : '',
     );
 
     return SafeArea(

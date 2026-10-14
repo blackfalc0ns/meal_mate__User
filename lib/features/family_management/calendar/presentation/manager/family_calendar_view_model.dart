@@ -27,35 +27,42 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     GetCalendarAvailableMealsUseCase? getAvailableMealsUseCase,
     SaveCalendarDayMealsUseCase? saveDayMealsUseCase,
     SetCalendarDayRestaurantUseCase? setDayRestaurantUseCase,
-  ])  : _getMembersUseCase = getMembersUseCase ??
-            (getIt.isRegistered<GetFamilyMembersUseCase>()
-                ? getIt<GetFamilyMembersUseCase>()
-                : null),
-        _getCalendarUseCase = getCalendarUseCase ??
-            (getIt.isRegistered<GetCalendarUseCase>()
-                ? getIt<GetCalendarUseCase>()
-                : null),
-        _getCalendarDayUseCase = getCalendarDayUseCase ??
-            (getIt.isRegistered<GetCalendarDayUseCase>()
-                ? getIt<GetCalendarDayUseCase>()
-                : null),
-        _getRestaurantsUseCase = getRestaurantsUseCase ??
-            (getIt.isRegistered<GetCalendarRestaurantsUseCase>()
-                ? getIt<GetCalendarRestaurantsUseCase>()
-                : null),
-        _getAvailableMealsUseCase = getAvailableMealsUseCase ??
-            (getIt.isRegistered<GetCalendarAvailableMealsUseCase>()
-                ? getIt<GetCalendarAvailableMealsUseCase>()
-                : null),
-        _saveDayMealsUseCase = saveDayMealsUseCase ??
-            (getIt.isRegistered<SaveCalendarDayMealsUseCase>()
-                ? getIt<SaveCalendarDayMealsUseCase>()
-                : null),
-        _setDayRestaurantUseCase = setDayRestaurantUseCase ??
-            (getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
-                ? getIt<SetCalendarDayRestaurantUseCase>()
-                : null),
-        super(const FamilyCalendarState());
+  ]) : _getMembersUseCase =
+           getMembersUseCase ??
+           (getIt.isRegistered<GetFamilyMembersUseCase>()
+               ? getIt<GetFamilyMembersUseCase>()
+               : null),
+       _getCalendarUseCase =
+           getCalendarUseCase ??
+           (getIt.isRegistered<GetCalendarUseCase>()
+               ? getIt<GetCalendarUseCase>()
+               : null),
+       _getCalendarDayUseCase =
+           getCalendarDayUseCase ??
+           (getIt.isRegistered<GetCalendarDayUseCase>()
+               ? getIt<GetCalendarDayUseCase>()
+               : null),
+       _getRestaurantsUseCase =
+           getRestaurantsUseCase ??
+           (getIt.isRegistered<GetCalendarRestaurantsUseCase>()
+               ? getIt<GetCalendarRestaurantsUseCase>()
+               : null),
+       _getAvailableMealsUseCase =
+           getAvailableMealsUseCase ??
+           (getIt.isRegistered<GetCalendarAvailableMealsUseCase>()
+               ? getIt<GetCalendarAvailableMealsUseCase>()
+               : null),
+       _saveDayMealsUseCase =
+           saveDayMealsUseCase ??
+           (getIt.isRegistered<SaveCalendarDayMealsUseCase>()
+               ? getIt<SaveCalendarDayMealsUseCase>()
+               : null),
+       _setDayRestaurantUseCase =
+           setDayRestaurantUseCase ??
+           (getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
+               ? getIt<SetCalendarDayRestaurantUseCase>()
+               : null),
+       super(const FamilyCalendarState());
 
   final GetFamilyMembersUseCase? _getMembersUseCase;
   final GetCalendarUseCase? _getCalendarUseCase;
@@ -152,10 +159,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
           );
         case ApiErrorResult(:final failure):
           emit(
-            state.copyWith(
-              isLoadingMembers: false,
-              calendarFailure: failure,
-            ),
+            state.copyWith(isLoadingMembers: false, calendarFailure: failure),
           );
       }
     }
@@ -225,7 +229,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         CalendarDayEntity? matchedSelectedDay;
 
         final mappedDays = result.data.days.map((day) {
-          final isSelected = day.date != null &&
+          final isSelected =
+              day.date != null &&
               day.date!.year == targetDate.year &&
               day.date!.month == targetDate.month &&
               day.date!.day == targetDate.day;
@@ -266,7 +271,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     if (newDate == null) return;
 
     final updatedDays = state.days.map((d) {
-      final isSelected = d.date != null &&
+      final isSelected =
+          d.date != null &&
           d.date!.year == newDate.year &&
           d.date!.month == newDate.month &&
           d.date!.day == newDate.day;
@@ -364,7 +370,9 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         case ApiSuccessResult(:final data):
           emit(state.copyWith(members: data, isLoadingMembers: false));
         case ApiErrorResult(:final failure):
-          emit(state.copyWith(isLoadingMembers: false, calendarFailure: failure));
+          emit(
+            state.copyWith(isLoadingMembers: false, calendarFailure: failure),
+          );
           return;
       }
     }
@@ -438,12 +446,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
     switch (result) {
       case ApiSuccessResult():
-        emit(
-          state.copyWith(
-            selectedDay: result.data,
-            isSavingMeals: false,
-          ),
-        );
+        emit(state.copyWith(selectedDay: result.data, isSavingMeals: false));
       case ApiErrorResult():
         emit(
           state.copyWith(
@@ -462,7 +465,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     final subId = state.activeSubscriptionId;
     final date = state.selectedDate ?? DateTime.now();
     final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
-    final restaurantId = state.selectedDay?.restaurantId ?? state.selectedRestaurant?.id;
+    final restaurantId =
+        state.selectedDay?.restaurantId ?? state.selectedRestaurant?.id;
 
     if (subId == null ||
         subId.isEmpty ||
@@ -512,7 +516,9 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   }
 
   void _selectMealForSlot(CalendarMealEntity meal, String slot) {
-    final currentMeals = List<CalendarMealEntity>.from(state.selectedMealsForDay);
+    final currentMeals = List<CalendarMealEntity>.from(
+      state.selectedMealsForDay,
+    );
     currentMeals.removeWhere((m) => m.slot == slot);
     currentMeals.add(meal);
 

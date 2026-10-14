@@ -64,6 +64,10 @@ import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart'
     as _i621;
 import '../../features/auth/domain/usecase/reset_password_usecase.dart'
     as _i1029;
+import '../../features/auth/domain/usecase/set_family_first_login_password_usecase.dart'
+    as _i919;
+import '../../features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart'
+    as _i688;
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart' as _i918;
 import '../../features/auth/presentation/manager/biometric_view_model.dart'
     as _i162;
@@ -166,6 +170,18 @@ import '../../features/family_checkout/domain/usecase/select_family_member_check
     as _i707;
 import '../../features/family_checkout/presentation/manager/family_checkout_view_model.dart'
     as _i665;
+import '../../features/family_context/data/data_source/family_context_remote_data_source.dart'
+    as _i652;
+import '../../features/family_context/data/data_source/family_context_remote_data_source_impl.dart'
+    as _i180;
+import '../../features/family_context/data/repo/family_context_repository_impl.dart'
+    as _i644;
+import '../../features/family_context/domain/repo/family_context_repository.dart'
+    as _i195;
+import '../../features/family_context/domain/usecase/get_my_family_contexts_usecase.dart'
+    as _i673;
+import '../../features/family_context/presentation/manager/family_context_view_model.dart'
+    as _i960;
 import '../../features/family_management/calendar/presentation/manager/family_calendar_view_model.dart'
     as _i676;
 import '../../features/family_management/member/data/data_source/family_member_remote_data_source.dart'
@@ -925,6 +941,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i306.FamilyPackageDaysRepository>(),
       ),
     );
+    gh.factory<_i652.FamilyContextRemoteDataSource>(
+      () => _i180.FamilyContextRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i755.SubscriptionPlanRemoteDataSource>(
       () => _i509.SubscriptionPlanRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -1092,6 +1111,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i480.ChangePasswordViewModel(
         gh<_i845.ChangeCustomerPasswordUseCase>(),
         gh<_i227.TokenService>(),
+      ),
+    );
+    gh.factory<_i195.FamilyContextRepository>(
+      () => _i644.FamilyContextRepositoryImpl(
+        gh<_i652.FamilyContextRemoteDataSource>(),
       ),
     );
     gh.factory<_i293.SubscriptionUncompletedSubscriptionRepository>(
@@ -1290,6 +1314,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i999.GetSubscriptionTypesUseCase(
         gh<_i655.SubscriptionTypesRepository>(),
       ),
+    );
+    gh.factory<_i673.GetMyFamilyContextsUseCase>(
+      () =>
+          _i673.GetMyFamilyContextsUseCase(gh<_i195.FamilyContextRepository>()),
     );
     gh.factory<_i995.UploadFileUseCase>(
       () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
@@ -1622,6 +1650,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
     );
+    gh.factory<_i960.FamilyContextViewModel>(
+      () =>
+          _i960.FamilyContextViewModel(gh<_i673.GetMyFamilyContextsUseCase>()),
+    );
     gh.factory<_i643.GetFamilyMemberAddressesUseCase>(
       () => _i643.GetFamilyMemberAddressesUseCase(
         gh<_i982.FamilyAddressesRepository>(),
@@ -1832,6 +1864,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1029.ResetPasswordUseCase>(
       () => _i1029.ResetPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i919.SetFamilyFirstLoginPasswordUseCase>(
+      () => _i919.SetFamilyFirstLoginPasswordUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i688.VerifyFamilyFirstLoginOtpUseCase>(
+      () => _i688.VerifyFamilyFirstLoginOtpUseCase(gh<_i2.AuthRepository>()),
     );
     gh.factory<_i918.VerifyPhoneUseCase>(
       () => _i918.VerifyPhoneUseCase(gh<_i2.AuthRepository>()),

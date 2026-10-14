@@ -13,6 +13,7 @@ import 'package:meal_meat_user/core/services/language_interceptor.dart';
 
 import '../services/token_interceptor.dart';
 import 'network_constants.dart';
+import 'sensitive_data_sanitizer.dart';
 
 @module
 abstract class ExternalModules {
@@ -58,46 +59,7 @@ abstract class ExternalModules {
       maxWidth: 120,
       enabled: kDebugMode,
       logPrint: (object) {
-        final text = object.toString();
-        final sanitized = text
-            .replaceAll(
-              RegExp(r'"password"\s*:\s*"[^"]*"'),
-              '"password": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"newPassword"\s*:\s*"[^"]*"'),
-              '"newPassword": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"currentPassword"\s*:\s*"[^"]*"'),
-              '"currentPassword": "[REDACTED]"',
-            )
-            .replaceAll(RegExp(r'"otp"\s*:\s*"[^"]*"'), '"otp": "[REDACTED]"')
-            .replaceAll(RegExp(r'"code"\s*:\s*"[^"]*"'), '"code": "[REDACTED]"')
-            .replaceAll(
-              RegExp(r'"accessToken"\s*:\s*"[^"]*"'),
-              '"accessToken": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"refreshToken"\s*:\s*"[^"]*"'),
-              '"refreshToken": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"paymentUrl"\s*:\s*"[^"]*"'),
-              '"paymentUrl": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"cvv"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"cvv": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"cardNumber"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"cardNumber": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'Bearer\s+[A-Za-z0-9\-_.=]+'),
-              'Bearer [REDACTED]',
-            );
+        final sanitized = SensitiveDataSanitizer.sanitize(object);
         developer.log(sanitized, name: 'DIO');
       },
     );

@@ -7035,4 +7035,46 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get family_error_checkout_no_selection =>
       'يرجى تحديد الأعضاء المشمولين بالدفع أولاً قبل المتابعة';
+
+  @override
+  String get auth_family_first_login_otp_title => 'تأكيد رمز حساب العائلة';
+
+  @override
+  String get auth_family_first_login_otp_subtitle =>
+      'أدخل رمز التحقق المكون من 6 أرقام لتفعيل حسابك كفرد في العائلة.';
+
+  @override
+  String get auth_family_first_login_otp_hint =>
+      'أدخل الرمز المكون من 6 أرقام للمتابعة.';
+
+  @override
+  String get auth_family_first_login_new_password_title =>
+      'تعيين كلمة مرور حساب العائلة';
+
+  @override
+  String get auth_family_first_login_new_password_subtitle =>
+      'أنشئ كلمة مرور جديدة خاصة بحسابك لإكمال تسجيل الدخول.';
+
+  @override
+  String get auth_family_challenge_expired =>
+      'انتهت صلاحية جلسة التحقق. يرجى تسجيل الدخول مجدداً.';
+
+  @override
+  String get auth_family_otp_invalid =>
+      'رمز التحقق غير صحيح أو تم استنفاذ محاولاته. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get auth_family_state_invalid =>
+      'عضوية العائلة غير نشطة أو لم تعد صالحة. يرجى مراجعة مسؤول العائلة.';
+
+  @override
+  String get auth_family_delivery_failed =>
+      'فشل إرسال رمز التحقق. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get auth_family_generated_password_title => 'تم إنشاء كلمة مرور مؤقتة';
+
+  @override
+  String get auth_family_private_delivery_reminder =>
+      'سيتم عرض كلمة المرور المؤقتة هذه لمرة واحدة فقط. شاركها بشكل آمن مع فرد العائلة.';
 }

@@ -1,1 +1,1 @@
-enum AuthOtpPurpose { phoneVerification, resetPassword }
+enum AuthOtpPurpose { phoneVerification, resetPassword, familyFirstLogin }

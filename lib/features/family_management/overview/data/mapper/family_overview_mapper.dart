@@ -51,19 +51,19 @@ class FamilyOverviewMapper {
     final isEn = locale.toLowerCase().startsWith('en');
     final programName = isEn
         ? (dto.programNameEn ??
-            dto.programLabelEn ??
-            dto.programNameAr ??
-            dto.programLabelAr ??
-            dto.programName ??
-            dto.programLabel ??
-            '')
+              dto.programLabelEn ??
+              dto.programNameAr ??
+              dto.programLabelAr ??
+              dto.programName ??
+              dto.programLabel ??
+              '')
         : (dto.programNameAr ??
-            dto.programLabelAr ??
-            dto.programNameEn ??
-            dto.programLabelEn ??
-            dto.programName ??
-            dto.programLabel ??
-            '');
+              dto.programLabelAr ??
+              dto.programNameEn ??
+              dto.programLabelEn ??
+              dto.programName ??
+              dto.programLabel ??
+              '');
 
     return FamilyMemberSummaryEntity(
       memberId: dto.memberId ?? '',

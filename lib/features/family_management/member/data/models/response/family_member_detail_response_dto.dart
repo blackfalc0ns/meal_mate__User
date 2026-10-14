@@ -101,13 +101,15 @@ class FamilyMemberDetailResponseDto {
       renewalPath: json['renewalPath']?.toString(),
       todayNutrition: json['todayNutrition'] is Map<String, dynamic>
           ? FamilyNutritionDto.fromJson(
-              json['todayNutrition'] as Map<String, dynamic>)
+              json['todayNutrition'] as Map<String, dynamic>,
+            )
           : null,
       countryCode: json['countryCode']?.toString(),
       nationalPhoneNumber: json['nationalPhoneNumber']?.toString(),
       lifecycle: json['lifecycle'] is Map<String, dynamic>
           ? FamilyMemberLifecycleDto.fromJson(
-              json['lifecycle'] as Map<String, dynamic>)
+              json['lifecycle'] as Map<String, dynamic>,
+            )
           : null,
       upcomingSubscriptionId: json['upcomingSubscriptionId']?.toString(),
       upcomingStartDate: json['upcomingStartDate']?.toString(),

@@ -65,8 +65,10 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
   }) async {
     try {
       final dto = await _remoteDataSource.getMemberPermissions(memberId);
-      final entity =
-          FamilyMemberMapper.toPermissionsEntity(dto, locale: locale);
+      final entity = FamilyMemberMapper.toPermissionsEntity(
+        dto,
+        locale: locale,
+      );
       return ApiSuccessResult(data: entity);
     } catch (e) {
       return ApiErrorResult(failure: mapFamilyManagementError(e));
@@ -84,8 +86,10 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
         memberId,
         request,
       );
-      final entity =
-          FamilyMemberMapper.toPermissionsEntity(dto, locale: locale);
+      final entity = FamilyMemberMapper.toPermissionsEntity(
+        dto,
+        locale: locale,
+      );
       return ApiSuccessResult(data: entity);
     } catch (e) {
       return ApiErrorResult(failure: mapFamilyManagementError(e));

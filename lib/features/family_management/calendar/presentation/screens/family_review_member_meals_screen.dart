@@ -109,8 +109,8 @@ class _FamilyReviewMemberMealsScreenState
     final String memberName = state.displayName.isNotEmpty
         ? state.displayName
         : ((argsMemberName != null && argsMemberName.isNotEmpty)
-            ? argsMemberName
-            : '');
+              ? argsMemberName
+              : '');
 
     final restaurantName = state.selectedRestaurant?.name.isNotEmpty == true
         ? state.selectedRestaurant!.name

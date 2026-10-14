@@ -1,6 +1,9 @@
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/session_persistence.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_step_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
@@ -23,6 +26,15 @@ import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_reques
 abstract interface class AuthRepository {
   Future<ApiResult<LoginEntity>> login(
     LoginRequestEntity request, {
+    SessionPersistence persistence = SessionPersistence.currentRun,
+  });
+
+  Future<ApiResult<FamilyFirstLoginStepEntity>> verifyFamilyFirstLoginOtp(
+    FamilyFirstLoginVerifyOtpRequestEntity request,
+  );
+
+  Future<ApiResult<LoginEntity>> setFamilyFirstLoginPassword(
+    FamilyFirstLoginSetPasswordRequestEntity request, {
     SessionPersistence persistence = SessionPersistence.currentRun,
   });
 

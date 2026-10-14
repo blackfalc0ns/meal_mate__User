@@ -25,6 +25,14 @@ import '../../features/auth/domain/usecase/resend_password_otp_usecase.dart';
 import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart';
 import '../../features/auth/domain/usecase/reset_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart';
+import '../../features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart';
+import '../../features/auth/domain/usecase/set_family_first_login_password_usecase.dart';
+import '../../features/family_context/data/data_source/family_context_remote_data_source.dart';
+import '../../features/family_context/data/data_source/family_context_remote_data_source_impl.dart';
+import '../../features/family_context/data/repo/family_context_repository_impl.dart';
+import '../../features/family_context/domain/repo/family_context_repository.dart';
+import '../../features/family_context/domain/usecase/get_my_family_contexts_usecase.dart';
+import '../../features/family_context/presentation/manager/family_context_view_model.dart';
 import '../../features/auth/presentation/manager/biometric_view_model.dart';
 import '../../features/auth/presentation/manager/calling_codes_view_model.dart';
 import '../../features/auth/presentation/manager/login_view_model.dart';
@@ -83,9 +91,7 @@ final getIt = GetIt.instance;
 Future<void> configureDependencies() async {
   await getIt.init();
   if (!getIt.isRegistered<ApiServices>()) {
-    getIt.registerLazySingleton<ApiServices>(
-      () => ApiServices(getIt<Dio>()),
-    );
+    getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
   }
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerLazySingleton<LocationService>(() => const LocationService());
@@ -145,6 +151,14 @@ Future<void> configureDependencies() async {
             : null,
         sharedPrefHelper: getIt.isRegistered<SharedPrefHelper>()
             ? getIt<SharedPrefHelper>()
+            : null,
+        verifyFamilyFirstLoginOtpUseCase:
+            getIt.isRegistered<VerifyFamilyFirstLoginOtpUseCase>()
+            ? getIt<VerifyFamilyFirstLoginOtpUseCase>()
+            : null,
+        setFamilyFirstLoginPasswordUseCase:
+            getIt.isRegistered<SetFamilyFirstLoginPasswordUseCase>()
+            ? getIt<SetFamilyFirstLoginPasswordUseCase>()
             : null,
       ),
     );
@@ -332,6 +346,38 @@ Future<void> configureDependencies() async {
             ? getIt<SetCalendarDayRestaurantUseCase>()
             : null,
       ),
+    );
+  }
+  // Family First Login Auth UseCases
+  if (!getIt.isRegistered<VerifyFamilyFirstLoginOtpUseCase>()) {
+    getIt.registerFactory<VerifyFamilyFirstLoginOtpUseCase>(
+      () => VerifyFamilyFirstLoginOtpUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<SetFamilyFirstLoginPasswordUseCase>()) {
+    getIt.registerFactory<SetFamilyFirstLoginPasswordUseCase>(
+      () => SetFamilyFirstLoginPasswordUseCase(getIt()),
+    );
+  }
+  // Family Context
+  if (!getIt.isRegistered<FamilyContextRemoteDataSource>()) {
+    getIt.registerLazySingleton<FamilyContextRemoteDataSource>(
+      () => FamilyContextRemoteDataSourceImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyContextRepository>()) {
+    getIt.registerLazySingleton<FamilyContextRepository>(
+      () => FamilyContextRepositoryImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetMyFamilyContextsUseCase>()) {
+    getIt.registerFactory<GetMyFamilyContextsUseCase>(
+      () => GetMyFamilyContextsUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyContextViewModel>()) {
+    getIt.registerFactory<FamilyContextViewModel>(
+      () => FamilyContextViewModel(getIt()),
     );
   }
 }

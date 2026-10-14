@@ -19,8 +19,9 @@ class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {
   final ApiServices _apiServices;
 
   @override
-  Future<FamilyMemberDetailResponseDto> getFamilyMemberDetail(String memberId) =>
-      _apiServices.getFamilyMember(memberId);
+  Future<FamilyMemberDetailResponseDto> getFamilyMemberDetail(
+    String memberId,
+  ) => _apiServices.getFamilyMember(memberId);
 
   @override
   Future<FamilyMemberAccessResponseDto> getMemberAccess(String memberId) =>
@@ -37,13 +38,15 @@ class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {
         hasSeparateAccount: request.hasSeparateAccount,
         isPaused: request.isPaused,
         remove: request.removeAccess,
+        generateTemporaryPassword: request.generateTemporaryPassword,
       ),
     );
   }
 
   @override
-  Future<FamilyMemberPermissionsResponseDto> getMemberPermissions(String memberId) =>
-      _apiServices.getFamilyMemberPermissions(memberId);
+  Future<FamilyMemberPermissionsResponseDto> getMemberPermissions(
+    String memberId,
+  ) => _apiServices.getFamilyMemberPermissions(memberId);
 
   @override
   Future<FamilyMemberPermissionsResponseDto> updateMemberPermissions(

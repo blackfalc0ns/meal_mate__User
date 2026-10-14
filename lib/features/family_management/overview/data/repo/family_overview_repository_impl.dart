@@ -33,7 +33,10 @@ class FamilyOverviewRepositoryImpl implements FamilyOverviewRepository {
     try {
       final dtos = await _remoteDataSource.getFamilySwitcher();
       final entities = dtos
-          .map((d) => FamilyOverviewMapper.toMemberSummaryEntity(d, locale: locale))
+          .map(
+            (d) =>
+                FamilyOverviewMapper.toMemberSummaryEntity(d, locale: locale),
+          )
           .toList();
       return ApiSuccessResult(data: entities);
     } catch (e) {

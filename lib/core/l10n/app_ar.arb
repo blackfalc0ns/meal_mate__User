@@ -2701,5 +2701,16 @@
   "family_include_in_subscription": "تفعيل الاشتراك لهذا الفرد",
   "family_min_one_subscriber_warning": "يجب اختيار فرد واحد على الأقل في الاشتراك",
   "family_error_min_members": "يجب اختيار عضوين على الأقل للاشتراك في هذه الباقة العائلية",
-  "family_error_checkout_no_selection": "يرجى تحديد الأعضاء المشمولين بالدفع أولاً قبل المتابعة"
+  "family_error_checkout_no_selection": "يرجى تحديد الأعضاء المشمولين بالدفع أولاً قبل المتابعة",
+  "auth_family_first_login_otp_title": "تأكيد رمز حساب العائلة",
+  "auth_family_first_login_otp_subtitle": "أدخل رمز التحقق المكون من 6 أرقام لتفعيل حسابك كفرد في العائلة.",
+  "auth_family_first_login_otp_hint": "أدخل الرمز المكون من 6 أرقام للمتابعة.",
+  "auth_family_first_login_new_password_title": "تعيين كلمة مرور حساب العائلة",
+  "auth_family_first_login_new_password_subtitle": "أنشئ كلمة مرور جديدة خاصة بحسابك لإكمال تسجيل الدخول.",
+  "auth_family_challenge_expired": "انتهت صلاحية جلسة التحقق. يرجى تسجيل الدخول مجدداً.",
+  "auth_family_otp_invalid": "رمز التحقق غير صحيح أو تم استنفاذ محاولاته. يرجى المحاولة مرة أخرى.",
+  "auth_family_state_invalid": "عضوية العائلة غير نشطة أو لم تعد صالحة. يرجى مراجعة مسؤول العائلة.",
+  "auth_family_delivery_failed": "فشل إرسال رمز التحقق. يرجى المحاولة لاحقاً.",
+  "auth_family_generated_password_title": "تم إنشاء كلمة مرور مؤقتة",
+  "auth_family_private_delivery_reminder": "سيتم عرض كلمة المرور المؤقتة هذه لمرة واحدة فقط. شاركها بشكل آمن مع فرد العائلة."
 }

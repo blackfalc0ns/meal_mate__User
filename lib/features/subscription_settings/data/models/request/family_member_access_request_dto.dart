@@ -9,11 +9,13 @@ class FamilyMemberAccessRequestDto {
     this.isPaused,
     this.remove,
     this.expectedVersion,
+    this.generateTemporaryPassword,
   });
   final bool? hasSeparateAccount;
   final bool? isPaused;
   final bool? remove;
   final int? expectedVersion;
+  final bool? generateTemporaryPassword;
   factory FamilyMemberAccessRequestDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberAccessRequestDtoFromJson(json);
   Map<String, dynamic> toJson() => {

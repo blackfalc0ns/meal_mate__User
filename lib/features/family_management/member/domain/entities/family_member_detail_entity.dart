@@ -54,10 +54,10 @@ class FamilyMemberDetailEntity {
 
   String? get effectiveSubscriptionId =>
       (currentSubscriptionId?.isNotEmpty == true)
-          ? currentSubscriptionId
-          : (subscriptionId?.isNotEmpty == true
-              ? subscriptionId
-              : upcomingSubscriptionId);
+      ? currentSubscriptionId
+      : (subscriptionId?.isNotEmpty == true
+            ? subscriptionId
+            : upcomingSubscriptionId);
 
   bool get isUnsubscribed =>
       (lifecycleStatus?.toLowerCase() == 'unsubscribed') ||
@@ -72,8 +72,14 @@ class FamilyMemberDetailEntity {
   bool isServiceActive({DateTime? atDate}) {
     if (endDate == null) return hasPlan;
     final checkDate = atDate ?? DateTime.now();
-    final endOfDay =
-        DateTime(endDate!.year, endDate!.month, endDate!.day, 23, 59, 59);
+    final endOfDay = DateTime(
+      endDate!.year,
+      endDate!.month,
+      endDate!.day,
+      23,
+      59,
+      59,
+    );
     return !checkDate.isAfter(endOfDay);
   }
 

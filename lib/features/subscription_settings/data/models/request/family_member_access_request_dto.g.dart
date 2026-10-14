@@ -13,6 +13,7 @@ FamilyMemberAccessRequestDto _$FamilyMemberAccessRequestDtoFromJson(
   isPaused: json['isPaused'] as bool?,
   remove: json['remove'] as bool?,
   expectedVersion: (json['expectedVersion'] as num?)?.toInt(),
+  generateTemporaryPassword: json['generateTemporaryPassword'] as bool?,
 );
 
 Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
@@ -22,4 +23,5 @@ Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
   'isPaused': ?instance.isPaused,
   'remove': ?instance.remove,
   'expectedVersion': ?instance.expectedVersion,
+  'generateTemporaryPassword': ?instance.generateTemporaryPassword,
 };

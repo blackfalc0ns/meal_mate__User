@@ -172,8 +172,7 @@ class FamilyCalendarState {
           hasInitializedMealSelection ?? this.hasInitializedMealSelection,
       selectedCategoryIndex:
           selectedCategoryIndex ?? this.selectedCategoryIndex,
-      isLoadingRestaurants:
-          isLoadingRestaurants ?? this.isLoadingRestaurants,
+      isLoadingRestaurants: isLoadingRestaurants ?? this.isLoadingRestaurants,
       isLoadingAvailableMeals:
           isLoadingAvailableMeals ?? this.isLoadingAvailableMeals,
       isSavingMeals: isSavingMeals ?? this.isSavingMeals,

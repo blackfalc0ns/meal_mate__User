@@ -36,10 +36,7 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
     super.initState();
     _viewModel = getIt.isRegistered<FamilyOverviewViewModel>()
         ? getIt<FamilyOverviewViewModel>()
-        : FamilyOverviewViewModel(
-            getIt(),
-            getIt(),
-          );
+        : FamilyOverviewViewModel(getIt(), getIt());
   }
 
   @override
@@ -102,7 +99,8 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
                       padding: const EdgeInsetsDirectional.only(
                         start: Spacing.familyMembersHorizontalPadding,
                         end: Spacing.familyMembersHorizontalPadding,
-                        bottom: Spacing.bottomNavHeight +
+                        bottom:
+                            Spacing.bottomNavHeight +
                             Spacing.familyMembersBottomNavTopGap,
                       ),
                       children: [
@@ -114,31 +112,27 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
                             SearchFamilyMembersEvent(query),
                           ),
                         ),
-                        const SizedBox(
-                          height: Spacing.familyMembersListTopGap,
-                        ),
-                        for (int i = 0;
-                            i < state.filteredMembers.length;
-                            i++) ...[
+                        const SizedBox(height: Spacing.familyMembersListTopGap),
+                        for (
+                          int i = 0;
+                          i < state.filteredMembers.length;
+                          i++
+                        ) ...[
                           if (i > 0)
                             const SizedBox(
                               height: Spacing.familyMembersCardGap,
                             ),
-                          _buildMemberCard(
-                            context,
-                            state.filteredMembers[i],
-                          ),
+                          _buildMemberCard(context, state.filteredMembers[i]),
                         ],
                         const SizedBox(
                           height: Spacing.familyMembersAddButtonTopGap,
                         ),
                         FamilyMembersAddButton(
-                          onPressed: () =>
-                              context.pushNamed(AppRoutes.familySubscriptionSetup),
+                          onPressed: () => context.pushNamed(
+                            AppRoutes.familySubscriptionSetup,
+                          ),
                         ),
-                        const SizedBox(
-                          height: Spacing.md,
-                        ),
+                        const SizedBox(height: Spacing.md),
                       ],
                     ),
                   ),
@@ -176,9 +170,7 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
           arguments: member,
         );
         if (!mounted) return;
-        _viewModel.doIntent(
-          LoadFamilyMembersEvent(locale: localeName),
-        );
+        _viewModel.doIntent(LoadFamilyMembersEvent(locale: localeName));
       },
     );
   }

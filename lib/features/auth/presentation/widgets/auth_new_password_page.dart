@@ -9,6 +9,9 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_view_model.dart';
@@ -40,37 +43,78 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isFamily = context.select<LoginViewModel, bool>(
+      (vm) => vm.state.familyChallengeToken != null,
+    );
 
-    return BlocListener<PasswordRecoveryViewModel, PasswordRecoveryState>(
-      listenWhen: (previous, current) =>
-          previous.outcome != current.outcome ||
-          previous.failure != current.failure,
-      listener: (context, state) {
-        if (state.outcome == PasswordRecoveryOutcome.resetSuccess) {
-          CustomSnackbar.showSuccess(
-            context: context,
-            message: locale.auth_reset_password_success,
-          );
-          widget.onNavigate(AuthPageType.signIn);
-          return;
-        }
+    final title = isFamily
+        ? locale.auth_family_first_login_new_password_title
+        : locale.auth_new_password_title;
+    final subtitle = isFamily
+        ? locale.auth_family_first_login_new_password_subtitle
+        : locale.auth_new_password_subtitle;
 
-        if (state.outcome == PasswordRecoveryOutcome.failure &&
-            state.failure != null) {
-          CustomSnackbar.showError(
-            context: context,
-            message: ErrorMessagePresenter.fromFailure(context, state.failure!),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<PasswordRecoveryViewModel, PasswordRecoveryState>(
+          listenWhen: (previous, current) =>
+              previous.outcome != current.outcome ||
+              previous.failure != current.failure,
+          listener: (context, state) {
+            if (state.outcome == PasswordRecoveryOutcome.resetSuccess) {
+              CustomSnackbar.showSuccess(
+                context: context,
+                message: locale.auth_reset_password_success,
+              );
+              widget.onNavigate(AuthPageType.signIn);
+              return;
+            }
+
+            if (state.outcome == PasswordRecoveryOutcome.failure &&
+                state.failure != null) {
+              CustomSnackbar.showError(
+                context: context,
+                message: ErrorMessagePresenter.fromFailure(
+                  context,
+                  state.failure!,
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<LoginViewModel, LoginState>(
+          listenWhen: (previous, current) =>
+              previous.outcome != current.outcome ||
+              previous.failure != current.failure,
+          listener: (context, state) {
+            if (state.outcome == LoginOutcome.failure &&
+                state.failure != null) {
+              CustomSnackbar.showError(
+                context: context,
+                message: ErrorMessagePresenter.fromFailure(
+                  context,
+                  state.failure!,
+                ),
+              );
+            }
+          },
+        ),
+      ],
       child: AuthPageShell(
-        title: locale.auth_new_password_title,
-        subtitle: locale.auth_new_password_subtitle,
+        title: title,
+        subtitle: subtitle,
         topOffset: Spacing.xxl,
         footer: AuthFooterAction(
           prompt: locale.auth_have_account_prompt,
           actionText: locale.auth_sign_in_link,
-          onTap: () => widget.onNavigate(AuthPageType.signIn),
+          onTap: () {
+            if (isFamily) {
+              context.read<LoginViewModel>().doIntent(
+                const ResetFamilyFirstLoginFlowEvent(),
+              );
+            }
+            widget.onNavigate(AuthPageType.signIn);
+          },
         ),
         child: Form(
           key: _formKey,
@@ -79,7 +123,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
             children: [
               Center(
                 child: Text(
-                  locale.auth_new_password_title,
+                  title,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size24,
@@ -113,7 +157,7 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
                   width: Spacing.iconSm,
                   height: Spacing.iconSm,
                 ),
-                onPressed: _handleSubmit,
+                onPressed: () => _handleSubmit(isFamily),
                 color: color.primary,
               ),
             ],
@@ -123,8 +167,15 @@ class _AuthNewPasswordPageState extends State<AuthNewPasswordPage> {
     );
   }
 
-  void _handleSubmit() {
+  void _handleSubmit(bool isFamily) {
     if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
+    if (isFamily) {
+      context.read<LoginViewModel>().doIntent(
+        SetFamilyFirstLoginPasswordEvent(_passwordController.text),
+      );
       return;
     }
 

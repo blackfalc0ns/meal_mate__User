@@ -30,10 +30,8 @@ class FamilyMemberEditBottomSheet extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(Spacing.lg)),
       ),
-      builder: (_) => FamilyMemberEditBottomSheet(
-        viewModel: viewModel,
-        detail: detail,
-      ),
+      builder: (_) =>
+          FamilyMemberEditBottomSheet(viewModel: viewModel, detail: detail),
     );
   }
 
@@ -55,10 +53,12 @@ class _FamilyMemberEditBottomSheetState
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.detail.displayName);
-    _ageController =
-        TextEditingController(text: widget.detail.ageYears?.toString() ?? '');
-    _phoneController =
-        TextEditingController(text: widget.detail.phoneNumber ?? '');
+    _ageController = TextEditingController(
+      text: widget.detail.ageYears?.toString() ?? '',
+    );
+    _phoneController = TextEditingController(
+      text: widget.detail.phoneNumber ?? '',
+    );
     _relationshipCode = widget.detail.relationshipCode ?? 'child';
     _gender = 1;
   }

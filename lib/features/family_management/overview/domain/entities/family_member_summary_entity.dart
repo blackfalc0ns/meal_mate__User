@@ -39,8 +39,8 @@ class FamilyMemberSummaryEntity {
   bool get hasPlan => subscriptionId?.isNotEmpty == true;
   String? get effectiveSubscriptionId =>
       (subscriptionId != null && subscriptionId!.isNotEmpty)
-          ? subscriptionId
-          : upcomingSubscriptionId;
+      ? subscriptionId
+      : upcomingSubscriptionId;
 
   bool get isUnsubscribed =>
       (lifecycleStatus?.toLowerCase() == 'unsubscribed') ||

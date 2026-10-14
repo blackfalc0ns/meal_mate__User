@@ -47,7 +47,8 @@ class FamilyMemberListItemDto {
       setupStatus: json['setupStatus']?.toString() ?? 'NotStarted',
       lifecycle: json['lifecycle'] is Map<String, dynamic>
           ? FamilyMemberLifecycleDto.fromJson(
-              json['lifecycle'] as Map<String, dynamic>)
+              json['lifecycle'] as Map<String, dynamic>,
+            )
           : null,
       upcomingSubscriptionId: json['upcomingSubscriptionId']?.toString(),
       upcomingStartDate: json['upcomingStartDate']?.toString(),

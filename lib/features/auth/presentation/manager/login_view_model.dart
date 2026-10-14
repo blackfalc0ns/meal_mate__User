@@ -6,9 +6,14 @@ import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/core/constants/keys.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/core/services/session_persistence.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/login_usecase.dart';
+import 'package:meal_meat_user/features/auth/domain/usecase/set_family_first_login_password_usecase.dart';
+import 'package:meal_meat_user/features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'login_event.dart';
 import 'login_state.dart';
@@ -17,12 +22,16 @@ class LoginViewModel extends Cubit<LoginState> {
   LoginViewModel(
     this._loginUseCase,
     this._biometricService, {
+    this.verifyFamilyFirstLoginOtpUseCase,
+    this.setFamilyFirstLoginPasswordUseCase,
     this.getCurrentCustomerSubscriptionUseCase,
     this.sharedPrefHelper,
   }) : super(const LoginState());
 
   final LoginUseCase _loginUseCase;
   final BiometricService _biometricService;
+  final VerifyFamilyFirstLoginOtpUseCase? verifyFamilyFirstLoginOtpUseCase;
+  final SetFamilyFirstLoginPasswordUseCase? setFamilyFirstLoginPasswordUseCase;
   final GetCurrentCustomerSubscriptionUseCase?
   getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper? sharedPrefHelper;
@@ -41,6 +50,12 @@ class LoginViewModel extends Cubit<LoginState> {
         unawaited(_checkBiometricReadiness());
       case ClearLoginFeedbackEvent():
         _clearFeedback();
+      case VerifyFamilyFirstLoginOtpEvent(:final otpCode):
+        unawaited(_verifyFamilyFirstLoginOtp(otpCode));
+      case SetFamilyFirstLoginPasswordEvent(:final newPassword):
+        unawaited(_setFamilyFirstLoginPassword(newPassword));
+      case ResetFamilyFirstLoginFlowEvent():
+        _resetFamilyFirstLoginFlow();
     }
   }
 
@@ -100,13 +115,33 @@ class LoginViewModel extends Cubit<LoginState> {
 
       switch (result) {
         case ApiSuccessResult():
+          final loginEntity = result.data;
+          if (loginEntity.isPendingFamilyFirstLogin) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                outcome: LoginOutcome.familyVerifyOtpPending,
+                familyChallengeToken: () => loginEntity.loginChallengeToken,
+                familyChallengeExpiresAtUtc: () =>
+                    loginEntity.loginChallengeExpiresAtUtc,
+                familyNextStep: () => loginEntity.nextStep,
+                loginEntity: () => loginEntity,
+                requiresFreshLogin: false,
+              ),
+            );
+            return;
+          }
           await _syncSubscriptionCache();
           if (isClosed) return;
           emit(
             state.copyWith(
               isLoading: false,
               outcome: LoginOutcome.success,
-              loginEntity: () => result.data,
+              loginEntity: () => loginEntity,
+              familyChallengeToken: () => null,
+              familyChallengeExpiresAtUtc: () => null,
+              familyNextStep: () => null,
+              requiresFreshLogin: false,
             ),
           );
         case ApiErrorResult():
@@ -125,6 +160,237 @@ class LoginViewModel extends Cubit<LoginState> {
     } finally {
       _inFlight = false;
     }
+  }
+
+  Future<void> _verifyFamilyFirstLoginOtp(String otpCode) async {
+    if (_inFlight || state.isLoading) return;
+    final challengeToken = state.familyChallengeToken;
+    if (challengeToken == null ||
+        challengeToken.isEmpty ||
+        state.isChallengeExpired) {
+      emit(
+        state.copyWith(
+          outcome: LoginOutcome.failure,
+          requiresFreshLogin: true,
+          familyChallengeToken: () => null,
+          familyChallengeExpiresAtUtc: () => null,
+          familyNextStep: () => null,
+          failure: () => Failure(
+            errorMessage: 'auth_family_challenge_expired',
+            code: 'auth.challenge_expired',
+          ),
+        ),
+      );
+      return;
+    }
+
+    _inFlight = true;
+    emit(
+      state.copyWith(
+        isLoading: true,
+        outcome: LoginOutcome.idle,
+        failure: () => null,
+      ),
+    );
+
+    try {
+      final useCase = verifyFamilyFirstLoginOtpUseCase;
+      if (useCase == null) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            outcome: LoginOutcome.failure,
+            failure: () => Failure(
+              errorMessage: 'Verify OTP use case not registered',
+              code: 'NOT_REGISTERED',
+            ),
+          ),
+        );
+        return;
+      }
+
+      final result = await useCase(
+        FamilyFirstLoginVerifyOtpRequestEntity(
+          loginChallengeToken: challengeToken,
+          otpCode: otpCode,
+        ),
+      );
+
+      if (isClosed) return;
+
+      switch (result) {
+        case ApiSuccessResult(:final data):
+          emit(
+            state.copyWith(
+              isLoading: false,
+              outcome: LoginOutcome.familySetPasswordPending,
+              familyChallengeToken: () => data.loginChallengeToken,
+              familyChallengeExpiresAtUtc: () =>
+                  data.loginChallengeExpiresAtUtc,
+              familyNextStep: () => data.nextStep,
+              requiresFreshLogin: false,
+            ),
+          );
+        case ApiErrorResult(:final failure):
+          final isExpiredOrInvalid =
+              failure.code == 'auth.challenge_expired' ||
+              failure.code == 'family.challenge_expired' ||
+              failure.code == 'auth.family_state_invalid' ||
+              failure.code == 'family.member_disabled' ||
+              failure.code == 'family.group_inactive';
+          emit(
+            state.copyWith(
+              isLoading: false,
+              outcome: LoginOutcome.failure,
+              failure: () => failure,
+              requiresFreshLogin: isExpiredOrInvalid,
+              familyChallengeToken: isExpiredOrInvalid ? () => null : null,
+              familyChallengeExpiresAtUtc: isExpiredOrInvalid
+                  ? () => null
+                  : null,
+              familyNextStep: isExpiredOrInvalid ? () => null : null,
+            ),
+          );
+      }
+    } catch (_) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            outcome: LoginOutcome.failure,
+            failure: () =>
+                Failure(errorMessage: 'error_server', code: 'SERVER_ERROR'),
+          ),
+        );
+      }
+    } finally {
+      _inFlight = false;
+    }
+  }
+
+  Future<void> _setFamilyFirstLoginPassword(String newPassword) async {
+    if (_inFlight || state.isLoading) return;
+    final challengeToken = state.familyChallengeToken;
+    if (challengeToken == null ||
+        challengeToken.isEmpty ||
+        state.isChallengeExpired) {
+      emit(
+        state.copyWith(
+          outcome: LoginOutcome.failure,
+          requiresFreshLogin: true,
+          familyChallengeToken: () => null,
+          familyChallengeExpiresAtUtc: () => null,
+          familyNextStep: () => null,
+          failure: () => Failure(
+            errorMessage: 'auth_family_challenge_expired',
+            code: 'auth.challenge_expired',
+          ),
+        ),
+      );
+      return;
+    }
+
+    _inFlight = true;
+    emit(
+      state.copyWith(
+        isLoading: true,
+        outcome: LoginOutcome.idle,
+        failure: () => null,
+      ),
+    );
+
+    try {
+      final useCase = setFamilyFirstLoginPasswordUseCase;
+      if (useCase == null) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            outcome: LoginOutcome.failure,
+            failure: () => Failure(
+              errorMessage: 'Set password use case not registered',
+              code: 'NOT_REGISTERED',
+            ),
+          ),
+        );
+        return;
+      }
+
+      final persistence = state.rememberMe
+          ? SessionPersistence.remembered
+          : SessionPersistence.currentRun;
+
+      final result = await useCase(
+        FamilyFirstLoginSetPasswordRequestEntity(
+          loginChallengeToken: challengeToken,
+          newPassword: newPassword,
+        ),
+        persistence: persistence,
+      );
+
+      if (isClosed) return;
+
+      switch (result) {
+        case ApiSuccessResult(:final data):
+          await _syncSubscriptionCache();
+          if (isClosed) return;
+          emit(
+            state.copyWith(
+              isLoading: false,
+              outcome: LoginOutcome.success,
+              loginEntity: () => data,
+              familyChallengeToken: () => null,
+              familyChallengeExpiresAtUtc: () => null,
+              familyNextStep: () => null,
+              requiresFreshLogin: false,
+            ),
+          );
+        case ApiErrorResult(:final failure):
+          final isExpiredOrInvalid =
+              failure.code == 'auth.challenge_expired' ||
+              failure.code == 'family.challenge_expired' ||
+              failure.code == 'auth.family_state_invalid' ||
+              failure.code == 'family.member_disabled' ||
+              failure.code == 'family.group_inactive';
+          emit(
+            state.copyWith(
+              isLoading: false,
+              outcome: LoginOutcome.failure,
+              failure: () => failure,
+              requiresFreshLogin: isExpiredOrInvalid,
+              familyChallengeToken: isExpiredOrInvalid ? () => null : null,
+              familyChallengeExpiresAtUtc: isExpiredOrInvalid
+                  ? () => null
+                  : null,
+              familyNextStep: isExpiredOrInvalid ? () => null : null,
+            ),
+          );
+      }
+    } catch (_) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            outcome: LoginOutcome.failure,
+            failure: () =>
+                Failure(errorMessage: 'error_server', code: 'SERVER_ERROR'),
+          ),
+        );
+      }
+    } finally {
+      _inFlight = false;
+    }
+  }
+
+  void _resetFamilyFirstLoginFlow() {
+    emit(
+      state.copyWith(
+        familyChallengeToken: () => null,
+        familyChallengeExpiresAtUtc: () => null,
+        familyNextStep: () => null,
+        requiresFreshLogin: false,
+        outcome: LoginOutcome.idle,
+      ),
+    );
   }
 
   Future<void> _loginWithBiometrics(String? localizedReason) async {

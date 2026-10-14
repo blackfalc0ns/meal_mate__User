@@ -49,9 +49,13 @@ void main() {
 
     test('maps family.quote_changed', () {
       final dioError = DioException(
-        requestOptions: RequestOptions(path: '/family-subscription-flow/checkout'),
+        requestOptions: RequestOptions(
+          path: '/family-subscription-flow/checkout',
+        ),
         response: Response(
-          requestOptions: RequestOptions(path: '/family-subscription-flow/checkout'),
+          requestOptions: RequestOptions(
+            path: '/family-subscription-flow/checkout',
+          ),
           statusCode: 409,
           data: {
             'status': 409,

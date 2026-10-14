@@ -71,15 +71,9 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _getDetail(memberId, locale: locale);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          detail: data,
-          isLoadingDetail: false,
-        ));
+        emit(state.copyWith(detail: data, isLoadingDetail: false));
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          failure: failure,
-          isLoadingDetail: false,
-        ));
+        emit(state.copyWith(failure: failure, isLoadingDetail: false));
     }
   }
 
@@ -88,15 +82,9 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _getAccess(memberId);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          access: data,
-          isLoadingAccess: false,
-        ));
+        emit(state.copyWith(access: data, isLoadingAccess: false));
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          failure: failure,
-          isLoadingAccess: false,
-        ));
+        emit(state.copyWith(failure: failure, isLoadingAccess: false));
     }
   }
 
@@ -106,20 +94,20 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
       hasSeparateAccount: event.hasSeparateAccount,
       isPaused: event.isPaused,
       removeAccess: event.removeAccess,
+      generateTemporaryPassword: event.generateTemporaryPassword,
     );
     final result = await _updateAccess(event.memberId, request);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          access: data,
-          isSaving: false,
-          saveSuccessCount: state.saveSuccessCount + 1,
-        ));
+        emit(
+          state.copyWith(
+            access: data,
+            isSaving: false,
+            saveSuccessCount: state.saveSuccessCount + 1,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          saveFailure: failure,
-          isSaving: false,
-        ));
+        emit(state.copyWith(saveFailure: failure, isSaving: false));
     }
   }
 
@@ -128,16 +116,15 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _getPermissions(memberId, locale: locale);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          permissions: data,
-          permissionValues: Map.of(data.values),
-          isLoadingPermissions: false,
-        ));
+        emit(
+          state.copyWith(
+            permissions: data,
+            permissionValues: Map.of(data.values),
+            isLoadingPermissions: false,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          failure: failure,
-          isLoadingPermissions: false,
-        ));
+        emit(state.copyWith(failure: failure, isLoadingPermissions: false));
     }
   }
 
@@ -176,21 +163,21 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _updatePermissions(memberId, request, locale: locale);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          permissions: data,
-          permissionValues: Map.of(data.values),
-          isSaving: false,
-          saveSuccessCount: state.saveSuccessCount + 1,
-        ));
+        emit(
+          state.copyWith(
+            permissions: data,
+            permissionValues: Map.of(data.values),
+            isSaving: false,
+            saveSuccessCount: state.saveSuccessCount + 1,
+          ),
+        );
       case ApiErrorResult(:final failure):
         // If conflict, reload latest permissions from server
-        if (failure is FamilyManagementFailure && failure.isPermissionConflict) {
+        if (failure is FamilyManagementFailure &&
+            failure.isPermissionConflict) {
           await _loadPermissions(memberId, locale);
         }
-        emit(state.copyWith(
-          saveFailure: failure,
-          isSaving: false,
-        ));
+        emit(state.copyWith(saveFailure: failure, isSaving: false));
     }
   }
 
@@ -199,15 +186,14 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _updateBasicInfo(event.memberId, event.request);
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(
-          isSaving: false,
-          saveSuccessCount: state.saveSuccessCount + 1,
-        ));
+        emit(
+          state.copyWith(
+            isSaving: false,
+            saveSuccessCount: state.saveSuccessCount + 1,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          saveFailure: failure,
-          isSaving: false,
-        ));
+        emit(state.copyWith(saveFailure: failure, isSaving: false));
     }
   }
 
@@ -216,15 +202,14 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
     final result = await _renewSubscription(renewalPath);
     switch (result) {
       case ApiSuccessResult():
-        emit(state.copyWith(
-          isSaving: false,
-          saveSuccessCount: state.saveSuccessCount + 1,
-        ));
+        emit(
+          state.copyWith(
+            isSaving: false,
+            saveSuccessCount: state.saveSuccessCount + 1,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          saveFailure: failure,
-          isSaving: false,
-        ));
+        emit(state.copyWith(saveFailure: failure, isSaving: false));
     }
   }
 }

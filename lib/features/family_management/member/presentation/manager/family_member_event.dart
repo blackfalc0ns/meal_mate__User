@@ -21,12 +21,14 @@ class UpdateFamilyMemberAccessEvent extends FamilyMemberEvent {
     this.hasSeparateAccount,
     this.isPaused,
     this.removeAccess = false,
+    this.generateTemporaryPassword,
   });
 
   final String memberId;
   final bool? hasSeparateAccount;
   final bool? isPaused;
   final bool removeAccess;
+  final bool? generateTemporaryPassword;
 }
 
 class ClearGeneratedPasswordEvent extends FamilyMemberEvent {

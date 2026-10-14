@@ -14,6 +14,10 @@ abstract class EndPoints {
   static const String resetPassword = '/api/v1/auth/customers/reset-password';
   static const String resendPasswordOtp =
       '/api/v1/auth/customers/resend-password-otp';
+  static const String familyFirstLoginVerifyOtp =
+      '/api/v1/auth/customers/family-first-login/verify-otp';
+  static const String familyFirstLoginSetPassword =
+      '/api/v1/auth/customers/family-first-login/set-password';
   static const String refresh = '/api/v1/auth/refresh';
   static const String logout = '/api/v1/auth/logout';
   static const String callingCodes = '/api/v1/catalog/calling-codes';
@@ -199,6 +203,7 @@ abstract class EndPoints {
   static const String customerSubscriptionDeliveryAddress =
       '/api/v1/customer/subscriptions/{subscriptionId}/delivery-address';
   static const String familyHome = '/api/v1/customer/family/home';
+  static const String familyMe = '/api/v1/customer/family/me';
   static const String familyMembers = '/api/v1/customer/family/members';
   static const String familySwitcher = '/api/v1/customer/family/switcher';
   static const String familyMember =

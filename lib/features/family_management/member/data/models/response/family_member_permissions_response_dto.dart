@@ -50,29 +50,30 @@ class FamilyMemberPermissionsResponseDto {
   final List<FamilyPermissionGroupDto> groups;
 
   Map<String, bool> toValuesMap() => {
-        'editDailyMeals': editDailyMeals,
-        'changeDeliveryTime': changeDeliveryTime,
-        'viewProgram': viewProgram,
-        'changeProgram': changeProgram,
-        'editMealsAndDays': editMealsAndDays,
-        'editAddress': editAddress,
-        'unitExchange': unitExchange,
-        'changePassword': changePassword,
-        'viewCalendar': viewCalendar,
-        'viewInvoices': viewInvoices,
-        'selectRestaurant': selectRestaurant,
-        'confirmMeals': confirmMeals,
-        'requestFreeze': requestFreeze,
-        'requestRenewal': requestRenewal,
-        'requestUpgrade': requestUpgrade,
-        'cancelSubscription': cancelSubscription,
-        'viewFamilyCalendars': viewFamilyCalendars,
-        'viewFamilyPlans': viewFamilyPlans,
-        'viewFamilyInvoices': viewFamilyInvoices,
-      };
+    'editDailyMeals': editDailyMeals,
+    'changeDeliveryTime': changeDeliveryTime,
+    'viewProgram': viewProgram,
+    'changeProgram': changeProgram,
+    'editMealsAndDays': editMealsAndDays,
+    'editAddress': editAddress,
+    'unitExchange': unitExchange,
+    'changePassword': changePassword,
+    'viewCalendar': viewCalendar,
+    'viewInvoices': viewInvoices,
+    'selectRestaurant': selectRestaurant,
+    'confirmMeals': confirmMeals,
+    'requestFreeze': requestFreeze,
+    'requestRenewal': requestRenewal,
+    'requestUpgrade': requestUpgrade,
+    'cancelSubscription': cancelSubscription,
+    'viewFamilyCalendars': viewFamilyCalendars,
+    'viewFamilyPlans': viewFamilyPlans,
+    'viewFamilyInvoices': viewFamilyInvoices,
+  };
 
   factory FamilyMemberPermissionsResponseDto.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return FamilyMemberPermissionsResponseDto(
       memberId: json['memberId']?.toString() ?? '',
       version: (json['version'] as num?)?.toInt() ?? 1,
@@ -95,9 +96,13 @@ class FamilyMemberPermissionsResponseDto {
       viewFamilyCalendars: json['viewFamilyCalendars'] as bool? ?? false,
       viewFamilyPlans: json['viewFamilyPlans'] as bool? ?? false,
       viewFamilyInvoices: json['viewFamilyInvoices'] as bool? ?? false,
-      groups: (json['groups'] as List<dynamic>?)
-              ?.map((e) =>
-                  FamilyPermissionGroupDto.fromJson(e as Map<String, dynamic>))
+      groups:
+          (json['groups'] as List<dynamic>?)
+              ?.map(
+                (e) => FamilyPermissionGroupDto.fromJson(
+                  e as Map<String, dynamic>,
+                ),
+              )
               .toList() ??
           const [],
     );
@@ -122,9 +127,12 @@ class FamilyPermissionGroupDto {
       code: json['code']?.toString() ?? '',
       labelAr: json['labelAr']?.toString() ?? json['label']?.toString() ?? '',
       labelEn: json['labelEn']?.toString() ?? json['label']?.toString() ?? '',
-      permissions: (json['permissions'] as List<dynamic>?)
-              ?.map((e) =>
-                  FamilyPermissionItemDto.fromJson(e as Map<String, dynamic>))
+      permissions:
+          (json['permissions'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    FamilyPermissionItemDto.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
     );

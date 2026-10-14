@@ -2,7 +2,13 @@ import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
 import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
 
-enum LoginOutcome { idle, success, failure }
+enum LoginOutcome {
+  idle,
+  success,
+  failure,
+  familyVerifyOtpPending,
+  familySetPasswordPending,
+}
 
 class LoginState {
   const LoginState({
@@ -16,6 +22,10 @@ class LoginState {
     this.loginEntity,
     this.lastSubmittedRequestPhone,
     this.lastSubmittedRequestCountryCode,
+    this.familyChallengeToken,
+    this.familyChallengeExpiresAtUtc,
+    this.familyNextStep,
+    this.requiresFreshLogin = false,
   });
 
   final bool isLoading;
@@ -28,8 +38,23 @@ class LoginState {
   final LoginEntity? loginEntity;
   final String? lastSubmittedRequestPhone;
   final String? lastSubmittedRequestCountryCode;
+  final String? familyChallengeToken;
+  final String? familyChallengeExpiresAtUtc;
+  final String? familyNextStep;
+  final bool requiresFreshLogin;
 
   bool get isSuccess => outcome == LoginOutcome.success;
+  bool get isFamilyVerifyOtpPending =>
+      outcome == LoginOutcome.familyVerifyOtpPending;
+  bool get isFamilySetPasswordPending =>
+      outcome == LoginOutcome.familySetPasswordPending;
+
+  bool get isChallengeExpired {
+    if (familyChallengeExpiresAtUtc == null) return false;
+    final expires = DateTime.tryParse(familyChallengeExpiresAtUtc!);
+    if (expires == null) return false;
+    return DateTime.now().toUtc().isAfter(expires);
+  }
 
   LoginState copyWith({
     bool? isLoading,
@@ -42,6 +67,10 @@ class LoginState {
     LoginEntity? Function()? loginEntity,
     String? Function()? lastSubmittedRequestPhone,
     String? Function()? lastSubmittedRequestCountryCode,
+    String? Function()? familyChallengeToken,
+    String? Function()? familyChallengeExpiresAtUtc,
+    String? Function()? familyNextStep,
+    bool? requiresFreshLogin,
   }) {
     return LoginState(
       isLoading: isLoading ?? this.isLoading,
@@ -62,6 +91,16 @@ class LoginState {
       lastSubmittedRequestCountryCode: lastSubmittedRequestCountryCode != null
           ? lastSubmittedRequestCountryCode()
           : this.lastSubmittedRequestCountryCode,
+      familyChallengeToken: familyChallengeToken != null
+          ? familyChallengeToken()
+          : this.familyChallengeToken,
+      familyChallengeExpiresAtUtc: familyChallengeExpiresAtUtc != null
+          ? familyChallengeExpiresAtUtc()
+          : this.familyChallengeExpiresAtUtc,
+      familyNextStep: familyNextStep != null
+          ? familyNextStep()
+          : this.familyNextStep,
+      requiresFreshLogin: requiresFreshLogin ?? this.requiresFreshLogin,
     );
   }
 }

@@ -9,13 +9,13 @@ class LoginEntity {
     required this.restaurantId,
     required this.roles,
     required this.permissions,
-    required this.accessToken,
-    required this.accessTokenExpiresAtUtc,
-    required this.refreshToken,
-    required this.refreshTokenExpiresAtUtc,
-    required this.nextStep,
-    required this.loginChallengeToken,
-    required this.loginChallengeExpiresAtUtc,
+    this.accessToken,
+    this.accessTokenExpiresAtUtc,
+    this.refreshToken,
+    this.refreshTokenExpiresAtUtc,
+    this.nextStep,
+    this.loginChallengeToken,
+    this.loginChallengeExpiresAtUtc,
     required this.recoveryCodes,
     required this.isAuthenticated,
   });
@@ -29,13 +29,18 @@ class LoginEntity {
   final String? restaurantId;
   final List<String> roles;
   final List<String> permissions;
-  final String accessToken;
-  final String accessTokenExpiresAtUtc;
-  final String refreshToken;
-  final String refreshTokenExpiresAtUtc;
+  final String? accessToken;
+  final String? accessTokenExpiresAtUtc;
+  final String? refreshToken;
+  final String? refreshTokenExpiresAtUtc;
   final String? nextStep;
   final String? loginChallengeToken;
   final String? loginChallengeExpiresAtUtc;
   final List<String> recoveryCodes;
   final bool isAuthenticated;
+
+  bool get isPendingFamilyFirstLogin =>
+      !isAuthenticated &&
+      (accessToken == null || accessToken!.isEmpty) &&
+      nextStep == 'family_verify_otp';
 }

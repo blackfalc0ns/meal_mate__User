@@ -34,16 +34,25 @@ class FamilyHomeResponseDto {
       packageLabelEn: json['packageLabelEn']?.toString(),
       quotedFinalPrice: (json['quotedFinalPrice'] as num?)?.toDouble() ?? 0.0,
       currencyCode: json['currencyCode']?.toString() ?? 'KWD',
-      members: (json['members'] as List<dynamic>?)
-              ?.map((e) => FamilyHomeMemberDto.fromJson(e as Map<String, dynamic>))
+      members:
+          (json['members'] as List<dynamic>?)
+              ?.map(
+                (e) => FamilyHomeMemberDto.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
-      todaySchedule: (json['todaySchedule'] as List<dynamic>?)
-              ?.map((e) => FamilyHomeMemberDto.fromJson(e as Map<String, dynamic>))
+      todaySchedule:
+          (json['todaySchedule'] as List<dynamic>?)
+              ?.map(
+                (e) => FamilyHomeMemberDto.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
-      shortcuts: (json['shortcuts'] as List<dynamic>?)
-              ?.map((e) => FamilyShortcutDto.fromJson(e as Map<String, dynamic>))
+      shortcuts:
+          (json['shortcuts'] as List<dynamic>?)
+              ?.map(
+                (e) => FamilyShortcutDto.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
       wallet: json['wallet'] is Map<String, dynamic>
@@ -103,7 +112,8 @@ class FamilyHomeMemberDto {
       remainingDays: (json['remainingDays'] as num?)?.toInt() ?? 0,
       lifecycle: json['lifecycle'] is Map<String, dynamic>
           ? FamilyMemberLifecycleDto.fromJson(
-              json['lifecycle'] as Map<String, dynamic>)
+              json['lifecycle'] as Map<String, dynamic>,
+            )
           : null,
       upcomingSubscriptionId: json['upcomingSubscriptionId']?.toString(),
       upcomingStartDate: json['upcomingStartDate']?.toString(),
@@ -132,10 +142,7 @@ class FamilyShortcutDto {
 }
 
 class FamilyWalletDto {
-  const FamilyWalletDto({
-    this.available = false,
-    this.unavailableReason,
-  });
+  const FamilyWalletDto({this.available = false, this.unavailableReason});
 
   final bool available;
   final String? unavailableReason;

@@ -7157,4 +7157,47 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get family_error_checkout_no_selection =>
       'Please select members to include in checkout before proceeding';
+
+  @override
+  String get auth_family_first_login_otp_title => 'Verify family account code';
+
+  @override
+  String get auth_family_first_login_otp_subtitle =>
+      'Enter the 6-digit verification code to activate your family member account.';
+
+  @override
+  String get auth_family_first_login_otp_hint =>
+      'Enter the 6-digit code to continue.';
+
+  @override
+  String get auth_family_first_login_new_password_title =>
+      'Set family account password';
+
+  @override
+  String get auth_family_first_login_new_password_subtitle =>
+      'Create a new private password for your account to finish signing in.';
+
+  @override
+  String get auth_family_challenge_expired =>
+      'Verification session has expired. Please sign in again.';
+
+  @override
+  String get auth_family_otp_invalid =>
+      'Invalid or exhausted verification code. Please check and try again.';
+
+  @override
+  String get auth_family_state_invalid =>
+      'Family membership is inactive or no longer valid. Please contact your family manager.';
+
+  @override
+  String get auth_family_delivery_failed =>
+      'Failed to send verification code. Please try again later.';
+
+  @override
+  String get auth_family_generated_password_title =>
+      'Temporary password generated';
+
+  @override
+  String get auth_family_private_delivery_reminder =>
+      'This temporary password will only be shown once. Share it privately with the family member.';
 }

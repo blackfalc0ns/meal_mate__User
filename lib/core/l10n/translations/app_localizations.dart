@@ -13099,6 +13099,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select members to include in checkout before proceeding'**
   String get family_error_checkout_no_selection;
+
+  /// No description provided for @auth_family_first_login_otp_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify family account code'**
+  String get auth_family_first_login_otp_title;
+
+  /// No description provided for @auth_family_first_login_otp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit verification code to activate your family member account.'**
+  String get auth_family_first_login_otp_subtitle;
+
+  /// No description provided for @auth_family_first_login_otp_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code to continue.'**
+  String get auth_family_first_login_otp_hint;
+
+  /// No description provided for @auth_family_first_login_new_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set family account password'**
+  String get auth_family_first_login_new_password_title;
+
+  /// No description provided for @auth_family_first_login_new_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new private password for your account to finish signing in.'**
+  String get auth_family_first_login_new_password_subtitle;
+
+  /// No description provided for @auth_family_challenge_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification session has expired. Please sign in again.'**
+  String get auth_family_challenge_expired;
+
+  /// No description provided for @auth_family_otp_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid or exhausted verification code. Please check and try again.'**
+  String get auth_family_otp_invalid;
+
+  /// No description provided for @auth_family_state_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Family membership is inactive or no longer valid. Please contact your family manager.'**
+  String get auth_family_state_invalid;
+
+  /// No description provided for @auth_family_delivery_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send verification code. Please try again later.'**
+  String get auth_family_delivery_failed;
+
+  /// No description provided for @auth_family_generated_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary password generated'**
+  String get auth_family_generated_password_title;
+
+  /// No description provided for @auth_family_private_delivery_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'This temporary password will only be shown once. Share it privately with the family member.'**
+  String get auth_family_private_delivery_reminder;
 }
 
 class _AppLocalizationsDelegate

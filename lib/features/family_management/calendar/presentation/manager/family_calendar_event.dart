@@ -91,10 +91,7 @@ class SelectFamilyMealCategoryEvent extends FamilyCalendarEvent {
 }
 
 class SelectMealForSlotEvent extends FamilyCalendarEvent {
-  const SelectMealForSlotEvent({
-    required this.meal,
-    required this.slot,
-  });
+  const SelectMealForSlotEvent({required this.meal, required this.slot});
 
   final CalendarMealEntity meal;
   final String slot;

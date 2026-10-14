@@ -27,3 +27,17 @@ class CheckBiometricReadinessEvent extends LoginEvent {
 class ClearLoginFeedbackEvent extends LoginEvent {
   const ClearLoginFeedbackEvent();
 }
+
+class VerifyFamilyFirstLoginOtpEvent extends LoginEvent {
+  const VerifyFamilyFirstLoginOtpEvent(this.otpCode);
+  final String otpCode;
+}
+
+class SetFamilyFirstLoginPasswordEvent extends LoginEvent {
+  const SetFamilyFirstLoginPasswordEvent(this.newPassword);
+  final String newPassword;
+}
+
+class ResetFamilyFirstLoginFlowEvent extends LoginEvent {
+  const ResetFamilyFirstLoginFlowEvent();
+}

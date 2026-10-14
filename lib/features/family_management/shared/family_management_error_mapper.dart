@@ -36,7 +36,8 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
     final data = unwrapped.response?.data;
     if (data is Map) {
       extractedCode = data['code']?.toString() ?? data['error']?.toString();
-      extractedMessage = data['detail']?.toString() ??
+      extractedMessage =
+          data['detail']?.toString() ??
           data['message']?.toString() ??
           data['title']?.toString();
       if (data['currentVersion'] is num) {
@@ -54,9 +55,9 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
 
     final data = unwrapped.response;
     if (data is Map) {
-      extractedCode ??=
-          data['code']?.toString() ?? data['error']?.toString();
-      final detail = data['detail']?.toString() ??
+      extractedCode ??= data['code']?.toString() ?? data['error']?.toString();
+      final detail =
+          data['detail']?.toString() ??
           data['message']?.toString() ??
           data['title']?.toString();
       if (detail != null && detail.isNotEmpty) {
@@ -86,14 +87,16 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
   final code = extractedCode?.trim().isNotEmpty == true
       ? extractedCode!.trim()
       : (statusCode == 401
-          ? 'auth.unauthorized'
-          : (statusCode == 403
-              ? SubscriptionErrorCodes.authForbidden
-              : (statusCode == 404
-                  ? SubscriptionErrorCodes.commonNotFound
-                  : (statusCode == 409
-                      ? SubscriptionErrorCodes.familyPermissionsChanged
-                      : (isNetwork ? 'error_no_internet' : 'unknown')))));
+            ? 'auth.unauthorized'
+            : (statusCode == 403
+                  ? SubscriptionErrorCodes.authForbidden
+                  : (statusCode == 404
+                        ? SubscriptionErrorCodes.commonNotFound
+                        : (statusCode == 409
+                              ? SubscriptionErrorCodes.familyPermissionsChanged
+                              : (isNetwork
+                                    ? 'error_no_internet'
+                                    : 'unknown')))));
 
   final message = extractedMessage?.trim().isNotEmpty == true
       ? extractedMessage!.trim()
@@ -101,18 +104,20 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
 
   // Classification flags
   final requiresManager = code == SubscriptionErrorCodes.familyNotManager;
-  final isPausedMember = code == SubscriptionErrorCodes.familyAccessPaused ||
+  final isPausedMember =
+      code == SubscriptionErrorCodes.familyAccessPaused ||
       code == SubscriptionErrorCodes.familyMemberPaused;
   final isPermissionConflict =
       code == SubscriptionErrorCodes.familyPermissionsChanged ||
-          code == SubscriptionErrorCodes.familyPermissionsVersionRequired;
+      code == SubscriptionErrorCodes.familyPermissionsVersionRequired;
   final isQuoteChanged = code == SubscriptionErrorCodes.familyQuoteChanged;
-  final isAuthForbidden = statusCode == 403 ||
+  final isAuthForbidden =
+      statusCode == 403 ||
       code == SubscriptionErrorCodes.authForbidden ||
       code == SubscriptionErrorCodes.familyPermissionDenied;
   final isFulfillmentNotReady =
       code == SubscriptionErrorCodes.calendarFulfillmentNotReady ||
-          code == 'fulfillment_not_ready';
+      code == 'fulfillment_not_ready';
 
   return FamilyManagementFailure(
     errorMessage: message,

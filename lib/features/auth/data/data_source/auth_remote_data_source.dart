@@ -1,4 +1,6 @@
 import 'package:meal_meat_user/features/auth/data/models/request/login_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_verify_otp_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_set_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/logout_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/refresh_token_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/register_request_dto.dart';
@@ -8,6 +10,7 @@ import 'package:meal_meat_user/features/auth/data/models/request/resend_phone_ot
 import 'package:meal_meat_user/features/auth/data/models/request/reset_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/verify_phone_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/calling_code_response_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/response/family_first_login_verify_otp_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/forgot_password_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/login_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/refresh_token_response_dto.dart';
@@ -19,6 +22,14 @@ import 'package:meal_meat_user/features/auth/data/models/response/verify_phone_r
 
 abstract interface class AuthRemoteDataSource {
   Future<LoginResponseDto> login(LoginRequestDto request);
+
+  Future<FamilyFirstLoginVerifyOtpResponseDto> verifyFamilyFirstLoginOtp(
+    FamilyFirstLoginVerifyOtpRequestDto request,
+  );
+
+  Future<LoginResponseDto> setFamilyFirstLoginPassword(
+    FamilyFirstLoginSetPasswordRequestDto request,
+  );
 
   Future<RegisterResponseDto> register(RegisterRequestDto request);
 

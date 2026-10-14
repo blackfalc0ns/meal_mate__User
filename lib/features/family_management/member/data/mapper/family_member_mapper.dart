@@ -52,7 +52,8 @@ class FamilyMemberMapper {
       programName: programName,
       remainingDays: dto.remainingDays ?? 0,
       setupStatus: setupStatusCode,
-      canRenew: dto.canRenew == true && dto.renewalPath?.trim().isNotEmpty == true,
+      canRenew:
+          dto.canRenew == true && dto.renewalPath?.trim().isNotEmpty == true,
       relationshipCode: dto.relationshipCode,
       phoneNumber: dto.phoneNumber,
       startDate: parseDate(dto.startDate),

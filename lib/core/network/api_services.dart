@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/services/token_interceptor.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/login_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_verify_otp_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_set_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/logout_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/refresh_token_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/register_request_dto.dart';
@@ -12,6 +14,8 @@ import 'package:meal_meat_user/features/auth/data/models/request/resend_phone_ot
 import 'package:meal_meat_user/features/auth/data/models/request/reset_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/verify_phone_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/calling_code_response_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/response/family_first_login_verify_otp_response_dto.dart';
+import 'package:meal_meat_user/features/family_context/data/models/response/family_context_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/forgot_password_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/login_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/refresh_token_response_dto.dart';
@@ -121,6 +125,18 @@ abstract class ApiServices {
   @POST(EndPoints.login)
   @Extra({TokenInterceptor.skipAuthKey: true})
   Future<LoginResponseDto> login(@Body() LoginRequestDto request);
+
+  @POST(EndPoints.familyFirstLoginVerifyOtp)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<FamilyFirstLoginVerifyOtpResponseDto> verifyFamilyFirstLoginOtp(
+    @Body() FamilyFirstLoginVerifyOtpRequestDto request,
+  );
+
+  @POST(EndPoints.familyFirstLoginSetPassword)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<LoginResponseDto> setFamilyFirstLoginPassword(
+    @Body() FamilyFirstLoginSetPasswordRequestDto request,
+  );
 
   @POST(EndPoints.register)
   @Extra({TokenInterceptor.skipAuthKey: true})
@@ -825,6 +841,9 @@ abstract class ApiServices {
 
   @GET(EndPoints.familyHome)
   Future<FamilyHomeResponseDto> getFamilyHome();
+
+  @GET(EndPoints.familyMe)
+  Future<List<FamilyContextResponseDto>> getMyFamilyContexts();
 
   @GET(EndPoints.familyMembers)
   Future<List<FamilyMemberSummaryResponseDto>> getFamilyMembers();

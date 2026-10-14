@@ -12,7 +12,9 @@ abstract interface class FamilyMemberRemoteDataSource {
     String memberId,
     UpdateFamilyMemberAccessRequestDto request,
   );
-  Future<FamilyMemberPermissionsResponseDto> getMemberPermissions(String memberId);
+  Future<FamilyMemberPermissionsResponseDto> getMemberPermissions(
+    String memberId,
+  );
   Future<FamilyMemberPermissionsResponseDto> updateMemberPermissions(
     String memberId,
     UpdateFamilyMemberPermissionsRequestDto request,

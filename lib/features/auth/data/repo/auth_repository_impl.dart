@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/services/session_persistence.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/calling_code_mapper.dart';
+import 'package:meal_meat_user/features/auth/data/mapper/family_first_login_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/forgot_password_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/login_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/logout_mapper.dart';
@@ -17,6 +18,9 @@ import 'package:meal_meat_user/features/auth/data/mapper/resend_phone_otp_mapper
 import 'package:meal_meat_user/features/auth/data/mapper/reset_password_mapper.dart';
 import 'package:meal_meat_user/features/auth/data/mapper/verify_phone_mapper.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_step_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
@@ -64,19 +68,66 @@ class AuthRepositoryImpl implements AuthRepository {
       final entity = response.toEntity();
 
       if (entity.isAuthenticated &&
-          entity.accessToken.isNotEmpty &&
-          entity.refreshToken.isNotEmpty &&
+          (entity.accessToken?.isNotEmpty ?? false) &&
+          (entity.refreshToken?.isNotEmpty ?? false) &&
           entity.userId.isNotEmpty) {
         await _clearSubscriptionCache();
         await _tokenService.saveSession(
           userId: entity.userId,
-          accessToken: entity.accessToken,
-          refreshToken: entity.refreshToken,
+          accessToken: entity.accessToken!,
+          refreshToken: entity.refreshToken!,
           accessExpiresAtUtc: DateTime.tryParse(
-            entity.accessTokenExpiresAtUtc,
+            entity.accessTokenExpiresAtUtc ?? '',
           )?.toUtc(),
           refreshExpiresAtUtc: DateTime.tryParse(
-            entity.refreshTokenExpiresAtUtc,
+            entity.refreshTokenExpiresAtUtc ?? '',
+          )?.toUtc(),
+          persistence: persistence,
+        );
+        await _pushNotificationService.registerCurrentToken();
+      }
+
+      return entity;
+    });
+  }
+
+  @override
+  Future<ApiResult<FamilyFirstLoginStepEntity>> verifyFamilyFirstLoginOtp(
+    FamilyFirstLoginVerifyOtpRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.verifyFamilyFirstLoginOtp(
+        request.toDto(),
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<LoginEntity>> setFamilyFirstLoginPassword(
+    FamilyFirstLoginSetPasswordRequestEntity request, {
+    SessionPersistence persistence = SessionPersistence.currentRun,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.setFamilyFirstLoginPassword(
+        request.toDto(),
+      );
+      final entity = response.toEntity();
+
+      if (entity.isAuthenticated &&
+          (entity.accessToken?.isNotEmpty ?? false) &&
+          (entity.refreshToken?.isNotEmpty ?? false) &&
+          entity.userId.isNotEmpty) {
+        await _clearSubscriptionCache();
+        await _tokenService.saveSession(
+          userId: entity.userId,
+          accessToken: entity.accessToken!,
+          refreshToken: entity.refreshToken!,
+          accessExpiresAtUtc: DateTime.tryParse(
+            entity.accessTokenExpiresAtUtc ?? '',
+          )?.toUtc(),
+          refreshExpiresAtUtc: DateTime.tryParse(
+            entity.refreshTokenExpiresAtUtc ?? '',
           )?.toUtc(),
           persistence: persistence,
         );

@@ -315,6 +315,25 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.payment_error_initialization_failed;
     case 'invoice.not_found':
       return locale.family_error_invoice_unavailable;
+    case 'auth.challenge_expired':
+    case 'challenge_expired':
+    case 'challengeExpired':
+      return locale.auth_family_challenge_expired;
+    case 'auth.otp_invalid':
+    case 'otp_invalid':
+    case 'invalid_otp':
+    case 'invalidOtp':
+    case 'auth.otp_exhausted':
+    case 'otp_exhausted':
+      return locale.auth_family_otp_invalid;
+    case 'family.state_invalid':
+    case 'family.member_disabled':
+    case 'family.group_inactive':
+      return locale.auth_family_state_invalid;
+    case 'auth.delivery_failed':
+    case 'delivery_failed':
+    case 'sms_delivery_failed':
+      return locale.auth_family_delivery_failed;
     default:
       return message;
   }

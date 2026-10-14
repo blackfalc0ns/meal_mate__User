@@ -13,6 +13,9 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/helpers/validators.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_state.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_event.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_view_model.dart';
@@ -68,6 +71,7 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
     final color = context.colorScheme;
     final locale = context.localization;
     final isReset = widget.purpose == AuthOtpPurpose.resetPassword;
+    final isFamily = widget.purpose == AuthOtpPurpose.familyFirstLogin;
 
     final retryAvailableAtUtc =
         widget.retryAvailableAtUtc ??
@@ -87,15 +91,21 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
           )
         : context.select<RegisterViewModel, bool>((vm) => vm.state.isResending);
 
-    final title = isReset
-        ? locale.auth_reset_password_otp_title
-        : locale.auth_otp_title;
-    final subtitle = isReset
-        ? locale.auth_reset_password_otp_subtitle
-        : locale.auth_otp_subtitle;
-    final hint = isReset
-        ? locale.auth_reset_password_otp_hint
-        : locale.auth_otp_hint;
+    final title = isFamily
+        ? locale.auth_family_first_login_otp_title
+        : (isReset
+              ? locale.auth_reset_password_otp_title
+              : locale.auth_otp_title);
+    final subtitle = isFamily
+        ? locale.auth_family_first_login_otp_subtitle
+        : (isReset
+              ? locale.auth_reset_password_otp_subtitle
+              : locale.auth_otp_subtitle);
+    final hint = isFamily
+        ? locale.auth_family_first_login_otp_hint
+        : (isReset
+              ? locale.auth_reset_password_otp_hint
+              : locale.auth_otp_hint);
     final buttonText = isReset
         ? locale.auth_reset_password_otp_button
         : locale.auth_verify_code_button;
@@ -107,7 +117,14 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
       footer: AuthFooterAction(
         prompt: locale.auth_have_account_prompt,
         actionText: locale.auth_sign_in_link,
-        onTap: () => widget.onNavigate(AuthPageType.signIn),
+        onTap: () {
+          if (isFamily) {
+            context.read<LoginViewModel>().doIntent(
+              const ResetFamilyFirstLoginFlowEvent(),
+            );
+          }
+          widget.onNavigate(AuthPageType.signIn);
+        },
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -151,26 +168,48 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
             onPressed: _handleSubmit,
             color: color.primary,
           ),
-          const SizedBox(height: Spacing.lg),
-          Center(
-            child: Text(
-              locale.auth_no_code_title,
-              style: getBoldStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size14,
-                color: color.onSurface,
+          if (!isFamily) ...[
+            const SizedBox(height: Spacing.lg),
+            Center(
+              child: Text(
+                locale.auth_no_code_title,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          AuthOtpCountdown(
-            retryAvailableAtUtc: retryAvailableAtUtc,
-            onResend: _handleResend,
-            isResending: isResending,
-          ),
+            const SizedBox(height: Spacing.xs),
+            AuthOtpCountdown(
+              retryAvailableAtUtc: retryAvailableAtUtc,
+              onResend: _handleResend,
+              isResending: isResending,
+            ),
+          ],
         ],
       ),
     );
+
+    if (isFamily) {
+      return BlocListener<LoginViewModel, LoginState>(
+        listenWhen: (previous, current) =>
+            previous.outcome != current.outcome ||
+            previous.failure != current.failure,
+        listener: (context, state) {
+          if (state.outcome == LoginOutcome.failure && state.failure != null) {
+            CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
+            );
+          }
+        },
+        child: content,
+      );
+    }
 
     if (isReset) {
       return BlocListener<PasswordRecoveryViewModel, PasswordRecoveryState>(
@@ -238,6 +277,13 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
     final otpError = Validations.validOtp(context, _otpValue);
     if (otpError != null) {
       CustomSnackbar.showError(context: context, message: otpError);
+      return;
+    }
+
+    if (widget.purpose == AuthOtpPurpose.familyFirstLogin) {
+      context.read<LoginViewModel>().doIntent(
+        VerifyFamilyFirstLoginOtpEvent(_otpValue),
+      );
       return;
     }
 

@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_
 import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/login_event.dart';
+import 'package:meal_meat_user/features/auth/presentation/manager/login_state.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/login_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/password_recovery_view_model.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/register_view_model.dart';
@@ -127,55 +128,74 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
                     isRecoveryLoading ||
                     isCallingCodesLoading;
 
-                return AuthLoadingOverlay(
-                  isLoading: isLoading,
-                  child: BlocBuilder<CallingCodesViewModel, CallingCodesState>(
-                    buildWhen: (previous, current) =>
-                        previous.items != current.items ||
-                        previous.isLoading != current.isLoading ||
-                        previous.failure != current.failure,
-                    builder: (context, state) {
-                      final showCallingCodesError =
-                          !state.isLoading &&
-                          state.items.isEmpty &&
-                          state.failure != null;
+                return BlocListener<LoginViewModel, LoginState>(
+                  listenWhen: (previous, current) =>
+                      previous.outcome != current.outcome ||
+                      previous.requiresFreshLogin != current.requiresFreshLogin,
+                  listener: (context, state) {
+                    if (state.outcome == LoginOutcome.familyVerifyOtpPending) {
+                      setState(() {
+                        _otpPurpose = AuthOtpPurpose.familyFirstLogin;
+                      });
+                      _goToPage(AuthPageType.otp);
+                    } else if (state.outcome ==
+                        LoginOutcome.familySetPasswordPending) {
+                      _goToPage(AuthPageType.newPassword);
+                    } else if (state.requiresFreshLogin) {
+                      _goToPage(AuthPageType.signIn);
+                    }
+                  },
+                  child: AuthLoadingOverlay(
+                    isLoading: isLoading,
+                    child:
+                        BlocBuilder<CallingCodesViewModel, CallingCodesState>(
+                          buildWhen: (previous, current) =>
+                              previous.items != current.items ||
+                              previous.isLoading != current.isLoading ||
+                              previous.failure != current.failure,
+                          builder: (context, state) {
+                            final showCallingCodesError =
+                                !state.isLoading &&
+                                state.items.isEmpty &&
+                                state.failure != null;
 
-                      if (showCallingCodesError) {
-                        return ApiErrorWidget(
-                          exception: state.failure!.exception,
-                          onRetry: () => context
-                              .read<CallingCodesViewModel>()
-                              .doIntent(const LoadCallingCodesEvent()),
-                          onCheckConnection: () => context
-                              .read<CallingCodesViewModel>()
-                              .doIntent(const LoadCallingCodesEvent()),
-                        );
-                      }
+                            if (showCallingCodesError) {
+                              return ApiErrorWidget(
+                                exception: state.failure!.exception,
+                                onRetry: () => context
+                                    .read<CallingCodesViewModel>()
+                                    .doIntent(const LoadCallingCodesEvent()),
+                                onCheckConnection: () => context
+                                    .read<CallingCodesViewModel>()
+                                    .doIntent(const LoadCallingCodesEvent()),
+                              );
+                            }
 
-                      return PageView(
-                        controller: _pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        onPageChanged: (index) {
-                          _currentPage = AuthPageType.values[index];
-                        },
-                        children: [
-                          AuthSignInPage(onNavigate: _goToPage),
-                          AuthSignUpPage(
-                            onNavigate: _goToPage,
-                            onOtpSent: _goToPhoneVerificationOtp,
-                          ),
-                          AuthForgotPasswordPage(
-                            onNavigate: _goToPage,
-                            onOtpSent: _goToResetPasswordOtp,
-                          ),
-                          AuthOtpPage(
-                            onNavigate: _goToPage,
-                            purpose: _otpPurpose,
-                          ),
-                          AuthNewPasswordPage(onNavigate: _goToPage),
-                        ],
-                      );
-                    },
+                            return PageView(
+                              controller: _pageController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              onPageChanged: (index) {
+                                _currentPage = AuthPageType.values[index];
+                              },
+                              children: [
+                                AuthSignInPage(onNavigate: _goToPage),
+                                AuthSignUpPage(
+                                  onNavigate: _goToPage,
+                                  onOtpSent: _goToPhoneVerificationOtp,
+                                ),
+                                AuthForgotPasswordPage(
+                                  onNavigate: _goToPage,
+                                  onOtpSent: _goToResetPasswordOtp,
+                                ),
+                                AuthOtpPage(
+                                  onNavigate: _goToPage,
+                                  purpose: _otpPurpose,
+                                ),
+                                AuthNewPasswordPage(onNavigate: _goToPage),
+                              ],
+                            );
+                          },
+                        ),
                   ),
                 );
               },

@@ -27,18 +27,17 @@ class FamilyMemberAccessEntity {
   final String? generatedPassword;
   final int? version;
 
-  FamilyMemberAccessEntity clearGeneratedPassword() =>
-      FamilyMemberAccessEntity(
-        memberId: memberId,
-        hasSeparateAccount: hasSeparateAccount,
-        isPaused: isPaused,
-        hasExistingLogin: hasExistingLogin,
-        linkedCustomerUserId: linkedCustomerUserId,
-        pausedAtUtc: pausedAtUtc,
-        removedAtUtc: removedAtUtc,
-        inviteDeepLink: inviteDeepLink,
-        inviteExpiresAtUtc: inviteExpiresAtUtc,
-        phoneNumber: phoneNumber,
-        version: version,
-      );
+  FamilyMemberAccessEntity clearGeneratedPassword() => FamilyMemberAccessEntity(
+    memberId: memberId,
+    hasSeparateAccount: hasSeparateAccount,
+    isPaused: isPaused,
+    hasExistingLogin: hasExistingLogin,
+    linkedCustomerUserId: linkedCustomerUserId,
+    pausedAtUtc: pausedAtUtc,
+    removedAtUtc: removedAtUtc,
+    inviteDeepLink: inviteDeepLink,
+    inviteExpiresAtUtc: inviteExpiresAtUtc,
+    phoneNumber: phoneNumber,
+    version: version,
+  );
 }

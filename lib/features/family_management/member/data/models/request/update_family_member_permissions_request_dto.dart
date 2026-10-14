@@ -63,10 +63,13 @@ class UpdateFamilyMemberPermissionsRequestDto {
     if (requestFreeze != null) map['requestFreeze'] = requestFreeze;
     if (requestRenewal != null) map['requestRenewal'] = requestRenewal;
     if (requestUpgrade != null) map['requestUpgrade'] = requestUpgrade;
-    if (cancelSubscription != null) map['cancelSubscription'] = cancelSubscription;
-    if (viewFamilyCalendars != null) map['viewFamilyCalendars'] = viewFamilyCalendars;
+    if (cancelSubscription != null)
+      map['cancelSubscription'] = cancelSubscription;
+    if (viewFamilyCalendars != null)
+      map['viewFamilyCalendars'] = viewFamilyCalendars;
     if (viewFamilyPlans != null) map['viewFamilyPlans'] = viewFamilyPlans;
-    if (viewFamilyInvoices != null) map['viewFamilyInvoices'] = viewFamilyInvoices;
+    if (viewFamilyInvoices != null)
+      map['viewFamilyInvoices'] = viewFamilyInvoices;
     return map;
   }
 }

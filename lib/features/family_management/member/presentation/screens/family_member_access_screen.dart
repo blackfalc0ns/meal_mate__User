@@ -71,7 +71,8 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
     final access = state.access;
     if (access == null) return false;
     final accountChanged =
-        _separateAccount != null && _separateAccount != access.hasSeparateAccount;
+        _separateAccount != null &&
+        _separateAccount != access.hasSeparateAccount;
     final pauseChanged = _paused != null && _paused != access.isPaused;
     return accountChanged || pauseChanged || _removalRequested;
   }
@@ -160,7 +161,8 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                         children: [
                           FamilyMemberAccessHeader(
                             isPaused: effectivePaused,
-                            hasExistingLogin: access?.hasSeparateAccount ?? false,
+                            hasExistingLogin:
+                                access?.hasSeparateAccount ?? false,
                           ),
                           const SizedBox(height: Spacing.md),
                           FamilyMemberAccessStatusCard(
@@ -171,13 +173,14 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                             }),
                             onDeactivate: () => showDialog<void>(
                               context: context,
-                              builder: (_) => FamilyMemberAccessDeactivateDialog(
-                                memberName: widget.memberName,
-                                onConfirm: () => setState(() {
-                                  _removalRequested = true;
-                                  _onSave();
-                                }),
-                              ),
+                              builder: (_) =>
+                                  FamilyMemberAccessDeactivateDialog(
+                                    memberName: widget.memberName,
+                                    onConfirm: () => setState(() {
+                                      _removalRequested = true;
+                                      _onSave();
+                                    }),
+                                  ),
                             ),
                           ),
                           const SizedBox(height: Spacing.md),
@@ -192,11 +195,11 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                             const SizedBox(height: Spacing.md),
                             FamilyMemberAccessCredentialsCard(
                               identifier: access?.phoneNumber,
-                              onEditPassword: () =>
-                                  _viewModel.doIntent(
+                              onEditPassword: () => _viewModel.doIntent(
                                 UpdateFamilyMemberAccessEvent(
                                   memberId: widget.memberId,
                                   hasSeparateAccount: true,
+                                  generateTemporaryPassword: true,
                                 ),
                               ),
                             ),

@@ -176,8 +176,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       statusLabel: detail.isUnsubscribed
           ? locale.family_member_unsubscribed_status
           : (detail.isPaused
-              ? locale.family_member_paused_label
-              : locale.family_member_active_label),
+                ? locale.family_member_paused_label
+                : locale.family_member_active_label),
       roleLabel: detail.isManager
           ? locale.family_member_manager_label
           : locale.family_member_member_label,
@@ -268,8 +268,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
             showAction: detail.canRenew && !detail.hasUpcomingSubscription,
             onAction: detail.canRenew && detail.renewalPath != null
                 ? () => _viewModel.doIntent(
-                      RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
-                    )
+                    RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
+                  )
                 : null,
           ),
           if (!detail.hasPlan && !detail.isManager) ...[

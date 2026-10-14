@@ -55,13 +55,11 @@ class FamilyMemberState {
       permissionValues: permissionValues ?? this.permissionValues,
       isLoadingDetail: isLoadingDetail ?? this.isLoadingDetail,
       isLoadingAccess: isLoadingAccess ?? this.isLoadingAccess,
-      isLoadingPermissions:
-          isLoadingPermissions ?? this.isLoadingPermissions,
+      isLoadingPermissions: isLoadingPermissions ?? this.isLoadingPermissions,
       isSaving: isSaving ?? this.isSaving,
       saveSuccessCount: saveSuccessCount ?? this.saveSuccessCount,
       failure: clearFailure ? null : (failure ?? this.failure),
-      saveFailure:
-          clearSaveFailure ? null : (saveFailure ?? this.saveFailure),
+      saveFailure: clearSaveFailure ? null : (saveFailure ?? this.saveFailure),
     );
   }
 }

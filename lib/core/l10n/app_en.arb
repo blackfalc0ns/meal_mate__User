@@ -2751,5 +2751,16 @@
   "family_include_in_subscription": "Activate subscription for this member",
   "family_min_one_subscriber_warning": "At least one member must be included in the subscription",
   "family_error_min_members": "At least 2 members must be selected for this family package",
-  "family_error_checkout_no_selection": "Please select members to include in checkout before proceeding"
+  "family_error_checkout_no_selection": "Please select members to include in checkout before proceeding",
+  "auth_family_first_login_otp_title": "Verify family account code",
+  "auth_family_first_login_otp_subtitle": "Enter the 6-digit verification code to activate your family member account.",
+  "auth_family_first_login_otp_hint": "Enter the 6-digit code to continue.",
+  "auth_family_first_login_new_password_title": "Set family account password",
+  "auth_family_first_login_new_password_subtitle": "Create a new private password for your account to finish signing in.",
+  "auth_family_challenge_expired": "Verification session has expired. Please sign in again.",
+  "auth_family_otp_invalid": "Invalid or exhausted verification code. Please check and try again.",
+  "auth_family_state_invalid": "Family membership is inactive or no longer valid. Please contact your family manager.",
+  "auth_family_delivery_failed": "Failed to send verification code. Please try again later.",
+  "auth_family_generated_password_title": "Temporary password generated",
+  "auth_family_private_delivery_reminder": "This temporary password will only be shown once. Share it privately with the family member."
 }

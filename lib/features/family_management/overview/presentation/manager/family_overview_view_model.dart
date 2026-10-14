@@ -8,10 +8,8 @@ import 'package:meal_meat_user/features/family_management/overview/presentation/
 
 @injectable
 class FamilyOverviewViewModel extends Cubit<FamilyOverviewState> {
-  FamilyOverviewViewModel(
-    this._getHome,
-    this._getMembers,
-  ) : super(const FamilyOverviewState());
+  FamilyOverviewViewModel(this._getHome, this._getMembers)
+    : super(const FamilyOverviewState());
 
   final GetFamilyHomeUseCase _getHome;
   final GetFamilyMembersUseCase _getMembers;
@@ -32,15 +30,9 @@ class FamilyOverviewViewModel extends Cubit<FamilyOverviewState> {
     final result = await _getHome(locale: locale);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          home: data,
-          isLoadingHome: false,
-        ));
+        emit(state.copyWith(home: data, isLoadingHome: false));
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          failure: failure,
-          isLoadingHome: false,
-        ));
+        emit(state.copyWith(failure: failure, isLoadingHome: false));
     }
   }
 
@@ -49,31 +41,33 @@ class FamilyOverviewViewModel extends Cubit<FamilyOverviewState> {
     final result = await _getMembers(locale: locale);
     switch (result) {
       case ApiSuccessResult(:final data):
-        emit(state.copyWith(
-          members: data,
-          filteredMembers: _applyFilter(data, state.searchQuery),
-          isLoadingMembers: false,
-        ));
+        emit(
+          state.copyWith(
+            members: data,
+            filteredMembers: _applyFilter(data, state.searchQuery),
+            isLoadingMembers: false,
+          ),
+        );
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(
-          failure: failure,
-          isLoadingMembers: false,
-        ));
+        emit(state.copyWith(failure: failure, isLoadingMembers: false));
     }
   }
 
   void _search(String query) {
     final trimmed = query.trim();
-    emit(state.copyWith(
-      searchQuery: trimmed,
-      filteredMembers: _applyFilter(state.members, trimmed),
-    ));
+    emit(
+      state.copyWith(
+        searchQuery: trimmed,
+        filteredMembers: _applyFilter(state.members, trimmed),
+      ),
+    );
   }
 
   List<T> _applyFilter<T>(List<T> list, String query) {
     if (query.isEmpty) return list;
     return list.where((item) {
-      final name = (item as dynamic).displayName?.toString().toLowerCase() ?? '';
+      final name =
+          (item as dynamic).displayName?.toString().toLowerCase() ?? '';
       return name.contains(query.toLowerCase());
     }).toList();
   }
