@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
 
 class FamilyDayMealIcon extends StatelessWidget {
   const FamilyDayMealIcon({super.key, required this.type});

@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../network/api_services.dart';
 import '../services/location_service.dart';
 import '../../features/calendar/domain/usecase/get_calendar_usecase.dart';
 import '../../features/notifications/domain/usecase/get_notifications_usecase.dart';
@@ -46,6 +48,31 @@ import '../payment/payment_deep_link_coordinator.dart';
 import '../services/app_navigator_service.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/token_service.dart';
+import '../../features/family_management/overview/data/data_source/family_overview_remote_data_source.dart';
+import '../../features/family_management/overview/data/data_source/family_overview_remote_data_source_impl.dart';
+import '../../features/family_management/overview/data/repo/family_overview_repository_impl.dart';
+import '../../features/family_management/overview/domain/repo/family_overview_repository.dart';
+import '../../features/family_management/overview/domain/usecase/get_family_home_usecase.dart';
+import '../../features/family_management/overview/domain/usecase/get_family_members_usecase.dart';
+import '../../features/family_management/overview/presentation/manager/family_overview_view_model.dart';
+import '../../features/family_management/member/data/data_source/family_member_remote_data_source.dart';
+import '../../features/family_management/member/data/data_source/family_member_remote_data_source_impl.dart';
+import '../../features/family_management/member/data/repo/family_member_repository_impl.dart';
+import '../../features/family_management/member/domain/repo/family_member_repository.dart';
+import '../../features/family_management/member/domain/usecase/get_family_member_detail_usecase.dart';
+import '../../features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
+import '../../features/family_management/member/domain/usecase/update_family_member_access_usecase.dart';
+import '../../features/family_management/member/domain/usecase/get_family_member_permissions_usecase.dart';
+import '../../features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
+import '../../features/family_management/member/domain/usecase/update_family_member_basic_info_usecase.dart';
+import '../../features/family_management/member/domain/usecase/renew_family_member_subscription_usecase.dart';
+import '../../features/family_management/member/presentation/manager/family_member_view_model.dart';
+import '../../features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart';
+import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
+import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
+import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
+import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
 import 'di.config.dart';
 
 final getIt = GetIt.instance;
@@ -55,6 +82,11 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async {
   await getIt.init();
+  if (!getIt.isRegistered<ApiServices>()) {
+    getIt.registerLazySingleton<ApiServices>(
+      () => ApiServices(getIt<Dio>()),
+    );
+  }
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerLazySingleton<LocationService>(() => const LocationService());
   }
@@ -186,6 +218,119 @@ Future<void> configureDependencies() async {
         tokenService: getIt<TokenService>(),
         paymentAttemptStore: getIt<PaymentAttemptStore>(),
         navigatorService: getIt<AppNavigatorService>(),
+      ),
+    );
+  }
+  // Family Management - Overview
+  if (!getIt.isRegistered<FamilyOverviewRemoteDataSource>()) {
+    getIt.registerLazySingleton<FamilyOverviewRemoteDataSource>(
+      () => FamilyOverviewRemoteDataSourceImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyOverviewRepository>()) {
+    getIt.registerLazySingleton<FamilyOverviewRepository>(
+      () => FamilyOverviewRepositoryImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetFamilyHomeUseCase>()) {
+    getIt.registerFactory<GetFamilyHomeUseCase>(
+      () => GetFamilyHomeUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetFamilyMembersUseCase>()) {
+    getIt.registerFactory<GetFamilyMembersUseCase>(
+      () => GetFamilyMembersUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyOverviewViewModel>()) {
+    getIt.registerFactory<FamilyOverviewViewModel>(
+      () => FamilyOverviewViewModel(getIt(), getIt()),
+    );
+  }
+  // Family Management - Member
+  if (!getIt.isRegistered<FamilyMemberRemoteDataSource>()) {
+    getIt.registerLazySingleton<FamilyMemberRemoteDataSource>(
+      () => FamilyMemberRemoteDataSourceImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyMemberRepository>()) {
+    getIt.registerLazySingleton<FamilyMemberRepository>(
+      () => FamilyMemberRepositoryImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetFamilyMemberDetailUseCase>()) {
+    getIt.registerFactory<GetFamilyMemberDetailUseCase>(
+      () => GetFamilyMemberDetailUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetFamilyMemberAccessUseCase>()) {
+    getIt.registerFactory<GetFamilyMemberAccessUseCase>(
+      () => GetFamilyMemberAccessUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<UpdateFamilyMemberAccessUseCase>()) {
+    getIt.registerFactory<UpdateFamilyMemberAccessUseCase>(
+      () => UpdateFamilyMemberAccessUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetFamilyMemberPermissionsUseCase>()) {
+    getIt.registerFactory<GetFamilyMemberPermissionsUseCase>(
+      () => GetFamilyMemberPermissionsUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<UpdateFamilyMemberPermissionsUseCase>()) {
+    getIt.registerFactory<UpdateFamilyMemberPermissionsUseCase>(
+      () => UpdateFamilyMemberPermissionsUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<UpdateFamilyMemberBasicInfoUseCase>()) {
+    getIt.registerFactory<UpdateFamilyMemberBasicInfoUseCase>(
+      () => UpdateFamilyMemberBasicInfoUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<RenewFamilyMemberSubscriptionUseCase>()) {
+    getIt.registerFactory<RenewFamilyMemberSubscriptionUseCase>(
+      () => RenewFamilyMemberSubscriptionUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<FamilyMemberViewModel>()) {
+    getIt.registerFactory<FamilyMemberViewModel>(
+      () => FamilyMemberViewModel(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    );
+  }
+  // Family Management - Calendar
+  if (!getIt.isRegistered<FamilyCalendarViewModel>()) {
+    getIt.registerFactory<FamilyCalendarViewModel>(
+      () => FamilyCalendarViewModel(
+        getIt.isRegistered<GetFamilyMembersUseCase>()
+            ? getIt<GetFamilyMembersUseCase>()
+            : null,
+        getIt.isRegistered<GetCalendarUseCase>()
+            ? getIt<GetCalendarUseCase>()
+            : null,
+        getIt.isRegistered<GetCalendarDayUseCase>()
+            ? getIt<GetCalendarDayUseCase>()
+            : null,
+        getIt.isRegistered<GetCalendarRestaurantsUseCase>()
+            ? getIt<GetCalendarRestaurantsUseCase>()
+            : null,
+        getIt.isRegistered<GetCalendarAvailableMealsUseCase>()
+            ? getIt<GetCalendarAvailableMealsUseCase>()
+            : null,
+        getIt.isRegistered<SaveCalendarDayMealsUseCase>()
+            ? getIt<SaveCalendarDayMealsUseCase>()
+            : null,
+        getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
+            ? getIt<SetCalendarDayRestaurantUseCase>()
+            : null,
       ),
     );
   }

@@ -74,22 +74,19 @@ import 'package:meal_meat_user/features/subscription_programs/presentation/scree
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/subscriptions_screen.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/conversion_options_page.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_members_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_subscription_settings_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_detail_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_access_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_review_member_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_day_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_calendar_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_meal_selection_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_restaurants_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_meal_selection_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_meal_selection_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_member_calendar_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_restaurants_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_review_member_meals_screen.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_access_screen.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_detail_screen.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/screens/family_home_screen.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/screens/family_members_screen.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_screen.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_confirmation_screen.dart';
@@ -170,10 +167,7 @@ class RouteGenerator {
         );
       case AppRoutes.familyPlanDetails:
       case AppRoutes.familySubscriptionSettings:
-        return _buildRoute(
-          settings: settings,
-          page: const FamilySubscriptionSettingsScreen(),
-        );
+        return _buildRoute(settings: settings, page: const FamilyHomeScreen());
       case AppRoutes.restaurantTierUpgrade:
         final args = settings.arguments is RestaurantTierUpgradeArgs
             ? settings.arguments! as RestaurantTierUpgradeArgs
@@ -214,16 +208,42 @@ class RouteGenerator {
       case AppRoutes.familySubscriptionMembers:
         return _buildRoute(
           settings: settings,
-          page: const FamilySubscriptionMembersScreen(),
+          page: const FamilyMembersScreen(),
         );
       case AppRoutes.familySubscriptionMemberDetails:
-        final member = settings.arguments is FamilyMemberSummaryEntity
-            ? settings.arguments! as FamilyMemberSummaryEntity
-            : null;
+        final member = switch (settings.arguments) {
+          final FamilyMemberSummaryEntity summary => summary,
+          final FamilyMemberDetailEntity detail => FamilyMemberSummaryEntity(
+            memberId: detail.memberId,
+            displayName: detail.displayName,
+            role: detail.role,
+            ageYears: detail.ageYears,
+            isPaused: detail.isPaused,
+            subscriptionId: detail.subscriptionId,
+            programName: detail.programName,
+            remainingDays: detail.remainingDays,
+            setupStatus: detail.setupStatus,
+            upcomingSubscriptionId: detail.upcomingSubscriptionId,
+            lifecycleStatus: detail.lifecycleStatus,
+            checkoutSelected: detail.checkoutSelected,
+          ),
+          final String memberId => FamilyMemberSummaryEntity(
+            memberId: memberId,
+            displayName: '',
+            role: 2,
+            ageYears: null,
+            isPaused: false,
+            subscriptionId: null,
+            programName: '',
+            remainingDays: 0,
+            setupStatus: 0,
+          ),
+          _ => null,
+        };
         if (member == null) {
           return _buildRoute(
             settings: settings,
-            page: const FamilySubscriptionMembersScreen(),
+            page: const FamilyMembersScreen(),
           );
         }
         return _buildRoute(
@@ -236,13 +256,13 @@ class RouteGenerator {
           final FamilyMemberDetailEntity detail => FamilyMemberCalendarArgs(
             memberId: detail.memberId,
             displayName: detail.displayName,
-            subscriptionId: detail.subscriptionId,
+            subscriptionId: detail.effectiveSubscriptionId,
             isManager: detail.isManager,
           ),
           final FamilyMemberSummaryEntity summary => FamilyMemberCalendarArgs(
             memberId: summary.memberId,
             displayName: summary.displayName,
-            subscriptionId: summary.subscriptionId,
+            subscriptionId: summary.effectiveSubscriptionId,
             isManager: summary.isManager,
           ),
           final String subscriptionId => FamilyMemberCalendarArgs(
@@ -573,8 +593,8 @@ class RouteGenerator {
                     getIt<AddFamilyMemberAddressUseCase>(),
                 updateFamilyMemberAddressUseCase:
                     getIt.isRegistered<UpdateFamilyMemberAddressUseCase>()
-                        ? getIt<UpdateFamilyMemberAddressUseCase>()
-                        : null,
+                    ? getIt<UpdateFamilyMemberAddressUseCase>()
+                    : null,
               )
             : getIt<CustomerAddressEditorOperations>();
         return _buildRoute(

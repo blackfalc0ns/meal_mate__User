@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_entity.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_member_calendar_entity.dart';
 
 class FamilyMemberCalendarDaySummaryCard extends StatelessWidget {
   const FamilyMemberCalendarDaySummaryCard({

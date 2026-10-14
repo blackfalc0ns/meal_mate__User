@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_header_icon.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_section_card.dart';

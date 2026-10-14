@@ -8,29 +8,31 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/family_management_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_home_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_member_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_members_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/manage_family_member_access_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/manage_family_member_permissions_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/renew_family_member_subscription_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_management_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_member_permissions_screen.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_detail_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_permissions_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/renew_family_member_subscription_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_access_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_basic_info_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_permissions_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_confirm_dialog.dart';
 
-class _FakeRepo implements FamilyManagementRepository {
+class _FakeRepo implements FamilyMemberRepository {
   Completer<ApiResult<FamilyMemberPermissionsEntity>>? updateCompleter;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 
   @override
-  Future<ApiResult<FamilyMemberPermissionsEntity>> getPermissions(
-    String memberId,
-    String localeName,
-  ) async {
+  Future<ApiResult<FamilyMemberPermissionsEntity>> getMemberPermissions(
+    String memberId, {
+    String locale = 'ar',
+  }) async {
     return ApiSuccessResult(
       data: const FamilyMemberPermissionsEntity(
         memberId: 'm-1',
@@ -64,10 +66,10 @@ class _FakeRepo implements FamilyManagementRepository {
   }
 
   @override
-  Future<ApiResult<FamilyMemberPermissionsEntity>> updatePermissions({
-    required String memberId,
-    required Map<String, bool> values,
-    required String localeName,
+  Future<ApiResult<FamilyMemberPermissionsEntity>> updateMemberPermissions(
+    String memberId,
+    UpdateFamilyMemberPermissionsRequestDto request, {
+    String locale = 'ar',
   }) async {
     if (updateCompleter != null) {
       return updateCompleter!.future;
@@ -75,7 +77,7 @@ class _FakeRepo implements FamilyManagementRepository {
     return ApiSuccessResult(
       data: FamilyMemberPermissionsEntity(
         memberId: memberId,
-        values: values,
+        values: request.permissions,
         groups: const [],
       ),
     );
@@ -88,13 +90,14 @@ void main() {
   setUp(() async {
     await getIt.reset();
     repo = _FakeRepo();
-    getIt.registerFactory<FamilyManagementViewModel>(
-      () => FamilyManagementViewModel(
-        GetFamilyHomeUseCase(repo),
-        GetFamilyMembersUseCase(repo),
-        GetFamilyMemberUseCase(repo),
-        ManageFamilyMemberAccessUseCase(repo),
-        ManageFamilyMemberPermissionsUseCase(repo),
+    getIt.registerFactory<FamilyMemberViewModel>(
+      () => FamilyMemberViewModel(
+        GetFamilyMemberDetailUseCase(repo),
+        GetFamilyMemberAccessUseCase(repo),
+        UpdateFamilyMemberAccessUseCase(repo),
+        GetFamilyMemberPermissionsUseCase(repo),
+        UpdateFamilyMemberPermissionsUseCase(repo),
+        UpdateFamilyMemberBasicInfoUseCase(repo),
         RenewFamilyMemberSubscriptionUseCase(repo),
       ),
     );

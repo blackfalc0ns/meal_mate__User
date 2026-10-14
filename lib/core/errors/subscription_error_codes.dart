@@ -276,5 +276,45 @@ class SubscriptionErrorCodes {
 
   /// Permission denied.
   static const String familyPermissionDenied = 'family.permission_denied';
+
+  /// Family manager only access.
+  static const String familyNotManager = 'family.not_manager';
+
+  /// Permissions version required for update.
+  static const String familyPermissionsVersionRequired =
+      'family.permissions_version_required';
+
+  /// Manager permissions cannot be modified.
+  static const String familyManagerPermissionsImmutable =
+      'family.manager_permissions_immutable';
+
+  /// Member access paused.
+  static const String familyAccessPaused = 'family.access_paused';
+
+  /// Member access disabled.
+  static const String familyAccessDisabled = 'family.access_disabled';
+
+  /// Specific permission required.
+  static const String familyPermissionRequired = 'family.permission_required';
+
+  /// Use checkout flow instead of direct action.
+  static const String familyUseCheckoutFlow = 'family.use_checkout_flow';
+
+  /// Family group is not active.
+  static const String familyGroupNotActive = 'family.group_not_active';
+
+  /// Calendar service temporarily unavailable.
+  static const String calendarServiceUnavailable =
+      'calendar.service_unavailable';
+
+  /// Box has allergy conflicts.
+  static const String calendarAllergyConflict = 'calendar.allergy_conflict';
+
+  /// Subscription service temporarily unavailable.
+  static const String subscriptionServiceUnavailable =
+      'subscription.service_unavailable';
+
+  /// Auth forbidden (403).
+  static const String authForbidden = 'auth.forbidden';
 }
 

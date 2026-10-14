@@ -7,7 +7,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/app_nutrition_row.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_icon.dart';
 
 class FamilyDayMealCard extends StatelessWidget {

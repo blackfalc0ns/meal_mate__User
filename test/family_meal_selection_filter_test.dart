@@ -9,9 +9,9 @@ import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_event.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 
 void main() {
   test(

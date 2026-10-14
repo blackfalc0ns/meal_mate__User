@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_restaurants_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/screens/family_restaurants_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_restaurants_screen.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_member_selector.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_member_selector_item.dart';
 

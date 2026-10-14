@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_generator.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_meals_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_restaurants_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_meal_selection_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_review_member_meals_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 
 void main() {
   test('family calendar route carries the member subscription id', () {

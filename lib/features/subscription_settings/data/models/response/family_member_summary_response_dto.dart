@@ -12,6 +12,8 @@ class FamilyMemberSummaryResponseDto {
     this.ageYears,
     this.isPaused,
     this.memberSubscriptionId,
+    this.upcomingSubscriptionId,
+    this.upcomingStartDate,
     this.programNameAr,
     this.programNameEn,
     this.programName,
@@ -31,6 +33,8 @@ class FamilyMemberSummaryResponseDto {
   final int? ageYears;
   final bool? isPaused;
   final String? memberSubscriptionId;
+  final String? upcomingSubscriptionId;
+  final String? upcomingStartDate;
   final String? programNameAr;
   final String? programNameEn;
   final String? programName;

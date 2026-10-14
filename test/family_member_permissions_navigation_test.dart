@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('member details opens access management before member permissions', () {
     final source = File(
-      'lib/features/subscription_settings/presentation/screens/'
+      'lib/features/family_management/member/presentation/screens/'
       'family_member_detail_screen.dart',
     ).readAsStringSync();
     final permissionsShortcutStart = source.indexOf(

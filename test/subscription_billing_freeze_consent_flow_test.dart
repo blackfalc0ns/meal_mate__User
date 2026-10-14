@@ -177,6 +177,7 @@ void main() {
           onDeleteUncompleted: (_) {},
           onResumePreview: (_) {},
           onResume: (_, [paymentMethodId]) {},
+          onResumeFamily: (_) {},
         );
 
         final subscription = createTestSubscription();
@@ -231,6 +232,7 @@ void main() {
           onDeleteUncompleted: (_) {},
           onResumePreview: (_) {},
           onResume: (_, [paymentMethodId]) {},
+          onResumeFamily: (_) {},
         );
 
         const activeFreeze = SubscriptionBillingActiveFreezeEntity(
@@ -303,6 +305,7 @@ void main() {
           onDeleteUncompleted: (_) {},
           onResumePreview: (_) {},
           onResume: (_, [paymentMethodId]) {},
+          onResumeFamily: (_) {},
         );
 
         const pendingRequest = SubscriptionBillingFreezeRequestEntity(

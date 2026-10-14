@@ -200,6 +200,7 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/delivery-address';
   static const String familyHome = '/api/v1/customer/family/home';
   static const String familyMembers = '/api/v1/customer/family/members';
+  static const String familySwitcher = '/api/v1/customer/family/switcher';
   static const String familyMember =
       '/api/v1/customer/family/members/{memberId}';
   static const String familyMemberAccess =

@@ -829,6 +829,9 @@ abstract class ApiServices {
   @GET(EndPoints.familyMembers)
   Future<List<FamilyMemberSummaryResponseDto>> getFamilyMembers();
 
+  @GET(EndPoints.familySwitcher)
+  Future<List<FamilyMemberSummaryResponseDto>> getFamilySwitcher();
+
   @GET(EndPoints.familyMember)
   Future<FamilyMemberDetailResponseDto> getFamilyMember(
     @Path('memberId') String memberId,

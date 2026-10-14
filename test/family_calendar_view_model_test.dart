@@ -4,17 +4,17 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
-import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
-import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
-import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_member_calendar_args.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/family_management_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_family_members_usecase.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_event.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
+import 'package:meal_meat_user/features/family_management/overview/domain/repo/family_overview_repository.dart';
+import 'package:meal_meat_user/features/family_management/overview/domain/usecase/get_family_members_usecase.dart';
 
 class _FakeCalendarRepository implements CalendarRepository {
   String? lastCalendarSubscriptionId;
@@ -85,11 +85,11 @@ class _FakeCalendarRepository implements CalendarRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _FakeFamilyRepository implements FamilyManagementRepository {
+class _FakeFamilyRepository implements FamilyOverviewRepository {
   @override
-  Future<ApiResult<List<FamilyMemberSummaryEntity>>> getMembers(
-    String localeName,
-  ) async {
+  Future<ApiResult<List<FamilyMemberSummaryEntity>>> getFamilyMembers({
+    String locale = 'ar',
+  }) async {
     return ApiSuccessResult(
       data: const [
         FamilyMemberSummaryEntity(
@@ -195,5 +195,44 @@ void main() {
 
     expect(viewModel.state.displayName, 'سارة');
     expect(calendarRepo.lastCalendarSubscriptionId, 'sub-sarah');
+  });
+
+  test('does not reuse previous subscription when selected member has none', () async {
+    final calendarRepo = _FakeCalendarRepository();
+    final viewModel = FamilyCalendarViewModel(
+      null,
+      GetCalendarUseCase(calendarRepo),
+      GetCalendarDayUseCase(calendarRepo),
+    );
+    addTearDown(viewModel.close);
+
+    viewModel.doIntent(
+      InitFamilyCalendarEvent(
+        args: FamilyMemberCalendarArgs(
+          memberId: 'mem-1',
+          subscriptionId: 'sub-a',
+          members: const [
+            FamilyMemberSummaryEntity(
+              memberId: 'mem-1', displayName: 'A', role: 1, ageYears: 10,
+              isPaused: false, subscriptionId: 'sub-a', programName: '',
+              remainingDays: 1, setupStatus: 1,
+            ),
+            FamilyMemberSummaryEntity(
+              memberId: 'mem-2', displayName: 'B', role: 1, ageYears: 10,
+              isPaused: false, subscriptionId: null, programName: '',
+              remainingDays: 1, setupStatus: 1,
+            ),
+          ],
+        ),
+        initialDate: DateTime(2026, 9, 20),
+        localeName: 'ar',
+      ),
+    );
+    await Future<void>.delayed(Duration.zero);
+    viewModel.doIntent(const SelectFamilyMemberEvent(index: 1, localeName: 'ar'));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(calendarRepo.lastCalendarSubscriptionId, 'sub-a');
+    expect(viewModel.state.activeSubscriptionId, isEmpty);
   });
 }
