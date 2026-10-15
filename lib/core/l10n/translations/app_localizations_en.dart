@@ -2547,6 +2547,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_member_access_password_label => 'Password';
 
   @override
+  String get family_member_access_generate_temporary_password =>
+      'Generate temporary password';
+
+  @override
   String get family_member_access_edit => 'Edit';
 
   @override
@@ -7200,4 +7204,65 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get auth_family_private_delivery_reminder =>
       'This temporary password will only be shown once. Share it privately with the family member.';
+
+  @override
+  String get campaign_payment_title => 'Campaign Payment';
+
+  @override
+  String get campaign_payment_pending => 'Processing payment...';
+
+  @override
+  String get campaign_payment_verifying => 'Verifying payment status...';
+
+  @override
+  String get campaign_payment_paid => 'Payment Confirmed';
+
+  @override
+  String get campaign_payment_failed => 'Payment Failed';
+
+  @override
+  String get campaign_payment_expired => 'Payment Session Expired';
+
+  @override
+  String get campaign_payment_cancelled => 'Payment Cancelled';
+
+  @override
+  String get campaign_payment_retry => 'Try Again';
+
+  @override
+  String get campaign_payment_pay_now => 'Pay Now';
+
+  @override
+  String get campaign_payment_amount_label => 'Payment Amount';
+
+  @override
+  String get campaign_payment_redirecting =>
+      'Redirecting to payment gateway...';
+
+  @override
+  String get campaign_payment_session_expired_action => 'Restart Checkout';
+
+  @override
+  String get campaign_error_session_expired =>
+      'This campaign session has expired. Please restart checkout.';
+
+  @override
+  String get campaign_error_idempotency_conflict =>
+      'A conflicting payment request is already in progress. Please retry or check your orders.';
+
+  @override
+  String get campaign_error_capacity_conflict =>
+      'Campaign capacity has been reached. Please choose another offer.';
+
+  @override
+  String get campaign_error_not_found =>
+      'Campaign checkout session was not found.';
+
+  @override
+  String get campaign_error_invalid_request =>
+      'Invalid payment quote or parameters. Please try again.';
+
+  @override
+  String get campaign_error_provider_unavailable =>
+      'Payment gateway is currently unavailable. Please try again later.';
 }

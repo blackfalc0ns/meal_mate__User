@@ -4,7 +4,9 @@ import 'package:meal_meat_user/features/offers/data/data_source/offers_remote_da
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/start_campaign_payment_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_payment_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
 
@@ -38,5 +40,20 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
     CreateCampaignCheckoutSessionRequestDto request,
   ) {
     return _apiServices.createCampaignCheckoutSession(request);
+  }
+
+  @override
+  Future<CampaignPaymentResponseDto> startCampaignPayment(
+    String sessionId,
+    StartCampaignPaymentRequestDto request,
+  ) {
+    return _apiServices.startCampaignPayment(sessionId, request);
+  }
+
+  @override
+  Future<CampaignPaymentResponseDto> getCampaignPaymentStatus(
+    String sessionId,
+  ) {
+    return _apiServices.getCampaignPaymentStatus(sessionId);
   }
 }

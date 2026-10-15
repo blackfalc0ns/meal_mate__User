@@ -84,6 +84,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   Future<void> _retryFamilyPayment(
     RetryFamilySubscriptionPaymentEvent event,
   ) async {
+    if (state.isCheckoutLoading) return;
     final summary = state.summary;
     final retryUseCase = _retryFamilySubscriptionPaymentUseCase;
     if (retryUseCase == null) return;
@@ -111,8 +112,10 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         emit(
           state.copyWith(isCheckoutLoading: false, checkoutResult: result.data),
         );
+        await _refreshAfterPaymentAttempt();
       case ApiErrorResult():
         emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
+        await _refreshAfterPaymentAttempt();
     }
   }
 
@@ -253,6 +256,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     required String correlationId,
     required int paymentMethodId,
   }) async {
+    if (state.isCheckoutLoading) return;
     final summary = state.summary;
     if (summary != null && !summary.canCheckout) {
       return;
@@ -281,6 +285,13 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         );
       case ApiErrorResult():
         emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
+        // A batch review or pending checkout is authoritative on the server.
+        // Refresh current state only; never submit checkout again automatically.
+        if (result.failure.code == 'family.batch_review_required' ||
+            result.failure.code == 'family.checkout_pending' ||
+            result.failure.code == 'family.batch_closed') {
+          await _refreshAfterPaymentAttempt();
+        }
         if (result.failure.code == 'payment.initialization_failed' ||
             result.failure.code == 'family.quote_changed' ||
             result.failure.code == 'family.idempotency_key_used') {
@@ -292,5 +303,12 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
           _getFamilySummary(memberId: state.selectedSummaryMemberId);
         }
     }
+  }
+
+  Future<void> _refreshAfterPaymentAttempt() async {
+    await Future.wait([
+      _getFamilySubscriptionCurrent(),
+      _getFamilySummary(memberId: state.selectedSummaryMemberId),
+    ]);
   }
 }

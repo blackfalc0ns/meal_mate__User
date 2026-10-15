@@ -462,8 +462,14 @@ import '../../features/offers/domain/usecase/evaluate_offer_usecase.dart'
     as _i70;
 import '../../features/offers/domain/usecase/get_available_offers_usecase.dart'
     as _i908;
+import '../../features/offers/domain/usecase/get_campaign_payment_status_usecase.dart'
+    as _i224;
 import '../../features/offers/domain/usecase/get_customer_offer_details_usecase.dart'
     as _i285;
+import '../../features/offers/domain/usecase/start_campaign_payment_usecase.dart'
+    as _i530;
+import '../../features/offers/presentation/manager/campaign_payment_view_model.dart'
+    as _i102;
 import '../../features/offers/presentation/manager/offers_view_model.dart'
     as _i912;
 import '../../features/payment/data/data_source/payment_remote_data_source.dart'
@@ -1573,8 +1579,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i908.GetAvailableOffersUseCase>(
       () => _i908.GetAvailableOffersUseCase(gh<_i1067.OffersRepository>()),
     );
+    gh.factory<_i224.GetCampaignPaymentStatusUseCase>(
+      () =>
+          _i224.GetCampaignPaymentStatusUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i285.GetCustomerOfferDetailsUseCase>(
       () => _i285.GetCustomerOfferDetailsUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i530.StartCampaignPaymentUseCase>(
+      () => _i530.StartCampaignPaymentUseCase(gh<_i1067.OffersRepository>()),
     );
     gh.factory<_i736.OfferDetailsViewModel>(
       () => _i736.OfferDetailsViewModel(
@@ -1884,6 +1897,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i540.NotificationBadgeViewModel>(
       () => _i540.NotificationBadgeViewModel(gh<_i200.GetCalendarUseCase>()),
+    );
+    gh.factory<_i102.CampaignPaymentViewModel>(
+      () => _i102.CampaignPaymentViewModel(
+        gh<_i530.StartCampaignPaymentUseCase>(),
+        gh<_i224.GetCampaignPaymentStatusUseCase>(),
+      ),
     );
     gh.factory<_i781.RegisterViewModel>(
       () => _i781.RegisterViewModel(

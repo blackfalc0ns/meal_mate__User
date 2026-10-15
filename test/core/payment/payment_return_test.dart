@@ -173,5 +173,45 @@ void main() {
         isNull,
       );
     });
+
+    test(
+      'parses campaign payment callback URL and treats callback status only as hint',
+      () {
+        final result = parsePaymentReturn(
+          Uri.parse(
+            'mealmate://campaign-payment/callback?sessionId=sess-999&paymentId=pz-999&status=Paid',
+          ),
+        );
+        expect(result, isNotNull);
+        expect(result!.isCampaign, true);
+        expect(result.destination, PaymentReturnDestination.pending);
+        expect(result.sessionId, 'sess-999');
+        expect(result.paymentId, 'pz-999');
+        expect(result.callbackStatus, 'Paid');
+      },
+    );
+
+    test('parses campaign payment error URL', () {
+      final result = parsePaymentReturn(
+        Uri.parse(
+          'mealmate://campaign-payment/error?sessionId=sess-999&paymentId=pz-999&status=Failed',
+        ),
+      );
+      expect(result, isNotNull);
+      expect(result!.isCampaign, true);
+      expect(result.destination, PaymentReturnDestination.error);
+      expect(result.sessionId, 'sess-999');
+      expect(result.paymentId, 'pz-999');
+      expect(result.callbackStatus, 'Failed');
+    });
+
+    test('rejects campaign payment with invalid destination path', () {
+      expect(
+        parsePaymentReturn(
+          Uri.parse('mealmate://campaign-payment/unknown?sessionId=sess-999'),
+        ),
+        isNull,
+      );
+    });
   });
 }

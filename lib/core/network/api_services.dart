@@ -112,6 +112,8 @@ import 'package:meal_meat_user/features/offers/data/models/request/create_campai
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/start_campaign_payment_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_payment_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -990,5 +992,16 @@ abstract class ApiServices {
   @POST(EndPoints.customerCampaignCheckoutSession)
   Future<CampaignCheckoutSessionResponseDto> createCampaignCheckoutSession(
     @Body() CreateCampaignCheckoutSessionRequestDto request,
+  );
+
+  @POST(EndPoints.customerCampaignPayment)
+  Future<CampaignPaymentResponseDto> startCampaignPayment(
+    @Path('sessionId') String sessionId,
+    @Body() StartCampaignPaymentRequestDto request,
+  );
+
+  @GET(EndPoints.customerCampaignPayment)
+  Future<CampaignPaymentResponseDto> getCampaignPaymentStatus(
+    @Path('sessionId') String sessionId,
   );
 }

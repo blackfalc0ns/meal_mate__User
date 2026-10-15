@@ -39,6 +39,7 @@ class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {
         isPaused: request.isPaused,
         remove: request.removeAccess,
         generateTemporaryPassword: request.generateTemporaryPassword,
+        credentialOperationKey: request.credentialOperationKey,
       ),
     );
   }

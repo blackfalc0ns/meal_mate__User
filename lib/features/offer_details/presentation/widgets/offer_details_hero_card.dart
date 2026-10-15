@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
+import 'package:meal_meat_user/features/offer_details/data/offer_details_data.dart';
 
 class OfferDetailsHeroCard extends StatelessWidget {
   const OfferDetailsHeroCard({super.key, required this.details});
@@ -13,8 +13,8 @@ class OfferDetailsHeroCard extends StatelessWidget {
       widthFactor: Spacing.offerDetailsHeroWidthFactor,
       child: AspectRatio(
         aspectRatio: Spacing.offerDetailsHeroAspectRatio,
-        child: Image.asset(
-          details.heroImageAsset,
+        child: Image.network(
+          details.heroImageUrl!,
           fit: BoxFit.cover,
           width: double.infinity,
         ),

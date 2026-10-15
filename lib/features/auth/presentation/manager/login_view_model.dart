@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/auth/domain/usecase/login_usecase.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/set_family_first_login_password_usecase.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/family_context/domain/usecase/get_my_family_contexts_usecase.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
@@ -25,6 +26,7 @@ class LoginViewModel extends Cubit<LoginState> {
     this.verifyFamilyFirstLoginOtpUseCase,
     this.setFamilyFirstLoginPasswordUseCase,
     this.getCurrentCustomerSubscriptionUseCase,
+    this.getMyFamilyContextsUseCase,
     this.sharedPrefHelper,
   }) : super(const LoginState());
 
@@ -34,6 +36,7 @@ class LoginViewModel extends Cubit<LoginState> {
   final SetFamilyFirstLoginPasswordUseCase? setFamilyFirstLoginPasswordUseCase;
   final GetCurrentCustomerSubscriptionUseCase?
   getCurrentCustomerSubscriptionUseCase;
+  final GetMyFamilyContextsUseCase? getMyFamilyContextsUseCase;
   final SharedPrefHelper? sharedPrefHelper;
 
   bool _inFlight = false;
@@ -132,6 +135,7 @@ class LoginViewModel extends Cubit<LoginState> {
             return;
           }
           await _syncSubscriptionCache();
+          await _refreshFamilyContexts();
           if (isClosed) return;
           emit(
             state.copyWith(
@@ -332,6 +336,7 @@ class LoginViewModel extends Cubit<LoginState> {
       switch (result) {
         case ApiSuccessResult(:final data):
           await _syncSubscriptionCache();
+          await _refreshFamilyContexts();
           if (isClosed) return;
           emit(
             state.copyWith(
@@ -522,5 +527,13 @@ class LoginViewModel extends Cubit<LoginState> {
     } catch (_) {
       // Non-blocking auxiliary sync
     }
+  }
+
+  Future<void> _refreshFamilyContexts() async {
+    final useCase = getMyFamilyContextsUseCase;
+    if (useCase == null) return;
+    // Family permissions are server-authoritative and must be fetched after
+    // authentication; login claims are only a snapshot of the session.
+    await useCase();
   }
 }

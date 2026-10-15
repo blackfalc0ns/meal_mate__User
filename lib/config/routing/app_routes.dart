@@ -46,6 +46,8 @@ abstract class AppRoutes {
   static const String promoCodeInput = '/promo-code-input';
   static const String redeemPackage = '/redeem-package';
   static const String promoCheckout = '/promo-checkout';
+  static const String campaignCheckout = '/campaign-checkout';
+  static const String campaignPayment = '/campaign-payment';
   static const String activationSuccess = '/activation-success';
   static const String payment = '/payment';
   static const String paymentWebView = '/payment-web-view';

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -8,6 +7,7 @@ import 'package:meal_meat_user/core/payment/payment_deep_link_coordinator.dart';
 import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 
 class _FakeTokenService implements TokenService {
@@ -118,7 +118,7 @@ void main() {
       () async {
         fakeTokenService.hasTokens = false;
 
-        final returnItem = const PaymentReturn(
+        const returnItem = PaymentReturn(
           destination: PaymentReturnDestination.success,
           paymentId: 'pz-deferred-99',
         );
@@ -150,7 +150,7 @@ void main() {
     );
 
     test('deduplicates rapid return links for the same paymentId', () async {
-      final returnItem = const PaymentReturn(
+      const returnItem = PaymentReturn(
         destination: PaymentReturnDestination.pending,
         paymentId: 'pz-dup-check',
       );
@@ -175,7 +175,7 @@ void main() {
           reviewRequired: false,
         );
 
-        final returnItem = const PaymentReturn(
+        const returnItem = PaymentReturn(
           destination: PaymentReturnDestination.review,
           paymentId: 'pz-review-attempt',
         );
@@ -199,7 +199,7 @@ void main() {
           createdAtUtc: DateTime.now().toUtc(),
         );
 
-        final returnItem = const PaymentReturn(
+        const returnItem = PaymentReturn(
           destination: PaymentReturnDestination.success,
           paymentId: 'pz-unknown-or-different',
         );
@@ -211,6 +211,27 @@ void main() {
         // Does not wrongly claim the older subscriptionId
         expect(args.checkout.subscriptionId, isEmpty);
         expect(args.checkout.paymentId, equals('pz-unknown-or-different'));
+      },
+    );
+
+    test(
+      'campaign payment callback routes to campaignPayment with CampaignPaymentScreenArgs',
+      () async {
+        final handled = await coordinator.didPushRouteInformation(
+          RouteInformation(
+            uri: Uri.parse(
+              'mealmate://campaign-payment/callback?sessionId=sess-cmp-1&paymentId=pz-cmp-1&status=Paid',
+            ),
+          ),
+        );
+
+        expect(handled, isTrue);
+        expect(fakeNavigator.lastPushedRoute, AppRoutes.campaignPayment);
+        expect(fakeNavigator.lastArguments, isA<CampaignPaymentScreenArgs>());
+        final args = fakeNavigator.lastArguments as CampaignPaymentScreenArgs;
+        expect(args.sessionId, 'sess-cmp-1');
+        expect(args.paymentId, 'pz-cmp-1');
+        expect(args.callbackStatus, 'Paid');
       },
     );
   });

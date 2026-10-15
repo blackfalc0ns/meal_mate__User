@@ -81,6 +81,14 @@ import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
+import '../../features/offers/data/data_source/offers_remote_data_source.dart';
+import '../../features/offers/data/data_source/offers_remote_data_source_impl.dart';
+import '../../features/offers/data/repo/offers_repository_impl.dart';
+import '../../features/offers/domain/repo/offers_repository.dart';
+import '../../features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart';
+import '../../features/offers/domain/usecase/get_campaign_payment_status_usecase.dart';
+import '../../features/offers/domain/usecase/start_campaign_payment_usecase.dart';
+import '../../features/offers/presentation/manager/campaign_payment_view_model.dart';
 import 'di.config.dart';
 
 final getIt = GetIt.instance;
@@ -159,6 +167,10 @@ Future<void> configureDependencies() async {
         setFamilyFirstLoginPasswordUseCase:
             getIt.isRegistered<SetFamilyFirstLoginPasswordUseCase>()
             ? getIt<SetFamilyFirstLoginPasswordUseCase>()
+            : null,
+        getMyFamilyContextsUseCase:
+            getIt.isRegistered<GetMyFamilyContextsUseCase>()
+            ? getIt<GetMyFamilyContextsUseCase>()
             : null,
       ),
     );
@@ -378,6 +390,37 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<FamilyContextViewModel>()) {
     getIt.registerFactory<FamilyContextViewModel>(
       () => FamilyContextViewModel(getIt()),
+    );
+  }
+  // Offers & Campaign Payment
+  if (!getIt.isRegistered<OffersRemoteDataSource>()) {
+    getIt.registerLazySingleton<OffersRemoteDataSource>(
+      () => OffersRemoteDataSourceImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<OffersRepository>()) {
+    getIt.registerLazySingleton<OffersRepository>(
+      () => OffersRepositoryImpl(getIt(), getIt()),
+    );
+  }
+  if (!getIt.isRegistered<CreateCampaignCheckoutSessionUseCase>()) {
+    getIt.registerFactory<CreateCampaignCheckoutSessionUseCase>(
+      () => CreateCampaignCheckoutSessionUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<StartCampaignPaymentUseCase>()) {
+    getIt.registerFactory<StartCampaignPaymentUseCase>(
+      () => StartCampaignPaymentUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetCampaignPaymentStatusUseCase>()) {
+    getIt.registerFactory<GetCampaignPaymentStatusUseCase>(
+      () => GetCampaignPaymentStatusUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<CampaignPaymentViewModel>()) {
+    getIt.registerFactory<CampaignPaymentViewModel>(
+      () => CampaignPaymentViewModel(getIt(), getIt()),
     );
   }
 }

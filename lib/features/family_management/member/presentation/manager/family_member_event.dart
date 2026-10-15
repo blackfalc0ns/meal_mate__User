@@ -22,6 +22,7 @@ class UpdateFamilyMemberAccessEvent extends FamilyMemberEvent {
     this.isPaused,
     this.removeAccess = false,
     this.generateTemporaryPassword,
+    this.credentialOperationKey,
   });
 
   final String memberId;
@@ -29,6 +30,7 @@ class UpdateFamilyMemberAccessEvent extends FamilyMemberEvent {
   final bool? isPaused;
   final bool removeAccess;
   final bool? generateTemporaryPassword;
+  final String? credentialOperationKey;
 }
 
 class ClearGeneratedPasswordEvent extends FamilyMemberEvent {

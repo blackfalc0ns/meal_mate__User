@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
@@ -90,11 +91,17 @@ class FamilyMemberViewModel extends Cubit<FamilyMemberState> {
 
   Future<void> _saveAccess(UpdateFamilyMemberAccessEvent event) async {
     emit(state.copyWith(isSaving: true, clearSaveFailure: true));
+    final operationKey =
+        event.credentialOperationKey ??
+        (event.generateTemporaryPassword == true
+            ? '${DateTime.now().toUtc().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}'
+            : null);
     final request = UpdateFamilyMemberAccessRequestDto(
       hasSeparateAccount: event.hasSeparateAccount,
       isPaused: event.isPaused,
       removeAccess: event.removeAccess,
       generateTemporaryPassword: event.generateTemporaryPassword,
+      credentialOperationKey: operationKey,
     );
     final result = await _updateAccess(event.memberId, request);
     switch (result) {

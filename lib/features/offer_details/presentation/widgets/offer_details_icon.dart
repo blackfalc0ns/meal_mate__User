@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
+import 'package:meal_meat_user/features/offer_details/data/offer_details_data.dart';
 
 class OfferDetailsIcon extends StatelessWidget {
   const OfferDetailsIcon({

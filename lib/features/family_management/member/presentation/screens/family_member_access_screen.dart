@@ -191,19 +191,18 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                               _separateAccount = value;
                             }),
                           ),
-                          if (effectiveSeparate) ...[
-                            const SizedBox(height: Spacing.md),
-                            FamilyMemberAccessCredentialsCard(
-                              identifier: access?.phoneNumber,
-                              onEditPassword: () => _viewModel.doIntent(
-                                UpdateFamilyMemberAccessEvent(
-                                  memberId: widget.memberId,
-                                  hasSeparateAccount: true,
-                                  generateTemporaryPassword: true,
-                                ),
-                              ),
-                            ),
-                          ],
+                          const SizedBox(height: Spacing.md),
+                          FamilyMemberAccessCredentialsCard(
+                            identifier: access?.phoneNumber,
+                            onEditPassword: state.isSaving
+                                ? null
+                                : () => _viewModel.doIntent(
+                                    UpdateFamilyMemberAccessEvent(
+                                      memberId: widget.memberId,
+                                      generateTemporaryPassword: true,
+                                    ),
+                                  ),
+                          ),
                           const SizedBox(height: Spacing.md),
                           FamilyMemberAccessPermissionsTile(
                             onTap: () => Navigator.of(context).pushNamed(

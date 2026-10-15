@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
+import 'package:meal_meat_user/features/offer_details/data/offer_details_data.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_coupon_border_painter.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_icon.dart';
 

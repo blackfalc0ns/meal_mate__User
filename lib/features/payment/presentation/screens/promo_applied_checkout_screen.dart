@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/activation_success_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
@@ -36,19 +37,40 @@ class _PromoAppliedCheckoutScreenState
   bool _isLoading = false;
 
   Future<void> _handlePayment() async {
+    if (_isLoading) return;
     setState(() => _isLoading = true);
 
     try {
       if (widget.args.offer.campaignId != null &&
           widget.args.offer.campaignId!.isNotEmpty) {
         final sessionUseCase = getIt<CreateCampaignCheckoutSessionUseCase>();
-        await sessionUseCase(
+        final sessionResult = await sessionUseCase(
           campaignId: widget.args.offer.campaignId!,
           bundleId:
               widget.args.bundleId ?? 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
           durationDays: widget.args.durationDays,
           deliveryGovernorate: widget.args.deliveryGovernorate,
         );
+
+        if (!mounted) return;
+
+        switch (sessionResult) {
+          case ApiSuccessResult(:final data):
+            await Navigator.of(context).pushNamed(
+              AppRoutes.campaignPayment,
+              arguments: CampaignPaymentScreenArgs(
+                sessionId: data.sessionId,
+                amount: data.finalCustomerPrice,
+                currency: data.currency,
+                offer: widget.args.offer,
+              ),
+            );
+            return;
+          case ApiErrorResult(:final failure):
+            final message = ErrorMessagePresenter.fromFailure(context, failure);
+            CustomSnackbar.showError(context: context, message: message);
+            return;
+        }
       }
 
       final checkoutUseCase = getIt<CheckoutSubscriptionUseCase>();

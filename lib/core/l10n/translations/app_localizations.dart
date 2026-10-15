@@ -4772,6 +4772,12 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get family_member_access_password_label;
 
+  /// No description provided for @family_member_access_generate_temporary_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate temporary password'**
+  String get family_member_access_generate_temporary_password;
+
   /// No description provided for @family_member_access_edit.
   ///
   /// In en, this message translates to:
@@ -13165,6 +13171,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This temporary password will only be shown once. Share it privately with the family member.'**
   String get auth_family_private_delivery_reminder;
+
+  /// No description provided for @campaign_payment_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign Payment'**
+  String get campaign_payment_title;
+
+  /// No description provided for @campaign_payment_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing payment...'**
+  String get campaign_payment_pending;
+
+  /// No description provided for @campaign_payment_verifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying payment status...'**
+  String get campaign_payment_verifying;
+
+  /// No description provided for @campaign_payment_paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Confirmed'**
+  String get campaign_payment_paid;
+
+  /// No description provided for @campaign_payment_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Failed'**
+  String get campaign_payment_failed;
+
+  /// No description provided for @campaign_payment_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Session Expired'**
+  String get campaign_payment_expired;
+
+  /// No description provided for @campaign_payment_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Cancelled'**
+  String get campaign_payment_cancelled;
+
+  /// No description provided for @campaign_payment_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get campaign_payment_retry;
+
+  /// No description provided for @campaign_payment_pay_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get campaign_payment_pay_now;
+
+  /// No description provided for @campaign_payment_amount_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Amount'**
+  String get campaign_payment_amount_label;
+
+  /// No description provided for @campaign_payment_redirecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to payment gateway...'**
+  String get campaign_payment_redirecting;
+
+  /// No description provided for @campaign_payment_session_expired_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Checkout'**
+  String get campaign_payment_session_expired_action;
+
+  /// No description provided for @campaign_error_session_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'This campaign session has expired. Please restart checkout.'**
+  String get campaign_error_session_expired;
+
+  /// No description provided for @campaign_error_idempotency_conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'A conflicting payment request is already in progress. Please retry or check your orders.'**
+  String get campaign_error_idempotency_conflict;
+
+  /// No description provided for @campaign_error_capacity_conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign capacity has been reached. Please choose another offer.'**
+  String get campaign_error_capacity_conflict;
+
+  /// No description provided for @campaign_error_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign checkout session was not found.'**
+  String get campaign_error_not_found;
+
+  /// No description provided for @campaign_error_invalid_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid payment quote or parameters. Please try again.'**
+  String get campaign_error_invalid_request;
+
+  /// No description provided for @campaign_error_provider_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment gateway is currently unavailable. Please try again later.'**
+  String get campaign_error_provider_unavailable;
 }
 
 class _AppLocalizationsDelegate

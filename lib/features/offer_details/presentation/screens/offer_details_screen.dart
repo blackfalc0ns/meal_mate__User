@@ -12,7 +12,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
-import 'package:meal_meat_user/features/offer_details/data/offer_details_fake_data_source.dart';
+import 'package:meal_meat_user/features/offer_details/data/offer_details_data.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_event.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_state.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_view_model.dart';
@@ -50,14 +50,12 @@ class _OfferDetailsContent extends StatefulWidget {
 }
 
 class _OfferDetailsContentState extends State<_OfferDetailsContent> {
-  static const _fallbackDataSource = OfferDetailsFakeDataSource();
   bool _isOfferExpired = false;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final fallbackDetails = _fallbackDataSource.getOfferDetails();
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -108,7 +106,10 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     ),
                     const SizedBox(height: Spacing.base),
                   ],
-                  OfferDetailsHeroCard(details: fallbackDetails),
+                  if (offer?.bannerImageUrl != null)
+                    OfferDetailsHeroCard(
+                      details: _detailsFromOffer(offer!, locale),
+                    ),
                   const SizedBox(height: Spacing.base),
 
                   // Countdown Timer
@@ -133,9 +134,14 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     const SizedBox(height: Spacing.base),
                   ],
 
-                  OfferDetailsInfoCard(details: fallbackDetails),
+                  OfferDetailsInfoCard(
+                    details: _detailsFromOffer(offer!, locale),
+                  ),
                   const SizedBox(height: Spacing.md),
-                  OfferDetailsBenefitsSection(details: fallbackDetails),
+                  if (_detailsFromOffer(offer!, locale).benefits.isNotEmpty)
+                    OfferDetailsBenefitsSection(
+                      details: _detailsFromOffer(offer!, locale),
+                    ),
                   const SizedBox(height: Spacing.xl),
                   AppButton(
                     text: isExpired
@@ -222,26 +228,36 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
     );
   }
 
-  void _navigateToRedeemPackage(BuildContext context, OfferEntity? offer) {
-    final effectiveOffer =
-        offer ??
-        OfferEntity(
-          id: widget.offerId.isNotEmpty
-              ? widget.offerId
-              : '7b85f264-b040-4591-a1b7-a36f90382345',
-          nameAr: 'خصم 20% على الباقات الشهرية',
-          nameEn: '20% Off Monthly Packages',
-          descriptionAr: 'خطط غذائية متكاملة تساعدك على تحقيق أهدافك',
-          descriptionEn: 'Comprehensive nutrition plans',
-          discountRate: 0.20,
-          startsAt: DateTime.now().toUtc(),
-          endsAt: DateTime.now().toUtc().add(const Duration(days: 14)),
-          promoCode: 'SAVE20',
-          minSubscriptionDays: 26,
-        );
+  OfferDetailsData _detailsFromOffer(OfferEntity offer, dynamic locale) {
+    return OfferDetailsData(
+      heroImageUrl: offer.bannerImageUrl,
+      couponCode: offer.promoCode,
+      infoRows: [
+        OfferDetailsInfoRowData(
+          label: locale.offer_details_info_title,
+          value: offer.description(locale.localeName),
+          icon: OfferDetailsIconType.tag,
+        ),
+        if (offer.endsAt != null)
+          OfferDetailsInfoRowData(
+            label: locale.offer_details_info_duration_label,
+            value: offer.endsAt!.toLocal().toString(),
+            icon: OfferDetailsIconType.calendar,
+          ),
+        if (offer.terms(locale.localeName) != null)
+          OfferDetailsInfoRowData(
+            label: locale.offer_details_info_terms_label,
+            value: offer.terms(locale.localeName)!,
+            icon: OfferDetailsIconType.document,
+          ),
+      ],
+      benefitsTitle: locale.offer_details_title,
+      benefits: const [],
+    );
+  }
 
-    Navigator.of(
-      context,
-    ).pushNamed(AppRoutes.redeemPackage, arguments: effectiveOffer);
+  void _navigateToRedeemPackage(BuildContext context, OfferEntity? offer) {
+    if (offer == null) return;
+    Navigator.of(context).pushNamed(AppRoutes.redeemPackage, arguments: offer);
   }
 }

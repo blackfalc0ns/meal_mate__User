@@ -5,6 +5,7 @@ import 'package:meal_meat_user/core/payment/payment_attempt_store.dart';
 import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
@@ -65,12 +66,17 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
 
   Future<void> handleReturn(PaymentReturn paymentReturn) async {
     final now = DateTime.now();
-    if (_lastHandledPaymentId == paymentReturn.paymentId &&
+    final handleKey = paymentReturn.isCampaign
+        ? (paymentReturn.sessionId?.isNotEmpty == true
+              ? paymentReturn.sessionId!
+              : paymentReturn.paymentId)
+        : paymentReturn.paymentId;
+    if (_lastHandledPaymentId == handleKey &&
         _lastHandledAt != null &&
         now.difference(_lastHandledAt!).inSeconds < 3) {
       return;
     }
-    _lastHandledPaymentId = paymentReturn.paymentId;
+    _lastHandledPaymentId = handleKey;
     _lastHandledAt = now;
 
     final isAuthenticated = await _tokenService.hasValidSessionTokens();
@@ -93,6 +99,19 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
   Future<void> _processAuthenticatedReturn(PaymentReturn paymentReturn) async {
     final customerId = await _tokenService.getCurrentUserId() ?? '';
     if (customerId.isEmpty) return;
+
+    if (paymentReturn.isCampaign) {
+      final sessionId = paymentReturn.sessionId ?? '';
+      await _navigatorService.pushNamedWhenReady(
+        AppRoutes.campaignPayment,
+        arguments: CampaignPaymentScreenArgs(
+          sessionId: sessionId,
+          paymentId: paymentReturn.paymentId,
+          callbackStatus: paymentReturn.callbackStatus,
+        ),
+      );
+      return;
+    }
 
     final attempt = await _paymentAttemptStore.readForCustomer(customerId);
     final subscriptionId =

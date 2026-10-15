@@ -2,13 +2,16 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/offers/data/data_source/offers_remote_data_source.dart';
+import 'package:meal_meat_user/features/offers/data/mapper/campaign_payment_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/mapper/offer_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_evaluation_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/repo/offers_repository.dart';
 
 @Injectable(as: OffersRepository)
@@ -108,6 +111,31 @@ class OffersRepositoryImpl implements OffersRepository {
       );
       final response = await _remoteDataSource.createCampaignCheckoutSession(
         request,
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<CampaignPaymentEntity>> startCampaignPayment(
+    StartCampaignPaymentRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.startCampaignPayment(
+        request.sessionId,
+        request.toDto(),
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<CampaignPaymentEntity>> getCampaignPaymentStatus(
+    String sessionId,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getCampaignPaymentStatus(
+        sessionId,
       );
       return response.toEntity();
     });

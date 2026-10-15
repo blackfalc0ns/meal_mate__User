@@ -257,4 +257,6 @@ abstract class EndPoints {
       '/api/v1/customer/campaigns/price-preview';
   static const String customerCampaignCheckoutSession =
       '/api/v1/customer/campaigns/checkout-session';
+  static const String customerCampaignPayment =
+      '/api/v1/customer/campaigns/{sessionId}/payment';
 }

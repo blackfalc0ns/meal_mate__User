@@ -25,6 +25,8 @@ import 'package:meal_meat_user/features/offers/presentation/screens/browse_offer
 import 'package:meal_meat_user/features/offers/presentation/screens/promo_code_input_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/redeem_package_screen.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
+import 'package:meal_meat_user/features/offers/presentation/screens/campaign_payment_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/activation_success_args.dart';
@@ -449,6 +451,25 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: PromoAppliedCheckoutScreen(args: args),
+        );
+      case AppRoutes.campaignCheckout:
+        final args = settings.arguments is OfferCheckoutArgs
+            ? settings.arguments! as OfferCheckoutArgs
+            : null;
+        if (args == null) {
+          return _buildRoute(settings: settings, page: const OffersScreen());
+        }
+        return _buildRoute(
+          settings: settings,
+          page: PromoAppliedCheckoutScreen(args: args),
+        );
+      case AppRoutes.campaignPayment:
+        final args = settings.arguments is CampaignPaymentScreenArgs
+            ? settings.arguments! as CampaignPaymentScreenArgs
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: CampaignPaymentScreen(args: args),
         );
       case AppRoutes.activationSuccess:
         final args = settings.arguments is ActivationSuccessArgs

@@ -79,7 +79,7 @@ class FamilyMemberAccessCredentialsCard extends StatelessWidget {
                     vertical: Spacing.xxs,
                   ),
                   child: Text(
-                    locale.family_member_access_edit,
+                    locale.family_member_access_generate_temporary_password,
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,

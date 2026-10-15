@@ -2502,6 +2502,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_member_access_password_label => 'كلمة المرور';
 
   @override
+  String get family_member_access_generate_temporary_password =>
+      'إنشاء كلمة مرور مؤقتة';
+
+  @override
   String get family_member_access_edit => 'تعديل';
 
   @override
@@ -7077,4 +7081,65 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get auth_family_private_delivery_reminder =>
       'سيتم عرض كلمة المرور المؤقتة هذه لمرة واحدة فقط. شاركها بشكل آمن مع فرد العائلة.';
+
+  @override
+  String get campaign_payment_title => 'دفع الحملة الترويجية';
+
+  @override
+  String get campaign_payment_pending => 'جارٍ معالجة الدفع...';
+
+  @override
+  String get campaign_payment_verifying => 'جارٍ التحقق من حالة الدفع...';
+
+  @override
+  String get campaign_payment_paid => 'تم تأكيد الدفع بنجاح';
+
+  @override
+  String get campaign_payment_failed => 'فشلت عملية الدفع';
+
+  @override
+  String get campaign_payment_expired => 'انتهت صلاحية جلسة الدفع';
+
+  @override
+  String get campaign_payment_cancelled => 'تم إلغاء عملية الدفع';
+
+  @override
+  String get campaign_payment_retry => 'إعادة المحاولة';
+
+  @override
+  String get campaign_payment_pay_now => 'ادفع الآن';
+
+  @override
+  String get campaign_payment_amount_label => 'مبلغ الدفع';
+
+  @override
+  String get campaign_payment_redirecting => 'جارٍ تحويلك إلى بوابة الدفع...';
+
+  @override
+  String get campaign_payment_session_expired_action =>
+      'إعادة بدء عملية الشراء';
+
+  @override
+  String get campaign_error_session_expired =>
+      'انتهت صلاحية جلسة الدفع لهذه الحملة، يرجى إعادة بدء عملية الشراء.';
+
+  @override
+  String get campaign_error_idempotency_conflict =>
+      'يوجد طلب دفع متداخل قيد المعالجة، يرجى إعادة المحاولة.';
+
+  @override
+  String get campaign_error_capacity_conflict =>
+      'تم استنفاد السعة المتاحة لهذه الحملة، يرجى اختيار عرض آخر.';
+
+  @override
+  String get campaign_error_not_found =>
+      'لم يتم العثور على جلسة الدفع المطلوبة.';
+
+  @override
+  String get campaign_error_invalid_request =>
+      'بيانات الدفع غير صالحة، يرجى إعادة المحاولة.';
+
+  @override
+  String get campaign_error_provider_unavailable =>
+      'بوابة الدفع غير متاحة حالياً، يرجى المحاولة لاحقاً.';
 }
