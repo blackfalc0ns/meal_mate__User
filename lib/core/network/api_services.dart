@@ -4,6 +4,7 @@ import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/services/token_interceptor.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/login_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_verify_otp_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_resend_otp_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_set_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/logout_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/refresh_token_request_dto.dart';
@@ -98,6 +99,8 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/respon
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_auto_renewal_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_auto_renewal_consent_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_register_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/request/device_token_unregister_request_dto.dart';
 import 'package:meal_meat_user/features/notifications/data/models/response/notifications_page_response_dto.dart';
@@ -138,6 +141,12 @@ abstract class ApiServices {
   @Extra({TokenInterceptor.skipAuthKey: true})
   Future<LoginResponseDto> setFamilyFirstLoginPassword(
     @Body() FamilyFirstLoginSetPasswordRequestDto request,
+  );
+
+  @POST(EndPoints.familyFirstLoginResendOtp)
+  @Extra({TokenInterceptor.skipAuthKey: true})
+  Future<FamilyFirstLoginVerifyOtpResponseDto> resendFamilyFirstLoginOtp(
+    @Body() FamilyFirstLoginResendOtpRequestDto request,
   );
 
   @POST(EndPoints.register)
@@ -880,6 +889,16 @@ abstract class ApiServices {
     @Body() FamilyMemberPermissionsRequestDto request,
   );
 
+  @GET(EndPoints.familyMemberCapabilities)
+  Future<List<FamilyCapabilityResponseDto>> getFamilyMemberCapabilities(
+    @Path('memberId') String memberId,
+  );
+
+  @POST(EndPoints.familyMemberDetach)
+  Future<void> detachFamilyMember(
+    @Path('memberId') String memberId,
+  );
+
   @GET(EndPoints.customerSubscriptionUpgradeOptions)
   Future<SubscriptionUpgradeOptionsResponseDto> getSubscriptionUpgradeOptions(
     @Path('subscriptionId') String subscriptionId,
@@ -902,6 +921,22 @@ abstract class ApiServices {
   Future<SubscriptionUpgradeStatusResponseDto> getSubscriptionUpgradeStatus(
     @Path('subscriptionId') String subscriptionId,
     @Path('upgradeId') String upgradeId,
+  );
+
+  @GET(EndPoints.customerSubscriptionAutoRenewal)
+  Future<SubscriptionAutoRenewalDto> getSubscriptionAutoRenewal(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @PUT(EndPoints.customerSubscriptionAutoRenewalConsent)
+  Future<SubscriptionAutoRenewalDto> updateSubscriptionAutoRenewalConsent(
+    @Path('subscriptionId') String subscriptionId,
+    @Body() SubscriptionAutoRenewalConsentRequestDto request,
+  );
+
+  @DELETE(EndPoints.customerSubscriptionAutoRenewalConsent)
+  Future<SubscriptionAutoRenewalDto> deleteSubscriptionAutoRenewalConsent(
+    @Path('subscriptionId') String subscriptionId,
   );
 
   @PUT(EndPoints.customerDeviceTokens)

@@ -138,6 +138,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
             (member) => ui.FamilySubscriptionMemberEntity(
               name: member.displayName,
               imageAsset: Assets.profileAvatar,
+              memberId: member.memberId,
+              onTap: () => context.pushNamed(
+                AppRoutes.familySubscriptionMemberDetails,
+                arguments: member,
+              ),
               statusLabel: member.isUnsubscribed
                   ? locale.family_member_unsubscribed_status
                   : (member.todayFilledCount >= member.todayRequiredCount &&

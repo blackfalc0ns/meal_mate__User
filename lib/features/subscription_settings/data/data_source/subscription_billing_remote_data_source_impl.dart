@@ -1,7 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/data_source/subscription_billing_remote_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_auto_renewal_consent_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_billing_action_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_auto_renewal_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 
 @Injectable(as: SubscriptionBillingRemoteDataSource)
@@ -108,5 +110,30 @@ class SubscriptionBillingRemoteDataSourceImpl
       subscriptionId,
       request,
     );
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> getCustomerSubscriptionAutoRenewal(
+    String subscriptionId,
+  ) {
+    return _apiServices.getSubscriptionAutoRenewal(subscriptionId);
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> updateCustomerSubscriptionAutoRenewalConsent(
+    String subscriptionId,
+    SubscriptionAutoRenewalConsentRequestDto request,
+  ) {
+    return _apiServices.updateSubscriptionAutoRenewalConsent(
+      subscriptionId,
+      request,
+    );
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> deleteCustomerSubscriptionAutoRenewalConsent(
+    String subscriptionId,
+  ) {
+    return _apiServices.deleteSubscriptionAutoRenewalConsent(subscriptionId);
   }
 }

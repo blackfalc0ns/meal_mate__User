@@ -167,6 +167,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     required int ageYears,
     String? deliveryAddressId,
   }) async {
+    if (state.isMemberSaving) return;
     emit(
       state.copyWith(
         isMemberSaving: true,
@@ -213,6 +214,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     required int ageYears,
     String? deliveryAddressId,
   }) async {
+    if (state.isMemberSaving) return;
     emit(
       state.copyWith(
         isMemberSaving: true,
@@ -251,6 +253,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _deleteFamilyMember(String memberId) async {
+    if (state.isDeletingMember) return;
     emit(
       state.copyWith(
         isDeletingMember: true,

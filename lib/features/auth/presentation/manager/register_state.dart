@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 enum RegisterOutcome {
   idle,

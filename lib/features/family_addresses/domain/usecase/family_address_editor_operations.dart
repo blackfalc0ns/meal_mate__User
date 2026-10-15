@@ -3,7 +3,7 @@ import 'package:meal_meat_user/core/address/domain/entities/address_coverage_pre
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 
 typedef PreviewFamilyMemberAddressFn =
@@ -37,12 +37,9 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
   }) : _preview =
            previewFamilyMemberAddress ??
            previewFamilyMemberAddressUseCase?.call,
-       _add =
-           addFamilyMemberAddress ??
-           addFamilyMemberAddressUseCase?.call,
+       _add = addFamilyMemberAddress ?? addFamilyMemberAddressUseCase?.call,
        _update =
-           updateFamilyMemberAddress ??
-           updateFamilyMemberAddressUseCase?.call;
+           updateFamilyMemberAddress ?? updateFamilyMemberAddressUseCase?.call;
 
   final String memberId;
   final PreviewFamilyMemberAddressFn? _preview;

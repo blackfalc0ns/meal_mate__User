@@ -12,6 +12,7 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
@@ -63,6 +64,10 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
     super.didChangeDependencies();
     if (!_loaded) {
       _loaded = true;
+      if (getIt.isRegistered<FamilyContextViewModel>() &&
+          getIt<FamilyContextViewModel>().state.contexts.isEmpty) {
+        getIt<FamilyContextViewModel>().loadFamilyContext();
+      }
       _viewModel.doIntent(
         LoadFamilyMemberDetailEvent(
           widget.member.memberId,
@@ -78,10 +83,45 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
     super.dispose();
   }
 
+  bool _isViewerManager() {
+    if (getIt.isRegistered<FamilyContextViewModel>()) {
+      final state = getIt<FamilyContextViewModel>().state;
+      if (state.contexts.isNotEmpty) {
+        return state.hasManagerContext;
+      }
+    }
+    return true;
+  }
+
+  void _confirmDetach(BuildContext context, FamilyMemberDetailEntity detail) {
+    final locale = context.localization;
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: Text(locale.family_detach_member_title),
+        content: Text(locale.family_detach_member_confirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(),
+            child: Text(locale.family_member_access_deactivate_cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(dialogCtx).pop();
+              _viewModel.doIntent(DetachFamilyMemberEvent(detail.memberId));
+            },
+            child: Text(locale.family_detach_member_action),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isViewerManager = _isViewerManager();
 
     return BlocProvider.value(
       value: _viewModel,
@@ -103,7 +143,9 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           } else if (state.saveSuccessCount > 0) {
             CustomSnackbar.showSuccess(
               context: context,
-              message: locale.family_member_renewal_success,
+              message: state.isDetached
+                  ? locale.family_detach_member_success
+                  : locale.family_member_renewal_success,
             );
             _viewModel.doIntent(
               LoadFamilyMemberDetailEvent(
@@ -130,7 +172,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                 ),
               ),
               actions: [
-                if (detail != null)
+                if (detail != null && isViewerManager && !detail.isDetached) ...[
                   IconButton(
                     icon: const Icon(Icons.edit_outlined),
                     tooltip: locale.family_edit_member,
@@ -140,19 +182,30 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                       detail: detail,
                     ),
                   ),
+                  if (!detail.isManager)
+                    IconButton(
+                      icon: const Icon(Icons.person_remove_outlined),
+                      tooltip: locale.family_detach_member_title,
+                      onPressed: () => _confirmDetach(context, detail),
+                    ),
+                ],
               ],
               onBackPressed: () => Navigator.maybePop(context),
             ),
             body: detail == null
                 ? const FamilyMemberDetailLoadingSkeleton()
-                : _content(context, detail),
+                : _content(context, detail, isViewerManager: isViewerManager),
           );
         },
       ),
     );
   }
 
-  Widget _content(BuildContext context, FamilyMemberDetailEntity detail) {
+  Widget _content(
+    BuildContext context,
+    FamilyMemberDetailEntity detail, {
+    required bool isViewerManager,
+  }) {
     final locale = context.localization;
     final dateFormat = DateFormat.yMMMd(locale.localeName);
     final start = detail.startDate == null
@@ -163,21 +216,30 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
         : dateFormat.format(detail.endDate!);
     final nutrition = detail.todayNutrition;
 
+    final statusLabel = detail.isDetached
+        ? locale.family_member_detached_label
+        : (detail.isDisabled
+            ? locale.family_member_disabled_label
+            : (detail.isPaidPreparingCalendar
+                ? locale.family_member_paid_preparing_label
+                : (detail.isSetupRequired
+                    ? locale.family_member_setup_required_label
+                    : (detail.isPaused
+                        ? locale.family_member_paused_label
+                        : locale.family_member_active_label))));
+
     final member = ui.FamilyMemberDetailEntity(
       memberId: detail.memberId,
       subscriptionId: detail.effectiveSubscriptionId,
       isManager: detail.isManager,
+      canManageAccess: isViewerManager && !detail.isDetached,
       title: locale.family_member_details_title(detail.displayName),
       name: detail.displayName,
       imageAsset: Assets.profileAvatar,
       ageLabel: detail.ageYears == null
           ? ''
           : locale.family_member_age_years(detail.ageYears!),
-      statusLabel: detail.isUnsubscribed
-          ? locale.family_member_unsubscribed_status
-          : (detail.isPaused
-                ? locale.family_member_paused_label
-                : locale.family_member_active_label),
+      statusLabel: statusLabel,
       roleLabel: detail.isManager
           ? locale.family_member_manager_label
           : locale.family_member_member_label,
@@ -210,6 +272,13 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           subtitle: locale.family_member_shortcut_daily_meals_subtitle,
           type: ui.FamilyMemberDetailShortcutType.dailyMeals,
           onTap: () {
+            if (detail.isPaidPreparingCalendar) {
+              CustomSnackbar.showWarning(
+                context: context,
+                message: locale.family_member_fulfillment_pending,
+              );
+              return;
+            }
             final effectiveSub = detail.effectiveSubscriptionId;
             if (effectiveSub == null || effectiveSub.isEmpty) {
               CustomSnackbar.showError(
@@ -231,21 +300,22 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
             );
           },
         ),
-        ui.FamilyMemberDetailShortcutEntity(
-          title: locale.family_member_shortcut_permissions,
-          subtitle: locale.family_member_shortcut_permissions_subtitle,
-          type: ui.FamilyMemberDetailShortcutType.permissions,
-          onTap: () => unawaited(
-            Navigator.of(context).pushNamed(
-              AppRoutes.familyMemberAccess,
-              arguments: (
-                detail.memberId,
-                detail.isManager,
-                detail.displayName,
+        if (isViewerManager && !detail.isDetached)
+          ui.FamilyMemberDetailShortcutEntity(
+            title: locale.family_member_shortcut_permissions,
+            subtitle: locale.family_member_shortcut_permissions_subtitle,
+            type: ui.FamilyMemberDetailShortcutType.permissions,
+            onTap: () => unawaited(
+              Navigator.of(context).pushNamed(
+                AppRoutes.familyMemberAccess,
+                arguments: (
+                  detail.memberId,
+                  detail.isManager,
+                  detail.displayName,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
 
@@ -265,14 +335,20 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           const SizedBox(height: Spacing.familyMemberDetailCardGap),
           FamilyMemberDetailPackageCard(
             member: member,
-            showAction: detail.canRenew && !detail.hasUpcomingSubscription,
+            showAction: isViewerManager &&
+                !detail.isDetached &&
+                detail.canRenew &&
+                !detail.hasUpcomingSubscription,
             onAction: detail.canRenew && detail.renewalPath != null
                 ? () => _viewModel.doIntent(
                     RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
                   )
                 : null,
           ),
-          if (!detail.hasPlan && !detail.isManager) ...[
+          if (isViewerManager &&
+              !detail.isDetached &&
+              !detail.hasPlan &&
+              !detail.isManager) ...[
             const SizedBox(height: Spacing.familyMemberDetailCardGap),
             FilledButton.icon(
               onPressed: () async {

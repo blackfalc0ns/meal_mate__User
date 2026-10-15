@@ -12,7 +12,7 @@ import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/core/widget/custom_back_button.dart';

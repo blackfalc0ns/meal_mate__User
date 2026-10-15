@@ -2605,8 +2605,59 @@ class AppLocalizationsEn extends AppLocalizations {
       'Access changes saved successfully';
 
   @override
+  String get family_member_access_password_already_issued =>
+      'A password has already been issued for this account. Use explicit reset if you need to generate a new password.';
+
+  @override
+  String get family_member_access_explicit_reset_title =>
+      'Reset Temporary Password';
+
+  @override
+  String get family_member_access_explicit_reset_message =>
+      'The previous temporary password cannot be recovered in plaintext. Generating a new temporary password will invalidate the previous one. Do you want to proceed?';
+
+  @override
+  String get family_member_access_explicit_reset_button => 'Confirm Reset';
+
+  @override
   String get family_member_permissions_save_success =>
       'Permissions saved successfully';
+
+  @override
+  String get family_permission_details_title => 'Permission Details';
+
+  @override
+  String get family_permission_description_empty =>
+      'No additional description provided.';
+
+  @override
+  String get family_permission_current_status => 'Current Status';
+
+  @override
+  String get family_permission_status_enabled => 'Enabled';
+
+  @override
+  String get family_permission_status_disabled => 'Disabled';
+
+  @override
+  String get family_permission_manager_configurable =>
+      'Configurable by Manager';
+
+  @override
+  String get family_permission_fixed_state =>
+      'Fixed by system (not configurable)';
+
+  @override
+  String family_permission_required_grants(String permissions) {
+    return 'Requires read grants: $permissions';
+  }
+
+  @override
+  String get family_permission_conflict_error =>
+      'Permissions were changed by another session. Refreshed with latest data.';
+
+  @override
+  String get family_permission_close => 'Close';
 
   @override
   String get family_member_renewal_success =>
@@ -7265,4 +7316,68 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get campaign_error_provider_unavailable =>
       'Payment gateway is currently unavailable. Please try again later.';
+
+  @override
+  String get family_member_detached_label => 'Detached';
+
+  @override
+  String get family_member_disabled_label => 'Disabled';
+
+  @override
+  String get family_member_setup_required_label => 'Setup Required';
+
+  @override
+  String get family_member_paid_preparing_label => 'Preparing';
+
+  @override
+  String get family_member_fulfillment_pending =>
+      'Your subscription is being prepared. The calendar will appear when preparation is complete.';
+
+  @override
+  String get family_permission_info_title => 'Permission Details';
+
+  @override
+  String get family_permission_current_value => 'Current Value';
+
+  @override
+  String get family_permission_unsupported_state => 'Unsupported';
+
+  @override
+  String get family_permissions_conflict_message =>
+      'Permissions were updated by another session. Please review and try again.';
+
+  @override
+  String get family_detach_member_title => 'Detach Member';
+
+  @override
+  String get family_detach_member_confirm =>
+      'Are you sure you want to detach this member from family management? They will retain their subscription independently.';
+
+  @override
+  String get family_detach_member_action => 'Detach';
+
+  @override
+  String get family_detach_member_success => 'Member detached successfully.';
+
+  @override
+  String get family_detach_blocked_financial_intent =>
+      'Cannot detach member with pending checkout or payment.';
+
+  @override
+  String get family_detach_requires_active_account =>
+      'Member must have completed active account login before detachment.';
+
+  @override
+  String get family_credential_reset_warning =>
+      'The old password cannot be recovered. A new temporary password will be generated.';
+
+  @override
+  String get family_credential_already_issued =>
+      'Password already issued. An explicit reset is required to generate a new password.';
+
+  @override
+  String get family_credential_reset_action => 'Reset Password';
+
+  @override
+  String get family_permission_prerequisites => 'Prerequisites:';
 }

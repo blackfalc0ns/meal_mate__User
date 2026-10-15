@@ -8,6 +8,11 @@ String? familyCheckoutBlockerRoute(String? reason) => switch (reason) {
   'family.manager_subscription_required' => AppRoutes.familySubscriptionSetup,
   'family.max_members' => AppRoutes.familySubscriptionSetup,
   'family.member_incomplete' => AppRoutes.familyPackageDaysSetup,
+  'family.plan_incomplete' => AppRoutes.familyPackageDaysSetup,
+  'family.program_required' => AppRoutes.familyProgramSetup,
+  'family.already_in_family' => AppRoutes.familySubscriptionSetup,
+  'family.duplicate_member' => AppRoutes.familySubscriptionSetup,
+  'family.cannot_remove_manager' => AppRoutes.familySubscriptionSetup,
   'restaurant.not_eligible' => AppRoutes.familyProgramSetup,
   _ => null,
 };

@@ -11,25 +11,25 @@ extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
     final resolvedNameAr = (base.nameAr?.trim().isNotEmpty ?? false)
         ? base.nameAr!.trim()
         : (base.name?.trim().isNotEmpty ?? false)
-            ? base.name!.trim()
-            : '';
+        ? base.name!.trim()
+        : '';
     final resolvedNameEn = (base.nameEn?.trim().isNotEmpty ?? false)
         ? base.nameEn!.trim()
         : (base.tier?.trim().isNotEmpty ?? false)
-            ? base.tier!.trim()
-            : (base.name?.trim().isNotEmpty ?? false)
-                ? base.name!.trim()
-                : '';
+        ? base.tier!.trim()
+        : (base.name?.trim().isNotEmpty ?? false)
+        ? base.name!.trim()
+        : '';
     final resolvedDescAr = (base.descriptionAr?.trim().isNotEmpty ?? false)
         ? base.descriptionAr!.trim()
         : (base.description?.trim().isNotEmpty ?? false)
-            ? base.description!.trim()
-            : '';
+        ? base.description!.trim()
+        : '';
     final resolvedDescEn = (base.descriptionEn?.trim().isNotEmpty ?? false)
         ? base.descriptionEn!.trim()
         : (base.description?.trim().isNotEmpty ?? false)
-            ? base.description!.trim()
-            : '';
+        ? base.description!.trim()
+        : '';
 
     return SubscriptionTierEntity(
       tier: base.tier ?? '',
@@ -57,9 +57,7 @@ extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
       canSelect: canSelect ?? option?.canSelect ?? true,
       isAvailable: isAvailable ?? option?.isAvailable ?? true,
       disabledReason: disabledReason ?? option?.disabledReason,
-      durationPrices: base.durationPrices
-          ?.map((dp) => dp.toEntity())
-          .toList(),
+      durationPrices: base.durationPrices?.map((dp) => dp.toEntity()).toList(),
     );
   }
 }

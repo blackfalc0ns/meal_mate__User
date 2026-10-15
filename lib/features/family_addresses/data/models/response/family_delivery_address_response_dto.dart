@@ -41,8 +41,7 @@ class FamilyDeliveryAddressChoiceDto {
   factory FamilyDeliveryAddressChoiceDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyDeliveryAddressChoiceDtoFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$FamilyDeliveryAddressChoiceDtoToJson(this);
+  Map<String, dynamic> toJson() => _$FamilyDeliveryAddressChoiceDtoToJson(this);
 }
 
 @JsonSerializable()

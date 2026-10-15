@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 export 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
 

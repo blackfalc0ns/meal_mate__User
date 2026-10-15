@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 

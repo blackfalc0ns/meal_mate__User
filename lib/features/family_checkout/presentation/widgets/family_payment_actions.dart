@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 
 class FamilyPaymentActions extends StatelessWidget {

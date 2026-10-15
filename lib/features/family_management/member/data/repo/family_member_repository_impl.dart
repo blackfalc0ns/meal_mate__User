@@ -8,6 +8,8 @@ import 'package:meal_meat_user/features/family_management/member/data/models/req
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
+import 'package:meal_meat_user/features/family_context/data/mapper/family_context_mapper.dart';
+import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_error_mapper.dart';
 
@@ -113,6 +115,29 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
   Future<ApiResult<void>> renewMemberSubscription(String renewalPath) async {
     try {
       await _remoteDataSource.renewMemberSubscription(renewalPath);
+      return const ApiSuccessResult(data: null);
+    } catch (e) {
+      return ApiErrorResult(failure: mapFamilyManagementError(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<FamilyCapabilityEntity>>> getMemberCapabilities(
+    String memberId,
+  ) async {
+    try {
+      final dtos = await _remoteDataSource.getMemberCapabilities(memberId);
+      final entities = dtos.map((d) => d.toEntity()).toList();
+      return ApiSuccessResult(data: entities);
+    } catch (e) {
+      return ApiErrorResult(failure: mapFamilyManagementError(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> detachMember(String memberId) async {
+    try {
+      await _remoteDataSource.detachMember(memberId);
       return const ApiSuccessResult(data: null);
     } catch (e) {
       return ApiErrorResult(failure: mapFamilyManagementError(e));

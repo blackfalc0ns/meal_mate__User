@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -34,9 +37,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         ..doIntent(const GetFamilyProgramsEvent()),
       child: BlocListener<FamilyProgramsViewModel, FamilyPlanState>(
         listenWhen: (previous, current) =>
-            previous.isPlanSaving &&
-            !current.isPlanSaving &&
-            current.failure != null,
+            previous.isPlanSaving && !current.isPlanSaving,
         listener: (context, state) {
           if (state.failure != null) {
             CustomSnackbar.showError(
@@ -46,6 +47,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                 state.failure!,
               ),
             );
+          } else {
+            context.pushNamed(AppRoutes.familyAddresses);
           }
         },
         child: isInFamilyFlow
@@ -123,6 +126,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
       );
     }
 
-    return FamilyProgramContent(state: state);
+    return FamilyProgramContent(
+      state: state,
+    ).animate().fadeIn(duration: 250.ms);
   }
 }

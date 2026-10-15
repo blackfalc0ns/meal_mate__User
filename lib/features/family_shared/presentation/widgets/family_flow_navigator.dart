@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_view_model.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/navigation/family_flow_route_observer.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scaffold.dart';
 
@@ -24,10 +26,19 @@ class _FamilyFlowNavigatorState extends State<FamilyFlowNavigator> {
   @override
   void initState() {
     super.initState();
-    _currentStep = ValueNotifier<int>(
-      FamilyFlowRouteObserver.stepFor(widget.initialRoute) ?? 0,
+    final initialStep =
+        FamilyFlowRouteObserver.stepFor(widget.initialRoute) ?? 0;
+    _currentStep = ValueNotifier<int>(initialStep);
+    _routeObserver = FamilyFlowRouteObserver(
+      _currentStep,
+      onStepChanged: (step) {
+        if (mounted) {
+          try {
+            context.read<FamilySubscriptionFlowViewModel>().setStep(step);
+          } catch (_) {}
+        }
+      },
     );
-    _routeObserver = FamilyFlowRouteObserver(_currentStep);
   }
 
   @override

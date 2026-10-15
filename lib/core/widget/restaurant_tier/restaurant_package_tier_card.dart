@@ -71,10 +71,10 @@ class RestaurantPackageTierCard extends StatelessWidget {
     final String displayTitle = resolvedTitle.isNotEmpty
         ? resolvedTitle
         : (isMax
-            ? (isAr ? 'ماكس' : 'Max')
-            : isPlus
-                ? (isAr ? 'بلس' : 'Plus')
-                : (isAr ? 'سيلكت' : 'Select'));
+              ? (isAr ? 'ماكس' : 'Max')
+              : isPlus
+              ? (isAr ? 'بلس' : 'Plus')
+              : (isAr ? 'سيلكت' : 'Select'));
 
     final countLabel = package.restaurantCount > 0
         ? '+${package.restaurantCount}'

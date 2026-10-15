@@ -4862,11 +4862,95 @@ abstract class AppLocalizations {
   /// **'Access changes saved successfully'**
   String get family_member_access_save_success;
 
+  /// No description provided for @family_member_access_password_already_issued.
+  ///
+  /// In en, this message translates to:
+  /// **'A password has already been issued for this account. Use explicit reset if you need to generate a new password.'**
+  String get family_member_access_password_already_issued;
+
+  /// No description provided for @family_member_access_explicit_reset_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Temporary Password'**
+  String get family_member_access_explicit_reset_title;
+
+  /// No description provided for @family_member_access_explicit_reset_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The previous temporary password cannot be recovered in plaintext. Generating a new temporary password will invalidate the previous one. Do you want to proceed?'**
+  String get family_member_access_explicit_reset_message;
+
+  /// No description provided for @family_member_access_explicit_reset_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Reset'**
+  String get family_member_access_explicit_reset_button;
+
   /// No description provided for @family_member_permissions_save_success.
   ///
   /// In en, this message translates to:
   /// **'Permissions saved successfully'**
   String get family_member_permissions_save_success;
+
+  /// No description provided for @family_permission_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Details'**
+  String get family_permission_details_title;
+
+  /// No description provided for @family_permission_description_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No additional description provided.'**
+  String get family_permission_description_empty;
+
+  /// No description provided for @family_permission_current_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Status'**
+  String get family_permission_current_status;
+
+  /// No description provided for @family_permission_status_enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get family_permission_status_enabled;
+
+  /// No description provided for @family_permission_status_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get family_permission_status_disabled;
+
+  /// No description provided for @family_permission_manager_configurable.
+  ///
+  /// In en, this message translates to:
+  /// **'Configurable by Manager'**
+  String get family_permission_manager_configurable;
+
+  /// No description provided for @family_permission_fixed_state.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed by system (not configurable)'**
+  String get family_permission_fixed_state;
+
+  /// No description provided for @family_permission_required_grants.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires read grants: {permissions}'**
+  String family_permission_required_grants(String permissions);
+
+  /// No description provided for @family_permission_conflict_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions were changed by another session. Refreshed with latest data.'**
+  String get family_permission_conflict_error;
+
+  /// No description provided for @family_permission_close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get family_permission_close;
 
   /// No description provided for @family_member_renewal_success.
   ///
@@ -13279,6 +13363,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment gateway is currently unavailable. Please try again later.'**
   String get campaign_error_provider_unavailable;
+
+  /// No description provided for @family_member_detached_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Detached'**
+  String get family_member_detached_label;
+
+  /// No description provided for @family_member_disabled_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get family_member_disabled_label;
+
+  /// No description provided for @family_member_setup_required_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Required'**
+  String get family_member_setup_required_label;
+
+  /// No description provided for @family_member_paid_preparing_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get family_member_paid_preparing_label;
+
+  /// No description provided for @family_member_fulfillment_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription is being prepared. The calendar will appear when preparation is complete.'**
+  String get family_member_fulfillment_pending;
+
+  /// No description provided for @family_permission_info_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Details'**
+  String get family_permission_info_title;
+
+  /// No description provided for @family_permission_current_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Value'**
+  String get family_permission_current_value;
+
+  /// No description provided for @family_permission_unsupported_state.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported'**
+  String get family_permission_unsupported_state;
+
+  /// No description provided for @family_permissions_conflict_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions were updated by another session. Please review and try again.'**
+  String get family_permissions_conflict_message;
+
+  /// No description provided for @family_detach_member_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Detach Member'**
+  String get family_detach_member_title;
+
+  /// No description provided for @family_detach_member_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to detach this member from family management? They will retain their subscription independently.'**
+  String get family_detach_member_confirm;
+
+  /// No description provided for @family_detach_member_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Detach'**
+  String get family_detach_member_action;
+
+  /// No description provided for @family_detach_member_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member detached successfully.'**
+  String get family_detach_member_success;
+
+  /// No description provided for @family_detach_blocked_financial_intent.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot detach member with pending checkout or payment.'**
+  String get family_detach_blocked_financial_intent;
+
+  /// No description provided for @family_detach_requires_active_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Member must have completed active account login before detachment.'**
+  String get family_detach_requires_active_account;
+
+  /// No description provided for @family_credential_reset_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'The old password cannot be recovered. A new temporary password will be generated.'**
+  String get family_credential_reset_warning;
+
+  /// No description provided for @family_credential_already_issued.
+  ///
+  /// In en, this message translates to:
+  /// **'Password already issued. An explicit reset is required to generate a new password.'**
+  String get family_credential_already_issued;
+
+  /// No description provided for @family_credential_reset_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get family_credential_reset_action;
+
+  /// No description provided for @family_permission_prerequisites.
+  ///
+  /// In en, this message translates to:
+  /// **'Prerequisites:'**
+  String get family_permission_prerequisites;
 }
 
 class _AppLocalizationsDelegate

@@ -5,6 +5,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/presentation/models/family_member_form_validation.dart';
 
 void main() {
   group('Family Setup Contract Acceptance Tests', () {
@@ -36,7 +37,7 @@ void main() {
         expect(zeroDuration.containsKey('durationDays'), isFalse);
 
         // 4. Reset/clear sends all 4 pricing fields as explicit nulls
-        final reset = FamilyMemberPlanWriteRequestDto.clear().toJson();
+        final reset = const FamilyMemberPlanWriteRequestDto.clear().toJson();
         expect(reset, {
           'programId': null,
           'bundleId': null,
@@ -164,7 +165,7 @@ void main() {
     test(
       'does not auto-select InProgress members when subscribeNow is omitted',
       () {
-        final inProgressDto = FamilyMemberResponseDto(
+        final inProgressDto = const FamilyMemberResponseDto(
           memberId: 'mem-prog',
           displayName: 'Prog Member',
           role: 2,
@@ -177,7 +178,7 @@ void main() {
         expect(inProgressEntity.subscribeNow, isFalse);
         expect(inProgressEntity.checkoutSelected, isFalse);
 
-        final readyDto = FamilyMemberResponseDto(
+        final readyDto = const FamilyMemberResponseDto(
           memberId: 'mem-ready',
           displayName: 'Ready Member',
           role: 2,
@@ -190,7 +191,7 @@ void main() {
         expect(readyEntity.subscribeNow, isFalse);
         expect(readyEntity.checkoutSelected, isFalse);
 
-        final managerDto = FamilyMemberResponseDto(
+        final managerDto = const FamilyMemberResponseDto(
           memberId: 'mem-mgr',
           displayName: 'Manager Member',
           role: 1, // Manager
@@ -202,6 +203,61 @@ void main() {
         final managerEntity = managerDto.toEntity();
         expect(managerEntity.subscribeNow, isFalse);
         expect(managerEntity.checkoutSelected, isFalse);
+      },
+    );
+
+    test(
+      'member form validation validates phone, name, and age constraints',
+      () {
+        expect(
+          validateFamilyMemberPhone(''),
+          FamilyMemberPhoneValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberPhone('   '),
+          FamilyMemberPhoneValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberPhone(null),
+          FamilyMemberPhoneValidationError.invalid,
+        );
+        expect(validateFamilyMemberPhone('+96512345678'), isNull);
+
+        expect(
+          validateFamilyMemberName(''),
+          FamilyMemberNameValidationError.required,
+        );
+        expect(
+          validateFamilyMemberName('   '),
+          FamilyMemberNameValidationError.required,
+        );
+        expect(
+          validateFamilyMemberName(null),
+          FamilyMemberNameValidationError.required,
+        );
+        expect(validateFamilyMemberName('Fahad'), isNull);
+
+        expect(
+          validateFamilyMemberAge(''),
+          FamilyMemberAgeValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberAge('0'),
+          FamilyMemberAgeValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberAge('-5'),
+          FamilyMemberAgeValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberAge('121'),
+          FamilyMemberAgeValidationError.invalid,
+        );
+        expect(
+          validateFamilyMemberAge('abc'),
+          FamilyMemberAgeValidationError.invalid,
+        );
+        expect(validateFamilyMemberAge('25'), isNull);
       },
     );
   });

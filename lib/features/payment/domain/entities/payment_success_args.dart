@@ -1,4 +1,3 @@
-/// Arguments passed to PaymentSuccessScreen to display confirmed subscription details.
 class PaymentSuccessArgs {
   const PaymentSuccessArgs({
     required this.subscriptionId,
@@ -9,6 +8,9 @@ class PaymentSuccessArgs {
     this.paymentDate,
     this.startDate,
     this.endDate,
+    this.isFamily = false,
+    this.familyName,
+    this.memberCount,
   });
 
   final String subscriptionId;
@@ -19,4 +21,7 @@ class PaymentSuccessArgs {
   final String? paymentDate;
   final String? startDate;
   final String? endDate;
+  final bool isFamily;
+  final String? familyName;
+  final int? memberCount;
 }

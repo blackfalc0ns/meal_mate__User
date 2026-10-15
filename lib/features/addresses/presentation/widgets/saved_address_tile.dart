@@ -13,6 +13,7 @@ class SavedAddressTile extends StatelessWidget {
     required this.address,
     this.isDefault = false,
     this.canDelete = true,
+    this.canEdit = true,
     this.onEdit,
     this.onSetDefault,
     this.onDelete,
@@ -23,6 +24,7 @@ class SavedAddressTile extends StatelessWidget {
   final String address;
   final bool isDefault;
   final bool canDelete;
+  final bool canEdit;
   final VoidCallback? onEdit;
   final VoidCallback? onSetDefault;
   final VoidCallback? onDelete;
@@ -133,12 +135,22 @@ class SavedAddressTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.sm),
-          AddressActionMenuButton(
-            onEdit: onEdit,
-            onSetDefault: onSetDefault,
-            onDelete: onDelete,
-            canDelete: canDelete,
-          ),
+          if (canEdit)
+            AddressActionMenuButton(
+              onEdit: onEdit,
+              onSetDefault: onSetDefault,
+              onDelete: onDelete,
+              canDelete: canDelete,
+            )
+          else
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: Spacing.xs),
+              child: Icon(
+                Icons.lock_outline_rounded,
+                size: Spacing.iconSm,
+                color: color.outline,
+              ),
+            ),
         ],
       ),
     );

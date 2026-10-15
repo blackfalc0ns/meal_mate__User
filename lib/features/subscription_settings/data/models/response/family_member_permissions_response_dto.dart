@@ -65,12 +65,49 @@ class FamilyPermissionItemResponseDto {
     this.key,
     this.labelAr,
     this.labelEn,
+    this.descriptionAr,
+    this.descriptionEn,
     this.value,
+    this.isSupported,
+    this.isManagerConfigurable,
+    this.requiredPermissions,
   });
   final String? key;
   final String? labelAr;
   final String? labelEn;
+  final String? descriptionAr;
+  final String? descriptionEn;
   final bool? value;
+  final bool? isSupported;
+  final bool? isManagerConfigurable;
+  final List<String>? requiredPermissions;
+
+  String localizedLabel(bool isArabic) {
+    if (isArabic) {
+      final ar = labelAr?.trim() ?? '';
+      if (ar.isNotEmpty) return ar;
+      final en = labelEn?.trim() ?? '';
+      if (en.isNotEmpty) return en;
+      return key ?? '';
+    }
+    final en = labelEn?.trim() ?? '';
+    if (en.isNotEmpty) return en;
+    final ar = labelAr?.trim() ?? '';
+    if (ar.isNotEmpty) return ar;
+    return key ?? '';
+  }
+
+  String localizedDescription(bool isArabic) {
+    if (isArabic) {
+      final ar = descriptionAr?.trim() ?? '';
+      if (ar.isNotEmpty) return ar;
+      return descriptionEn?.trim() ?? '';
+    }
+    final en = descriptionEn?.trim() ?? '';
+    if (en.isNotEmpty) return en;
+    return descriptionAr?.trim() ?? '';
+  }
+
   factory FamilyPermissionItemResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyPermissionItemResponseDtoFromJson(json);
   Map<String, dynamic> toJson() =>

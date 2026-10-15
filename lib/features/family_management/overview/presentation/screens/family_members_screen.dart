@@ -9,6 +9,7 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_event.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_state.dart';
@@ -44,6 +45,10 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
     super.didChangeDependencies();
     if (_loaded) return;
     _loaded = true;
+    if (getIt.isRegistered<FamilyContextViewModel>() &&
+        getIt<FamilyContextViewModel>().state.contexts.isEmpty) {
+      getIt<FamilyContextViewModel>().loadFamilyContext();
+    }
     _viewModel.doIntent(
       LoadFamilyMembersEvent(locale: context.localization.localeName),
     );
@@ -55,10 +60,21 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
     super.dispose();
   }
 
+  bool _isViewerManager() {
+    if (getIt.isRegistered<FamilyContextViewModel>()) {
+      final state = getIt<FamilyContextViewModel>().state;
+      if (state.contexts.isNotEmpty) {
+        return state.hasManagerContext;
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isViewerManager = _isViewerManager();
 
     return BlocProvider.value(
       value: _viewModel,
@@ -124,14 +140,16 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
                             ),
                           _buildMemberCard(context, state.filteredMembers[i]),
                         ],
-                        const SizedBox(
-                          height: Spacing.familyMembersAddButtonTopGap,
-                        ),
-                        FamilyMembersAddButton(
-                          onPressed: () => context.pushNamed(
-                            AppRoutes.familySubscriptionSetup,
+                        if (isViewerManager) ...[
+                          const SizedBox(
+                            height: Spacing.familyMembersAddButtonTopGap,
                           ),
-                        ),
+                          FamilyMembersAddButton(
+                            onPressed: () => context.pushNamed(
+                              AppRoutes.familySubscriptionSetup,
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: Spacing.md),
                       ],
                     ),
@@ -159,6 +177,10 @@ class _FamilyMembersScreenState extends State<FamilyMembersScreen> {
       todayFilledCount: member.todayFilledCount,
       todayRequiredCount: member.todayRequiredCount,
       todayUiStatus: member.todayUiStatus,
+      isPaidPreparing: member.isPaidPreparingCalendar,
+      isDetached: member.isDetached,
+      isDisabled: member.isDisabled,
+      isSetupRequired: member.isSetupRequired,
     );
 
     return FamilyMembersListCard(

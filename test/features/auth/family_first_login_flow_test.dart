@@ -6,18 +6,21 @@ import 'package:meal_meat_user/core/services/session_persistence.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/core/biometric/biometric_service.dart';
 import 'package:meal_meat_user/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_resend_otp_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_set_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_verify_otp_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/login_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/family_first_login_verify_otp_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/response/login_response_dto.dart';
 import 'package:meal_meat_user/features/auth/data/repo/auth_repository_impl.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_resend_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_step_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/login_usecase.dart';
+import 'package:meal_meat_user/features/auth/domain/usecase/resend_family_first_login_otp_usecase.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/set_family_first_login_password_usecase.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/login_event.dart';
@@ -47,6 +50,15 @@ class _FakeAuthRemoteDataSource extends Fake implements AuthRemoteDataSource {
     FamilyFirstLoginSetPasswordRequestDto request,
   ) async {
     return setPasswordResponse!;
+  }
+
+  FamilyFirstLoginVerifyOtpResponseDto? resendOtpResponse;
+
+  @override
+  Future<FamilyFirstLoginVerifyOtpResponseDto> resendFamilyFirstLoginOtp(
+    FamilyFirstLoginResendOtpRequestDto request,
+  ) async {
+    return resendOtpResponse!;
   }
 }
 
@@ -110,6 +122,7 @@ void main() {
   late LoginUseCase loginUseCase;
   late VerifyFamilyFirstLoginOtpUseCase verifyOtpUseCase;
   late SetFamilyFirstLoginPasswordUseCase setPasswordUseCase;
+  late ResendFamilyFirstLoginOtpUseCase resendOtpUseCase;
   late _FakeBiometricService biometricService;
 
   setUp(() {
@@ -130,6 +143,7 @@ void main() {
     loginUseCase = LoginUseCase(repository);
     verifyOtpUseCase = VerifyFamilyFirstLoginOtpUseCase(repository);
     setPasswordUseCase = SetFamilyFirstLoginPasswordUseCase(repository);
+    resendOtpUseCase = ResendFamilyFirstLoginOtpUseCase(repository);
     biometricService = _FakeBiometricService();
   });
 
@@ -220,6 +234,31 @@ void main() {
         expect(pushNotificationService.registerTokenCallCount, 1);
       },
     );
+
+    test(
+      'resendFamilyFirstLoginOtp rotates challenge token and does not persist session',
+      () async {
+        remoteDataSource.resendOtpResponse =
+            const FamilyFirstLoginVerifyOtpResponseDto(
+          nextStep: 'family_verify_otp',
+          loginChallengeToken: 'resend_rotated_token',
+          loginChallengeExpiresAtUtc: '2026-10-15T12:00:00.000Z',
+        );
+
+        final result = await repository.resendFamilyFirstLoginOtp(
+          const FamilyFirstLoginResendOtpRequestEntity(
+            loginChallengeToken: 'initial_challenge_token',
+          ),
+        );
+
+        expect(result, isA<ApiSuccessResult<FamilyFirstLoginStepEntity>>());
+        final entity =
+            (result as ApiSuccessResult<FamilyFirstLoginStepEntity>).data;
+        expect(entity.nextStep, 'family_verify_otp');
+        expect(entity.loginChallengeToken, 'resend_rotated_token');
+        expect(tokenService.saveSessionCallCount, 0);
+      },
+    );
   });
 
   group('Family First Login - LoginViewModel Sequence', () {
@@ -231,6 +270,7 @@ void main() {
         biometricService,
         verifyFamilyFirstLoginOtpUseCase: verifyOtpUseCase,
         setFamilyFirstLoginPasswordUseCase: setPasswordUseCase,
+        resendFamilyFirstLoginOtpUseCase: resendOtpUseCase,
       );
     });
 
@@ -374,5 +414,46 @@ void main() {
       expect(viewModel.state.familyChallengeToken, isNull);
       expect(viewModel.state.isFamilyVerifyOtpPending, isFalse);
     });
+
+    test(
+      'ResendFamilyFirstLoginOtpEvent rotates familyChallengeToken and sets resendOtpSent',
+      () async {
+        remoteDataSource.loginResponse = const LoginResponseDto(
+          userId: 'user_family_4',
+          accessToken: null,
+          refreshToken: null,
+          nextStep: 'family_verify_otp',
+          loginChallengeToken: 'initial_challenge',
+          isAuthenticated: false,
+        );
+
+        viewModel.doIntent(
+          const SubmitLoginEvent(
+            LoginRequestEntity(
+              phone: '55555555',
+              password: 'temp_pwd',
+              countryCode: '+965',
+            ),
+            rememberMe: false,
+          ),
+        );
+
+        await pumpEventQueue();
+        expect(viewModel.state.familyChallengeToken, 'initial_challenge');
+
+        remoteDataSource.resendOtpResponse =
+            const FamilyFirstLoginVerifyOtpResponseDto(
+          nextStep: 'family_verify_otp',
+          loginChallengeToken: 'resend_rotated_challenge',
+        );
+
+        viewModel.doIntent(const ResendFamilyFirstLoginOtpEvent());
+        await pumpEventQueue();
+
+        expect(viewModel.state.familyChallengeToken, 'resend_rotated_challenge');
+        expect(viewModel.state.resendOtpSent, isTrue);
+        expect(viewModel.state.isResending, isFalse);
+      },
+    );
   });
 }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 
 class FamilyFlowRouteObserver extends NavigatorObserver {
-  FamilyFlowRouteObserver(this.currentStep);
+  FamilyFlowRouteObserver(this.currentStep, {this.onStepChanged});
 
   final ValueNotifier<int> currentStep;
+  final ValueChanged<int>? onStepChanged;
 
   static int? stepFor(String? routeName) => switch (routeName) {
     AppRoutes.familySubscriptionSetup => 0,
@@ -38,6 +39,7 @@ class FamilyFlowRouteObserver extends NavigatorObserver {
     final nextStep = stepFor(route.settings.name);
     if (nextStep != null && currentStep.value != nextStep) {
       currentStep.value = nextStep;
+      onStepChanged?.call(nextStep);
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
@@ -16,6 +16,9 @@ class FamilyMemberState {
     this.saveSuccessCount = 0,
     this.failure,
     this.saveFailure,
+    this.lastCredentialOperationKey,
+    this.requiresExplicitReset = false,
+    this.isDetached = false,
   });
 
   final FamilyMemberDetailEntity? detail;
@@ -29,6 +32,9 @@ class FamilyMemberState {
   final int saveSuccessCount;
   final Failure? failure;
   final Failure? saveFailure;
+  final String? lastCredentialOperationKey;
+  final bool requiresExplicitReset;
+  final bool isDetached;
 
   bool get isLoading =>
       isLoadingDetail || isLoadingAccess || isLoadingPermissions || isSaving;
@@ -45,8 +51,12 @@ class FamilyMemberState {
     int? saveSuccessCount,
     Failure? failure,
     Failure? saveFailure,
+    String? lastCredentialOperationKey,
+    bool? requiresExplicitReset,
+    bool? isDetached,
     bool clearFailure = false,
     bool clearSaveFailure = false,
+    bool clearLastCredentialOperationKey = false,
   }) {
     return FamilyMemberState(
       detail: detail ?? this.detail,
@@ -60,6 +70,12 @@ class FamilyMemberState {
       saveSuccessCount: saveSuccessCount ?? this.saveSuccessCount,
       failure: clearFailure ? null : (failure ?? this.failure),
       saveFailure: clearSaveFailure ? null : (saveFailure ?? this.saveFailure),
+      lastCredentialOperationKey: clearLastCredentialOperationKey
+          ? null
+          : (lastCredentialOperationKey ?? this.lastCredentialOperationKey),
+      requiresExplicitReset:
+          requiresExplicitReset ?? this.requiresExplicitReset,
+      isDetached: isDetached ?? this.isDetached,
     );
   }
 }

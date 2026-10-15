@@ -197,42 +197,59 @@ void main() {
     expect(calendarRepo.lastCalendarSubscriptionId, 'sub-sarah');
   });
 
-  test('does not reuse previous subscription when selected member has none', () async {
-    final calendarRepo = _FakeCalendarRepository();
-    final viewModel = FamilyCalendarViewModel(
-      null,
-      GetCalendarUseCase(calendarRepo),
-      GetCalendarDayUseCase(calendarRepo),
-    );
-    addTearDown(viewModel.close);
+  test(
+    'does not reuse previous subscription when selected member has none',
+    () async {
+      final calendarRepo = _FakeCalendarRepository();
+      final viewModel = FamilyCalendarViewModel(
+        null,
+        GetCalendarUseCase(calendarRepo),
+        GetCalendarDayUseCase(calendarRepo),
+      );
+      addTearDown(viewModel.close);
 
-    viewModel.doIntent(
-      InitFamilyCalendarEvent(
-        args: FamilyMemberCalendarArgs(
-          memberId: 'mem-1',
-          subscriptionId: 'sub-a',
-          members: const [
-            FamilyMemberSummaryEntity(
-              memberId: 'mem-1', displayName: 'A', role: 1, ageYears: 10,
-              isPaused: false, subscriptionId: 'sub-a', programName: '',
-              remainingDays: 1, setupStatus: 1,
-            ),
-            FamilyMemberSummaryEntity(
-              memberId: 'mem-2', displayName: 'B', role: 1, ageYears: 10,
-              isPaused: false, subscriptionId: null, programName: '',
-              remainingDays: 1, setupStatus: 1,
-            ),
-          ],
+      viewModel.doIntent(
+        InitFamilyCalendarEvent(
+          args: FamilyMemberCalendarArgs(
+            memberId: 'mem-1',
+            subscriptionId: 'sub-a',
+            members: const [
+              FamilyMemberSummaryEntity(
+                memberId: 'mem-1',
+                displayName: 'A',
+                role: 1,
+                ageYears: 10,
+                isPaused: false,
+                subscriptionId: 'sub-a',
+                programName: '',
+                remainingDays: 1,
+                setupStatus: 1,
+              ),
+              FamilyMemberSummaryEntity(
+                memberId: 'mem-2',
+                displayName: 'B',
+                role: 1,
+                ageYears: 10,
+                isPaused: false,
+                subscriptionId: null,
+                programName: '',
+                remainingDays: 1,
+                setupStatus: 1,
+              ),
+            ],
+          ),
+          initialDate: DateTime(2026, 9, 20),
+          localeName: 'ar',
         ),
-        initialDate: DateTime(2026, 9, 20),
-        localeName: 'ar',
-      ),
-    );
-    await Future<void>.delayed(Duration.zero);
-    viewModel.doIntent(const SelectFamilyMemberEvent(index: 1, localeName: 'ar'));
-    await Future<void>.delayed(Duration.zero);
+      );
+      await Future<void>.delayed(Duration.zero);
+      viewModel.doIntent(
+        const SelectFamilyMemberEvent(index: 1, localeName: 'ar'),
+      );
+      await Future<void>.delayed(Duration.zero);
 
-    expect(calendarRepo.lastCalendarSubscriptionId, 'sub-a');
-    expect(viewModel.state.activeSubscriptionId, isEmpty);
-  });
+      expect(calendarRepo.lastCalendarSubscriptionId, 'sub-a');
+      expect(viewModel.state.activeSubscriptionId, isEmpty);
+    },
+  );
 }

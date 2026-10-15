@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_view_model.dart';
 
 class FamilyFlowScope extends StatefulWidget {
   const FamilyFlowScope({super.key, required this.child, this.targetMemberId});
@@ -7,9 +9,24 @@ class FamilyFlowScope extends StatefulWidget {
   final Widget child;
   final String? targetMemberId;
 
-  static String? targetMemberIdOf(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>()
-      ?.targetMemberId;
+  static String? targetMemberIdOf(BuildContext context) {
+    try {
+      final vmMemberId = context
+          .select<FamilySubscriptionFlowViewModel, String?>(
+            (vm) => vm.state.targetMemberId,
+          );
+      if (vmMemberId != null) return vmMemberId;
+    } catch (_) {}
+    return context
+        .dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>()
+        ?.targetMemberId;
+  }
+
+  static void setTargetMember(BuildContext context, String? memberId) {
+    try {
+      context.read<FamilySubscriptionFlowViewModel>().setTargetMember(memberId);
+    } catch (_) {}
+  }
 
   static bool isActive(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>() !=
@@ -44,6 +61,30 @@ class FamilyFlowScope extends StatefulWidget {
 
 class _FamilyFlowScopeState extends State<FamilyFlowScope> {
   final ValueNotifier<String?> _familyName = ValueNotifier<String?>(null);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.targetMemberId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          FamilyFlowScope.setTargetMember(context, widget.targetMemberId);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant FamilyFlowScope oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.targetMemberId != oldWidget.targetMemberId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          FamilyFlowScope.setTargetMember(context, widget.targetMemberId);
+        }
+      });
+    }
+  }
 
   @override
   void dispose() {

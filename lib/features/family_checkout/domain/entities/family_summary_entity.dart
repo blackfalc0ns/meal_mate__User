@@ -239,12 +239,11 @@ class FamilySummaryEntity {
   });
 
   /// The scope of new subscriptions on this checkout invoice.
-  int get invoiceSubscribersCount =>
-      participantCount > 0
-          ? participantCount
-          : (selectedNewSubscriberCount > 0
-              ? selectedNewSubscriberCount
-              : newMembersCount);
+  int get invoiceSubscribersCount => participantCount > 0
+      ? participantCount
+      : (selectedNewSubscriberCount > 0
+            ? selectedNewSubscriberCount
+            : newMembersCount);
 
   String get discountLabel {
     final percent = familyDiscountPercent * 100;

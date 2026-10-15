@@ -8,14 +8,14 @@ class FamilyReviewActionsBar extends StatelessWidget {
   const FamilyReviewActionsBar({
     super.key,
     required this.memberName,
-    required this.onEdit,
-    required this.onConfirm,
+    this.onEdit,
+    this.onConfirm,
     this.isLoading = false,
   });
 
   final String memberName;
-  final VoidCallback onEdit;
-  final VoidCallback onConfirm;
+  final VoidCallback? onEdit;
+  final VoidCallback? onConfirm;
   final bool isLoading;
 
   @override

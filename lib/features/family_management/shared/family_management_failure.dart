@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 class FamilyManagementFailure extends Failure {
   FamilyManagementFailure({
@@ -15,6 +15,7 @@ class FamilyManagementFailure extends Failure {
     this.isAuthForbidden = false,
     this.isFulfillmentNotReady = false,
     this.isNetworkError = false,
+    this.isPasswordAlreadyIssued = false,
   });
 
   final int? statusCode;
@@ -27,6 +28,7 @@ class FamilyManagementFailure extends Failure {
   final bool isAuthForbidden;
   final bool isFulfillmentNotReady;
   final bool isNetworkError;
+  final bool isPasswordAlreadyIssued;
 
   bool get isUnknown => code == 'unknown' || code == 'UNKNOWN_ERROR';
 

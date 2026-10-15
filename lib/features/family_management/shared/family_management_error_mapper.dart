@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/api_exception_mapper.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_failure.dart';
 
 FamilyManagementFailure mapFamilyManagementError(Object error) {
@@ -108,8 +108,11 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
       code == SubscriptionErrorCodes.familyAccessPaused ||
       code == SubscriptionErrorCodes.familyMemberPaused;
   final isPermissionConflict =
+      statusCode == 409 ||
       code == SubscriptionErrorCodes.familyPermissionsChanged ||
-      code == SubscriptionErrorCodes.familyPermissionsVersionRequired;
+      code == SubscriptionErrorCodes.familyPermissionsVersionRequired ||
+      code == 'family.permissions_changed' ||
+      code == 'family.permissions_version_required';
   final isQuoteChanged = code == SubscriptionErrorCodes.familyQuoteChanged;
   final isAuthForbidden =
       statusCode == 403 ||
@@ -118,6 +121,11 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
   final isFulfillmentNotReady =
       code == SubscriptionErrorCodes.calendarFulfillmentNotReady ||
       code == 'fulfillment_not_ready';
+  final isPasswordAlreadyIssued =
+      code == 'passwordAlreadyIssued' ||
+      code == 'family.password_already_issued' ||
+      code == 'requiresExplicitReset' ||
+      code == 'family.requires_explicit_reset';
 
   return FamilyManagementFailure(
     errorMessage: message,
@@ -133,5 +141,6 @@ FamilyManagementFailure mapFamilyManagementError(Object error) {
     isAuthForbidden: isAuthForbidden,
     isFulfillmentNotReady: isFulfillmentNotReady,
     isNetworkError: isNetwork,
+    isPasswordAlreadyIssued: isPasswordAlreadyIssued,
   );
 }

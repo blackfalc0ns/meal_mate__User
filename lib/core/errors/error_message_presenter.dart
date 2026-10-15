@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 class ErrorMessagePresenter {
   const ErrorMessagePresenter._();
+
+  static String mapCode(BuildContext context, String code) {
+    return mapFailureMessage(context, code);
+  }
 
   static String fromFailure(BuildContext context, Failure failure) {
     final couponMessage = _tryExtractCouponMessage(context, failure.exception);

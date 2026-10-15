@@ -27,6 +27,7 @@ import '../../features/auth/domain/usecase/reset_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_phone_usecase.dart';
 import '../../features/auth/domain/usecase/verify_family_first_login_otp_usecase.dart';
 import '../../features/auth/domain/usecase/set_family_first_login_password_usecase.dart';
+import '../../features/auth/domain/usecase/resend_family_first_login_otp_usecase.dart';
 import '../../features/family_context/data/data_source/family_context_remote_data_source.dart';
 import '../../features/family_context/data/data_source/family_context_remote_data_source_impl.dart';
 import '../../features/family_context/data/repo/family_context_repository_impl.dart';
@@ -62,6 +63,7 @@ import '../../features/family_management/overview/data/repo/family_overview_repo
 import '../../features/family_management/overview/domain/repo/family_overview_repository.dart';
 import '../../features/family_management/overview/domain/usecase/get_family_home_usecase.dart';
 import '../../features/family_management/overview/domain/usecase/get_family_members_usecase.dart';
+import '../../features/family_management/overview/domain/usecase/get_family_switcher_usecase.dart';
 import '../../features/family_management/overview/presentation/manager/family_overview_view_model.dart';
 import '../../features/family_management/member/data/data_source/family_member_remote_data_source.dart';
 import '../../features/family_management/member/data/data_source/family_member_remote_data_source_impl.dart';
@@ -74,6 +76,8 @@ import '../../features/family_management/member/domain/usecase/get_family_member
 import '../../features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
 import '../../features/family_management/member/domain/usecase/update_family_member_basic_info_usecase.dart';
 import '../../features/family_management/member/domain/usecase/renew_family_member_subscription_usecase.dart';
+import '../../features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
+import '../../features/family_management/member/domain/usecase/detach_family_member_usecase.dart';
 import '../../features/family_management/member/presentation/manager/family_member_view_model.dart';
 import '../../features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart';
@@ -81,6 +85,8 @@ import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
+import '../../features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
+import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
 import '../../features/offers/data/data_source/offers_remote_data_source.dart';
 import '../../features/offers/data/data_source/offers_remote_data_source_impl.dart';
 import '../../features/offers/data/repo/offers_repository_impl.dart';
@@ -167,6 +173,10 @@ Future<void> configureDependencies() async {
         setFamilyFirstLoginPasswordUseCase:
             getIt.isRegistered<SetFamilyFirstLoginPasswordUseCase>()
             ? getIt<SetFamilyFirstLoginPasswordUseCase>()
+            : null,
+        resendFamilyFirstLoginOtpUseCase:
+            getIt.isRegistered<ResendFamilyFirstLoginOtpUseCase>()
+            ? getIt<ResendFamilyFirstLoginOtpUseCase>()
             : null,
         getMyFamilyContextsUseCase:
             getIt.isRegistered<GetMyFamilyContextsUseCase>()
@@ -268,6 +278,11 @@ Future<void> configureDependencies() async {
       () => GetFamilyMembersUseCase(getIt()),
     );
   }
+  if (!getIt.isRegistered<GetFamilySwitcherUseCase>()) {
+    getIt.registerFactory<GetFamilySwitcherUseCase>(
+      () => GetFamilySwitcherUseCase(getIt()),
+    );
+  }
   if (!getIt.isRegistered<FamilyOverviewViewModel>()) {
     getIt.registerFactory<FamilyOverviewViewModel>(
       () => FamilyOverviewViewModel(getIt(), getIt()),
@@ -319,9 +334,20 @@ Future<void> configureDependencies() async {
       () => RenewFamilyMemberSubscriptionUseCase(getIt()),
     );
   }
+  if (!getIt.isRegistered<GetFamilyMemberCapabilitiesUseCase>()) {
+    getIt.registerFactory<GetFamilyMemberCapabilitiesUseCase>(
+      () => GetFamilyMemberCapabilitiesUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<DetachFamilyMemberUseCase>()) {
+    getIt.registerFactory<DetachFamilyMemberUseCase>(
+      () => DetachFamilyMemberUseCase(getIt()),
+    );
+  }
   if (!getIt.isRegistered<FamilyMemberViewModel>()) {
     getIt.registerFactory<FamilyMemberViewModel>(
       () => FamilyMemberViewModel(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),
@@ -333,6 +359,16 @@ Future<void> configureDependencies() async {
     );
   }
   // Family Management - Calendar
+  if (!getIt.isRegistered<ConfirmCalendarDayMealsUseCase>()) {
+    getIt.registerFactory<ConfirmCalendarDayMealsUseCase>(
+      () => ConfirmCalendarDayMealsUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<AutoSelectCalendarDayUseCase>()) {
+    getIt.registerFactory<AutoSelectCalendarDayUseCase>(
+      () => AutoSelectCalendarDayUseCase(getIt()),
+    );
+  }
   if (!getIt.isRegistered<FamilyCalendarViewModel>()) {
     getIt.registerFactory<FamilyCalendarViewModel>(
       () => FamilyCalendarViewModel(
@@ -357,6 +393,15 @@ Future<void> configureDependencies() async {
         getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
             ? getIt<SetCalendarDayRestaurantUseCase>()
             : null,
+        getIt.isRegistered<ConfirmCalendarDayMealsUseCase>()
+            ? getIt<ConfirmCalendarDayMealsUseCase>()
+            : null,
+        getIt.isRegistered<AutoSelectCalendarDayUseCase>()
+            ? getIt<AutoSelectCalendarDayUseCase>()
+            : null,
+        getIt.isRegistered<GetFamilyMemberCapabilitiesUseCase>()
+            ? getIt<GetFamilyMemberCapabilitiesUseCase>()
+            : null,
       ),
     );
   }
@@ -369,6 +414,11 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<SetFamilyFirstLoginPasswordUseCase>()) {
     getIt.registerFactory<SetFamilyFirstLoginPasswordUseCase>(
       () => SetFamilyFirstLoginPasswordUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<ResendFamilyFirstLoginOtpUseCase>()) {
+    getIt.registerFactory<ResendFamilyFirstLoginOtpUseCase>(
+      () => ResendFamilyFirstLoginOtpUseCase(getIt()),
     );
   }
   // Family Context
@@ -388,7 +438,7 @@ Future<void> configureDependencies() async {
     );
   }
   if (!getIt.isRegistered<FamilyContextViewModel>()) {
-    getIt.registerFactory<FamilyContextViewModel>(
+    getIt.registerLazySingleton<FamilyContextViewModel>(
       () => FamilyContextViewModel(getIt()),
     );
   }

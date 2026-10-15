@@ -328,7 +328,10 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
                     FamilyDayCurrentRestaurantCard(
                       restaurantName: restaurantName,
-                      onChangeRestaurant: _openRestaurants,
+                      onChangeRestaurant:
+                          (day?.isEditable == true && state.canSelectRestaurant)
+                          ? () => _openRestaurants()
+                          : null,
                     ),
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
                     if (state.isLoadingCalendar && !state.hasCalendarData)
@@ -360,7 +363,11 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                             iconType: FamilyDayMealIconType.lunch,
                             isEmpty: true,
                           ),
-                          onEditPressed: () => _openRestaurants(null),
+                          onEditPressed:
+                              (day?.isEditable == true &&
+                                  state.canEditMealsAndDays)
+                              ? () => _openRestaurants(null)
+                              : null,
                         ),
                       )
                     else
@@ -381,32 +388,42 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                             protein: meal.protein,
                             fat: meal.fat,
                           ),
-                          onEditPressed: () => _openMeals(
-                            meal.slot.isNotEmpty ? meal.slot : meal.mealType,
-                          ),
+                          onEditPressed:
+                              (day?.isEditable == true && state.canUnitExchange)
+                              ? () => _openMeals(
+                                  meal.slot.isNotEmpty
+                                      ? meal.slot
+                                      : meal.mealType,
+                                )
+                              : null,
                         ),
                         const SizedBox(height: Spacing.familyDayMealListGap),
                       ],
                     const SizedBox(height: Spacing.familyDayReviewButtonTopGap),
                     FamilyDayReviewButton(
                       label: locale.family_day_review_meals_button,
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          AppRoutes.familyReviewMemberMeals,
-                          arguments: FamilyReviewMemberMealsArgs(
-                            subscriptionId:
-                                state.activeSubscriptionId ??
-                                widget.args?.subscriptionId ??
-                                '',
-                            date: _selectedDate,
-                            memberName: state.displayName.isNotEmpty
-                                ? state.displayName
-                                : (widget.args?.memberName ?? ''),
-                            memberId: widget.args?.memberId,
-                            viewModel: _viewModel,
-                          ),
-                        );
-                      },
+                      onPressed:
+                          (day?.isEditable == true &&
+                              dayMeals.isNotEmpty &&
+                              state.canConfirmMeals)
+                          ? () {
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.familyReviewMemberMeals,
+                                arguments: FamilyReviewMemberMealsArgs(
+                                  subscriptionId:
+                                      state.activeSubscriptionId ??
+                                      widget.args?.subscriptionId ??
+                                      '',
+                                  date: _selectedDate,
+                                  memberName: state.displayName.isNotEmpty
+                                      ? state.displayName
+                                      : (widget.args?.memberName ?? ''),
+                                  memberId: widget.args?.memberId,
+                                  viewModel: _viewModel,
+                                ),
+                              );
+                            }
+                          : null,
                     ),
                     const SizedBox(height: Spacing.familyDaySelectedTopGap),
                     FamilyDaySelectedStatus(

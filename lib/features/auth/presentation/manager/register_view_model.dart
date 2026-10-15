@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/register_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/resend_phone_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';

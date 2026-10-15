@@ -8,11 +8,11 @@ class FamilyDayCurrentRestaurantCard extends StatelessWidget {
   const FamilyDayCurrentRestaurantCard({
     super.key,
     required this.restaurantName,
-    required this.onChangeRestaurant,
+    this.onChangeRestaurant,
   });
 
   final String restaurantName;
-  final VoidCallback onChangeRestaurant;
+  final VoidCallback? onChangeRestaurant;
 
   @override
   Widget build(BuildContext context) {

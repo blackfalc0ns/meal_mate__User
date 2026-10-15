@@ -5,7 +5,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_event.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_state.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_view_model.dart';

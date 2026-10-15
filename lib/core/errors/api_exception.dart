@@ -59,4 +59,3 @@ class ApiException implements Exception {
     return message;
   }
 }
-

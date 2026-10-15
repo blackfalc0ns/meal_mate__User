@@ -17,14 +17,30 @@ class FamilyMembersListCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final statusColor = member.isPaused
+    final statusColor = member.isDetached
+        ? color.outline
+        : member.isDisabled
         ? color.error
+        : member.isPaused
+        ? color.error
+        : member.isPaidPreparing
+        ? color.primary
+        : member.isSetupRequired
+        ? color.secondary
         : member.hasPlan && member.remainingDays > 0
         ? color.primary
         : color.secondary;
 
-    final statusLabel = member.isPaused
+    final statusLabel = member.isDetached
+        ? locale.family_member_detached_label
+        : member.isDisabled
+        ? locale.family_member_disabled_label
+        : member.isPaused
         ? locale.family_member_paused_label
+        : member.isPaidPreparing
+        ? locale.family_member_paid_preparing_label
+        : member.isSetupRequired
+        ? locale.family_member_setup_required_label
         : member.hasPlan && member.remainingDays > 0
         ? locale.family_manage_active
         : locale.family_member_in_progress;

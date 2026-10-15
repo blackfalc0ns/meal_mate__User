@@ -18,6 +18,8 @@ abstract class EndPoints {
       '/api/v1/auth/customers/family-first-login/verify-otp';
   static const String familyFirstLoginSetPassword =
       '/api/v1/auth/customers/family-first-login/set-password';
+  static const String familyFirstLoginResendOtp =
+      '/api/v1/auth/customers/family-first-login/resend-otp';
   static const String refresh = '/api/v1/auth/refresh';
   static const String logout = '/api/v1/auth/logout';
   static const String callingCodes = '/api/v1/catalog/calling-codes';
@@ -212,6 +214,10 @@ abstract class EndPoints {
       '/api/v1/customer/family/members/{memberId}/access';
   static const String familyMemberPermissions =
       '/api/v1/customer/family/members/{memberId}/permissions';
+  static const String familyMemberCapabilities =
+      '/api/v1/customer/family/members/{memberId}/capabilities';
+  static const String familyMemberDetach =
+      '/api/v1/customer/family/members/{memberId}/detach';
   static const String customerSubscriptionUpgradeOptions =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-options';
   static const String customerSubscriptionUpgradeSummary =
@@ -220,6 +226,12 @@ abstract class EndPoints {
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests';
   static const String customerSubscriptionUpgradeStatus =
       '/api/v1/customer/subscriptions/{subscriptionId}/upgrade-requests/{upgradeId}';
+  static const String customerSubscriptionAutoRenewal =
+      '/api/v1/customer/subscriptions/{subscriptionId}/auto-renewal';
+  static const String customerSubscriptionAutoRenewalConsent =
+      '/api/v1/customer/subscriptions/{subscriptionId}/auto-renewal/consent';
+  static const String customerSubscriptionInvoices =
+      '/api/v1/customer/subscriptions/{subscriptionId}/invoices';
   static const String customerDeviceTokens =
       '/api/v1/customers/me/device-tokens';
   static const String customerNotifications =

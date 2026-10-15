@@ -6,25 +6,25 @@ extension SubscriptionTierResponseDtoMapper on SubscriptionTierResponseDto {
     final resolvedNameAr = (nameAr?.trim().isNotEmpty ?? false)
         ? nameAr!.trim()
         : (name?.trim().isNotEmpty ?? false)
-            ? name!.trim()
-            : '';
+        ? name!.trim()
+        : '';
     final resolvedNameEn = (nameEn?.trim().isNotEmpty ?? false)
         ? nameEn!.trim()
         : (tier?.trim().isNotEmpty ?? false)
-            ? tier!.trim()
-            : (name?.trim().isNotEmpty ?? false)
-                ? name!.trim()
-                : '';
+        ? tier!.trim()
+        : (name?.trim().isNotEmpty ?? false)
+        ? name!.trim()
+        : '';
     final resolvedDescAr = (descriptionAr?.trim().isNotEmpty ?? false)
         ? descriptionAr!.trim()
         : (description?.trim().isNotEmpty ?? false)
-            ? description!.trim()
-            : '';
+        ? description!.trim()
+        : '';
     final resolvedDescEn = (descriptionEn?.trim().isNotEmpty ?? false)
         ? descriptionEn!.trim()
         : (description?.trim().isNotEmpty ?? false)
-            ? description!.trim()
-            : '';
+        ? description!.trim()
+        : '';
 
     return SubscriptionTierEntity(
       tier: tier ?? '',

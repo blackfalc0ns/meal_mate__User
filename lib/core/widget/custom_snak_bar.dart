@@ -6,7 +6,7 @@ import '../../config/theme/colors.dart';
 import '../../config/theme/font_manager.dart';
 import '../../config/theme/spacing.dart';
 import '../../config/theme/styles_manager.dart';
-import '../network/failuer_mapper.dart';
+import '../errors/failure_mapper.dart';
 
 enum CustomSnackbarPosition { top, bottom }
 

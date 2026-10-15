@@ -20,7 +20,14 @@ extension FamilyContextResponseDtoMapper on FamilyContextResponseDto {
       isManager: isManager ?? false,
       memberId: memberId,
       memberSubscriptionId: memberSubscriptionId,
-      capabilities: capabilities?.map((c) => c.toEntity()).toList() ?? const [],
+      isDetachedFromFamilyManagement: isDetachedFromFamilyManagement ?? false,
+      setupStatus: setupStatus ?? '',
+      hasSeparateAccount: hasSeparateAccount ?? false,
+      isPaused: isPaused ?? false,
+      requiresPasswordSetup: requiresPasswordSetup ?? false,
+      accessStatus: accessStatus ?? '',
+      capabilities:
+          capabilities?.map((c) => c.toEntity()).toList() ?? const [],
     );
   }
 }

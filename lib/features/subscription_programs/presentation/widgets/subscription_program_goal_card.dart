@@ -51,8 +51,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
           color: !canSelect
               ? color.outlineVariant.withValues(alpha: 0.25)
               : isSelected
-                  ? color.primary
-                  : color.outlineVariant.withValues(alpha: 0.35),
+              ? color.primary
+              : color.outlineVariant.withValues(alpha: 0.35),
           width: isSelected ? Spacing.border : Spacing.hairline,
         ),
         boxShadow: [
@@ -60,8 +60,8 @@ class SubscriptionProgramGoalCard extends StatelessWidget {
             color: !canSelect
                 ? color.shadow.withValues(alpha: 0.02)
                 : isSelected
-                    ? color.primary.withValues(alpha: 0.12)
-                    : color.shadow.withValues(alpha: 0.06),
+                ? color.primary.withValues(alpha: 0.12)
+                : color.shadow.withValues(alpha: 0.06),
             offset: Offset(0, isSelected ? Spacing.xs : Spacing.xss),
             blurRadius: isSelected ? Spacing.lg : Spacing.base,
             spreadRadius: Spacing.zero,

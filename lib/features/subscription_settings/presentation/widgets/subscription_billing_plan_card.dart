@@ -8,6 +8,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_action.dart';
@@ -323,19 +324,22 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                             .isNotEmpty) {
                       final rawReason =
                           subscription.actions.upgradeUnavailableReason;
-                      final message = switch (rawReason) {
-                        'upgrade_not_available_for_status' =>
-                          'الترقية متاحة فقط للاشتراكات النشطة (Active).',
-                        'already_elite' =>
-                          'أنت مشترك بالفعل في أعلى تصنيف متاح.',
-                        'upgrade_request_pending' =>
-                          'يوجد طلب ترقية معلق قيد المتابعة حالياً.',
-                        'upgrade_no_remaining_days' =>
-                          'لا توجد أيام متبقية في الاشتراك لإجراء الترقية.',
-                        'pricing.unavailable' =>
-                          'خدمة التسعير غير متوفرة حالياً.',
-                        _ => rawReason,
-                      };
+                      final mapped = mapFailureMessage(context, rawReason);
+                      final message = (mapped != rawReason)
+                          ? mapped
+                          : switch (rawReason) {
+                              'upgrade_not_available_for_status' =>
+                                'الترقية متاحة فقط للاشتراكات النشطة (Active).',
+                              'already_elite' =>
+                                'أنت مشترك بالفعل في أعلى تصنيف متاح.',
+                              'upgrade_request_pending' =>
+                                'يوجد طلب ترقية معلق قيد المتابعة حالياً.',
+                              'upgrade_no_remaining_days' =>
+                                'لا توجد أيام متبقية في الاشتراك لإجراء الترقية.',
+                              'pricing.unavailable' =>
+                                'خدمة التسعير غير متوفرة حالياً.',
+                              _ => rawReason,
+                            };
                       CustomSnackbar.showWarning(
                         context: context,
                         message: message,
@@ -364,9 +368,14 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                     if (!subscription.actions.canFreeze &&
                         subscription.pendingFreeze == null &&
                         subscription.activeFreeze == null) {
+                      final reason =
+                          subscription.actions.freezeUnavailableReason;
+                      final message = (reason.isNotEmpty && reason != 'unknown')
+                          ? mapFailureMessage(context, reason)
+                          : locale.billing_action_unavailable;
                       CustomSnackbar.showWarning(
                         context: context,
-                        message: locale.billing_action_unavailable,
+                        message: message,
                       );
                       return;
                     }
@@ -385,9 +394,14 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                       return;
                     }
                     if (!subscription.actions.canRenew) {
+                      final reason =
+                          subscription.actions.renewUnavailableReason;
+                      final message = (reason.isNotEmpty && reason != 'unknown')
+                          ? mapFailureMessage(context, reason)
+                          : locale.billing_action_unavailable;
                       CustomSnackbar.showWarning(
                         context: context,
-                        message: locale.billing_action_unavailable,
+                        message: message,
                       );
                       return;
                     }
@@ -406,9 +420,14 @@ class SubscriptionBillingPlanCard extends StatelessWidget {
                       return;
                     }
                     if (!subscription.actions.canCancel) {
+                      final reason =
+                          subscription.actions.cancelUnavailableReason;
+                      final message = (reason.isNotEmpty && reason != 'unknown')
+                          ? mapFailureMessage(context, reason)
+                          : locale.billing_action_unavailable;
                       CustomSnackbar.showWarning(
                         context: context,
-                        message: locale.billing_action_unavailable,
+                        message: message,
                       );
                       return;
                     }

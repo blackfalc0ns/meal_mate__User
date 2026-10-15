@@ -35,7 +35,19 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
 
     return Column(
       children: [
-        if (paymentMethods.isNotEmpty) ...[
+        if (state.isPaymentMethodsLoading) ...[
+          const SizedBox(height: Spacing.md),
+          const SizedBox(
+            height: Spacing.xxl,
+            child: Center(
+              child: SizedBox(
+                height: Spacing.lg,
+                width: Spacing.lg,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          ),
+        ] else if (paymentMethods.isNotEmpty) ...[
           const SizedBox(height: Spacing.md),
           FamilyPaymentMethodsSection(
             methods: paymentMethods,

@@ -17,12 +17,12 @@ class RetryFamilySubscriptionPaymentUseCase {
     required int batchVersion,
     required String idempotencyKey,
   }) => _repository.retryFamilySubscriptionPayment(
-        callbackUrl: callbackUrl,
-        errorUrl: errorUrl,
-        correlationId: correlationId,
-        paymentMethodId: paymentMethodId,
-        batchId: batchId,
-        batchVersion: batchVersion,
-        idempotencyKey: idempotencyKey,
-      );
+    callbackUrl: callbackUrl,
+    errorUrl: errorUrl,
+    correlationId: correlationId,
+    paymentMethodId: paymentMethodId,
+    batchId: batchId,
+    batchVersion: batchVersion,
+    idempotencyKey: idempotencyKey,
+  );
 }

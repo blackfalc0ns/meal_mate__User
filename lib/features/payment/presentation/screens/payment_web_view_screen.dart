@@ -35,7 +35,14 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     _viewModel = getIt<PaymentViewModel>();
     final checkout = widget.args?.checkout;
     if (checkout != null) {
-      _viewModel.doIntent(InitCheckoutSessionEvent(checkout));
+      _viewModel.doIntent(
+        InitCheckoutSessionEvent(
+          checkout,
+          flowType: widget.args?.flowType ?? 'individual',
+          batchId: widget.args?.batchId,
+          batchVersion: widget.args?.batchVersion,
+        ),
+      );
       if (checkout.paymentUrl.isEmpty) {
         if (checkout.subscriptionId.isNotEmpty) {
           _viewModel.doIntent(
@@ -93,12 +100,14 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             final subId = state.checkout?.subscriptionId.isNotEmpty == true
                 ? state.checkout!.subscriptionId
                 : checkout.subscriptionId;
+            final isFamily = args.isFamily || state.isFamily;
             final successArgs = PaymentSuccessArgs(
               subscriptionId: subId,
               paymentDate: DateTime.now().toIso8601String().split('T').first,
               startDate: checkout.startDate.isNotEmpty
                   ? checkout.startDate
                   : checkout.chosenStartDate,
+              isFamily: isFamily,
             );
             unawaited(
               Navigator.of(context).pushNamedAndRemoveUntil(

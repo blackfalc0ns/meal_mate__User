@@ -14,11 +14,11 @@ class FamilyDayMealCard extends StatelessWidget {
   const FamilyDayMealCard({
     super.key,
     required this.meal,
-    required this.onEditPressed,
+    this.onEditPressed,
   });
 
   final FamilyDayMealEntity meal;
-  final VoidCallback onEditPressed;
+  final VoidCallback? onEditPressed;
 
   @override
   Widget build(BuildContext context) {

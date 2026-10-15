@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -94,6 +95,7 @@ class FamilyAddressesScreen extends StatelessWidget {
           }).toList();
 
           final content = Column(
+            key: const ValueKey('family-addresses-content'),
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ColoredBox(
@@ -157,7 +159,7 @@ class FamilyAddressesScreen extends StatelessWidget {
                   ),
                 ),
             ],
-          );
+          ).animate().fadeIn(duration: 250.ms);
           if (isInFamilyFlow) {
             return ColoredBox(
               color: color.surfaceContainerHighest,

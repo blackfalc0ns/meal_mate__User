@@ -15,7 +15,17 @@ class PaymentArgs {
 }
 
 class PaymentWebViewArgs {
-  const PaymentWebViewArgs({required this.checkout});
+  const PaymentWebViewArgs({
+    required this.checkout,
+    this.flowType = 'individual',
+    this.batchId,
+    this.batchVersion,
+  });
 
   final PaymentCheckoutEntity checkout;
+  final String flowType;
+  final String? batchId;
+  final int? batchVersion;
+
+  bool get isFamily => flowType == 'family';
 }

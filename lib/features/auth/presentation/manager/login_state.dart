@@ -1,5 +1,5 @@
 import 'package:meal_meat_user/core/biometric/biometric_auth_result.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
 
 enum LoginOutcome {
@@ -13,6 +13,8 @@ enum LoginOutcome {
 class LoginState {
   const LoginState({
     this.isLoading = false,
+    this.isResending = false,
+    this.resendOtpSent = false,
     this.outcome = LoginOutcome.idle,
     this.rememberMe = false,
     this.failure,
@@ -29,6 +31,8 @@ class LoginState {
   });
 
   final bool isLoading;
+  final bool isResending;
+  final bool resendOtpSent;
   final LoginOutcome outcome;
   final bool rememberMe;
   final Failure? failure;
@@ -58,6 +62,8 @@ class LoginState {
 
   LoginState copyWith({
     bool? isLoading,
+    bool? isResending,
+    bool? resendOtpSent,
     LoginOutcome? outcome,
     bool? rememberMe,
     Failure? Function()? failure,
@@ -74,6 +80,8 @@ class LoginState {
   }) {
     return LoginState(
       isLoading: isLoading ?? this.isLoading,
+      isResending: isResending ?? this.isResending,
+      resendOtpSent: resendOtpSent ?? this.resendOtpSent,
       outcome: outcome ?? this.outcome,
       rememberMe: rememberMe ?? this.rememberMe,
       failure: failure != null ? failure() : this.failure,

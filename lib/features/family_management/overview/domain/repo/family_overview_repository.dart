@@ -7,4 +7,7 @@ abstract interface class FamilyOverviewRepository {
   Future<ApiResult<List<FamilyMemberSummaryEntity>>> getFamilyMembers({
     String locale = 'ar',
   });
+  Future<ApiResult<List<FamilyMemberSummaryEntity>>> getFamilySwitcher({
+    String locale = 'ar',
+  });
 }

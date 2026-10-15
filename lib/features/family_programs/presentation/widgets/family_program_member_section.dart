@@ -17,23 +17,12 @@ class FamilyProgramMemberSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
-    color.surface;
-    final targetMemberId = FamilyFlowScope.targetMemberIdOf(context);
-    final memberEntries = state.members
-        .asMap()
-        .entries
-        .where(
-          (entry) =>
-              targetMemberId == null || entry.value.memberId == targetMemberId,
-        )
-        .toList();
-    final members = memberEntries.map((entry) => entry.value).toList();
+    final members = state.members;
     final selectedMember = state.selectedMember;
 
     final displayedMembers = members.asMap().entries.map((entry) {
-      final index = memberEntries[entry.key].key;
+      final index = entry.key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
       final hasProgram =
@@ -78,8 +67,14 @@ class FamilyProgramMemberSection extends StatelessWidget {
             members: displayedMembers,
             onSelectMember: (index) {
               context.read<FamilyProgramsViewModel>().doIntent(
-                SelectFamilyMemberEvent(memberEntries[index].key),
+                SelectFamilyMemberEvent(index),
               );
+              if (index >= 0 && index < members.length) {
+                FamilyFlowScope.setTargetMember(
+                  context,
+                  members[index].memberId,
+                );
+              }
             },
           ),
           const SizedBox(height: Spacing.xs),

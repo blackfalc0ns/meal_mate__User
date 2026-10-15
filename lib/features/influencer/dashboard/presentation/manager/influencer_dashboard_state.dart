@@ -1,4 +1,4 @@
-import '../../../../../core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import '../../domain/entities/influencer_dashboard_api_entity.dart';
 
 class InfluencerDashboardState {

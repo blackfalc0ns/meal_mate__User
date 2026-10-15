@@ -23,6 +23,8 @@ class UpdateFamilyMemberAccessEvent extends FamilyMemberEvent {
     this.removeAccess = false,
     this.generateTemporaryPassword,
     this.credentialOperationKey,
+    this.isRetry = false,
+    this.isExplicitReset = false,
   });
 
   final String memberId;
@@ -31,6 +33,8 @@ class UpdateFamilyMemberAccessEvent extends FamilyMemberEvent {
   final bool removeAccess;
   final bool? generateTemporaryPassword;
   final String? credentialOperationKey;
+  final bool isRetry;
+  final bool isExplicitReset;
 }
 
 class ClearGeneratedPasswordEvent extends FamilyMemberEvent {
@@ -65,3 +69,9 @@ class RenewFamilyMemberSubscriptionEvent extends FamilyMemberEvent {
   const RenewFamilyMemberSubscriptionEvent(this.renewalPath);
   final String renewalPath;
 }
+
+class DetachFamilyMemberEvent extends FamilyMemberEvent {
+  const DetachFamilyMemberEvent(this.memberId);
+  final String memberId;
+}
+

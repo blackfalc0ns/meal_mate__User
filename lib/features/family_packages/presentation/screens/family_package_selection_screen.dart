@@ -126,8 +126,8 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
             text: locale.family_packages_continue_button,
             onPressed: selectedPackage == null
                 ? null
-                : () {
-                    context.pushNamed(
+                : () async {
+                    await context.pushNamed(
                       AppRoutes.familySubscriptionSetup,
                       arguments: selectedPackage,
                     );

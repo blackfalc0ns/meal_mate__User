@@ -159,4 +159,3 @@ class DurationPriceResponseDto {
         currencyCode: json['currencyCode'] as String?,
       );
 }
-

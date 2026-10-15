@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 
 void main() {
   const expectedEnglishMessages = <String, String>{

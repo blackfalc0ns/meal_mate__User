@@ -1,5 +1,5 @@
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 class PaymentState {
@@ -24,6 +24,7 @@ class PaymentState {
     this.checkoutFailure,
     this.fulfillmentFailure,
     this.calendarFailure,
+    this.flowType = 'individual',
   });
 
   final bool isMethodsLoading;
@@ -46,6 +47,9 @@ class PaymentState {
   final Failure? checkoutFailure;
   final Failure? fulfillmentFailure;
   final Failure? calendarFailure;
+  final String flowType;
+
+  bool get isFamily => flowType == 'family';
 
   bool get isLoading => isMethodsLoading;
 
@@ -102,6 +106,7 @@ class PaymentState {
     Failure? checkoutFailure,
     Failure? fulfillmentFailure,
     Failure? calendarFailure,
+    String? flowType,
     bool clearSelectedMethod = false,
     bool clearCheckout = false,
     bool clearPendingSubscriptionId = false,
@@ -149,6 +154,7 @@ class PaymentState {
       calendarFailure: clearCalendarFailure
           ? null
           : calendarFailure ?? this.calendarFailure,
+      flowType: flowType ?? this.flowType,
     );
   }
 

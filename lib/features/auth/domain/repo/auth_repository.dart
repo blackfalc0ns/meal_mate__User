@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_step_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_resend_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
@@ -37,6 +38,10 @@ abstract interface class AuthRepository {
     FamilyFirstLoginSetPasswordRequestEntity request, {
     SessionPersistence persistence = SessionPersistence.currentRun,
   });
+
+  Future<ApiResult<FamilyFirstLoginStepEntity>> resendFamilyFirstLoginOtp(
+    FamilyFirstLoginResendOtpRequestEntity request,
+  );
 
   Future<ApiResult<RegisterEntity>> register(RegisterRequestEntity request);
 

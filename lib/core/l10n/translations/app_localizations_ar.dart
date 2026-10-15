@@ -2557,7 +2557,58 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_member_access_save_success => 'تم حفظ تغييرات الوصول بنجاح';
 
   @override
+  String get family_member_access_password_already_issued =>
+      'تم إصدار كلمة مرور لهذا الحساب مسبقًا. يمكنك إجراء إعادة تعيين صريحة إذا كنت بحاجة إلى توليد كلمة مرور جديدة.';
+
+  @override
+  String get family_member_access_explicit_reset_title =>
+      'إعادة تعيين كلمة المرور المؤقتة';
+
+  @override
+  String get family_member_access_explicit_reset_message =>
+      'لا يمكن استرجاع كلمة المرور المؤقتة السابقة كنص صريح. سيؤدي إنشاء كلمة مرور مؤقتة جديدة إلى إبطال السابقة. هل ترغب في المتابعة؟';
+
+  @override
+  String get family_member_access_explicit_reset_button =>
+      'تأكيد إعادة التعيين';
+
+  @override
   String get family_member_permissions_save_success => 'تم حفظ الصلاحيات بنجاح';
+
+  @override
+  String get family_permission_details_title => 'تفاصيل الصلاحية';
+
+  @override
+  String get family_permission_description_empty => 'لا يوجد وصف إضافي متوفر.';
+
+  @override
+  String get family_permission_current_status => 'الحالة الحالية';
+
+  @override
+  String get family_permission_status_enabled => 'مفعّل';
+
+  @override
+  String get family_permission_status_disabled => 'معطّل';
+
+  @override
+  String get family_permission_manager_configurable =>
+      'قابلة للتعديل من المدير';
+
+  @override
+  String get family_permission_fixed_state =>
+      'ثابت من النظام (غير قابل للتعديل)';
+
+  @override
+  String family_permission_required_grants(String permissions) {
+    return 'تتطلب صلاحيات القراءة: $permissions';
+  }
+
+  @override
+  String get family_permission_conflict_error =>
+      'تم تعديل الصلاحيات في جلسة أخرى. تم تحديث البيانات بأحدث نسخة.';
+
+  @override
+  String get family_permission_close => 'إغلاق';
 
   @override
   String get family_member_renewal_success => 'تم إرسال طلب التجديد بنجاح';
@@ -7142,4 +7193,68 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get campaign_error_provider_unavailable =>
       'بوابة الدفع غير متاحة حالياً، يرجى المحاولة لاحقاً.';
+
+  @override
+  String get family_member_detached_label => 'منفصل';
+
+  @override
+  String get family_member_disabled_label => 'معطّل';
+
+  @override
+  String get family_member_setup_required_label => 'يلزم الإعداد';
+
+  @override
+  String get family_member_paid_preparing_label => 'قيد التجهيز';
+
+  @override
+  String get family_member_fulfillment_pending =>
+      'جارٍ تجهيز اشتراكك. سنعرض التقويم عند اكتمال التجهيز.';
+
+  @override
+  String get family_permission_info_title => 'تفاصيل الصلاحية';
+
+  @override
+  String get family_permission_current_value => 'القيمة الحالية';
+
+  @override
+  String get family_permission_unsupported_state => 'غير مدعوم';
+
+  @override
+  String get family_permissions_conflict_message =>
+      'تم تحديث الصلاحيات من جلسة أخرى. يرجى المراجعة والمحاولة مجدداً.';
+
+  @override
+  String get family_detach_member_title => 'فصل فرد العائلة';
+
+  @override
+  String get family_detach_member_confirm =>
+      'هل أنت متأكد من رغبتك في فصل هذا الفرد من إدارة العائلة؟ سيحتفظ باشتراكه بشكل مستقل.';
+
+  @override
+  String get family_detach_member_action => 'فصل';
+
+  @override
+  String get family_detach_member_success => 'تم فصل الفرد بنجاح.';
+
+  @override
+  String get family_detach_blocked_financial_intent =>
+      'لا يمكن فصل الفرد في حال وجود عملية دفع أو اختيار معلقة.';
+
+  @override
+  String get family_detach_requires_active_account =>
+      'يجب أن يكون لدى الفرد حساب نشط ومكتمل قبل الفصل.';
+
+  @override
+  String get family_credential_reset_warning =>
+      'لا يمكن استرجاع كلمة المرور القديمة. سيتم إنشاء كلمة مرور مؤقتة جديدة.';
+
+  @override
+  String get family_credential_already_issued =>
+      'تم إصدار كلمة المرور مسبقاً. يلزم إجراء إعادة تعيين صريحة لإنشاء كلمة مرور جديدة.';
+
+  @override
+  String get family_credential_reset_action => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get family_permission_prerequisites => 'المتطلبات الأساسية:';
 }

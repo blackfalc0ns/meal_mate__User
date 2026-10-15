@@ -73,7 +73,14 @@ FamilyPermissionItemResponseDto _$FamilyPermissionItemResponseDtoFromJson(
   key: json['key'] as String?,
   labelAr: json['labelAr'] as String?,
   labelEn: json['labelEn'] as String?,
+  descriptionAr: json['descriptionAr'] as String?,
+  descriptionEn: json['descriptionEn'] as String?,
   value: json['value'] as bool?,
+  isSupported: json['isSupported'] as bool?,
+  isManagerConfigurable: json['isManagerConfigurable'] as bool?,
+  requiredPermissions: (json['requiredPermissions'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
 );
 
 Map<String, dynamic> _$FamilyPermissionItemResponseDtoToJson(
@@ -82,5 +89,10 @@ Map<String, dynamic> _$FamilyPermissionItemResponseDtoToJson(
   'key': instance.key,
   'labelAr': instance.labelAr,
   'labelEn': instance.labelEn,
+  'descriptionAr': instance.descriptionAr,
+  'descriptionEn': instance.descriptionEn,
   'value': instance.value,
+  'isSupported': instance.isSupported,
+  'isManagerConfigurable': instance.isManagerConfigurable,
+  'requiredPermissions': instance.requiredPermissions,
 };

@@ -23,16 +23,16 @@ class FamilyCheckoutSelectionResponseDto {
       batchVersion: json['batchVersion'] is num
           ? (json['batchVersion'] as num).toInt()
           : (json['batchVersion'] != null
-              ? int.tryParse(json['batchVersion'].toString())
-              : null),
+                ? int.tryParse(json['batchVersion'].toString())
+                : null),
       memberId: (json['memberId'] ?? json['id']) as String?,
-      checkoutSelected: json['checkoutSelected'] as bool? ??
-          json['subscribeNow'] as bool?,
+      checkoutSelected:
+          json['checkoutSelected'] as bool? ?? json['subscribeNow'] as bool?,
       selectedNewSubscriberCount: json['selectedNewSubscriberCount'] is num
           ? (json['selectedNewSubscriberCount'] as num).toInt()
           : (json['selectedNewSubscriberCount'] != null
-              ? int.tryParse(json['selectedNewSubscriberCount'].toString())
-              : null),
+                ? int.tryParse(json['selectedNewSubscriberCount'].toString())
+                : null),
     );
   }
 

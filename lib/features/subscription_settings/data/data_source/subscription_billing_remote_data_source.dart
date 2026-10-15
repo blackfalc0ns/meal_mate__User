@@ -1,4 +1,6 @@
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_auto_renewal_consent_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_billing_action_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_auto_renewal_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 
 abstract interface class SubscriptionBillingRemoteDataSource {
@@ -47,5 +49,18 @@ abstract interface class SubscriptionBillingRemoteDataSource {
   createCustomerSubscriptionCancellationRequest(
     String subscriptionId,
     SubscriptionBillingCancellationRequestDto request,
+  );
+
+  Future<SubscriptionAutoRenewalDto> getCustomerSubscriptionAutoRenewal(
+    String subscriptionId,
+  );
+
+  Future<SubscriptionAutoRenewalDto> updateCustomerSubscriptionAutoRenewalConsent(
+    String subscriptionId,
+    SubscriptionAutoRenewalConsentRequestDto request,
+  );
+
+  Future<SubscriptionAutoRenewalDto> deleteCustomerSubscriptionAutoRenewalConsent(
+    String subscriptionId,
   );
 }

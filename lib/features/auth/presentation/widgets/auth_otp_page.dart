@@ -85,11 +85,13 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
                   ) ??
                   _fallbackDeadline);
 
-    final isResending = isReset
-        ? context.select<PasswordRecoveryViewModel, bool>(
-            (vm) => vm.state.isResending,
-          )
-        : context.select<RegisterViewModel, bool>((vm) => vm.state.isResending);
+    final isResending = isFamily
+        ? context.select<LoginViewModel, bool>((vm) => vm.state.isResending)
+        : (isReset
+            ? context.select<PasswordRecoveryViewModel, bool>(
+                (vm) => vm.state.isResending,
+              )
+            : context.select<RegisterViewModel, bool>((vm) => vm.state.isResending));
 
     final title = isFamily
         ? locale.auth_family_first_login_otp_title
@@ -168,7 +170,6 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
             onPressed: _handleSubmit,
             color: color.primary,
           ),
-          if (!isFamily) ...[
             const SizedBox(height: Spacing.lg),
             Center(
               child: Text(
@@ -187,16 +188,22 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
               isResending: isResending,
             ),
           ],
-        ],
-      ),
-    );
+        ),
+      );
 
     if (isFamily) {
       return BlocListener<LoginViewModel, LoginState>(
         listenWhen: (previous, current) =>
             previous.outcome != current.outcome ||
-            previous.failure != current.failure,
+            previous.failure != current.failure ||
+            previous.resendOtpSent != current.resendOtpSent,
         listener: (context, state) {
+          if (state.resendOtpSent) {
+            CustomSnackbar.showSuccess(
+              context: context,
+              message: locale.auth_otp_resent_success,
+            );
+          }
           if (state.outcome == LoginOutcome.failure && state.failure != null) {
             CustomSnackbar.showError(
               context: context,
@@ -301,7 +308,11 @@ class _AuthOtpPageState extends State<AuthOtpPage> {
   }
 
   void _handleResend() {
-    if (widget.purpose == AuthOtpPurpose.resetPassword) {
+    if (widget.purpose == AuthOtpPurpose.familyFirstLogin) {
+      context.read<LoginViewModel>().doIntent(
+        const ResendFamilyFirstLoginOtpEvent(),
+      );
+    } else if (widget.purpose == AuthOtpPurpose.resetPassword) {
       context.read<PasswordRecoveryViewModel>().doIntent(
         const ResendRecoveryOtpEvent(),
       );

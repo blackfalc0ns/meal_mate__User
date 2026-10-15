@@ -11,12 +11,10 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.d
 
 class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
   PaymentDeepLinkCoordinator({
-    required TokenService tokenService,
-    required PaymentAttemptStore paymentAttemptStore,
-    required AppNavigatorService navigatorService,
-  }) : _tokenService = tokenService,
-       _paymentAttemptStore = paymentAttemptStore,
-       _navigatorService = navigatorService;
+    required this._tokenService,
+    required this._paymentAttemptStore,
+    required this._navigatorService,
+  });
 
   final TokenService _tokenService;
   final PaymentAttemptStore _paymentAttemptStore;
@@ -114,6 +112,7 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
     }
 
     final attempt = await _paymentAttemptStore.readForCustomer(customerId);
+    final isFamily = attempt?.isFamily ?? false;
     final subscriptionId =
         (attempt != null &&
             (attempt.paymentId == paymentReturn.paymentId ||
@@ -133,7 +132,12 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
 
     await _navigatorService.pushNamedWhenReady(
       AppRoutes.paymentWebView,
-      arguments: PaymentWebViewArgs(checkout: checkout),
+      arguments: PaymentWebViewArgs(
+        checkout: checkout,
+        flowType: isFamily ? 'family' : 'individual',
+        batchId: attempt?.batchId,
+        batchVersion: attempt?.batchVersion,
+      ),
     );
   }
 }

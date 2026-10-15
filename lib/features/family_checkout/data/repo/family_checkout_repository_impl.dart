@@ -18,7 +18,8 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
   final FamilyCheckoutRemoteDataSource _remoteDataSource;
 
   @override
-  Future<ApiResult<FamilyCheckoutSelectionEntity>> selectFamilyMemberForCheckout({
+  Future<ApiResult<FamilyCheckoutSelectionEntity>>
+  selectFamilyMemberForCheckout({
     required String memberId,
     required bool subscribeNow,
   }) {

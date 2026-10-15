@@ -2,16 +2,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
+import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
@@ -27,6 +33,9 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     GetCalendarAvailableMealsUseCase? getAvailableMealsUseCase,
     SaveCalendarDayMealsUseCase? saveDayMealsUseCase,
     SetCalendarDayRestaurantUseCase? setDayRestaurantUseCase,
+    ConfirmCalendarDayMealsUseCase? confirmDayMealsUseCase,
+    AutoSelectCalendarDayUseCase? autoSelectDayUseCase,
+    GetFamilyMemberCapabilitiesUseCase? getCapabilitiesUseCase,
   ]) : _getMembersUseCase =
            getMembersUseCase ??
            (getIt.isRegistered<GetFamilyMembersUseCase>()
@@ -62,6 +71,21 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
            (getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
                ? getIt<SetCalendarDayRestaurantUseCase>()
                : null),
+       _confirmDayMealsUseCase =
+           confirmDayMealsUseCase ??
+           (getIt.isRegistered<ConfirmCalendarDayMealsUseCase>()
+               ? getIt<ConfirmCalendarDayMealsUseCase>()
+               : null),
+       _autoSelectDayUseCase =
+           autoSelectDayUseCase ??
+           (getIt.isRegistered<AutoSelectCalendarDayUseCase>()
+               ? getIt<AutoSelectCalendarDayUseCase>()
+               : null),
+       _getCapabilitiesUseCase =
+           getCapabilitiesUseCase ??
+           (getIt.isRegistered<GetFamilyMemberCapabilitiesUseCase>()
+               ? getIt<GetFamilyMemberCapabilitiesUseCase>()
+               : null),
        super(const FamilyCalendarState());
 
   final GetFamilyMembersUseCase? _getMembersUseCase;
@@ -71,6 +95,9 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   final GetCalendarAvailableMealsUseCase? _getAvailableMealsUseCase;
   final SaveCalendarDayMealsUseCase? _saveDayMealsUseCase;
   final SetCalendarDayRestaurantUseCase? _setDayRestaurantUseCase;
+  final ConfirmCalendarDayMealsUseCase? _confirmDayMealsUseCase;
+  final AutoSelectCalendarDayUseCase? _autoSelectDayUseCase;
+  final GetFamilyMemberCapabilitiesUseCase? _getCapabilitiesUseCase;
 
   void doIntent(FamilyCalendarEvent event) {
     switch (event) {
@@ -100,6 +127,10 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         _selectMealForSlot(event.meal, event.slot);
       case SaveFamilyDayMealsEvent():
         _saveDayMeals(event.localeName);
+      case ConfirmFamilyDayMealsEvent():
+        _confirmDayMeals(event.localeName);
+      case AutoSelectFamilyDayMealsEvent():
+        _autoSelectDayMeals(event.localeName);
     }
   }
 
@@ -209,6 +240,17 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   }
 
   Future<void> _loadCalendarForActiveMember(String localeName) async {
+    final activeMember = state.currentMember;
+    if (activeMember != null &&
+        activeMember.memberId.isNotEmpty &&
+        _getCapabilitiesUseCase != null) {
+      final capResult = await _getCapabilitiesUseCase(activeMember.memberId);
+      if (isClosed) return;
+      if (capResult is ApiSuccessResult<List<FamilyCapabilityEntity>>) {
+        emit(state.copyWith(memberCapabilities: capResult.data));
+      }
+    }
+
     final subId = state.activeSubscriptionId;
     if (subId == null || subId.isEmpty || _getCalendarUseCase == null) {
       return;
@@ -448,6 +490,17 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       case ApiSuccessResult():
         emit(state.copyWith(selectedDay: result.data, isSavingMeals: false));
       case ApiErrorResult():
+        if (result.failure.exception.statusCode == 403 ||
+            result.failure.exception.errorType == ApiErrorType.forbidden) {
+          if (getIt.isRegistered<FamilyContextViewModel>()) {
+            getIt<FamilyContextViewModel>().loadFamilyContext();
+          }
+          await _fetchDayDetails(
+            date: date,
+            subscriptionId: subId,
+            localeName: localeName,
+          );
+        }
         emit(
           state.copyWith(
             isSavingMeals: false,
@@ -555,6 +608,148 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
           ),
         );
       case ApiErrorResult():
+        if (result.failure.exception.statusCode == 403 ||
+            result.failure.exception.errorType == ApiErrorType.forbidden) {
+          if (getIt.isRegistered<FamilyContextViewModel>()) {
+            getIt<FamilyContextViewModel>().loadFamilyContext();
+          }
+          await _fetchDayDetails(
+            date: date,
+            subscriptionId: subId,
+            localeName: localeName,
+          );
+        }
+        emit(
+          state.copyWith(
+            isSavingMeals: false,
+            saveMealsFailure: result.failure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _confirmDayMeals(String localeName) async {
+    final subId = state.activeSubscriptionId;
+    final date = state.selectedDate ?? DateTime.now();
+    final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
+
+    if (subId == null || subId.isEmpty) {
+      return;
+    }
+
+    emit(state.copyWith(isSavingMeals: true, clearSaveMealsFailure: true));
+
+    if (_saveDayMealsUseCase != null && state.selectedMealsForDay.isNotEmpty) {
+      final saveResult = await _saveDayMealsUseCase(
+        subscriptionId: subId,
+        date: formattedDate,
+        meals: state.selectedMealsForDay,
+        localeName: localeName,
+      );
+      if (isClosed) return;
+      if (saveResult case ApiErrorResult(:final failure)) {
+        if (failure.exception.statusCode == 403 ||
+            failure.exception.errorType == ApiErrorType.forbidden) {
+          if (getIt.isRegistered<FamilyContextViewModel>()) {
+            getIt<FamilyContextViewModel>().loadFamilyContext();
+          }
+          await _fetchDayDetails(
+            date: date,
+            subscriptionId: subId,
+            localeName: localeName,
+          );
+        }
+        emit(
+          state.copyWith(
+            isSavingMeals: false,
+            saveMealsFailure: failure,
+          ),
+        );
+        return;
+      }
+    }
+
+    if (_confirmDayMealsUseCase != null) {
+      final confirmResult = await _confirmDayMealsUseCase(
+        subscriptionId: subId,
+        date: formattedDate,
+        localeName: localeName,
+      );
+      if (isClosed) return;
+
+      switch (confirmResult) {
+        case ApiSuccessResult():
+          emit(
+            state.copyWith(
+              selectedDay: confirmResult.data,
+              isSavingMeals: false,
+              saveMealsSuccess: true,
+            ),
+          );
+        case ApiErrorResult():
+          if (confirmResult.failure.exception.statusCode == 403 ||
+              confirmResult.failure.exception.errorType == ApiErrorType.forbidden) {
+            if (getIt.isRegistered<FamilyContextViewModel>()) {
+              getIt<FamilyContextViewModel>().loadFamilyContext();
+            }
+            await _fetchDayDetails(
+              date: date,
+              subscriptionId: subId,
+              localeName: localeName,
+            );
+          }
+          emit(
+            state.copyWith(
+              isSavingMeals: false,
+              saveMealsFailure: confirmResult.failure,
+            ),
+          );
+      }
+    } else {
+      emit(state.copyWith(isSavingMeals: false, saveMealsSuccess: true));
+    }
+  }
+
+  Future<void> _autoSelectDayMeals(String localeName) async {
+    final subId = state.activeSubscriptionId;
+    final date = state.selectedDate ?? DateTime.now();
+    final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
+
+    if (subId == null || subId.isEmpty || _autoSelectDayUseCase == null) {
+      return;
+    }
+
+    emit(state.copyWith(isSavingMeals: true, clearSaveMealsFailure: true));
+
+    final result = await _autoSelectDayUseCase(
+      subscriptionId: subId,
+      date: formattedDate,
+      localeName: localeName,
+    );
+
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            selectedDay: result.data,
+            selectedMealsForDay: result.data.meals,
+            isSavingMeals: false,
+          ),
+        );
+      case ApiErrorResult():
+        if (result.failure.exception.statusCode == 403 ||
+            result.failure.exception.errorType == ApiErrorType.forbidden) {
+          if (getIt.isRegistered<FamilyContextViewModel>()) {
+            getIt<FamilyContextViewModel>().loadFamilyContext();
+          }
+          await _fetchDayDetails(
+            date: date,
+            subscriptionId: subId,
+            localeName: localeName,
+          );
+        }
         emit(
           state.copyWith(
             isSavingMeals: false,

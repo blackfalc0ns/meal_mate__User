@@ -47,7 +47,15 @@ class HandlePaymentReturnEvent extends PaymentEvent {
 }
 
 class InitCheckoutSessionEvent extends PaymentEvent {
-  const InitCheckoutSessionEvent(this.checkout);
+  const InitCheckoutSessionEvent(
+    this.checkout, {
+    this.flowType = 'individual',
+    this.batchId,
+    this.batchVersion,
+  });
 
   final PaymentCheckoutEntity checkout;
+  final String flowType;
+  final String? batchId;
+  final int? batchVersion;
 }

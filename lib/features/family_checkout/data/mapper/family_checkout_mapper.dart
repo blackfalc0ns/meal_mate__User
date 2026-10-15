@@ -101,8 +101,9 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
           mealOverview?.map((meal) => meal.toEntity()).toList() ?? const [],
       memberSchedules:
           memberSchedules?.map((schedule) => schedule.toEntity()).toList() ??
-              const [],
-      participantCount: participantCount ??
+          const [],
+      participantCount:
+          participantCount ??
           selectedNewSubscriberCount ??
           newMembersCount ??
           0,
@@ -110,7 +111,8 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       batchId: batchId,
       batchVersion: batchVersion,
       rosterCount: rosterCount ?? (members?.length ?? 0),
-      selectedNewSubscriberCount: selectedNewSubscriberCount ?? (newMembersCount ?? 0),
+      selectedNewSubscriberCount:
+          selectedNewSubscriberCount ?? (newMembersCount ?? 0),
       eligibleExistingSubscriberCount: eligibleExistingSubscriberCount ?? 0,
       unsubscribedCount: unsubscribedCount ?? 0,
       lockedQuote: lockedQuote ?? false,

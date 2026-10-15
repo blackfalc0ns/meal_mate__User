@@ -15,12 +15,14 @@ class SavedAddressesSection extends StatelessWidget {
     required this.onEdit,
     required this.onSetDefault,
     required this.onDelete,
+    this.canEdit = true,
   });
 
   final List<CustomerAddressEntity> addresses;
   final ValueChanged<CustomerAddressEntity> onEdit;
   final ValueChanged<CustomerAddressEntity> onSetDefault;
   final ValueChanged<CustomerAddressEntity> onDelete;
+  final bool canEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +80,16 @@ class SavedAddressesSection extends StatelessWidget {
                   title: address.label,
                   address: address.addressLine,
                   isDefault: address.isDefault,
-                  canDelete: address.canDelete,
-                  onEdit: () => onEdit(address),
-                  onSetDefault: address.addressId.isEmpty || address.isDefault
+                  canDelete: canEdit && address.canDelete,
+                  canEdit: canEdit,
+                  onEdit: canEdit ? () => onEdit(address) : null,
+                  onSetDefault: canEdit &&
+                          (address.addressId.isEmpty || address.isDefault)
                       ? null
-                      : () => onSetDefault(address),
-                  onDelete: address.addressId.isEmpty
-                      ? null
-                      : () => onDelete(address),
+                      : (canEdit ? () => onSetDefault(address) : null),
+                  onDelete: canEdit && address.addressId.isNotEmpty
+                      ? () => onDelete(address)
+                      : null,
                 )
                 .animate()
                 .fadeIn(

@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
 import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_program_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
@@ -50,6 +50,7 @@ class FamilyPlanState {
     this.paymentMethods = const [],
     this.selectedPaymentMethod,
     this.isCheckoutLoading = false,
+    this.isRetryLoading = false,
     this.checkoutResult,
     this.failure,
   });
@@ -102,6 +103,7 @@ class FamilyPlanState {
   final PaymentMethodEntity? selectedPaymentMethod;
 
   final bool isCheckoutLoading;
+  final bool isRetryLoading;
   final PaymentCheckoutEntity? checkoutResult;
 
   final Failure? failure;
@@ -114,7 +116,8 @@ class FamilyPlanState {
       isDurationsLoading ||
       isTiersLoading ||
       isSummaryLoading ||
-      isCheckoutLoading;
+      isCheckoutLoading ||
+      isRetryLoading;
 
   int get maxMembers =>
       selectedPackage?.maxMembers ?? currentFlow?.maxMembers ?? 6;
@@ -209,6 +212,7 @@ class FamilyPlanState {
     PaymentMethodEntity? selectedPaymentMethod,
     bool clearSelectedPaymentMethod = false,
     bool? isCheckoutLoading,
+    bool? isRetryLoading,
     PaymentCheckoutEntity? checkoutResult,
     Failure? failure,
     bool clearFailure = false,
@@ -271,6 +275,7 @@ class FamilyPlanState {
           ? null
           : selectedPaymentMethod ?? this.selectedPaymentMethod,
       isCheckoutLoading: isCheckoutLoading ?? this.isCheckoutLoading,
+      isRetryLoading: isRetryLoading ?? this.isRetryLoading,
       checkoutResult: clearCheckoutResult
           ? null
           : (checkoutResult ?? this.checkoutResult),

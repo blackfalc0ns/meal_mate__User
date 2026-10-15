@@ -75,9 +75,11 @@ class FamilyMemberLifecycleResponseDto {
   final String? accessStatus;
   final String? displayStatus;
 
-  factory FamilyMemberLifecycleResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$FamilyMemberLifecycleResponseDtoFromJson(json);
-  Map<String, dynamic> toJson() => _$FamilyMemberLifecycleResponseDtoToJson(this);
+  factory FamilyMemberLifecycleResponseDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$FamilyMemberLifecycleResponseDtoFromJson(json);
+  Map<String, dynamic> toJson() =>
+      _$FamilyMemberLifecycleResponseDtoToJson(this);
 }
 
 @JsonSerializable()

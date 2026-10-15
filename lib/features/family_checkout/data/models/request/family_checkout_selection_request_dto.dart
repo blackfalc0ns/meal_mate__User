@@ -4,6 +4,6 @@ class FamilyCheckoutSelectionRequestDto {
   final bool subscribeNow;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'subscribeNow': subscribeNow,
-      };
+    'subscribeNow': subscribeNow,
+  };
 }

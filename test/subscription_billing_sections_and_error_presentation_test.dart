@@ -10,7 +10,8 @@ import 'package:meal_meat_user/core/errors/error_widgets/server_error_widget.dar
 import 'package:meal_meat_user/core/errors/error_widgets/timeout_error_widget.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_auto_renewal_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_uncompleted_subscription_repository.dart';
@@ -74,6 +75,25 @@ class _MockBillingRepo implements SubscriptionBillingRepository {
   Future<ApiResult<void>> createCustomerSubscriptionRenewalRequest(
     String id,
   ) async => throw UnimplementedError();
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  getCustomerSubscriptionAutoRenewal(String subscriptionId) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  updateCustomerSubscriptionAutoRenewalConsent({
+    required String subscriptionId,
+    required bool accepted,
+    required String consentVersion,
+    required num amount,
+    required String currency,
+  }) async => throw UnimplementedError();
+
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  deleteCustomerSubscriptionAutoRenewalConsent(String subscriptionId) async =>
+      throw UnimplementedError();
 }
 
 class _MockUncompletedRepo

@@ -88,4 +88,3 @@ class FamilyMemberPlanWriteRequestDto {
     return map;
   }
 }
-

@@ -101,6 +101,61 @@ import 'package:meal_meat_user/features/notifications/presentation/screens/notif
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
+    final routeName = settings.name ?? '';
+    if (routeName.startsWith('/family/members/') &&
+        routeName.endsWith('/capabilities')) {
+      final memberId = routeName
+          .replaceFirst('/family/members/', '')
+          .replaceFirst('/capabilities', '');
+      final permissionArgs = settings.arguments is (String, bool, String)
+          ? settings.arguments! as (String, bool, String)
+          : (memberId, true, '');
+      return _buildRoute(
+        settings: settings,
+        page: FamilyMemberPermissionsScreen(
+          memberId: permissionArgs.$1,
+          isManager: permissionArgs.$2,
+          memberName: permissionArgs.$3,
+        ),
+      );
+    }
+    if (routeName.startsWith('/family/members/') &&
+        routeName != '/family/members') {
+      final memberId = routeName.replaceFirst('/family/members/', '');
+      final member = switch (settings.arguments) {
+        final FamilyMemberSummaryEntity summary => summary,
+        final FamilyMemberDetailEntity detail => FamilyMemberSummaryEntity(
+          memberId: detail.memberId,
+          displayName: detail.displayName,
+          role: detail.role,
+          ageYears: detail.ageYears,
+          isPaused: detail.isPaused,
+          subscriptionId: detail.subscriptionId,
+          programName: detail.programName,
+          remainingDays: detail.remainingDays,
+          setupStatus: detail.setupStatus,
+          upcomingSubscriptionId: detail.upcomingSubscriptionId,
+          lifecycleStatus: detail.lifecycleStatus,
+          checkoutSelected: detail.checkoutSelected,
+        ),
+        _ => FamilyMemberSummaryEntity(
+          memberId: memberId,
+          displayName: '',
+          role: 2,
+          ageYears: null,
+          isPaused: false,
+          subscriptionId: null,
+          programName: '',
+          remainingDays: 0,
+          setupStatus: 0,
+        ),
+      };
+      return _buildRoute(
+        settings: settings,
+        page: FamilyMemberDetailScreen(member: member),
+      );
+    }
+
     switch (settings.name) {
       case AppRoutes.loadingPreview:
         return _buildRoute(
@@ -169,6 +224,8 @@ class RouteGenerator {
         );
       case AppRoutes.familyPlanDetails:
       case AppRoutes.familySubscriptionSettings:
+      case AppRoutes.familyHome:
+      case '/family/home':
         return _buildRoute(settings: settings, page: const FamilyHomeScreen());
       case AppRoutes.restaurantTierUpgrade:
         final args = settings.arguments is RestaurantTierUpgradeArgs
@@ -208,11 +265,17 @@ class RouteGenerator {
           ),
         );
       case AppRoutes.familySubscriptionMembers:
+      case AppRoutes.familyMembers:
+      case '/family/members':
+      case AppRoutes.familySwitcher:
+      case '/family/switcher':
         return _buildRoute(
           settings: settings,
           page: const FamilyMembersScreen(),
         );
       case AppRoutes.familySubscriptionMemberDetails:
+      case AppRoutes.familyMemberDetail:
+      case '/family/member-detail':
         final member = switch (settings.arguments) {
           final FamilyMemberSummaryEntity summary => summary,
           final FamilyMemberDetailEntity detail => FamilyMemberSummaryEntity(

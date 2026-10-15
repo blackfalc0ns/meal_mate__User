@@ -6,7 +6,7 @@ import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/payment/data/mapper/payment_mapper.dart';
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';

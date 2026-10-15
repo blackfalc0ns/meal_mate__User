@@ -410,7 +410,10 @@ class _FamilyMemberCalendarScreenState
                     index: hasMeals ? 2 : 1,
                     child: FamilyMemberCalendarPrimaryAction(
                       hasMeals: hasMeals,
-                      canEdit: selectedDay?.isEditable == true,
+                      canEdit: (selectedDay?.isEditable == true) &&
+                          (hasMeals
+                              ? state.canViewCalendar
+                              : state.canEditMealsAndDays),
                       onChooseMeals: () {
                         final activeSubId = state.activeSubscriptionId;
                         if (activeSubId == null || activeSubId.isEmpty) return;

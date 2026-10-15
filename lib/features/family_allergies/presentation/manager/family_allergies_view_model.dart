@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
@@ -29,6 +29,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
   final Map<String, Timer> _saveTimers = {};
   final Map<String, int> _saveVersions = {};
+  int _activeLoadId = 0;
 
   @override
   Future<void> close() {
@@ -40,29 +41,33 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   Future<void> load({String? memberId}) async {
+    final reqId = ++_activeLoadId;
     emit(state.copyWith(isLoading: true, clearError: true, clearFailure: true));
     final flowResult = await _getFlow();
     final catalogResult = await _getCatalog();
+    if (isClosed || reqId != _activeLoadId) return;
     if (flowResult is ApiSuccessResult<FamilyFlowCurrentEntity> &&
         catalogResult is ApiSuccessResult<FoodPreferencesCatalogEntity>) {
-      final members = memberId == null
-          ? flowResult.data.members
-          : flowResult.data.members
-                .where((member) => member.memberId == memberId)
-                .toList();
+      final members = flowResult.data.members;
+      final targetIndex = memberId != null
+          ? members.indexWhere((m) => m.memberId == memberId)
+          : -1;
+      final initialIndex = targetIndex >= 0 ? targetIndex : 0;
+      final currentMember = members.isNotEmpty ? members[initialIndex] : null;
       emit(
         state.copyWith(
           isLoading: false,
           clearFailure: true,
           members: members,
+          currentIndex: initialIndex,
           catalog: catalogResult.data.allergens,
           ingredients: catalogResult.data.ingredients,
-          selectedCodes: members.isEmpty
-              ? const {}
-              : _savedSelectionFor(members.first),
-          rejectedCodes: members.isEmpty
-              ? const {}
-              : _savedRejectedSelectionFor(members.first),
+          selectedCodes: currentMember != null
+              ? _savedSelectionFor(currentMember)
+              : const {},
+          rejectedCodes: currentMember != null
+              ? _savedRejectedSelectionFor(currentMember)
+              : const {},
           completed: members.isEmpty,
         ),
       );

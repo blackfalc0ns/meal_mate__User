@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -79,6 +80,7 @@ class PaymentSuccessScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
+                    key: const ValueKey('subscription-success-content'),
                     children: [
                       const SubscriptionSuccessHeroHeader(),
                       SubscriptionSuccessSummaryCard(args: resolvedArgs),
@@ -88,7 +90,7 @@ class PaymentSuccessScreen extends StatelessWidget {
                       const SubscriptionNextStepBanner(),
                       const SizedBox(height: Spacing.sm),
                     ],
-                  ),
+                  ).animate().fadeIn(duration: 250.ms),
                 ),
               ),
               SubscriptionSuccessActionButtons(

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/text_styles.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 class InlineApiErrorWidget extends StatelessWidget {
   const InlineApiErrorWidget({super.key, required this.failure, this.onRetry});
@@ -90,7 +91,7 @@ class InlineApiErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            failure.errorMessage,
+            ErrorMessagePresenter.fromFailure(context, failure),
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.textSecondary,
               height: 1.45,

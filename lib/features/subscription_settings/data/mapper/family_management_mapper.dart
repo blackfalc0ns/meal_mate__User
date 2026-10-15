@@ -180,7 +180,19 @@ extension FamilyMemberPermissionsResponseDtoMapper
                 label: localeName == 'ar'
                     ? group.labelAr ?? group.labelEn ?? ''
                     : group.labelEn ?? group.labelAr ?? '',
+                labelAr: group.labelAr,
+                labelEn: group.labelEn,
                 permissions: (group.permissions ?? const [])
+                    .where((item) {
+                      final k = item.key ?? '';
+                      if (k == 'changeProgram' || k == 'changeDeliveryTime') {
+                        return false;
+                      }
+                      if (item.isSupported == false) {
+                        return false;
+                      }
+                      return true;
+                    })
                     .map(
                       (item) => FamilyPermissionItemEntity(
                         key: item.key ?? '',
@@ -188,11 +200,19 @@ extension FamilyMemberPermissionsResponseDtoMapper
                             ? item.labelAr ?? item.labelEn ?? ''
                             : item.labelEn ?? item.labelAr ?? '',
                         value: item.value ?? false,
+                        labelAr: item.labelAr,
+                        labelEn: item.labelEn,
+                        descriptionAr: item.descriptionAr,
+                        descriptionEn: item.descriptionEn,
+                        isSupported: item.isSupported ?? true,
+                        isManagerConfigurable: item.isManagerConfigurable ?? true,
+                        requiredPermissions: item.requiredPermissions ?? const [],
                       ),
                     )
                     .toList(),
               ),
             )
+            .where((group) => group.permissions.isNotEmpty)
             .toList(),
       );
 }

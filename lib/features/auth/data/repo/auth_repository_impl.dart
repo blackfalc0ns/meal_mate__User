@@ -21,6 +21,7 @@ import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_set_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_step_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_verify_otp_request_entity.dart';
+import 'package:meal_meat_user/features/auth/domain/entities/family_first_login_resend_otp_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/login_entity.dart';
@@ -40,6 +41,7 @@ import 'package:meal_meat_user/features/auth/domain/entities/reset_password_requ
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/verify_phone_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/repo/auth_repository.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 
 @Injectable(as: AuthRepository)
@@ -97,6 +99,18 @@ class AuthRepositoryImpl implements AuthRepository {
   ) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.verifyFamilyFirstLoginOtp(
+        request.toDto(),
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<FamilyFirstLoginStepEntity>> resendFamilyFirstLoginOtp(
+    FamilyFirstLoginResendOtpRequestEntity request,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.resendFamilyFirstLoginOtp(
         request.toDto(),
       );
       return response.toEntity();
@@ -277,6 +291,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<void> _clearSubscriptionCache() async {
     _familyFlowSnapshotStore.invalidate();
+    FamilyConversionDraftSession.clearConvertedFamilyDraft();
     await _sharedPrefHelper.removeData(key: StorageKeys.currentSubscriptionId);
   }
 }

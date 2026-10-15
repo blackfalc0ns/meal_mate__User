@@ -27,5 +27,6 @@ class FamilyRenewalCheckoutRequestDto {
   factory FamilyRenewalCheckoutRequestDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyRenewalCheckoutRequestDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$FamilyRenewalCheckoutRequestDtoToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$FamilyRenewalCheckoutRequestDtoToJson(this);
 }

@@ -55,10 +55,7 @@ class _SubscriptionProgramSelectionScreenState
             ..doIntent(const GetSubscriptionProgramsEvent()),
       child: Semantics(
         label: locale.nav_subscription,
-        child: BlocListener<
-          SubscriptionProgramsViewModel,
-          SubscriptionProgramsState
-        >(
+        child: BlocListener<SubscriptionProgramsViewModel, SubscriptionProgramsState>(
           listenWhen: (previous, current) =>
               (!previous.isSuccess && current.isSuccess) ||
               (previous.hasDeliveryAddress != current.hasDeliveryAddress),
@@ -97,7 +94,10 @@ class _SubscriptionProgramSelectionScreenState
                 BlocSelector<
                   SubscriptionProgramsViewModel,
                   SubscriptionProgramsState,
-                  ({List<SubscriptionProgramEntity> programs, bool isAddressRequired})
+                  ({
+                    List<SubscriptionProgramEntity> programs,
+                    bool isAddressRequired,
+                  })
                 >(
                   selector: (state) => (
                     programs: state.programs,
@@ -139,7 +139,8 @@ class _SubscriptionProgramSelectionScreenState
                                     return AppSubscriptionButton.next(
                                       text: locale.family_next_package_days,
                                       onPressed: isEnabled
-                                          ? () => _openPackageSelection(programs)
+                                          ? () =>
+                                                _openPackageSelection(programs)
                                           : null,
                                     );
                                   },
@@ -217,8 +218,7 @@ class _SubscriptionProgramSelectionScreenState
     try {
       final shouldAddAddress = await AppWoltModalSheet.show<bool>(
         context: context,
-        title: context
-            .localization.subscription_program_address_required_title,
+        title: context.localization.subscription_program_address_required_title,
         child: SubscriptionProgramAddressRequiredSheet(
           onAddAddress: () => Navigator.of(context).pop(true),
           onDismiss: () => Navigator.of(context).pop(false),

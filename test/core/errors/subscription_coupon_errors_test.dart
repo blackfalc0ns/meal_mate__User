@@ -6,8 +6,8 @@ import 'package:meal_meat_user/core/errors/api_exception_mapper.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_coupon_mapper.dart';
 
 void main() {

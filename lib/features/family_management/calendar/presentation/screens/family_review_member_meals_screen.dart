@@ -45,7 +45,7 @@ class _FamilyReviewMemberMealsScreenState
   }
 
   void _onConfirm(BuildContext context, String localeName) {
-    _viewModel?.doIntent(SaveFamilyDayMealsEvent(localeName: localeName));
+    _viewModel?.doIntent(ConfirmFamilyDayMealsEvent(localeName: localeName));
   }
 
   @override
@@ -204,8 +204,14 @@ class _FamilyReviewMemberMealsScreenState
           bottomNavigationBar: FamilyReviewActionsBar(
             memberName: memberName,
             isLoading: isSaving,
-            onEdit: () => Navigator.maybePop(context),
-            onConfirm: () => _onConfirm(context, locale.localeName),
+            onEdit: (state.selectedDay?.isEditable == true && state.canUnitExchange)
+                ? () => Navigator.maybePop(context)
+                : null,
+            onConfirm: (state.selectedDay?.isEditable == true &&
+                    state.canConfirmMeals &&
+                    meals.isNotEmpty)
+                ? () => _onConfirm(context, locale.localeName)
+                : null,
           ),
           body: isLoading
               ? const FamilyReviewLoadingSkeleton()

@@ -942,7 +942,28 @@
   "family_member_access_deactivate_confirm_action": "Confirm Deactivation",
   "family_member_access_save_button": "Save Changes",
   "family_member_access_save_success": "Access changes saved successfully",
+  "family_member_access_password_already_issued": "A password has already been issued for this account. Use explicit reset if you need to generate a new password.",
+  "family_member_access_explicit_reset_title": "Reset Temporary Password",
+  "family_member_access_explicit_reset_message": "The previous temporary password cannot be recovered in plaintext. Generating a new temporary password will invalidate the previous one. Do you want to proceed?",
+  "family_member_access_explicit_reset_button": "Confirm Reset",
   "family_member_permissions_save_success": "Permissions saved successfully",
+  "family_permission_details_title": "Permission Details",
+  "family_permission_description_empty": "No additional description provided.",
+  "family_permission_current_status": "Current Status",
+  "family_permission_status_enabled": "Enabled",
+  "family_permission_status_disabled": "Disabled",
+  "family_permission_manager_configurable": "Configurable by Manager",
+  "family_permission_fixed_state": "Fixed / System Managed",
+  "family_permission_required_grants": "Requires read grants: {permissions}",
+  "@family_permission_required_grants": {
+    "placeholders": {
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "family_permission_conflict_error": "Permissions were changed by another session. Refreshed with latest data.",
+  "family_permission_close": "Close",
   "family_member_renewal_success": "Renewal request submitted successfully",
   "family_members_title": "Members",
   "family_members_search_hint": "Search for a member",
@@ -2781,5 +2802,28 @@
   "campaign_error_capacity_conflict": "Campaign capacity has been reached. Please choose another offer.",
   "campaign_error_not_found": "Campaign checkout session was not found.",
   "campaign_error_invalid_request": "Invalid payment quote or parameters. Please try again.",
-  "campaign_error_provider_unavailable": "Payment gateway is currently unavailable. Please try again later."
+  "campaign_error_provider_unavailable": "Payment gateway is currently unavailable. Please try again later.",
+  "family_member_detached_label": "Detached",
+  "family_member_disabled_label": "Disabled",
+  "family_member_setup_required_label": "Setup Required",
+  "family_member_paid_preparing_label": "Preparing",
+  "family_member_fulfillment_pending": "Your subscription is being prepared. The calendar will appear when preparation is complete.",
+  "family_permission_info_title": "Permission Details",
+  "family_permission_current_value": "Current Value",
+  "family_permission_status_enabled": "Enabled",
+  "family_permission_status_disabled": "Disabled",
+  "family_permission_fixed_state": "Fixed by system (not configurable)",
+  "family_permission_unsupported_state": "Unsupported",
+  "family_permissions_conflict_message": "Permissions were updated by another session. Please review and try again.",
+  "family_detach_member_title": "Detach Member",
+  "family_detach_member_confirm": "Are you sure you want to detach this member from family management? They will retain their subscription independently.",
+  "family_detach_member_action": "Detach",
+  "family_detach_member_success": "Member detached successfully.",
+  "family_detach_blocked_financial_intent": "Cannot detach member with pending checkout or payment.",
+  "family_detach_requires_active_account": "Member must have completed active account login before detachment.",
+  "family_credential_reset_warning": "The old password cannot be recovered. A new temporary password will be generated.",
+  "family_credential_already_issued": "Password already issued. An explicit reset is required to generate a new password.",
+  "family_credential_reset_action": "Reset Password",
+  "family_permission_prerequisites": "Prerequisites:",
+  "family_permission_close": "Close"
 }

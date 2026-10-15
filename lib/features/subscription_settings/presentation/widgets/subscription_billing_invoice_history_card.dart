@@ -98,11 +98,11 @@ class SubscriptionBillingInvoiceHistoryCard extends StatelessWidget {
                             color: color.onSurface,
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(width: Spacing.xs),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: Spacing.xs,
-                            vertical: Spacing.xs,
+                            vertical: Spacing.xss,
                           ),
                           decoration: BoxDecoration(
                             color: color.primaryContainer,
@@ -119,25 +119,30 @@ class SubscriptionBillingInvoiceHistoryCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Spacer(),
-                        Text(
-                          invoice.displayNumber,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.onSurfaceVariant,
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          dateText,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
-                            color: color.onSurfaceVariant,
+                        const SizedBox(width: Spacing.xs),
+                        Expanded(
+                          child: Text(
+                            invoice.displayNumber,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.onSurfaceVariant,
+                            ),
                           ),
                         ),
                         const SizedBox(width: Spacing.xs),
+                        Text(
+                          dateText,
+                          maxLines: 1,
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xss),
                         Icon(
                           Icons.chevron_right_rounded,
                           size: Spacing.iconSm,

@@ -5,7 +5,8 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.d
 import 'package:meal_meat_user/features/family_checkout/domain/entities/family_checkout_selection_entity.dart';
 
 abstract class FamilyCheckoutRepository {
-  Future<ApiResult<FamilyCheckoutSelectionEntity>> selectFamilyMemberForCheckout({
+  Future<ApiResult<FamilyCheckoutSelectionEntity>>
+  selectFamilyMemberForCheckout({
     required String memberId,
     required bool subscribeNow,
   });

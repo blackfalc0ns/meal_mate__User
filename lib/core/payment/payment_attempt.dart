@@ -11,6 +11,11 @@ class PaymentAttempt {
     required this.createdAtUtc,
     this.reviewRequired = false,
     this.lastPresentedFinalStatus,
+    this.flowType = 'individual',
+    this.batchId,
+    this.batchVersion,
+    this.idempotencyKey,
+    this.state = 'created',
   });
 
   final int schemaVersion;
@@ -20,6 +25,13 @@ class PaymentAttempt {
   final DateTime createdAtUtc;
   final bool reviewRequired;
   final String? lastPresentedFinalStatus;
+  final String flowType;
+  final String? batchId;
+  final int? batchVersion;
+  final String? idempotencyKey;
+  final String state;
+
+  bool get isFamily => flowType == 'family';
 
   Map<String, dynamic> toJson() => {
     'schemaVersion': schemaVersion,
@@ -30,6 +42,11 @@ class PaymentAttempt {
     'reviewRequired': reviewRequired,
     if (lastPresentedFinalStatus != null)
       'lastPresentedFinalStatus': lastPresentedFinalStatus,
+    'flowType': flowType,
+    if (batchId != null) 'batchId': batchId,
+    if (batchVersion != null) 'batchVersion': batchVersion,
+    if (idempotencyKey != null) 'idempotencyKey': idempotencyKey,
+    'state': state,
   };
 
   factory PaymentAttempt.fromJson(Map<String, dynamic> json) {
@@ -43,8 +60,16 @@ class PaymentAttempt {
         : DateTime.now().toUtc();
     final review = json['reviewRequired'] as bool? ?? false;
     final lastStatus = json['lastPresentedFinalStatus'] as String?;
+    final flowType = json['flowType'] as String? ?? 'individual';
+    final batchId = json['batchId'] as String?;
+    final batchVersion = json['batchVersion'] as int?;
+    final idempotencyKey = json['idempotencyKey'] as String?;
+    final attemptState = json['state'] as String? ?? 'created';
 
-    if (owner.trim().isEmpty || subId.trim().isEmpty || pId.trim().isEmpty) {
+    final hasIdentifier =
+        subId.trim().isNotEmpty ||
+        (batchId != null && batchId.trim().isNotEmpty);
+    if (owner.trim().isEmpty || !hasIdentifier || pId.trim().isEmpty) {
       throw const FormatException('Invalid PaymentAttempt payload');
     }
 
@@ -56,6 +81,11 @@ class PaymentAttempt {
       createdAtUtc: createdAt,
       reviewRequired: review,
       lastPresentedFinalStatus: lastStatus,
+      flowType: flowType,
+      batchId: batchId,
+      batchVersion: batchVersion,
+      idempotencyKey: idempotencyKey,
+      state: attemptState,
     );
   }
 
@@ -67,6 +97,11 @@ class PaymentAttempt {
     DateTime? createdAtUtc,
     bool? reviewRequired,
     String? lastPresentedFinalStatus,
+    String? flowType,
+    String? batchId,
+    int? batchVersion,
+    String? idempotencyKey,
+    String? state,
   }) {
     return PaymentAttempt(
       schemaVersion: schemaVersion ?? this.schemaVersion,
@@ -77,6 +112,11 @@ class PaymentAttempt {
       reviewRequired: reviewRequired ?? this.reviewRequired,
       lastPresentedFinalStatus:
           lastPresentedFinalStatus ?? this.lastPresentedFinalStatus,
+      flowType: flowType ?? this.flowType,
+      batchId: batchId ?? this.batchId,
+      batchVersion: batchVersion ?? this.batchVersion,
+      idempotencyKey: idempotencyKey ?? this.idempotencyKey,
+      state: state ?? this.state,
     );
   }
 }

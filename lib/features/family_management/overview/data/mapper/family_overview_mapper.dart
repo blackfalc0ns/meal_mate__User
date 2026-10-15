@@ -86,6 +86,9 @@ class FamilyOverviewMapper {
       todayRequiredCount: dto.todayRequiredCount ?? 0,
       lifecycleStatus: dto.lifecycle?.status,
       checkoutSelected: dto.lifecycle?.checkoutSelected ?? false,
+      paymentStatus: dto.lifecycle?.paymentStatus,
+      fulfillmentStatus: dto.lifecycle?.fulfillmentStatus,
+      accessStatus: dto.lifecycle?.accessStatus,
     );
   }
 

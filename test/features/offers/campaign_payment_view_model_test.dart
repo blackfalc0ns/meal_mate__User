@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/repo/offers_repository.dart';

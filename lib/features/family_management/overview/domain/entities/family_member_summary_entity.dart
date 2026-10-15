@@ -16,6 +16,9 @@ class FamilyMemberSummaryEntity {
     this.checkoutSelected = false,
     this.upcomingSubscriptionId,
     this.upcomingStartDate,
+    this.paymentStatus,
+    this.fulfillmentStatus,
+    this.accessStatus,
   });
 
   final String memberId;
@@ -34,6 +37,9 @@ class FamilyMemberSummaryEntity {
   final bool checkoutSelected;
   final String? upcomingSubscriptionId;
   final String? upcomingStartDate;
+  final String? paymentStatus;
+  final String? fulfillmentStatus;
+  final String? accessStatus;
 
   bool get isManager => role == 1;
   bool get hasPlan => subscriptionId?.isNotEmpty == true;
@@ -51,4 +57,14 @@ class FamilyMemberSummaryEntity {
   bool get isReadyToPay =>
       (lifecycleStatus?.toLowerCase() == 'readytopay') ||
       (!hasPlan && setupStatus == 2);
+  bool get isPaidPreparingCalendar =>
+      paymentStatus?.toLowerCase() == 'paid' &&
+      fulfillmentStatus?.toLowerCase() == 'preparing';
+  bool get isDetached =>
+      accessStatus?.toLowerCase() == 'detached' ||
+      lifecycleStatus?.toLowerCase() == 'pendingdetach';
+  bool get isDisabled => accessStatus?.toLowerCase() == 'disabled';
+  bool get isSetupRequired =>
+      (!hasPlan && (setupStatus == 0 || setupStatus == 1)) ||
+      lifecycleStatus?.toLowerCase() == 'notstarted';
 }

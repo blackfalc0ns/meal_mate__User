@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/core/upload_file/domain/entities/upload_file_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
 

@@ -58,10 +58,10 @@ abstract class ExternalModules {
       compact: true,
       maxWidth: 120,
       enabled: kDebugMode,
-      logPrint: (object) {
-        final sanitized = SensitiveDataSanitizer.sanitize(object);
-        developer.log(sanitized, name: 'DIO');
-      },
+      // logPrint: (object) {
+      //  // final sanitized = SensitiveDataSanitizer.sanitize(object);
+      //   developer.log(object, name: 'DIO');
+      // },
     );
   }
 

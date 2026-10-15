@@ -22,7 +22,20 @@ class FamilySubscriptionFlowViewModel
   Future<void> load({bool forceRefresh = false}) async {
     final cached = _snapshotStore.current;
     if (!forceRefresh && cached != null) {
-      emit(state.copyWith(flow: cached, isLoading: false));
+      final restoredStep =
+          cached.currentStep != null && cached.currentStep! >= 0
+          ? cached.currentStep!
+          : state.currentStep;
+      final restoredTarget =
+          state.targetMemberId ?? _resolveTargetMember(cached, restoredStep);
+      emit(
+        state.copyWith(
+          flow: cached,
+          isLoading: false,
+          currentStep: restoredStep,
+          targetMemberId: restoredTarget,
+        ),
+      );
       return;
     }
 
@@ -33,9 +46,48 @@ class FamilySubscriptionFlowViewModel
     switch (result) {
       case ApiSuccessResult(data: final flow):
         _snapshotStore.update(flow);
-        emit(state.copyWith(isLoading: false, flow: flow));
+        final restoredStep = flow.currentStep != null && flow.currentStep! >= 0
+            ? flow.currentStep!
+            : state.currentStep;
+        final restoredTarget =
+            state.targetMemberId ?? _resolveTargetMember(flow, restoredStep);
+        emit(
+          state.copyWith(
+            isLoading: false,
+            flow: flow,
+            currentStep: restoredStep,
+            targetMemberId: restoredTarget,
+          ),
+        );
       case ApiErrorResult(failure: final failure):
         emit(state.copyWith(isLoading: false, failure: failure));
+    }
+  }
+
+  String? _resolveTargetMember(FamilyFlowCurrentEntity flow, int step) {
+    final subscribing = flow.members.where((m) => m.subscribeNow).toList();
+    if (subscribing.isEmpty) return null;
+    switch (step) {
+      case 1:
+        final incomplete = subscribing.where(
+          (m) => m.programId == null || m.programId!.isEmpty,
+        );
+        return (incomplete.isNotEmpty ? incomplete.first : subscribing.first)
+            .memberId;
+      case 2:
+        final incomplete = subscribing.where(
+          (m) =>
+              (m.deliveryAddressId == null || m.deliveryAddressId!.isEmpty) &&
+              m.deliveryAddress == null,
+        );
+        return (incomplete.isNotEmpty ? incomplete.first : subscribing.first)
+            .memberId;
+      case 3:
+        final incomplete = subscribing.where((m) => !m.allergiesCompleted);
+        return (incomplete.isNotEmpty ? incomplete.first : subscribing.first)
+            .memberId;
+      default:
+        return subscribing.first.memberId;
     }
   }
 
@@ -60,4 +112,96 @@ class FamilySubscriptionFlowViewModel
       emit(state.copyWith(flow: _snapshotStore.current));
     }
   }
+
+  void updateMemberProgram(String memberId, String programId) {
+    _snapshotStore.updateMemberProgram(memberId, programId);
+    if (_snapshotStore.current != null) {
+      emit(state.copyWith(flow: _snapshotStore.current));
+    }
+  }
+
+  void updateMemberDislikedIngredients(
+    String memberId,
+    List<String> ingredientCodes,
+  ) {
+    _snapshotStore.updateMemberDislikedIngredients(memberId, ingredientCodes);
+    if (_snapshotStore.current != null) {
+      emit(state.copyWith(flow: _snapshotStore.current));
+    }
+  }
+
+  void setStep(int step) {
+    if (state.currentStep == step) return;
+    emit(state.copyWith(currentStep: step));
+  }
+
+  void setTargetMember(String? memberId) {
+    if (state.targetMemberId == memberId) return;
+    emit(
+      state.copyWith(
+        targetMemberId: memberId,
+        clearTargetMemberId: memberId == null,
+      ),
+    );
+  }
+
+  bool canProceedFromMembers() {
+    final members = state.flow?.members ?? [];
+    final subscribingMembers = members.where((m) => m.subscribeNow).toList();
+    final minMembers = state.flow?.minMembers ?? 1;
+    return subscribingMembers.length >= minMembers;
+  }
+
+  bool canProceedFromPrograms() {
+    final members = (state.flow?.members ?? [])
+        .where((m) => m.subscribeNow)
+        .toList();
+    if (members.isEmpty) return false;
+    return members.every((m) => m.programId != null && m.programId!.isNotEmpty);
+  }
+
+  bool canProceedFromAddresses() {
+    final members = (state.flow?.members ?? [])
+        .where((m) => m.subscribeNow)
+        .toList();
+    if (members.isEmpty) return false;
+    return members.every(
+      (m) =>
+          (m.deliveryAddressId != null && m.deliveryAddressId!.isNotEmpty) ||
+          m.deliveryAddress != null,
+    );
+  }
+
+  bool canProceedFromAllergies() {
+    final members = (state.flow?.members ?? [])
+        .where((m) => m.subscribeNow)
+        .toList();
+    if (members.isEmpty) return false;
+    return members.every((m) => m.allergiesCompleted);
+  }
+
+  bool canProceedTo(int step) {
+    switch (step) {
+      case 0:
+        return true;
+      case 1:
+        return canProceedFromMembers();
+      case 2:
+        return canProceedFromMembers() && canProceedFromPrograms();
+      case 3:
+        return canProceedFromMembers() &&
+            canProceedFromPrograms() &&
+            canProceedFromAddresses();
+      case 4:
+      case 5:
+        return canProceedFromMembers() &&
+            canProceedFromPrograms() &&
+            canProceedFromAddresses() &&
+            canProceedFromAllergies();
+      default:
+        return false;
+    }
+  }
+
+  bool canProceedToNextStep() => canProceedTo(state.currentStep + 1);
 }

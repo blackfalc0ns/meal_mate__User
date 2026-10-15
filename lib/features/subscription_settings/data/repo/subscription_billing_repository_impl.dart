@@ -1,8 +1,11 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/data_source/subscription_billing_remote_data_source.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_auto_renewal_mapper.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
+import 'package:meal_meat_user/features/subscription_settings/data/models/request/subscription_auto_renewal_consent_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_auto_renewal_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
 
@@ -131,6 +134,50 @@ class SubscriptionBillingRepositoryImpl
             subscriptionId,
             request.toDto(),
           );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  getCustomerSubscriptionAutoRenewal(String subscriptionId) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .getCustomerSubscriptionAutoRenewal(subscriptionId);
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  updateCustomerSubscriptionAutoRenewalConsent({
+    required String subscriptionId,
+    required bool accepted,
+    required String consentVersion,
+    required num amount,
+    required String currency,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .updateCustomerSubscriptionAutoRenewalConsent(
+            subscriptionId,
+            SubscriptionAutoRenewalConsentRequestDto(
+              accepted: accepted,
+              consentVersion: consentVersion,
+              amount: amount,
+              currency: currency,
+            ),
+          );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<SubscriptionAutoRenewalEntity>>
+  deleteCustomerSubscriptionAutoRenewalConsent(String subscriptionId) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource
+          .deleteCustomerSubscriptionAutoRenewalConsent(subscriptionId);
       return response.toEntity();
     });
   }

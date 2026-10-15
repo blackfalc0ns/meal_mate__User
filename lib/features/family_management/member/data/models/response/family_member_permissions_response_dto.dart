@@ -145,19 +145,63 @@ class FamilyPermissionItemDto {
     required this.labelAr,
     required this.labelEn,
     required this.value,
+    this.descriptionAr = '',
+    this.descriptionEn = '',
+    this.isSupported = true,
+    this.isManagerConfigurable = true,
+    this.requiredPermissions = const [],
   });
 
   final String key;
   final String labelAr;
   final String labelEn;
   final bool value;
+  final String descriptionAr;
+  final String descriptionEn;
+  final bool isSupported;
+  final bool isManagerConfigurable;
+  final List<String> requiredPermissions;
+
+  String localizedLabel(bool isArabic) {
+    if (isArabic) {
+      final ar = labelAr.trim();
+      if (ar.isNotEmpty) return ar;
+      final en = labelEn.trim();
+      if (en.isNotEmpty) return en;
+      return key;
+    }
+    final en = labelEn.trim();
+    if (en.isNotEmpty) return en;
+    final ar = labelAr.trim();
+    if (ar.isNotEmpty) return ar;
+    return key;
+  }
+
+  String localizedDescription(bool isArabic) {
+    if (isArabic) {
+      final ar = descriptionAr.trim();
+      if (ar.isNotEmpty) return ar;
+      return descriptionEn.trim();
+    }
+    final en = descriptionEn.trim();
+    if (en.isNotEmpty) return en;
+    return descriptionAr.trim();
+  }
 
   factory FamilyPermissionItemDto.fromJson(Map<String, dynamic> json) {
     return FamilyPermissionItemDto(
       key: json['key']?.toString() ?? '',
       labelAr: json['labelAr']?.toString() ?? json['label']?.toString() ?? '',
       labelEn: json['labelEn']?.toString() ?? json['label']?.toString() ?? '',
+      descriptionAr: json['descriptionAr']?.toString() ?? json['description']?.toString() ?? '',
+      descriptionEn: json['descriptionEn']?.toString() ?? json['description']?.toString() ?? '',
       value: json['value'] as bool? ?? false,
+      isSupported: json['isSupported'] as bool? ?? true,
+      isManagerConfigurable: json['isManagerConfigurable'] as bool? ?? true,
+      requiredPermissions: (json['requiredPermissions'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
     );
   }
 }

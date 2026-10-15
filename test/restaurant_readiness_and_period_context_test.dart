@@ -5,7 +5,7 @@ import 'package:meal_meat_user/core/entities/pagination_entity.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_entity.dart';
 import 'package:meal_meat_user/core/subscription_tiers/domain/entities/subscription_tier_restaurant_browse_entity.dart';
 import 'package:meal_meat_user/features/monthly_plans/domain/entities/subscription_duration_entity.dart';
@@ -252,8 +252,9 @@ void main() {
           'failureReasons': {'tier_mismatch': 2},
         };
 
-        final dto =
-            SubscriptionAvailabilityResponseDto.fromJson(availabilityJson);
+        final dto = SubscriptionAvailabilityResponseDto.fromJson(
+          availabilityJson,
+        );
         expect(dto.failureReasons, ['tier_mismatch']);
         expect(dto.failureReasonCounts, {'tier_mismatch': 2});
 
@@ -285,18 +286,8 @@ void main() {
               'count': 1,
               'name': 'الإفطار',
             },
-            {
-              'slot': 'lunch',
-              'nameAr': 'الغداء',
-              'count': 1,
-              'name': 'الغداء',
-            },
-            {
-              'slot': 'snack',
-              'nameAr': 'سناك',
-              'count': 1,
-              'name': 'سناك',
-            },
+            {'slot': 'lunch', 'nameAr': 'الغداء', 'count': 1, 'name': 'الغداء'},
+            {'slot': 'snack', 'nameAr': 'سناك', 'count': 1, 'name': 'سناك'},
           ],
           'basePrice': 108.1,
           'campaignDiscount': 0,
@@ -389,10 +380,9 @@ void main() {
         expect(summaryEntity.tierNameAr, 'أساسي');
         expect(summaryEntity.restaurants.length, 2);
         expect(summaryEntity.availability?.failureReasons, ['tier_mismatch']);
-        expect(
-          summaryEntity.availability?.failureReasonCounts,
-          {'tier_mismatch': 2},
-        );
+        expect(summaryEntity.availability?.failureReasonCounts, {
+          'tier_mismatch': 2,
+        });
 
         final state = SubscriptionSummaryState(summary: summaryEntity);
         expect(state.canCheckout, isTrue);

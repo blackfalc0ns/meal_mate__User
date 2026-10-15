@@ -85,16 +85,17 @@ void main() {
     });
 
     testWidgets('renders properly in English locale', (tester) async {
-      await tester.pumpWidget(
-        createSubject(locale: const Locale('en')),
-      );
+      await tester.pumpWidget(createSubject(locale: const Locale('en')));
       await tester.pumpAndSettle();
 
       expect(find.byType(PaymentFailedScreen), findsOneWidget);
       expect(find.text('Payment Failed'), findsOneWidget);
       expect(find.text('Payment Incomplete'), findsOneWidget);
       expect(find.text('Transaction Not Completed'), findsOneWidget);
-      expect(find.text('No amount was deducted from your account'), findsOneWidget);
+      expect(
+        find.text('No amount was deducted from your account'),
+        findsOneWidget,
+      );
       expect(find.text('Retry'), findsOneWidget);
       expect(find.text('Change Payment Method'), findsOneWidget);
       expect(find.text('Contact Support'), findsOneWidget);

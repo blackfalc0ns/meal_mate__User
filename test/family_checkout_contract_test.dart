@@ -246,6 +246,26 @@ void main() {
         AppRoutes.familyAllergies,
       );
       expect(
+        familyCheckoutBlockerRoute('family.plan_incomplete'),
+        AppRoutes.familyPackageDaysSetup,
+      );
+      expect(
+        familyCheckoutBlockerRoute('family.program_required'),
+        AppRoutes.familyProgramSetup,
+      );
+      expect(
+        familyCheckoutBlockerRoute('family.already_in_family'),
+        AppRoutes.familySubscriptionSetup,
+      );
+      expect(
+        familyCheckoutBlockerRoute('family.duplicate_member'),
+        AppRoutes.familySubscriptionSetup,
+      );
+      expect(
+        familyCheckoutBlockerRoute('family.cannot_remove_manager'),
+        AppRoutes.familySubscriptionSetup,
+      );
+      expect(
         familyCheckoutBlockerRoute('restaurant.not_eligible'),
         AppRoutes.familyProgramSetup,
       );

@@ -21,6 +21,10 @@ class FamilyMemberDetailEntity {
     this.hasSeparateAccount = false,
     this.lifecycleStatus,
     this.checkoutSelected = false,
+    this.paymentStatus,
+    this.fulfillmentStatus,
+    this.accessStatus,
+    this.displayStatus,
   });
 
   final String memberId;
@@ -44,6 +48,10 @@ class FamilyMemberDetailEntity {
   final bool hasSeparateAccount;
   final String? lifecycleStatus;
   final bool checkoutSelected;
+  final String? paymentStatus;
+  final String? fulfillmentStatus;
+  final String? accessStatus;
+  final String? displayStatus;
 
   bool get hasPlan =>
       (subscriptionId?.isNotEmpty == true) ||
@@ -68,6 +76,16 @@ class FamilyMemberDetailEntity {
   bool get isReadyToPay =>
       (lifecycleStatus?.toLowerCase() == 'readytopay') ||
       (!hasPlan && setupStatus == 2);
+  bool get isPaidPreparingCalendar =>
+      paymentStatus?.toLowerCase() == 'paid' &&
+      fulfillmentStatus?.toLowerCase() == 'preparing';
+  bool get isDetached =>
+      accessStatus?.toLowerCase() == 'detached' ||
+      lifecycleStatus?.toLowerCase() == 'pendingdetach';
+  bool get isDisabled => accessStatus?.toLowerCase() == 'disabled';
+  bool get isSetupRequired =>
+      (!hasPlan && (setupStatus == 0 || setupStatus == 1)) ||
+      lifecycleStatus?.toLowerCase() == 'notstarted';
 
   bool isServiceActive({DateTime? atDate}) {
     if (endDate == null) return hasPlan;

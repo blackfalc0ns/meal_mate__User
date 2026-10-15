@@ -9,10 +9,7 @@ class PaymentFailedHeroHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: Spacing.md,
-        bottom: Spacing.xs,
-      ),
+      padding: const EdgeInsets.only(top: Spacing.md, bottom: Spacing.xs),
       child: Center(
         child: Image.asset(
           Assets.paymentFailedHero,

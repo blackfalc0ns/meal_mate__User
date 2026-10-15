@@ -1,5 +1,5 @@
 import 'package:meal_meat_user/core/entities/pagination_entity.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/subscription_packages/domain/entities/subscription_bundle_entity.dart';
 
 class SubscriptionPackagesState {

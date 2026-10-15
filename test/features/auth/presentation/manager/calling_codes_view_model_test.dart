@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/calling_code_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/get_calling_codes_usecase.dart';
 import 'package:meal_meat_user/features/auth/presentation/manager/calling_codes_event.dart';

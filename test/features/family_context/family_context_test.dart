@@ -1,14 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
 import 'package:meal_meat_user/features/family_context/data/data_source/family_context_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_context/data/mapper/family_context_mapper.dart';
 import 'package:meal_meat_user/features/family_context/data/models/response/family_context_response_dto.dart';
 import 'package:meal_meat_user/features/family_context/data/repo/family_context_repository_impl.dart';
-import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
 import 'package:meal_meat_user/features/family_context/domain/entities/family_context_entity.dart';
 import 'package:meal_meat_user/features/family_context/domain/usecase/get_my_family_contexts_usecase.dart';
 import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_event.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_state.dart';
 import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 
 class _FakeFamilyContextRemoteDataSource extends Fake
@@ -139,6 +138,95 @@ void main() {
       expect(viewModel.state.hasContexts, isFalse);
 
       viewModel.close();
+    });
+
+    test(
+      'derivedNavigation correctly resolves managerHome, memberHome, detached, pending setup, and customerHome',
+      () {
+        // 1. Empty contexts -> customerHome
+        const emptyState = FamilyContextState();
+        expect(
+          emptyState.derivedNavigation,
+          FamilyNavigationDestination.customerHome,
+        );
+
+        // 2. Manager context -> managerHome
+        const managerState = FamilyContextState(
+          contexts: [FamilyContextEntity(groupId: 'g1', isManager: true)],
+        );
+        expect(
+          managerState.derivedNavigation,
+          FamilyNavigationDestination.managerHome,
+        );
+
+        // 3. Member pending setup -> memberSetupPending
+        const pendingSetupState = FamilyContextState(
+          contexts: [
+            FamilyContextEntity(
+              groupId: 'g2',
+              isManager: false,
+              setupStatus: 'pending_first_login',
+            ),
+          ],
+        );
+        expect(
+          pendingSetupState.derivedNavigation,
+          FamilyNavigationDestination.memberSetupPending,
+        );
+
+        // 4. Detached member -> memberDetached
+        const detachedState = FamilyContextState(
+          contexts: [
+            FamilyContextEntity(
+              groupId: 'g3',
+              isManager: false,
+              isDetachedFromFamilyManagement: true,
+            ),
+          ],
+        );
+        expect(
+          detachedState.derivedNavigation,
+          FamilyNavigationDestination.memberDetached,
+        );
+
+        // 5. Active member -> memberHome
+        const memberState = FamilyContextState(
+          contexts: [
+            FamilyContextEntity(
+              groupId: 'g4',
+              isManager: false,
+              memberSubscriptionId: 'sub_123',
+            ),
+          ],
+        );
+        expect(
+          memberState.derivedNavigation,
+          FamilyNavigationDestination.memberHome,
+        );
+      },
+    );
+
+    test('preserves paused and detached contexts without losing them', () {
+      const state = FamilyContextState(
+        contexts: [
+          FamilyContextEntity(groupId: 'g_active', isManager: true),
+          FamilyContextEntity(
+            groupId: 'g_paused',
+            isManager: false,
+            isPaused: true,
+          ),
+          FamilyContextEntity(
+            groupId: 'g_detached',
+            isManager: false,
+            isDetachedFromFamilyManagement: true,
+          ),
+        ],
+      );
+
+      expect(state.contexts.length, 3);
+      expect(state.hasPausedContext, isTrue);
+      expect(state.hasDetachedContext, isTrue);
+      expect(state.hasManagerContext, isTrue);
     });
   });
 }

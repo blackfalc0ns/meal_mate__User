@@ -10,6 +10,7 @@ import 'package:meal_meat_user/features/subscription_settings/data/models/reques
 import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_permissions_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_access_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
+import 'package:meal_meat_user/features/family_context/data/models/response/family_context_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
 
 @Injectable(as: FamilyMemberRemoteDataSource)
@@ -57,15 +58,25 @@ class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {
     return _apiServices.updateFamilyMemberPermissions(
       memberId,
       FamilyMemberPermissionsRequestDto(
+        expectedVersion: request.expectedVersion,
+        patch: request.patch,
         editDailyMeals: request.editDailyMeals,
-        changeDeliveryTime: request.changeDeliveryTime,
         viewProgram: request.viewProgram,
-        changeProgram: request.changeProgram,
         editMealsAndDays: request.editMealsAndDays,
         editAddress: request.editAddress,
         unitExchange: request.unitExchange,
         changePassword: request.changePassword,
-        expectedVersion: request.expectedVersion,
+        viewCalendar: request.viewCalendar,
+        viewInvoices: request.viewInvoices,
+        selectRestaurant: request.selectRestaurant,
+        confirmMeals: request.confirmMeals,
+        requestFreeze: request.requestFreeze,
+        requestRenewal: request.requestRenewal,
+        requestUpgrade: request.requestUpgrade,
+        cancelSubscription: request.cancelSubscription,
+        viewFamilyCalendars: request.viewFamilyCalendars,
+        viewFamilyPlans: request.viewFamilyPlans,
+        viewFamilyInvoices: request.viewFamilyInvoices,
       ),
     );
   }
@@ -92,4 +103,14 @@ class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {
   @override
   Future<void> renewMemberSubscription(String renewalPath) =>
       _apiServices.createFamilyMemberRenewalRequest(renewalPath);
+
+  @override
+  Future<List<FamilyCapabilityResponseDto>> getMemberCapabilities(
+    String memberId,
+  ) =>
+      _apiServices.getFamilyMemberCapabilities(memberId);
+
+  @override
+  Future<void> detachMember(String memberId) =>
+      _apiServices.detachFamilyMember(memberId);
 }

@@ -66,4 +66,3 @@ class UpdateMemberStartDateEvent extends FamilyPlanEvent {
   final String memberId;
   final String startDate;
 }
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/widgets/restaurant_menu_view.dart';
 
 export 'package:meal_meat_user/features/restaurant_menu/domain/models/restaurant_menu_models.dart';

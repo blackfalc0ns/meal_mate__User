@@ -12,10 +12,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/manager/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_schedule_card.dart';
 
 class FamilyPaymentScheduleSection extends StatelessWidget {
-  const FamilyPaymentScheduleSection({
-    super.key,
-    required this.state,
-  });
+  const FamilyPaymentScheduleSection({super.key, required this.state});
 
   final FamilyPlanState state;
 
@@ -26,7 +23,8 @@ class FamilyPaymentScheduleSection extends StatelessWidget {
 
     final summary = state.summary;
     final selectedMemberSummary = summary?.selectedMember;
-    final activeMemberId = selectedMemberSummary?.memberId ??
+    final activeMemberId =
+        selectedMemberSummary?.memberId ??
         state.selectedSummaryMemberId ??
         summary?.selectedMemberId ??
         state.members.firstOrNull?.memberId;
@@ -40,37 +38,43 @@ class FamilyPaymentScheduleSection extends StatelessWidget {
         .firstOrNull;
 
     final rawPaymentDate = matchingSchedule?.paymentDate;
-    final paymentDate = (rawPaymentDate != null
+    final paymentDate =
+        (rawPaymentDate != null
             ? (AppDatePicker.parseDate(rawPaymentDate) ??
-                DateTime.tryParse(rawPaymentDate))
+                  DateTime.tryParse(rawPaymentDate))
             : null) ??
         DateTime.now();
 
-    final rawFirstDelivery = matchingSchedule?.firstDeliveryDate ??
+    final rawFirstDelivery =
+        matchingSchedule?.firstDeliveryDate ??
         selectedMemberSummary?.startDate ??
         matchingFlowMember?.startDate;
-    final parsedStart = AppDatePicker.parseDate(rawFirstDelivery) ??
+    final parsedStart =
+        AppDatePicker.parseDate(rawFirstDelivery) ??
         (rawFirstDelivery != null ? DateTime.tryParse(rawFirstDelivery) : null);
-    final startDate = parsedStart ??
+    final startDate =
+        parsedStart ??
         DateUtils.dateOnly(DateTime.now().add(const Duration(days: 2)));
 
     final rawEndDate = matchingSchedule?.endDate;
     final parsedBackendEnd = rawEndDate != null
-        ? (AppDatePicker.parseDate(rawEndDate) ??
-            DateTime.tryParse(rawEndDate))
+        ? (AppDatePicker.parseDate(rawEndDate) ?? DateTime.tryParse(rawEndDate))
         : null;
 
-    final durationDays = matchingSchedule?.deliveryDaysCount != null &&
+    final durationDays =
+        matchingSchedule?.deliveryDaysCount != null &&
             matchingSchedule!.deliveryDaysCount > 0
         ? matchingSchedule.deliveryDaysCount
         : (selectedMemberSummary?.durationDays ??
-            matchingFlowMember?.durationDays ??
-            20);
-    final includeFriday = selectedMemberSummary?.includeFriday ??
+              matchingFlowMember?.durationDays ??
+              20);
+    final includeFriday =
+        selectedMemberSummary?.includeFriday ??
         matchingFlowMember?.includeFriday ??
         false;
 
-    final endDate = parsedBackendEnd ??
+    final endDate =
+        parsedBackendEnd ??
         _calculateEndDate(startDate, durationDays, includeFriday);
 
     final dateFormatter = DateFormat('d MMMM yyyy', locale.localeName);
@@ -158,11 +162,8 @@ class FamilyPaymentScheduleSection extends StatelessWidget {
 
     if (picked != null && activeMemberId != null && context.mounted) {
       context.read<FamilyCheckoutViewModel>().doIntent(
-            UpdateMemberStartDateEvent(
-              memberId: activeMemberId,
-              startDate: picked,
-            ),
-          );
+        UpdateMemberStartDateEvent(memberId: activeMemberId, startDate: picked),
+      );
     }
   }
 }

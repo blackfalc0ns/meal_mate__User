@@ -3,7 +3,7 @@ import 'package:meal_meat_user/core/address/domain/entities/customer_address_ent
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/locations_catalog_entity.dart';
 import 'package:meal_meat_user/core/address/domain/entities/map_address_autofill_entity.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 enum AddressPendingActionType { add, update, setDefault }
 

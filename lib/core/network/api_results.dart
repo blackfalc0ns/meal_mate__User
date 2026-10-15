@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:meal_meat_user/core/errors/api_exception_mapper.dart';
 
-import 'failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 sealed class ApiResult<T> {
   const ApiResult();

@@ -8,81 +8,90 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/fa
 
 void main() {
   group('Family Management, Capabilities, and Conflict Safety Tests', () {
-    test('FamilyMemberPermissionsRequestDto serializes expectedVersion and 8 root toggles', () {
-      const dto = FamilyMemberPermissionsRequestDto(
-        editDailyMeals: true,
-        changeDeliveryTime: false,
-        viewProgram: true,
-        changeProgram: false,
-        editMealsAndDays: true,
-        editAddress: false,
-        unitExchange: true,
-        changePassword: true,
-        expectedVersion: 4,
-      );
+    test(
+      'FamilyMemberPermissionsRequestDto serializes expectedVersion and 8 root toggles',
+      () {
+        const dto = FamilyMemberPermissionsRequestDto(
+          editDailyMeals: true,
+          changeDeliveryTime: false,
+          viewProgram: true,
+          changeProgram: false,
+          editMealsAndDays: true,
+          editAddress: false,
+          unitExchange: true,
+          changePassword: true,
+          expectedVersion: 4,
+        );
 
-      final json = dto.toJson();
-      expect(json['expectedVersion'], 4);
-      expect(json['editDailyMeals'], isTrue);
-      expect(json['changeDeliveryTime'], isFalse);
-      expect(json['viewProgram'], isTrue);
-      expect(json['changeProgram'], isFalse);
-      expect(json['editMealsAndDays'], isTrue);
-      expect(json['editAddress'], isFalse);
-      expect(json['unitExchange'], isTrue);
-      expect(json['changePassword'], isTrue);
-    });
+        final json = dto.toJson();
+        expect(json['expectedVersion'], 4);
+        expect(json['editDailyMeals'], isTrue);
+        expect(json['changeDeliveryTime'], isFalse);
+        expect(json['viewProgram'], isTrue);
+        expect(json['changeProgram'], isFalse);
+        expect(json['editMealsAndDays'], isTrue);
+        expect(json['editAddress'], isFalse);
+        expect(json['unitExchange'], isTrue);
+        expect(json['changePassword'], isTrue);
+      },
+    );
 
-    test('FamilyMemberAccessRequestDto serializes expectedVersion and access pause', () {
-      const dto = FamilyMemberAccessRequestDto(
-        hasSeparateAccount: true,
-        isPaused: true,
-        expectedVersion: 7,
-      );
+    test(
+      'FamilyMemberAccessRequestDto serializes expectedVersion and access pause',
+      () {
+        const dto = FamilyMemberAccessRequestDto(
+          hasSeparateAccount: true,
+          isPaused: true,
+          expectedVersion: 7,
+        );
 
-      final json = dto.toJson();
-      expect(json['expectedVersion'], 7);
-      expect(json['hasSeparateAccount'], isTrue);
-      expect(json['isPaused'], isTrue);
-    });
+        final json = dto.toJson();
+        expect(json['expectedVersion'], 7);
+        expect(json['hasSeparateAccount'], isTrue);
+        expect(json['isPaused'], isTrue);
+      },
+    );
 
-    test('FamilyMemberPermissionsResponseDto parses version and maps to entity', () {
-      final dto = FamilyMemberPermissionsResponseDto.fromJson({
-        'memberId': 'mem-100',
-        'currentVersion': 3,
-        'editDailyMeals': true,
-        'changeDeliveryTime': false,
-        'viewProgram': true,
-        'changeProgram': false,
-        'editMealsAndDays': true,
-        'editAddress': false,
-        'unitExchange': false,
-        'changePassword': true,
-        'groups': [
-          {
-            'code': 'meals',
-            'labelAr': 'الوجبات',
-            'labelEn': 'Meals',
-            'permissions': [
-              {
-                'key': 'editDailyMeals',
-                'labelAr': 'تعديل الوجبات اليومية',
-                'labelEn': 'Edit Daily Meals',
-                'value': true,
-              }
-            ],
-          }
-        ],
-      });
+    test(
+      'FamilyMemberPermissionsResponseDto parses version and maps to entity',
+      () {
+        final dto = FamilyMemberPermissionsResponseDto.fromJson({
+          'memberId': 'mem-100',
+          'currentVersion': 3,
+          'editDailyMeals': true,
+          'changeDeliveryTime': false,
+          'viewProgram': true,
+          'changeProgram': false,
+          'editMealsAndDays': true,
+          'editAddress': false,
+          'unitExchange': false,
+          'changePassword': true,
+          'groups': [
+            {
+              'code': 'meals',
+              'labelAr': 'الوجبات',
+              'labelEn': 'Meals',
+              'permissions': [
+                {
+                  'key': 'editDailyMeals',
+                  'labelAr': 'تعديل الوجبات اليومية',
+                  'labelEn': 'Edit Daily Meals',
+                  'value': true,
+                },
+              ],
+            },
+          ],
+        });
 
-      expect(dto.version, 3);
-      final entity = dto.toEntity('en');
-      expect(entity.memberId, 'mem-100');
-      expect(entity.version, 3);
-      expect(entity.values['editDailyMeals'], isTrue);
-      expect(entity.values['editAddress'], isFalse);
-      expect(entity.groups.first.label, 'Meals');
-    });
+        expect(dto.version, 3);
+        final entity = dto.toEntity('en');
+        expect(entity.memberId, 'mem-100');
+        expect(entity.version, 3);
+        expect(entity.values['editDailyMeals'], isTrue);
+        expect(entity.values['editAddress'], isFalse);
+        expect(entity.groups.first.label, 'Meals');
+      },
+    );
 
     test('FamilyMemberAccessResponseDto parses version and maps to entity', () {
       final dto = FamilyMemberAccessResponseDto.fromJson({

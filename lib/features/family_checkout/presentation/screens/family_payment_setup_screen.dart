@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -86,19 +87,26 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
     }
     if (state.checkoutResult == null) return;
     unawaited(
-      Navigator.of(context, rootNavigator: true).pushNamed(
-        AppRoutes.paymentWebView,
-        arguments: PaymentWebViewArgs(checkout: state.checkoutResult!),
-      ).then((_) {
-        if (context.mounted) {
-          context.read<FamilyCheckoutViewModel>().doIntent(
-            const GetFamilySubscriptionCurrentEvent(),
-          );
-          context.read<FamilyCheckoutViewModel>().doIntent(
-            const GetFamilySummaryEvent(),
-          );
-        }
-      }),
+      Navigator.of(context, rootNavigator: true)
+          .pushNamed(
+            AppRoutes.paymentWebView,
+            arguments: PaymentWebViewArgs(
+              checkout: state.checkoutResult!,
+              flowType: 'family',
+              batchId: state.summary?.batchId,
+              batchVersion: state.summary?.batchVersion,
+            ),
+          )
+          .then((_) {
+            if (context.mounted) {
+              context.read<FamilyCheckoutViewModel>().doIntent(
+                const GetFamilySubscriptionCurrentEvent(),
+              );
+              context.read<FamilyCheckoutViewModel>().doIntent(
+                const GetFamilySummaryEvent(),
+              );
+            }
+          }),
     );
   }
 
@@ -116,6 +124,8 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
       );
     }
 
-    return FamilyPaymentContent(state: state);
+    return FamilyPaymentContent(state: state)
+        .animate(key: const ValueKey('family-payment-content'))
+        .fadeIn(duration: 250.ms);
   }
 }

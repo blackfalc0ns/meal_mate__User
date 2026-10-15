@@ -102,3 +102,15 @@ class SaveFamilyDayMealsEvent extends FamilyCalendarEvent {
 
   final String localeName;
 }
+
+class ConfirmFamilyDayMealsEvent extends FamilyCalendarEvent {
+  const ConfirmFamilyDayMealsEvent({required this.localeName});
+
+  final String localeName;
+}
+
+class AutoSelectFamilyDayMealsEvent extends FamilyCalendarEvent {
+  const AutoSelectFamilyDayMealsEvent({required this.localeName});
+
+  final String localeName;
+}

@@ -63,6 +63,10 @@ class FamilyMemberMapper {
       hasSeparateAccount: dto.hasSeparateAccount ?? false,
       lifecycleStatus: dto.lifecycle?.status,
       checkoutSelected: dto.lifecycle?.checkoutSelected ?? false,
+      paymentStatus: dto.lifecycle?.paymentStatus,
+      fulfillmentStatus: dto.lifecycle?.fulfillmentStatus,
+      accessStatus: dto.lifecycle?.accessStatus,
+      displayStatus: dto.lifecycle?.displayStatus,
     );
   }
 
@@ -114,19 +118,39 @@ class FamilyMemberMapper {
             label: isEn
                 ? (group.labelEn ?? group.labelAr ?? '')
                 : (group.labelAr ?? group.labelEn ?? ''),
+            labelAr: group.labelAr,
+            labelEn: group.labelEn,
             permissions: (group.permissions ?? const [])
+                .where((item) {
+                  final k = item.key ?? '';
+                  if (k == 'changeProgram' || k == 'changeDeliveryTime') {
+                    return false;
+                  }
+                  if (item.isSupported == false) {
+                    return false;
+                  }
+                  return true;
+                })
                 .map(
                   (item) => FamilyPermissionItemEntity(
                     key: item.key ?? '',
                     label: isEn
                         ? (item.labelEn ?? item.labelAr ?? '')
                         : (item.labelAr ?? item.labelEn ?? ''),
+                    labelAr: item.labelAr,
+                    labelEn: item.labelEn,
+                    descriptionAr: item.descriptionAr,
+                    descriptionEn: item.descriptionEn,
                     value: item.value ?? false,
+                    isSupported: item.isSupported ?? true,
+                    isManagerConfigurable: item.isManagerConfigurable ?? true,
+                    requiredPermissions: item.requiredPermissions ?? const [],
                   ),
                 )
                 .toList(),
           ),
         )
+        .where((group) => group.permissions.isNotEmpty)
         .toList();
 
     return FamilyMemberPermissionsEntity(

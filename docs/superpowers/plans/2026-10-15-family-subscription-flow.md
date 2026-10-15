@@ -317,3 +317,24 @@ The original task list is retained. The following tasks are mandatory additions 
 - Quote/version changes invalidate stale payment state and require explicit confirmation.
 - Duplicate callbacks, duplicate submits, and late responses are harmless.
 - Family and individual payment attempts remain isolated.
+
+### Task 0: Capture and verify the new backend response before model changes
+
+**Files:**
+
+- Read-only: runtime/network logs, Dio/PrettyDioLogger output, API documentation, and captured request/response evidence.
+- Modify only after confirmation: the affected response DTO, generated `.g.dart` file when required, mapper, entity, repository contract, and tests.
+
+- [ ] Before changing any response model, Gemini must inspect the actual runtime response from the family endpoint, including HTTP status, headers needed by the client, response envelope, nested fields, nullability, and error payloads.
+- [ ] Record the exact endpoint, request shape, response JSON, and timestamp/build context in the implementation notes or contract test fixture. Redact tokens, phone numbers, payment URLs, and other sensitive values.
+- [ ] Compare the captured response against the current DTO, generated serialization, mapper, entity, and all callers; list added, removed, renamed, moved, and type-changed fields.
+- [ ] If no trustworthy runtime log or backend contract is available, stop model changes and report the missing evidence. Do not infer the new response from old models or from a single error message.
+- [ ] Add a fixture/contract test for the verified new response and preserve backward compatibility only when both old and new payloads are confirmed requirements.
+- [ ] Re-run the affected family contract, mapper, repository, and integration tests after the model update.
+
+## Scope lock: family flow only
+
+- [ ] All implementation and manual simulator verification in this plan targets the family subscription flow only.
+- [ ] Individual subscription checkout, payment, fulfillment, and success behavior must remain unchanged and must have regression coverage before completion.
+- [ ] Shared payment/network code may be changed only when the family context is explicit and individual behavior is proven unchanged.
+- [ ] Gemini may run the family flow on an available simulator and use sandbox credentials to exercise the flow. Never perform a real charge; if the simulator, credentials, backend environment, or trustworthy response log is unavailable, stop and report the blocker.

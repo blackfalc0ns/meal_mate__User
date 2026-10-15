@@ -91,9 +91,9 @@ class FamilyAddressesRepositoryImpl implements FamilyAddressesRepository {
   @override
   Future<ApiResult<FamilyDeliveryAddressSnapshotEntity>>
   getSubscriptionDeliveryAddress(String subscriptionId) => safeApiCall(
-    () async =>
-        (await _remote.getSubscriptionDeliveryAddress(subscriptionId))
-            .toEntity(),
+    () async => (await _remote.getSubscriptionDeliveryAddress(
+      subscriptionId,
+    )).toEntity(),
   );
 
   @override

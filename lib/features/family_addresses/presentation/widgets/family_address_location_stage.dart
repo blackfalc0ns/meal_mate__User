@@ -17,7 +17,7 @@ import 'package:meal_meat_user/core/constants/durations.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_address_editor_operations.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
@@ -72,8 +72,8 @@ class _FamilyAddressLocationStageState
         addFamilyMemberAddressUseCase: getIt<AddFamilyMemberAddressUseCase>(),
         updateFamilyMemberAddressUseCase:
             getIt.isRegistered<UpdateFamilyMemberAddressUseCase>()
-                ? getIt<UpdateFamilyMemberAddressUseCase>()
-                : null,
+            ? getIt<UpdateFamilyMemberAddressUseCase>()
+            : null,
       ),
       getLocationsCatalogUseCase: getIt<GetLocationsCatalogUseCase>(),
       geocodeAddressUseCase: getIt<GeocodeAddressUseCase>(),
@@ -133,10 +133,11 @@ class _FamilyAddressLocationStageState
 
           final actionError = state.action.displayErrorMessage;
           if (actionError != null && actionError.isNotEmpty) {
-            CustomSnackbar.showError(
-              context: context,
-              message: mapFailureMessage(context, actionError),
-            );
+            final failure = state.action.failure;
+            final message = failure != null
+                ? ErrorMessagePresenter.fromFailure(context, failure)
+                : mapFailureMessage(context, actionError);
+            CustomSnackbar.showError(context: context, message: message);
           }
 
           final previewFailure = state.coveragePreview.failure;
@@ -174,24 +175,27 @@ class _FamilyAddressLocationStageState
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child: BlocSelector<
-                  AddressEditorViewModel,
-                  AddressEditorState,
-                  ({LocationsCatalogState locations, bool isSubmitting})
-                >(
-                  selector: (s) =>
-                      (locations: s.locations, isSubmitting: s.action.isLoading),
-                  builder: (context, mapData) {
-                    return AddressChooseLocationMapView(
-                      key: ValueKey(widget.memberId),
-                      locations: mapData.locations,
-                      flowController: _entryFlowController,
-                      initialAddress: widget.initialAddress,
-                      showInitialAddressDetails: false,
-                      isSubmitting: mapData.isSubmitting,
-                    );
-                  },
-                ),
+                child:
+                    BlocSelector<
+                      AddressEditorViewModel,
+                      AddressEditorState,
+                      ({LocationsCatalogState locations, bool isSubmitting})
+                    >(
+                      selector: (s) => (
+                        locations: s.locations,
+                        isSubmitting: s.action.isLoading,
+                      ),
+                      builder: (context, mapData) {
+                        return AddressChooseLocationMapView(
+                          key: ValueKey(widget.memberId),
+                          locations: mapData.locations,
+                          flowController: _entryFlowController,
+                          initialAddress: widget.initialAddress,
+                          showInitialAddressDetails: false,
+                          isSubmitting: mapData.isSubmitting,
+                        );
+                      },
+                    ),
               ),
               BlocSelector<
                 AddressEditorViewModel,

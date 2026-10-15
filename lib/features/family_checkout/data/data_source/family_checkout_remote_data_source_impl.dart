@@ -33,10 +33,9 @@ class FamilyCheckoutRemoteDataSourceImpl
     required String memberId,
     required String startDate,
   }) {
-    return _apiServices.saveFamilyMemberStartDate(
-      memberId,
-      {'startDate': startDate},
-    );
+    return _apiServices.saveFamilyMemberStartDate(memberId, {
+      'startDate': startDate,
+    });
   }
 
   @override

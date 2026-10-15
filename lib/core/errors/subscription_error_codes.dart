@@ -317,4 +317,3 @@ class SubscriptionErrorCodes {
   /// Auth forbidden (403).
   static const String authForbidden = 'auth.forbidden';
 }
-

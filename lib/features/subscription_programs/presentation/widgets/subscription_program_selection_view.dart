@@ -10,9 +10,9 @@ import 'package:meal_meat_user/features/subscription_programs/presentation/widge
 
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/network/failuer_mapper.dart';
+import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 class SubscriptionProgramSelectionView extends StatelessWidget {
   const SubscriptionProgramSelectionView({
@@ -120,95 +120,86 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
                                   return ValueListenableBuilder<int?>(
                                         valueListenable:
                                             selectedProgramNotifier,
-                                        builder:
-                                            (context, selectedProgramIndex, _) {
-                                              final isSelected =
-                                                  index == selectedProgramIndex;
+                                        builder: (context, selectedProgramIndex, _) {
+                                          final isSelected =
+                                              index == selectedProgramIndex;
 
-                                              final isAddressRequired =
-                                                  !program.canSelect &&
-                                                  (program.availability
-                                                              ?.isAddressRequired ==
-                                                          true ||
-                                                      program.availability
-                                                              ?.status ==
-                                                          'address_required');
+                                          final isAddressRequired =
+                                              !program.canSelect &&
+                                              (program
+                                                          .availability
+                                                          ?.isAddressRequired ==
+                                                      true ||
+                                                  program
+                                                          .availability
+                                                          ?.status ==
+                                                      'address_required');
 
-                                              return SubscriptionProgramGoalCard(
-                                                key: ValueKey(
-                                                  program.programId,
-                                                ),
-                                                title: program.name(
-                                                  locale.localeName,
-                                                ),
-                                                description: program
-                                                    .description(
-                                                      locale.localeName,
-                                                    ),
-                                                imageUrl: program.imageUrl,
-                                                primaryFeature: _featureAt(
-                                                  keywords,
-                                                  0,
-                                                ),
-                                                secondaryFeature: _featureAt(
-                                                  keywords,
-                                                  1,
-                                                ),
-                                                isSelected: isSelected,
-                                                canSelect: program.canSelect,
-                                                disabledNotice: program.canSelect
-                                                    ? null
-                                                    : isAddressRequired
-                                                        ? locale
-                                                            .subscription_program_address_required_badge
-                                                        : locale
-                                                            .subscription_program_no_restaurants_in_area,
-                                                onTap: () {
-                                                  if (program.canSelect) {
-                                                    onProgramSelected(index);
-                                                  } else if (isAddressRequired) {
-                                                    onAddressRequired?.call();
-                                                  } else {
-                                                    final messenger =
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        );
-                                                    messenger
-                                                        .hideCurrentSnackBar();
-                                                    messenger.showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                          _disabledProgramMessage(
-                                                            context,
-                                                            program,
-                                                          ),
-                                                          style:
-                                                              getRegularStyle(
-                                                                fontFamily:
-                                                                    FontConstant
-                                                                        .alexandria,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .size12,
-                                                                color: color
-                                                                    .onError,
-                                                              ),
-                                                        ),
-                                                        backgroundColor:
-                                                            color.error,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        duration:
-                                                            const Duration(
-                                                              seconds: 3,
-                                                            ),
-                                                      ),
+                                          return SubscriptionProgramGoalCard(
+                                            key: ValueKey(program.programId),
+                                            title: program.name(
+                                              locale.localeName,
+                                            ),
+                                            description: program.description(
+                                              locale.localeName,
+                                            ),
+                                            imageUrl: program.imageUrl,
+                                            primaryFeature: _featureAt(
+                                              keywords,
+                                              0,
+                                            ),
+                                            secondaryFeature: _featureAt(
+                                              keywords,
+                                              1,
+                                            ),
+                                            isSelected: isSelected,
+                                            canSelect: program.canSelect,
+                                            disabledNotice: program.canSelect
+                                                ? null
+                                                : isAddressRequired
+                                                ? locale
+                                                      .subscription_program_address_required_badge
+                                                : locale
+                                                      .subscription_program_no_restaurants_in_area,
+                                            onTap: () {
+                                              if (program.canSelect) {
+                                                onProgramSelected(index);
+                                              } else if (isAddressRequired) {
+                                                onAddressRequired?.call();
+                                              } else {
+                                                final messenger =
+                                                    ScaffoldMessenger.of(
+                                                      context,
                                                     );
-                                                  }
-                                                },
-                                              );
+                                                messenger.hideCurrentSnackBar();
+                                                messenger.showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      _disabledProgramMessage(
+                                                        context,
+                                                        program,
+                                                      ),
+                                                      style: getRegularStyle(
+                                                        fontFamily: FontConstant
+                                                            .alexandria,
+                                                        fontSize:
+                                                            FontSize.size12,
+                                                        color: color.onError,
+                                                      ),
+                                                    ),
+                                                    backgroundColor:
+                                                        color.error,
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    duration: const Duration(
+                                                      seconds: 3,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
                                             },
+                                          );
+                                        },
                                       )
                                       .animate()
                                       .fadeIn(
@@ -267,6 +258,7 @@ class SubscriptionProgramSelectionView extends StatelessWidget {
     if (index >= keywords.length) return '';
     return keywords[index];
   }
+
   String _disabledProgramMessage(
     BuildContext context,
     SubscriptionProgramEntity program,

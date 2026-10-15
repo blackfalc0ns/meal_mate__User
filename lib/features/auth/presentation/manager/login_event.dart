@@ -41,3 +41,7 @@ class SetFamilyFirstLoginPasswordEvent extends LoginEvent {
 class ResetFamilyFirstLoginFlowEvent extends LoginEvent {
   const ResetFamilyFirstLoginFlowEvent();
 }
+
+class ResendFamilyFirstLoginOtpEvent extends LoginEvent {
+  const ResendFamilyFirstLoginOtpEvent();
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -11,6 +13,7 @@ import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_state.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_row.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_confirm_dialog.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_loading_skeleton.dart';
 
@@ -73,8 +76,11 @@ class _FamilyMemberPermissionsScreenState
   bool _hasChanges(FamilyMemberState state) {
     final original = state.permissions?.values;
     if (original == null) return false;
-    for (final entry in original.entries) {
-      if (state.permissionValues[entry.key] != entry.value) {
+    for (final entry in state.permissionValues.entries) {
+      if (entry.key == 'changeProgram' || entry.key == 'changeDeliveryTime') {
+        continue;
+      }
+      if ((original[entry.key] ?? false) != entry.value) {
         return true;
       }
     }
@@ -102,6 +108,7 @@ class _FamilyMemberPermissionsScreenState
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     return BlocProvider.value(
       value: _viewModel,
@@ -155,28 +162,38 @@ class _FamilyMemberPermissionsScreenState
                           ),
                           const SizedBox(height: Spacing.md),
                           for (final group in permissions.groups) ...[
-                            Text(group.label),
+                            Text(
+                              group.localizedLabel(isArabic),
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size14,
+                                color: color.onSurface,
+                              ),
+                            ),
                             const SizedBox(height: Spacing.xs),
                             Card(
                               color: color.surface,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                                side: BorderSide(
+                                  color: color.outlineVariant.withValues(alpha: 0.5),
+                                ),
+                              ),
                               child: Column(
                                 children: [
                                   for (final permission in group.permissions)
-                                    SwitchListTile(
-                                      title: Text(permission.label),
-                                      value:
-                                          state.permissionValues[permission
-                                              .key] ??
+                                    FamilyPermissionRow(
+                                      permission: permission,
+                                      value: state.permissionValues[permission.key] ??
                                           permission.value,
-                                      onChanged:
-                                          widget.isManager || state.isSaving
-                                          ? null
-                                          : (value) => _viewModel.doIntent(
-                                              ToggleFamilyPermissionEvent(
-                                                permission.key,
-                                                value,
-                                              ),
-                                            ),
+                                      isReadOnly: widget.isManager || state.isSaving,
+                                      onChanged: (value) => _viewModel.doIntent(
+                                        ToggleFamilyPermissionEvent(
+                                          permission.key,
+                                          value,
+                                        ),
+                                      ),
                                     ),
                                 ],
                               ),

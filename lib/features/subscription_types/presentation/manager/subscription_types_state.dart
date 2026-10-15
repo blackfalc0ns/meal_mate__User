@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/conversion_options_model.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';

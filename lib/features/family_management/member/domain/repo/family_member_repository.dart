@@ -1,4 +1,5 @@
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
@@ -36,4 +37,10 @@ abstract interface class FamilyMemberRepository {
   );
 
   Future<ApiResult<void>> renewMemberSubscription(String renewalPath);
+
+  Future<ApiResult<List<FamilyCapabilityEntity>>> getMemberCapabilities(
+    String memberId,
+  );
+
+  Future<ApiResult<void>> detachMember(String memberId);
 }

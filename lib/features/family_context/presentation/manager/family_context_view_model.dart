@@ -12,6 +12,8 @@ class FamilyContextViewModel extends Cubit<FamilyContextState> {
 
   final GetMyFamilyContextsUseCase _getMyFamilyContextsUseCase;
 
+  void loadFamilyContext() => doIntent(const LoadFamilyContextsEvent());
+
   void doIntent(FamilyContextEvent event) {
     switch (event) {
       case LoadFamilyContextsEvent():

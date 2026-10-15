@@ -18,24 +18,27 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final canNavigate = member.canManageAccess && member.memberId.isNotEmpty;
     return InkWell(
-      onTap: member.memberId.isEmpty
-          ? null
-          : () => context.pushNamed(
+      onTap: canNavigate
+          ? () => context.pushNamed(
               AppRoutes.familyMemberAccess,
               arguments: (member.memberId, member.isManager, member.name),
-            ),
+            )
+          : null,
       borderRadius: BorderRadius.circular(Spacing.familyMemberDetailCardRadius),
       child: FamilyMemberDetailSectionCard(
         height: Spacing.familyMemberDetailProfileHeight,
         child: Row(
           children: [
-            Icon(
-              Icons.chevron_left_rounded,
-              size: Spacing.iconLg,
-              color: color.onSurfaceVariant,
-            ),
-            const SizedBox(width: Spacing.sm),
+            if (canNavigate) ...[
+              Icon(
+                Icons.chevron_left_rounded,
+                size: Spacing.iconLg,
+                color: color.onSurfaceVariant,
+              ),
+              const SizedBox(width: Spacing.sm),
+            ],
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

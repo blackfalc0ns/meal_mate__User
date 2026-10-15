@@ -270,6 +270,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'family.age_invalid':
       return locale.family_age_invalid;
     case 'family.not_manager':
+    case 'family.permission_required':
       return locale.family_error_not_manager;
     case 'family.use_checkout_flow':
       return locale.family_error_use_checkout_flow;
@@ -334,6 +335,18 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'delivery_failed':
     case 'sms_delivery_failed':
       return locale.auth_family_delivery_failed;
+    case 'family.password_already_issued':
+    case 'passwordAlreadyIssued':
+    case 'family.requires_explicit_reset':
+    case 'requiresExplicitReset':
+      return locale.family_member_access_password_already_issued;
+    case 'auto_renewal.price_changed':
+    case 'autoRenewal.priceChanged':
+      return locale.auto_renewal_price_changed('', '');
+    case 'family.detach_blocked_financial_intent':
+      return locale.family_detach_blocked_financial_intent;
+    case 'family.detach_requires_active_account':
+      return locale.family_detach_requires_active_account;
     default:
       return message;
   }

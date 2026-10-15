@@ -15,16 +15,19 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
-      height: Spacing.familyManageMemberCardHeight,
-      decoration: BoxDecoration(
-        color: color.surface,
-        border: Border.all(color: color.outlineVariant),
-        borderRadius: BorderRadiusDirectional.circular(11.5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return InkWell(
+      onTap: member.onTap,
+      borderRadius: BorderRadius.circular(11.5),
+      child: Container(
+        height: Spacing.familyManageMemberCardHeight,
+        decoration: BoxDecoration(
+          color: color.surface,
+          border: Border.all(color: color.outlineVariant),
+          borderRadius: BorderRadius.circular(11.5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
           ClipOval(
             child: Image.asset(
               member.imageAsset,
@@ -76,6 +79,7 @@ class FamilySubscriptionMemberCard extends StatelessWidget {
             ],
           ),
         ],
+        ),
       ),
     );
   }

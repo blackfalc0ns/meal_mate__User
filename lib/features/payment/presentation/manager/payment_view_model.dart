@@ -7,7 +7,7 @@ import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/core/payment/payment_attempt.dart';
 import 'package:meal_meat_user/core/payment/payment_attempt_store.dart';
 import 'package:meal_meat_user/core/payment/payment_return.dart';
@@ -21,6 +21,9 @@ import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
@@ -69,7 +72,14 @@ class PaymentViewModel extends Cubit<PaymentState> {
       case CheckoutPaymentEvent():
         unawaited(_checkout(event.args));
       case InitCheckoutSessionEvent():
-        unawaited(_initCheckoutSession(event.checkout));
+        unawaited(
+          _initCheckoutSession(
+            event.checkout,
+            flowType: event.flowType,
+            batchId: event.batchId,
+            batchVersion: event.batchVersion,
+          ),
+        );
       case VerifyPaymentFulfillmentEvent():
         unawaited(_verifyFulfillment(event.subscriptionId));
       case MarkPaymentFailedEvent():
@@ -95,11 +105,33 @@ class PaymentViewModel extends Cubit<PaymentState> {
     }
   }
 
-  Future<void> _initCheckoutSession(PaymentCheckoutEntity checkout) async {
+  Future<void> _initCheckoutSession(
+    PaymentCheckoutEntity checkout, {
+    String flowType = 'individual',
+    String? batchId,
+    int? batchVersion,
+  }) async {
     final customerId = await _tokenService?.getCurrentUserId() ?? '';
     PaymentAttempt? attempt;
     if (customerId.isNotEmpty) {
       attempt = await _paymentAttemptStore?.readForCustomer(customerId);
+      if (flowType == 'family') {
+        final paymentId = checkout.paymentId ?? attempt?.paymentId ?? '';
+        final newAttempt = PaymentAttempt(
+          ownerCustomerId: customerId,
+          subscriptionId: checkout.subscriptionId,
+          paymentId: paymentId,
+          createdAtUtc: DateTime.now().toUtc(),
+          flowType: 'family',
+          batchId: batchId ?? attempt?.batchId,
+          batchVersion: batchVersion ?? attempt?.batchVersion,
+          state: 'redirected',
+        );
+        if (paymentId.isNotEmpty) {
+          await _paymentAttemptStore?.save(newAttempt);
+        }
+        attempt = newAttempt;
+      }
     }
     final isReview = attempt?.reviewRequired ?? false;
     final handle = (checkout.paymentId?.isNotEmpty == true)
@@ -111,6 +143,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
         checkout: checkout,
         attemptHandle: handle.isNotEmpty ? handle : null,
         isReviewRequired: isReview,
+        flowType: flowType,
       ),
     );
   }
@@ -360,6 +393,24 @@ class PaymentViewModel extends Cubit<PaymentState> {
   Future<void> _recoverUnresolvedSubscription(
     PaymentReturn paymentReturn,
   ) async {
+    final customerId = await _tokenService?.getCurrentUserId() ?? '';
+    final storedAttempt = customerId.isNotEmpty
+        ? await _paymentAttemptStore?.readForCustomer(customerId)
+        : null;
+
+    if (storedAttempt?.isFamily == true || state.isFamily) {
+      // Isolate family payments: individual subscription recovery must never be used as a silent family fallback.
+      emit(
+        state.copyWith(
+          isFulfillmentLoading: false,
+          isReviewRequired:
+              paymentReturn.destination == PaymentReturnDestination.review,
+          attemptHandle: paymentReturn.paymentId,
+        ),
+      );
+      return;
+    }
+
     final billingResult = await _getSubscriptionBillingUseCase?.call();
     if (billingResult is ApiSuccessResult<SubscriptionBillingEntity>) {
       final uncompleted = billingResult.data.uncompletedSubscriptions;
@@ -475,47 +526,87 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
           if (normalizedStatus == 'paid' || status.isPaid) {
             final isFulfillmentReady = status.isFulfillmentReady ?? false;
-            final subResult = await _getCurrentCustomerSubscriptionUseCase();
-            if (isClosed || currentGen != _fulfillmentGeneration) return;
-
-            final currentSub =
-                subResult is ApiSuccessResult<SubscriptionBillingCurrentEntity>
-                ? subResult.data.subscription
-                : null;
-            final subStatus = currentSub?.status.trim().toLowerCase() ?? '';
-            final isSubActiveOrScheduled =
-                currentSub != null &&
-                (subStatus == 'active' || subStatus == 'scheduled');
-
-            if (isFulfillmentReady || isSubActiveOrScheduled) {
-              final customerId = await _tokenService?.getCurrentUserId() ?? '';
-              if (customerId.isNotEmpty) {
-                final attempt = await _paymentAttemptStore?.readForCustomer(
-                  customerId,
-                );
-                if (attempt != null) {
-                  await _paymentAttemptStore?.save(
-                    attempt.copyWith(
-                      reviewRequired: false,
-                      lastPresentedFinalStatus: 'active',
-                    ),
+            if (state.isFamily) {
+              if (isFulfillmentReady || status.isPaid) {
+                final customerId =
+                    await _tokenService?.getCurrentUserId() ?? '';
+                if (customerId.isNotEmpty) {
+                  final attempt = await _paymentAttemptStore?.readForCustomer(
+                    customerId,
                   );
+                  if (attempt != null) {
+                    await _paymentAttemptStore?.save(
+                      attempt.copyWith(
+                        reviewRequired: false,
+                        lastPresentedFinalStatus: 'active',
+                        state: 'active',
+                      ),
+                    );
+                  }
                 }
+                FamilyConversionDraftSession.clearConvertedFamilyDraft();
+                if (getIt.isRegistered<FamilyFlowSnapshotStore>()) {
+                  getIt<FamilyFlowSnapshotStore>().invalidate();
+                }
+                if (isClosed || currentGen != _fulfillmentGeneration) return;
+                emit(
+                  state.copyWith(
+                    isFulfillmentLoading: false,
+                    isFulfillmentSuccess: true,
+                    isPaidProcessing: false,
+                    isPaymentFailed: false,
+                    isReviewRequired: false,
+                    paymentStatus: status,
+                    clearFulfillmentFailure: true,
+                  ),
+                );
+                return;
               }
-              await _syncCurrentSubscriptionCache();
+            } else {
+              final subResult = await _getCurrentCustomerSubscriptionUseCase();
               if (isClosed || currentGen != _fulfillmentGeneration) return;
-              emit(
-                state.copyWith(
-                  isFulfillmentLoading: false,
-                  isFulfillmentSuccess: true,
-                  isPaidProcessing: false,
-                  isPaymentFailed: false,
-                  isReviewRequired: false,
-                  paymentStatus: status,
-                  clearFulfillmentFailure: true,
-                ),
-              );
-              return;
+
+              final currentSub =
+                  subResult
+                      is ApiSuccessResult<SubscriptionBillingCurrentEntity>
+                  ? subResult.data.subscription
+                  : null;
+              final subStatus = currentSub?.status.trim().toLowerCase() ?? '';
+              final isSubActiveOrScheduled =
+                  currentSub != null &&
+                  (subStatus == 'active' || subStatus == 'scheduled');
+
+              if (isFulfillmentReady || isSubActiveOrScheduled) {
+                final customerId =
+                    await _tokenService?.getCurrentUserId() ?? '';
+                if (customerId.isNotEmpty) {
+                  final attempt = await _paymentAttemptStore?.readForCustomer(
+                    customerId,
+                  );
+                  if (attempt != null) {
+                    await _paymentAttemptStore?.save(
+                      attempt.copyWith(
+                        reviewRequired: false,
+                        lastPresentedFinalStatus: 'active',
+                      ),
+                    );
+                  }
+                }
+                await _syncCurrentSubscriptionCache();
+                if (isClosed || currentGen != _fulfillmentGeneration) return;
+                emit(
+                  state.copyWith(
+                    isFulfillmentLoading: false,
+                    isFulfillmentSuccess: true,
+                    isPaidProcessing: false,
+                    isPaymentFailed: false,
+                    isReviewRequired: false,
+                    paymentStatus: status,
+                    clearFulfillmentFailure: true,
+                  ),
+                );
+                return;
+              }
             }
 
             emit(

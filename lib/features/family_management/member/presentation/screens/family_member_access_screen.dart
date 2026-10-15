@@ -77,6 +77,37 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
     return accountChanged || pauseChanged || _removalRequested;
   }
 
+  void _showResetConfirmationDialog(BuildContext context) {
+    final locale = context.localization;
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(locale.family_member_access_explicit_reset_title),
+        content: Text(locale.family_member_access_explicit_reset_message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(locale.family_member_access_deactivate_cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              _viewModel.doIntent(
+                UpdateFamilyMemberAccessEvent(
+                  memberId: widget.memberId,
+                  generateTemporaryPassword: true,
+                  isRetry: false,
+                  isExplicitReset: true,
+                ),
+              );
+            },
+            child: Text(locale.family_member_access_explicit_reset_button),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _onSave() {
     final access = _viewModel.state.access;
     if (access == null) return;
@@ -105,7 +136,8 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
         listenWhen: (previous, current) =>
             previous.saveSuccessCount != current.saveSuccessCount ||
             previous.failure != current.failure ||
-            previous.saveFailure != current.saveFailure,
+            previous.saveFailure != current.saveFailure ||
+            previous.requiresExplicitReset != current.requiresExplicitReset,
         listener: (context, state) {
           final failure = state.saveFailure ?? state.failure;
           if (failure != null) {
@@ -196,12 +228,20 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
                             identifier: access?.phoneNumber,
                             onEditPassword: state.isSaving
                                 ? null
-                                : () => _viewModel.doIntent(
-                                    UpdateFamilyMemberAccessEvent(
-                                      memberId: widget.memberId,
-                                      generateTemporaryPassword: true,
-                                    ),
-                                  ),
+                                : () {
+                                    if (access?.hasExistingLogin == true ||
+                                        state.requiresExplicitReset) {
+                                      _showResetConfirmationDialog(context);
+                                    } else {
+                                      _viewModel.doIntent(
+                                        UpdateFamilyMemberAccessEvent(
+                                          memberId: widget.memberId,
+                                          generateTemporaryPassword: true,
+                                          isRetry: false,
+                                        ),
+                                      );
+                                    }
+                                  },
                           ),
                           const SizedBox(height: Spacing.md),
                           FamilyMemberAccessPermissionsTile(

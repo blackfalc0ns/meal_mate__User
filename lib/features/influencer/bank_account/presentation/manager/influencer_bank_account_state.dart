@@ -1,4 +1,4 @@
-import '../../../../../core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import '../../domain/entities/influencer_bank_account_entity.dart';
 
 class InfluencerBankAccountState {

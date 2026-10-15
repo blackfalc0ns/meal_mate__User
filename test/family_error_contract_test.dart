@@ -16,7 +16,8 @@ void main() {
         'currentVersion': 3,
         'title': 'Delivery version conflict',
         'detail': 'Internal DB conflict',
-        'instance': '/api/v1/customer/family-subscription-flow/delivery-address',
+        'instance':
+            '/api/v1/customer/family-subscription-flow/delivery-address',
       };
 
       final exception = ApiException(
@@ -27,9 +28,15 @@ void main() {
         backendErrorCode: 'family.delivery_version_changed',
       );
 
-      expect(exception.backendErrorCode, SubscriptionErrorCodes.familyDeliveryVersionChanged);
+      expect(
+        exception.backendErrorCode,
+        SubscriptionErrorCodes.familyDeliveryVersionChanged,
+      );
       expect(exception.currentVersion, 3);
-      expect(exception.instance, '/api/v1/customer/family-subscription-flow/delivery-address');
+      expect(
+        exception.instance,
+        '/api/v1/customer/family-subscription-flow/delivery-address',
+      );
     });
 
     test('parses legacy error with amount and currency', () {
@@ -47,12 +54,17 @@ void main() {
         backendErrorCode: 'auto_renewal.price_changed',
       );
 
-      expect(exception.backendErrorCode, SubscriptionErrorCodes.autoRenewalPriceChanged);
+      expect(
+        exception.backendErrorCode,
+        SubscriptionErrorCodes.autoRenewalPriceChanged,
+      );
       expect(exception.amount, 45.0);
       expect(exception.currency, 'KWD');
     });
 
-    testWidgets('presents documented family error codes in English locale', (tester) async {
+    testWidgets('presents documented family error codes in English locale', (
+      tester,
+    ) async {
       late BuildContext buildContext;
 
       await tester.pumpWidget(
@@ -92,9 +104,16 @@ void main() {
           message: code,
           backendErrorCode: code,
         );
-        final message = ErrorMessagePresenter.userFacingMessage(buildContext, exception);
+        final message = ErrorMessagePresenter.userFacingMessage(
+          buildContext,
+          exception,
+        );
         expect(message, isNotEmpty);
-        expect(message, isNot(contains(code)), reason: 'Code $code must be localized');
+        expect(
+          message,
+          isNot(contains(code)),
+          reason: 'Code $code must be localized',
+        );
       }
 
       // Test auto renewal price changed with parameters
@@ -104,7 +123,10 @@ void main() {
         backendErrorCode: 'auto_renewal.price_changed',
         response: {'amount': 30, 'currency': 'KWD'},
       );
-      final priceMessage = ErrorMessagePresenter.userFacingMessage(buildContext, autoRenewalException);
+      final priceMessage = ErrorMessagePresenter.userFacingMessage(
+        buildContext,
+        autoRenewalException,
+      );
       expect(priceMessage, contains('30'));
       expect(priceMessage, contains('KWD'));
 
@@ -114,7 +136,10 @@ void main() {
         message: 'SQL database access denied on row 42',
         statusCode: 403,
       );
-      final forbiddenMessage = ErrorMessagePresenter.userFacingMessage(buildContext, forbiddenException);
+      final forbiddenMessage = ErrorMessagePresenter.userFacingMessage(
+        buildContext,
+        forbiddenException,
+      );
       expect(forbiddenMessage, isNot(contains('SQL')));
       expect(forbiddenMessage, isNotEmpty);
 
@@ -125,12 +150,17 @@ void main() {
         statusCode: 404,
         response: {'instance': '/api/v1/customer/invoices/123-abc'},
       );
-      final invoice404Message = ErrorMessagePresenter.userFacingMessage(buildContext, invoice404Exception);
+      final invoice404Message = ErrorMessagePresenter.userFacingMessage(
+        buildContext,
+        invoice404Exception,
+      );
       expect(invoice404Message, isNot(contains('system table')));
       expect(invoice404Message, isNotEmpty);
     });
 
-    testWidgets('presents documented family error codes in Arabic locale', (tester) async {
+    testWidgets('presents documented family error codes in Arabic locale', (
+      tester,
+    ) async {
       late BuildContext buildContext;
 
       await tester.pumpWidget(
@@ -170,9 +200,16 @@ void main() {
           message: code,
           backendErrorCode: code,
         );
-        final message = ErrorMessagePresenter.userFacingMessage(buildContext, exception);
+        final message = ErrorMessagePresenter.userFacingMessage(
+          buildContext,
+          exception,
+        );
         expect(message, isNotEmpty);
-        expect(message, isNot(contains(code)), reason: 'Code $code must be localized in Arabic');
+        expect(
+          message,
+          isNot(contains(code)),
+          reason: 'Code $code must be localized in Arabic',
+        );
       }
 
       // Test auto renewal price changed with parameters in Arabic
@@ -182,7 +219,10 @@ void main() {
         backendErrorCode: 'auto_renewal.price_changed',
         response: {'amount': 30, 'currency': 'KWD'},
       );
-      final priceMessage = ErrorMessagePresenter.userFacingMessage(buildContext, autoRenewalException);
+      final priceMessage = ErrorMessagePresenter.userFacingMessage(
+        buildContext,
+        autoRenewalException,
+      );
       expect(priceMessage, contains('30'));
       expect(priceMessage, contains('KWD'));
     });

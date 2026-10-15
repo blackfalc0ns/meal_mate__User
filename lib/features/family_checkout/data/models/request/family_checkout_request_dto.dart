@@ -26,4 +26,3 @@ class FamilyCheckoutRequestDto {
 
   Map<String, dynamic> toJson() => _$FamilyCheckoutRequestDtoToJson(this);
 }
-

@@ -5,10 +5,10 @@ import 'package:meal_meat_user/features/family_addresses/domain/entities/family_
 extension FamilyDeliveryAddressRequestEntityMapper
     on FamilyDeliveryAddressRequestEntity {
   FamilyDeliveryAddressRequestDto toDto() => FamilyDeliveryAddressRequestDto(
-        addressId: addressId,
-        effectiveFromDate: effectiveFromDate,
-        expectedVersion: expectedVersion,
-      );
+    addressId: addressId,
+    effectiveFromDate: effectiveFromDate,
+    expectedVersion: expectedVersion,
+  );
 }
 
 extension CustomerActiveDeliveryAddressDtoMapper
@@ -39,8 +39,8 @@ extension FamilyDeliveryAddressSnapshotResponseDtoMapper
         subscriptionId: subscriptionId ?? '',
         currentVersion: currentVersion ?? 0,
         acceptedAddress: acceptedAddress?.toEntity(),
-        eligibleAddresses: eligibleAddresses?.map((e) => e.toEntity()).toList() ??
-            const [],
+        eligibleAddresses:
+            eligibleAddresses?.map((e) => e.toEntity()).toList() ?? const [],
       );
 }
 

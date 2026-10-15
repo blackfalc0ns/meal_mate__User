@@ -93,28 +93,31 @@ void main() {
       expect(find.byType(SubscriptionProgramGoalCard), findsOneWidget);
     });
 
-    testWidgets('renders disabled state with no restaurants in area notice when canSelect is false', (tester) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: const SubscriptionProgramGoalCard(
-            title: 'كيتو',
-            description: 'برنامج كيتو',
-            imageUrl: null,
-            primaryFeature: 'دهون صحية',
-            secondaryFeature: 'بدون سكر',
-            isSelected: false,
-            canSelect: false,
-            onTap: _noop,
+    testWidgets(
+      'renders disabled state with no restaurants in area notice when canSelect is false',
+      (tester) async {
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: const SubscriptionProgramGoalCard(
+              title: 'كيتو',
+              description: 'برنامج كيتو',
+              imageUrl: null,
+              primaryFeature: 'دهون صحية',
+              secondaryFeature: 'بدون سكر',
+              isSelected: false,
+              canSelect: false,
+              onTap: _noop,
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('لا تتوفر مطاعم في منطقتك'), findsOneWidget);
-      expect(find.text('دهون صحية'), findsNothing);
-      expect(find.text('بدون سكر'), findsNothing);
-      expect(find.byIcon(Icons.location_off_outlined), findsOneWidget);
-    });
+        expect(find.text('لا تتوفر مطاعم في منطقتك'), findsOneWidget);
+        expect(find.text('دهون صحية'), findsNothing);
+        expect(find.text('بدون سكر'), findsNothing);
+        expect(find.byIcon(Icons.location_off_outlined), findsOneWidget);
+      },
+    );
   });
 
   group('SubscriptionProgramSelectionView with flutter_animate', () {
@@ -147,48 +150,56 @@ void main() {
       },
     );
 
-    testWidgets('when program cannot be selected, tapping displays informative SnackBar and does not select', (tester) async {
-      int? selectedIndex;
-      const unavailableProgram = SubscriptionProgramEntity(
-        programId: 'prog-2',
-        code: 'PROG_KETO',
-        shortCode: 'KT',
-        nameAr: 'كيتو',
-        nameEn: 'Keto',
-        descriptionAr: 'برنامج كيتو دايت',
-        descriptionEn: 'Keto diet program',
-        keywordsAr: ['دهون صحية', 'منخفض الكارب'],
-        keywordsEn: ['Healthy fats', 'Low carb'],
-        imageUrl: null,
-        bundleCount: 2,
-        supportedSlots: ['LUNCH'],
-        fallbackImageAsset: '',
-        isAvailable: false,
-        disabledReason: 'subscription_flow.no_prepared_restaurants',
-      );
+    testWidgets(
+      'when program cannot be selected, tapping displays informative SnackBar and does not select',
+      (tester) async {
+        int? selectedIndex;
+        const unavailableProgram = SubscriptionProgramEntity(
+          programId: 'prog-2',
+          code: 'PROG_KETO',
+          shortCode: 'KT',
+          nameAr: 'كيتو',
+          nameEn: 'Keto',
+          descriptionAr: 'برنامج كيتو دايت',
+          descriptionEn: 'Keto diet program',
+          keywordsAr: ['دهون صحية', 'منخفض الكارب'],
+          keywordsEn: ['Healthy fats', 'Low carb'],
+          imageUrl: null,
+          bundleCount: 2,
+          supportedSlots: ['LUNCH'],
+          fallbackImageAsset: '',
+          isAvailable: false,
+          disabledReason: 'subscription_flow.no_prepared_restaurants',
+        );
 
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: SubscriptionProgramSelectionView(
-            showBottomSpace: true,
-            programs: const [unavailableProgram],
-            selectedProgramNotifier: ValueNotifier<int?>(null),
-            onProgramSelected: (index) => selectedIndex = index,
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: SubscriptionProgramSelectionView(
+              showBottomSpace: true,
+              programs: const [unavailableProgram],
+              selectedProgramNotifier: ValueNotifier<int?>(null),
+              onProgramSelected: (index) => selectedIndex = index,
+            ),
           ),
-        ),
-      );
+        );
 
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
-      expect(find.text('لا تتوفر مطاعم في منطقتك'), findsOneWidget);
-      await tester.tap(find.byType(SubscriptionProgramGoalCard));
-      await tester.pump();
+        expect(find.text('لا تتوفر مطاعم في منطقتك'), findsOneWidget);
+        await tester.tap(find.byType(SubscriptionProgramGoalCard));
+        await tester.pump();
 
-      expect(selectedIndex, isNull);
-      expect(find.text('هذا البرنامج غير متاح حاليًا لعدم توفر مطاعم جاهزة في منطقتك.'), findsOneWidget);
-    });
+        expect(selectedIndex, isNull);
+        expect(
+          find.text(
+            'هذا البرنامج غير متاح حاليًا لعدم توفر مطاعم جاهزة في منطقتك.',
+          ),
+          findsOneWidget,
+        );
+      },
+    );
   });
 }
 

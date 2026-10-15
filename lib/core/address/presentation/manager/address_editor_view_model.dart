@@ -16,7 +16,7 @@ import 'package:meal_meat_user/core/address/presentation/manager/address_editor_
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
 import 'package:meal_meat_user/core/constants/app_constants.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 
 class AddressEditorViewModel extends Cubit<AddressEditorState> {
   AddressEditorViewModel({

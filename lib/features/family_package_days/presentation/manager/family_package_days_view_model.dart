@@ -39,6 +39,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   _getSubscriptionTierRestaurantsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
   int _tiersRequestToken = 0;
+  int _flowRequestToken = 0;
 
   void _emit(FamilyPlanState state) {
     if (isClosed) return;
@@ -90,9 +91,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilySubscriptionCurrent({String? memberId}) async {
+    final token = ++_flowRequestToken;
     _emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _getFamilyFlowCurrentUseCase();
-    if (isClosed) return;
+    if (isClosed || token != _flowRequestToken) return;
     switch (result) {
       case ApiSuccessResult():
         final flow = result.data;

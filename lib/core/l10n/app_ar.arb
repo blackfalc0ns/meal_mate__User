@@ -942,7 +942,28 @@
   "family_member_access_deactivate_confirm_action": "تأكيد الإيقاف",
   "family_member_access_save_button": "حفظ التغييرات",
   "family_member_access_save_success": "تم حفظ تغييرات الوصول بنجاح",
+  "family_member_access_password_already_issued": "تم إصدار كلمة مرور لهذا الحساب مسبقًا. يمكنك إجراء إعادة تعيين صريحة إذا كنت بحاجة إلى توليد كلمة مرور جديدة.",
+  "family_member_access_explicit_reset_title": "إعادة تعيين كلمة المرور المؤقتة",
+  "family_member_access_explicit_reset_message": "لا يمكن استرجاع كلمة المرور المؤقتة السابقة كنص صريح. سيؤدي إنشاء كلمة مرور مؤقتة جديدة إلى إبطال السابقة. هل ترغب في المتابعة؟",
+  "family_member_access_explicit_reset_button": "تأكيد إعادة التعيين",
   "family_member_permissions_save_success": "تم حفظ الصلاحيات بنجاح",
+  "family_permission_details_title": "تفاصيل الصلاحية",
+  "family_permission_description_empty": "لا يوجد وصف إضافي متوفر.",
+  "family_permission_current_status": "الحالة الحالية",
+  "family_permission_status_enabled": "مفعلة",
+  "family_permission_status_disabled": "معطلة",
+  "family_permission_manager_configurable": "قابلة للتعديل من المدير",
+  "family_permission_fixed_state": "ثابتة / يحددها النظام",
+  "family_permission_required_grants": "تتطلب صلاحيات القراءة: {permissions}",
+  "@family_permission_required_grants": {
+    "placeholders": {
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "family_permission_conflict_error": "تم تعديل الصلاحيات في جلسة أخرى. تم تحديث البيانات بأحدث نسخة.",
+  "family_permission_close": "إغلاق",
   "family_member_renewal_success": "تم إرسال طلب التجديد بنجاح",
   "family_members_title": "الأفراد",
   "family_members_search_hint": "ابحث عن فرد",
@@ -2731,5 +2752,28 @@
   "campaign_error_capacity_conflict": "تم استنفاد السعة المتاحة لهذه الحملة، يرجى اختيار عرض آخر.",
   "campaign_error_not_found": "لم يتم العثور على جلسة الدفع المطلوبة.",
   "campaign_error_invalid_request": "بيانات الدفع غير صالحة، يرجى إعادة المحاولة.",
-  "campaign_error_provider_unavailable": "بوابة الدفع غير متاحة حالياً، يرجى المحاولة لاحقاً."
+  "campaign_error_provider_unavailable": "بوابة الدفع غير متاحة حالياً، يرجى المحاولة لاحقاً.",
+  "family_member_detached_label": "منفصل",
+  "family_member_disabled_label": "معطّل",
+  "family_member_setup_required_label": "يلزم الإعداد",
+  "family_member_paid_preparing_label": "قيد التجهيز",
+  "family_member_fulfillment_pending": "جارٍ تجهيز اشتراكك. سنعرض التقويم عند اكتمال التجهيز.",
+  "family_permission_info_title": "تفاصيل الصلاحية",
+  "family_permission_current_value": "القيمة الحالية",
+  "family_permission_status_enabled": "مفعّل",
+  "family_permission_status_disabled": "معطّل",
+  "family_permission_fixed_state": "ثابت من النظام (غير قابل للتعديل)",
+  "family_permission_unsupported_state": "غير مدعوم",
+  "family_permissions_conflict_message": "تم تحديث الصلاحيات من جلسة أخرى. يرجى المراجعة والمحاولة مجدداً.",
+  "family_detach_member_title": "فصل فرد العائلة",
+  "family_detach_member_confirm": "هل أنت متأكد من رغبتك في فصل هذا الفرد من إدارة العائلة؟ سيحتفظ باشتراكه بشكل مستقل.",
+  "family_detach_member_action": "فصل",
+  "family_detach_member_success": "تم فصل الفرد بنجاح.",
+  "family_detach_blocked_financial_intent": "لا يمكن فصل الفرد في حال وجود عملية دفع أو اختيار معلقة.",
+  "family_detach_requires_active_account": "يجب أن يكون لدى الفرد حساب نشط ومكتمل قبل الفصل.",
+  "family_credential_reset_warning": "لا يمكن استرجاع كلمة المرور القديمة. سيتم إنشاء كلمة مرور مؤقتة جديدة.",
+  "family_credential_already_issued": "تم إصدار كلمة المرور مسبقاً. يلزم إجراء إعادة تعيين صريحة لإنشاء كلمة مرور جديدة.",
+  "family_credential_reset_action": "إعادة تعيين كلمة المرور",
+  "family_permission_prerequisites": "المتطلبات الأساسية:",
+  "family_permission_close": "إغلاق"
 }

@@ -13,7 +13,7 @@ import 'package:meal_meat_user/core/address/domain/usecase/reverse_geocode_locat
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_event.dart';
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_view_model.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/customer_address_editor_operations.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';

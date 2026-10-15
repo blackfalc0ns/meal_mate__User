@@ -19,11 +19,10 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     if (isClosed || requestId != _activeLoadId) return;
     switch (result) {
       case ApiSuccessResult():
-        final members = memberId == null
-            ? result.data.members
-            : result.data.members
-                  .where((member) => member.memberId == memberId)
-                  .toList();
+        final members = result.data.members;
+        final targetIndex = memberId != null
+            ? members.indexWhere((m) => m.memberId == memberId)
+            : -1;
         final completedMemberIds = members
             .where((member) => member.deliveryAddressId?.isNotEmpty ?? false)
             .map((member) => member.memberId)
@@ -31,13 +30,16 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         final firstPendingIndex = members.indexWhere(
           (member) => !completedMemberIds.contains(member.memberId),
         );
+        final initialIndex = targetIndex >= 0
+            ? targetIndex
+            : (firstPendingIndex < 0 ? 0 : firstPendingIndex);
         emit(
           state.copyWith(
             isLoading: false,
             clearFailure: true,
             familyName: result.data.name,
             members: members,
-            currentIndex: firstPendingIndex < 0 ? 0 : firstPendingIndex,
+            currentIndex: initialIndex,
             completedMemberIds: completedMemberIds,
             completed: members.isEmpty,
           ),

@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/features/auth/data/models/request/login_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_verify_otp_request_dto.dart';
+import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_resend_otp_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/family_first_login_set_password_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/logout_request_dto.dart';
 import 'package:meal_meat_user/features/auth/data/models/request/refresh_token_request_dto.dart';
@@ -29,6 +30,10 @@ abstract interface class AuthRemoteDataSource {
 
   Future<LoginResponseDto> setFamilyFirstLoginPassword(
     FamilyFirstLoginSetPasswordRequestDto request,
+  );
+
+  Future<FamilyFirstLoginVerifyOtpResponseDto> resendFamilyFirstLoginOtp(
+    FamilyFirstLoginResendOtpRequestDto request,
   );
 
   Future<RegisterResponseDto> register(RegisterRequestDto request);

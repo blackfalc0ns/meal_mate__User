@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_entity.dart';
 
 class MealDetailsState {

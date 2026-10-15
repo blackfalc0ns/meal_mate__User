@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/core/network/failures.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/notification_item_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/notifications_page_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/usecase/get_notifications_usecase.dart';

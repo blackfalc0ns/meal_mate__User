@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -73,8 +74,11 @@ class FamilyAllergiesScreen extends StatelessWidget {
               body: SafeArea(top: false, child: errorWidget),
             );
           }
+          final content = FamilyAllergiesContent(
+            state: state,
+          ).animate().fadeIn(duration: 250.ms);
           if (isInFamilyFlow) {
-            return FamilyAllergiesContent(state: state);
+            return content;
           }
           return Scaffold(
             backgroundColor: color.surface,
@@ -82,10 +86,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
               title: locale.family_setup_title,
               showBackButton: true,
             ),
-            body: SafeArea(
-              top: false,
-              child: FamilyAllergiesContent(state: state),
-            ),
+            body: SafeArea(top: false, child: content),
           );
         },
       ),

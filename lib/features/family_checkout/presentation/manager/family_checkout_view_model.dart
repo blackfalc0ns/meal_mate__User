@@ -38,6 +38,14 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
 
   String? _lastIdempotencyKey;
   String? _lastIntentSignature;
+  int _summaryRequestId = 0;
+  int _paymentMethodsRequestId = 0;
+  int _currentFlowRequestId = 0;
+
+  void _invalidateQuoteAndIdempotency() {
+    _lastIdempotencyKey = null;
+    _lastIntentSignature = null;
+  }
 
   String _getOrCreateIdempotencyKey({
     required String? batchId,
@@ -97,7 +105,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
       amount: summary?.finalPrice ?? 0,
       paymentMethodId: event.paymentMethodId,
     );
-    emit(state.copyWith(isCheckoutLoading: true, clearFailure: true));
+    emit(state.copyWith(isRetryLoading: true, clearFailure: true));
     final result = await retryUseCase(
       callbackUrl: event.callbackUrl,
       errorUrl: event.errorUrl,
@@ -110,16 +118,17 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     switch (result) {
       case ApiSuccessResult():
         emit(
-          state.copyWith(isCheckoutLoading: false, checkoutResult: result.data),
+          state.copyWith(isRetryLoading: false, checkoutResult: result.data),
         );
         await _refreshAfterPaymentAttempt();
       case ApiErrorResult():
-        emit(state.copyWith(isCheckoutLoading: false, failure: result.failure));
+        emit(state.copyWith(isRetryLoading: false, failure: result.failure));
         await _refreshAfterPaymentAttempt();
     }
   }
 
   Future<void> _updateMemberStartDate(String memberId, String startDate) async {
+    _invalidateQuoteAndIdempotency();
     final updatedMembers = state.members.map((m) {
       if (m.memberId == memberId) {
         return m.copyWith(startDate: startDate);
@@ -152,7 +161,15 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     String memberId,
     bool subscribeNow,
   ) async {
-    emit(state.copyWith(isSummaryLoading: true, clearFailure: true));
+    _invalidateQuoteAndIdempotency();
+    emit(
+      state.copyWith(
+        isSummaryLoading: true,
+        clearFailure: true,
+        paymentMethods: const [],
+        clearSelectedPaymentMethod: true,
+      ),
+    );
     final result = await _selectFamilyMemberCheckoutUseCase(
       memberId: memberId,
       subscribeNow: subscribeNow,
@@ -167,8 +184,10 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilySubscriptionCurrent() async {
+    final reqId = ++_currentFlowRequestId;
     emit(state.copyWith(isCurrentFlowLoading: true, clearFailure: true));
     final result = await _getFamilyFlowCurrentUseCase();
+    if (isClosed || reqId != _currentFlowRequestId) return;
     switch (result) {
       case ApiSuccessResult():
         if (result.data.status == 3) {
@@ -189,6 +208,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilySummary({String? memberId}) async {
+    final reqId = ++_summaryRequestId;
     emit(
       state.copyWith(
         isSummaryLoading: true,
@@ -197,6 +217,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
       ),
     );
     final result = await _getFamilySummaryUseCase(memberId: memberId);
+    if (isClosed || reqId != _summaryRequestId) return;
     switch (result) {
       case ApiSuccessResult():
         final summary = result.data;
@@ -229,13 +250,17 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
   }
 
   Future<void> _getFamilyPaymentMethods() async {
+    final reqId = ++_paymentMethodsRequestId;
     final amount = state.summary?.finalPrice ?? 0.0;
+    emit(state.copyWith(isPaymentMethodsLoading: true));
     final result = await _getFamilyPaymentMethodsUseCase(amount);
+    if (isClosed || reqId != _paymentMethodsRequestId) return;
     switch (result) {
       case ApiSuccessResult():
         final selectedId = state.selectedPaymentMethod?.id;
         emit(
           state.copyWith(
+            isPaymentMethodsLoading: false,
             paymentMethods: result.data,
             clearSelectedPaymentMethod: result.data.isEmpty,
             selectedPaymentMethod:
@@ -246,7 +271,12 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
           ),
         );
       case ApiErrorResult():
-        emit(state.copyWith(failure: result.failure));
+        emit(
+          state.copyWith(
+            isPaymentMethodsLoading: false,
+            failure: result.failure,
+          ),
+        );
     }
   }
 
@@ -294,12 +324,10 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
         }
         if (result.failure.code == 'payment.initialization_failed' ||
             result.failure.code == 'family.quote_changed' ||
+            result.failure.code == 'family.delivery_version_changed' ||
+            result.failure.code == 'family.permissions_changed' ||
             result.failure.code == 'family.idempotency_key_used') {
-          if (result.failure.code == 'family.quote_changed' ||
-              result.failure.code == 'family.idempotency_key_used') {
-            _lastIdempotencyKey = null;
-            _lastIntentSignature = null;
-          }
+          _invalidateQuoteAndIdempotency();
           _getFamilySummary(memberId: state.selectedSummaryMemberId);
         }
     }

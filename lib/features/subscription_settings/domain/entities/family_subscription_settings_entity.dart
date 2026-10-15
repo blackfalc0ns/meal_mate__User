@@ -41,6 +41,7 @@ class FamilyMemberDetailEntity {
     this.memberId = '',
     this.subscriptionId,
     this.isManager = false,
+    this.canManageAccess = true,
     required this.title,
     required this.name,
     required this.imageAsset,
@@ -66,6 +67,7 @@ class FamilyMemberDetailEntity {
   final String memberId;
   final String? subscriptionId;
   final bool isManager;
+  final bool canManageAccess;
 
   final String title;
   final String name;
@@ -186,12 +188,16 @@ class FamilySubscriptionMemberEntity {
     required this.imageAsset,
     required this.statusLabel,
     required this.isComplete,
+    this.memberId = '',
+    this.onTap,
   });
 
   final String name;
   final String imageAsset;
   final String statusLabel;
   final bool isComplete;
+  final String memberId;
+  final void Function()? onTap;
 }
 
 class FamilySubscriptionQuickActionEntity {

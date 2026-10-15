@@ -20,6 +20,7 @@ import 'package:meal_meat_user/core/address/presentation/widgets/address_coverag
 import 'package:meal_meat_user/core/address/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/addresses_loading_skeleton.dart';
 import 'package:meal_meat_user/features/addresses/presentation/widgets/sections/addresses_content_section.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 
 class AddressesScreen extends StatefulWidget {
   const AddressesScreen({super.key});
@@ -32,10 +33,24 @@ class _AddressesScreenState extends State<AddressesScreen> {
   bool _isCoverageSheetOpen = false;
   int? _activeCoverageSessionId;
 
+  bool _canEditAddress() {
+    if (getIt.isRegistered<FamilyContextViewModel>()) {
+      final state = getIt<FamilyContextViewModel>().state;
+      if (state.isMember && !state.isManager) {
+        final ctx = state.primaryContext;
+        if (ctx != null) {
+          return ctx.can('editAddress');
+        }
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final canEdit = _canEditAddress();
 
     return BlocProvider<AddressesViewModel>(
       create: (_) {
@@ -83,6 +98,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     currentDeliveryAddress:
                         addressesState.currentDeliveryAddress,
                     addresses: addressesState.items,
+                    canEdit: canEdit,
                     onEdit: (address) =>
                         _openAddressEditor(context, initialAddress: address),
                     onSetDefault: (address) =>
@@ -235,6 +251,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
     BuildContext context, {
     CustomerAddressEntity? initialAddress,
   }) async {
+    if (!_canEditAddress()) {
+      CustomSnackbar.showWarning(
+        context: context,
+        message: context.localization.localeName == 'ar'
+            ? 'تعديل العناوين مقفل من قِبل مدير العائلة'
+            : 'Address editing is locked by the family manager',
+      );
+      return;
+    }
     final result = await Navigator.of(context).pushNamed(
       AppRoutes.addressChooseLocation,
       arguments: AddressChooseLocationArgs(initialAddress: initialAddress),
