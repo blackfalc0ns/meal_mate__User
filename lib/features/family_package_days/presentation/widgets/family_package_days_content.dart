@@ -35,6 +35,10 @@ class FamilyPackageDaysContent extends StatelessWidget {
         state.isBundlesLoading ||
         state.isDurationsLoading ||
         state.isTiersLoading;
+    final totalMembers = state.plannedMembers.length;
+    final completedMembers = state.plannedMembers
+        .where((m) => m.isReady)
+        .length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,6 +113,8 @@ class FamilyPackageDaysContent extends StatelessWidget {
               nextText: locale.family_next_payment,
               nextIcon: Icons.credit_card_rounded,
               onNextPressed: onNextPressed,
+              progress: totalMembers == 0 ? 0 : completedMembers / totalMembers,
+              progressLabel: '$completedMembers/$totalMembers',
             ),
           ),
       ],

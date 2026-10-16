@@ -8,20 +8,27 @@ class FamilyProgramActions extends StatelessWidget {
     this.nextIcon,
     this.onNextPressed,
     this.isLoading = false,
+    this.progress,
+    this.progressLabel,
   });
 
   final String? nextText;
   final IconData? nextIcon;
   final VoidCallback? onNextPressed;
   final bool isLoading;
+  final double? progress;
+  final String? progressLabel;
 
   @override
   Widget build(BuildContext context) {
     return FamilyFlowActions(
+      showSecondary: false,
       primaryText: nextText,
       primaryIcon: nextIcon,
       onPrimaryPressed: onNextPressed,
       isPrimaryLoading: isLoading,
+      progress: progress,
+      progressLabel: progressLabel,
     );
   }
 }

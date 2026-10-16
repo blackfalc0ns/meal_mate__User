@@ -16,6 +16,14 @@ class FamilyProgramActionsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
+    final members = state.members;
+    final totalCount = members.length;
+    final completedCount = members
+        .where((m) => m.programId != null && m.programId!.isNotEmpty)
+        .length;
+    final progress = totalCount > 0 ? (completedCount / totalCount) : 0.0;
+    final allCompleted = totalCount > 0 && completedCount == totalCount;
+
     return Column(
       children: [
         const SizedBox(height: Spacing.lg),
@@ -23,8 +31,11 @@ class FamilyProgramActionsSection extends StatelessWidget {
           nextText: locale.family_allergies_next_location,
           nextIcon: Icons.arrow_forward_ios_rounded,
           isLoading: state.isPlanSaving,
-          onNextPressed:
-              state.isPlanSaving || state.selectedMember?.hasProgram != true
+          progress: progress,
+          progressLabel: totalCount > 1 && !allCompleted
+              ? '($completedCount/$totalCount)'
+              : null,
+          onNextPressed: state.isPlanSaving || !allCompleted
               ? null
               : () {
                   context.read<FamilyProgramsViewModel>().doIntent(

@@ -116,7 +116,7 @@ class AppButton extends StatelessWidget {
     final h = height ?? Spacing.buttonHeight;
     final r = borderRadius ?? Spacing.buttonRadius;
 
-    Widget child = isLoading
+    final Widget child = isLoading
         ? SizedBox(
             height: 22,
             width: 22,
@@ -143,7 +143,11 @@ class AppButton extends StatelessWidget {
               backgroundColor: gradient == null
                   ? effectiveColor
                   : Colors.transparent,
+              disabledBackgroundColor: gradient == null
+                  ? null
+                  : Colors.transparent,
               foregroundColor: textColor ?? colors.onPrimary,
+              disabledForegroundColor: textColor,
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(

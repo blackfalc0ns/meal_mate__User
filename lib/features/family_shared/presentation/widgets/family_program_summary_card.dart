@@ -24,9 +24,9 @@ class FamilyProgramSummaryCard extends StatelessWidget {
       ),
       clipBehavior: Clip.hardEdge,
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 220),
-        switchInCurve: Curves.easeOutCubic,
-        switchOutCurve: Curves.easeInCubic,
+        duration: const Duration(milliseconds: 350),
+        switchInCurve: Curves.easeInOutCubic,
+        switchOutCurve: Curves.easeInOutCubic,
         layoutBuilder: (currentChild, previousChildren) {
           return Stack(
             fit: StackFit.expand,

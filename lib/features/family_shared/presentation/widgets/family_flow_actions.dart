@@ -50,9 +50,13 @@ class FamilyFlowActions extends StatelessWidget {
     final locale = context.localization;
 
     final isPrimaryEnabled = onPrimaryPressed != null && !isPrimaryLoading;
+    final effectiveProgress = progress?.clamp(0.0, 1.0) ?? 0.0;
+    final hasPartialProgress = effectiveProgress > 0 && effectiveProgress < 1;
     final primaryTextColor = isPrimaryEnabled
         ? color.onPrimary
-        : color.onSurface.withValues(alpha: 0.38);
+        : (hasPartialProgress
+              ? color.onSurface
+              : color.onSurface.withValues(alpha: 0.38));
 
     final resolvedPrimaryText = progressLabel == null
         ? (primaryText ?? locale.family_next_payment)
@@ -68,20 +72,32 @@ class FamilyFlowActions extends StatelessWidget {
               ));
 
     if (!showSecondary) {
-      return _ProgressButton(
-        progress: progress,
-        enabled: isPrimaryEnabled,
-        child: AppButton.filled(
-        iconBeforeText: false,
-        text: resolvedPrimaryText,
-        onPressed: onPrimaryPressed,
-        isLoading: isPrimaryLoading,
-        height: Spacing.familySetupBottomButtonHeight,
-        borderRadius: Spacing.radiusPill,
-        textColor: primaryTextColor,
-        fontSize: FontSize.size11,
-        iconWidget: resolvedPrimaryIcon,
-        ),
+      return TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0.0, end: effectiveProgress),
+        duration: const Duration(milliseconds: 650),
+        curve: Curves.easeInOutCubic,
+        builder: (context, animProgress, _) {
+          final isPartial = animProgress > 0 && animProgress < 1;
+          return AppButton.filled(
+            iconBeforeText: false,
+            text: resolvedPrimaryText,
+            onPressed: onPrimaryPressed,
+            isLoading: isPrimaryLoading,
+            height: Spacing.familySetupBottomButtonHeight,
+            borderRadius: Spacing.radiusPill,
+            textColor: primaryTextColor,
+            gradient: isPartial
+                ? LinearGradient(
+                    begin: AlignmentDirectional.centerStart,
+                    end: AlignmentDirectional.centerEnd,
+                    colors: [color.primary, color.surfaceContainerHighest],
+                    stops: [animProgress, animProgress],
+                  )
+                : null,
+            fontSize: FontSize.size11,
+            iconWidget: resolvedPrimaryIcon,
+          );
+        },
       );
     }
 
