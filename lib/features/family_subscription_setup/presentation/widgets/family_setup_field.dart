@@ -13,6 +13,11 @@ class FamilySetupField extends StatelessWidget {
     required this.icon,
     this.trailing,
     this.suffix,
+    this.controller,
+    this.readOnly = false,
+    this.onTap,
+    this.keyboardType,
+    this.onChanged,
   });
 
   final String label;
@@ -20,10 +25,44 @@ class FamilySetupField extends StatelessWidget {
   final IconData icon;
   final IconData? trailing;
   final String? suffix;
+  final TextEditingController? controller;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+
+    Widget? suffixWidget;
+    if (suffix != null) {
+      suffixWidget = Container(
+        width: 48,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(Spacing.hairline),
+        decoration: BoxDecoration(
+          color: color.surfaceContainerHighest.withValues(alpha: 0.7),
+          borderRadius: const BorderRadiusDirectional.horizontal(
+            end: Radius.circular(Spacing.familySetupInputRadius),
+          ),
+        ),
+        child: Text(
+          suffix!,
+          style: getRegularStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size10,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+      );
+    } else if (trailing != null) {
+      suffixWidget = Icon(
+        trailing,
+        size: Spacing.iconSm,
+        color: color.onSurfaceVariant,
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,9 +71,7 @@ class FamilySetupField extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: Spacing.iconSm, color: color.primary),
-
             const SizedBox(width: Spacing.xs),
-
             Text(
               label,
               style: getSemiBoldStyle(
@@ -49,39 +86,17 @@ class FamilySetupField extends StatelessWidget {
         SizedBox(
           height: Spacing.familySetupInputHeight,
           child: AppTextField(
+            controller: controller,
+            readOnly: readOnly,
+            onTap: onTap,
+            keyboardType: keyboardType,
+            onChanged: onChanged,
             hint: hint,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             borderRadius: Spacing.familySetupInputRadius,
             borderColor: color.outlineVariant,
             fillColor: color.surface,
-            suffixIcon: trailing == null
-                ? null
-                : Icon(
-                    trailing,
-                    size: Spacing.iconSm,
-                    color: color.onSurfaceVariant,
-                  ),
-            prefixIcon: suffix == null
-                ? null
-                : Container(
-                    width: 35,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(Spacing.border),
-                    decoration: BoxDecoration(
-                      color: color.outlineVariant,
-                      borderRadius: const BorderRadiusDirectional.horizontal(
-                        start: Radius.circular(Spacing.radiusSm),
-                      ),
-                    ),
-                    child: Text(
-                      suffix!,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
+            suffixIcon: suffixWidget,
             contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
             hintStyle: getRegularStyle(
               fontFamily: FontConstant.alexandria,

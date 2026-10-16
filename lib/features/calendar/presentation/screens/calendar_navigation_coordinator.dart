@@ -89,6 +89,8 @@ class CalendarNavigationCoordinator {
 
   Future<void> openMealPicker(
     BuildContext context, {
+    DateTime? date,
+    String? subscriptionId,
     CalendarRestaurantOptionEntity? initialRestaurant,
     RoundedLoadingButtonController? saveButtonController,
   }) async {
@@ -108,6 +110,9 @@ class CalendarNavigationCoordinator {
             BlocProvider<CalendarFlowViewModel>.value(value: flowCubit),
           ],
           child: CalendarMealSelectionScreen(
+            date: date ?? mealSelectionCubit.state.date ?? DateTime.now(),
+            subscriptionId:
+                subscriptionId ?? mealSelectionCubit.state.subscriptionId,
             saveButtonController:
                 saveButtonController ?? RoundedLoadingButtonController(),
             initialRestaurant: initialRestaurant,

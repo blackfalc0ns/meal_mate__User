@@ -39,7 +39,14 @@ class CalendarScreenEffects extends StatelessWidget {
               ),
             );
           case OpenMealPickerEffect():
-            unawaited(activeCoordinator.openMealPicker(context));
+            unawaited(
+              activeCoordinator.openMealPicker(
+                context,
+                date: effect.date,
+                subscriptionId: effect.subscriptionId,
+                initialRestaurant: effect.restaurant,
+              ),
+            );
           case CloseMealPickerEffect():
             activeCoordinator.closeMealPicker(context);
           case MealsSavedEffect():

@@ -122,18 +122,38 @@ class CalendarRepositoryImpl implements CalendarRepository {
         return dayResponse.toEntity(localeName);
       }
 
-      final responses = await Future.wait(
-        meals.map(
-          (meal) => _remoteDataSource.saveDayMeals(
-            subscriptionId: subscriptionId,
-            date: date,
-            request: meal.toSaveMealsDto(),
-          ),
-        ),
-      );
+      // The API updates the whole day on every slot mutation.  Keep these
+      // writes ordered so a slower response can never overwrite a newer one.
+      final orderedMeals = [...meals]
+        ..sort((a, b) => _slotOrder(a.slot).compareTo(_slotOrder(b.slot)));
+      for (final meal in orderedMeals) {
+        await _remoteDataSource.saveDayMeals(
+          subscriptionId: subscriptionId,
+          date: date,
+          request: meal.toSaveMealsDto(),
+        );
+      }
 
-      return responses.last.toEntity(localeName);
+      // Only expose one authoritative state to the presentation layer.
+      final finalResponse = await _remoteDataSource.getDay(
+        subscriptionId: subscriptionId,
+        date: date,
+      );
+      return finalResponse.toEntity(localeName);
     });
+  }
+
+  int _slotOrder(String slot) {
+    switch (slot.toLowerCase()) {
+      case 'breakfast':
+        return 0;
+      case 'lunch':
+        return 1;
+      case 'snack':
+        return 2;
+      default:
+        return 3;
+    }
   }
 
   @override

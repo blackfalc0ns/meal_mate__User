@@ -22,7 +22,7 @@ class FamilyProgramStepper extends StatelessWidget {
     final locale = context.localization;
     const itemWidth = Spacing.familyProgramStepItemWidth;
     const labelFontSize = FontSize.size10;
-    final lineTopOffset =
+    const lineTopOffset =
         (Spacing.familyProgramStepCircleSize -
             Spacing.familyProgramStepLineHeight) /
         2;

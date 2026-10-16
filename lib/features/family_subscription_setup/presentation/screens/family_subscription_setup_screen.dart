@@ -179,6 +179,7 @@ class _FamilySubscriptionSetupScreenState
   ) =>
       previous.deleteMemberSuccess != current.deleteMemberSuccess ||
       previous.deleteMemberFailure != current.deleteMemberFailure ||
+      previous.memberSaveSuccess != current.memberSaveSuccess ||
       previous.memberSaveFailure != current.memberSaveFailure ||
       (previous.failure != current.failure && current.currentFlow != null);
 
@@ -188,6 +189,11 @@ class _FamilySubscriptionSetupScreenState
       CustomSnackbar.showSuccess(
         context: context,
         message: locale.family_delete_member_success,
+      );
+    } else if (state.memberSaveSuccess) {
+      CustomSnackbar.showSuccess(
+        context: context,
+        message: locale.family_add_member_success,
       );
     } else if (state.deleteMemberFailure != null) {
       CustomSnackbar.showError(

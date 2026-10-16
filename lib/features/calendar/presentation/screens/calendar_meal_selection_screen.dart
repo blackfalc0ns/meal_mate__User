@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_availa
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/mapper/calendar_menu_mapper.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_save_button.dart';
 import 'package:meal_meat_user/features/restaurant_menu/presentation/screens/restaurant_menu_screen.dart';
@@ -17,11 +18,15 @@ import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 class CalendarMealSelectionScreen extends StatefulWidget {
   const CalendarMealSelectionScreen({
     super.key,
+    required this.date,
+    required this.subscriptionId,
     this.saveButtonController,
     this.initialRestaurant,
   });
 
   final RoundedLoadingButtonController? saveButtonController;
+  final DateTime date;
+  final String subscriptionId;
   final CalendarRestaurantOptionEntity? initialRestaurant;
 
   @override
@@ -158,6 +163,16 @@ class _CalendarMealSelectionScreenState
           bottom: Spacing.xl,
           child: CalendarMealSaveButton(
             controller: widget.saveButtonController,
+            onPressed: () {
+              final locale = context.localization;
+              unawaited(
+                context.read<CalendarFlowViewModel>().confirmMeals(
+                  localeName: locale.localeName,
+                  date: widget.date,
+                  subscriptionId: widget.subscriptionId,
+                ),
+              );
+            },
           ),
         ),
         BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(

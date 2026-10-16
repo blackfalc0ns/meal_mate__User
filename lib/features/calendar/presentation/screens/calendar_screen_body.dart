@@ -129,7 +129,13 @@ class CalendarScreenBody extends StatelessWidget {
                         );
                       }
 
-                      unawaited(activeCoordinator.openMealPicker(context));
+                      unawaited(
+                        activeCoordinator.openMealPicker(
+                          context,
+                          date: date,
+                          subscriptionId: subId,
+                        ),
+                      );
                     },
               ),
             ),

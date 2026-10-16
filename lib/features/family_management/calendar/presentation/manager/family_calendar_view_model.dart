@@ -98,6 +98,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   final ConfirmCalendarDayMealsUseCase? _confirmDayMealsUseCase;
   final AutoSelectCalendarDayUseCase? _autoSelectDayUseCase;
   final GetFamilyMemberCapabilitiesUseCase? _getCapabilitiesUseCase;
+  int _mealSaveGeneration = 0;
 
   void doIntent(FamilyCalendarEvent event) {
     switch (event) {
@@ -569,6 +570,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   }
 
   void _selectMealForSlot(CalendarMealEntity meal, String slot) {
+    if (state.isSavingMeals) return;
     final currentMeals = List<CalendarMealEntity>.from(
       state.selectedMealsForDay,
     );
@@ -587,6 +589,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       return;
     }
 
+    if (state.isSavingMeals) return;
+    final saveGeneration = ++_mealSaveGeneration;
     emit(state.copyWith(isSavingMeals: true, clearSaveMealsFailure: true));
 
     final result = await _saveDayMealsUseCase(
@@ -596,13 +600,14 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       localeName: localeName,
     );
 
-    if (isClosed) return;
+    if (isClosed || saveGeneration != _mealSaveGeneration) return;
 
     switch (result) {
       case ApiSuccessResult():
         emit(
           state.copyWith(
             selectedDay: result.data,
+            selectedMealsForDay: result.data.meals,
             isSavingMeals: false,
             saveMealsSuccess: true,
           ),
@@ -613,12 +618,15 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
           if (getIt.isRegistered<FamilyContextViewModel>()) {
             getIt<FamilyContextViewModel>().loadFamilyContext();
           }
-          await _fetchDayDetails(
-            date: date,
-            subscriptionId: subId,
-            localeName: localeName,
-          );
         }
+        // A later slot can fail after earlier slots were committed. Reload
+        // for every failure so successful server-side selections are kept.
+        await _fetchDayDetails(
+          date: date,
+          subscriptionId: subId,
+          localeName: localeName,
+        );
+        if (isClosed || saveGeneration != _mealSaveGeneration) return;
         emit(
           state.copyWith(
             isSavingMeals: false,

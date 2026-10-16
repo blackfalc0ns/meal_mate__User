@@ -247,18 +247,24 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     }
   }
 
-  Future<void> confirmMeals({String? localeName}) async {
+  Future<void> confirmMeals({
+    String? localeName,
+    DateTime? date,
+    String? subscriptionId,
+  }) async {
     final day = overviewViewModel.state.selectedDay;
-    final date = overviewViewModel.state.selectedDate ?? day?.date;
-    final subscriptionId = overviewViewModel.state.subscriptionId;
+    final targetDate =
+        date ?? overviewViewModel.state.selectedDate ?? day?.date;
+    final targetSubscriptionId =
+        subscriptionId ?? overviewViewModel.state.subscriptionId;
     final effectiveLocale = localeName ?? 'en';
 
-    if (date == null || subscriptionId.isEmpty) return;
+    if (targetDate == null || targetSubscriptionId.isEmpty) return;
 
     final result = await mealSelectionViewModel.confirm(
       localeName: effectiveLocale,
-      date: date,
-      subscriptionId: subscriptionId,
+      date: targetDate,
+      subscriptionId: targetSubscriptionId,
     );
 
     if (isClosed) return;
@@ -271,11 +277,11 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
         );
         overviewViewModel.replaceDay(confirmedDay);
         unawaited(
-          overviewViewModel.refreshDay(date, localeName: effectiveLocale),
+          overviewViewModel.refreshDay(targetDate, localeName: effectiveLocale),
         );
         unawaited(
           overviewViewModel.loadCalendar(
-            subscriptionId: subscriptionId,
+            subscriptionId: targetSubscriptionId,
             localeName: effectiveLocale,
           ),
         );
@@ -288,7 +294,12 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
           ),
         );
       case ApiErrorResult(:final failure):
-        _handleFailure(failure, date, subscriptionId, effectiveLocale);
+        _handleFailure(
+          failure,
+          targetDate,
+          targetSubscriptionId,
+          effectiveLocale,
+        );
     }
   }
 

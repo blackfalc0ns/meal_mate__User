@@ -23,24 +23,47 @@ class FamilySetupNameSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          locale.family_name,
-          style: getBoldStyle(
-            fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size12,
-            color: color.onSurface,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.groups_2_rounded,
+              size: Spacing.iconSm,
+              color: color.primary,
+            ),
+            const SizedBox(width: Spacing.xs),
+            Text(
+              locale.family_name,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size12,
+                color: color.onSurface,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: Spacing.xs),
-        AppTextField(
-          controller: controller,
-          hint: locale.family_name_hint,
-          prefixIcon: Icon(
-            Icons.groups_2_rounded,
-            color: color.onSurfaceVariant,
-            size: Spacing.iconSm,
+        SizedBox(
+          height: Spacing.familySetupInputHeight,
+          child: AppTextField(
+            controller: controller,
+            hint: locale.family_name_hint,
+            borderRadius: Spacing.familySetupInputRadius,
+            borderColor: color.outlineVariant,
+            fillColor: color.surface,
+            contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+            hintStyle: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size10,
+              color: color.onSurfaceVariant.withValues(alpha: 0.48),
+            ),
+            textStyle: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size10,
+              color: color.onSurface,
+            ),
+            onSubmitted: (_) => onSubmitted(),
           ),
-          onSubmitted: (_) => onSubmitted(),
         ),
       ],
     );

@@ -174,7 +174,7 @@ class AppTextField extends StatelessWidget {
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: inputBorderRadius,
-          borderSide: BorderSide(color: AppColors.disabled, width: 1.0),
+          borderSide: const BorderSide(color: AppColors.disabled, width: 1.0),
         ),
       ),
     );
