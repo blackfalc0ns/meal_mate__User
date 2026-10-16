@@ -12,11 +12,17 @@ class FamilyAddressMapSection extends StatelessWidget {
     required this.memberId,
     required this.flowController,
     this.initialAddress,
+    this.customActionText,
+    this.customActionIcon,
+    this.onCustomAction,
   });
 
   final String memberId;
   final AddressEntryFlowController flowController;
   final CustomerAddressEntity? initialAddress;
+  final String? customActionText;
+  final Widget? customActionIcon;
+  final VoidCallback? onCustomAction;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,9 @@ class FamilyAddressMapSection extends StatelessWidget {
           initialAddress: initialAddress,
           showInitialAddressDetails: false,
           isSubmitting: mapData.isSubmitting,
+          customActionText: customActionText,
+          customActionIcon: customActionIcon,
+          onCustomAction: onCustomAction,
         );
       },
     );

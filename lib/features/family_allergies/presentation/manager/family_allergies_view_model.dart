@@ -115,7 +115,34 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
       next.remove('NONE');
       next.contains(code) ? next.remove(code) : next.add(code);
     }
-    emit(state.copyWith(selectedCodes: next, clearError: true));
+    final member = state.currentMember;
+    List<FamilyMemberEntity>? updatedMembers;
+    if (member != null) {
+      final updated = member.copyWith(
+        hasNoAllergies: next.contains('NONE'),
+        allergiesCompleted: next.isNotEmpty,
+        allergies: next.where((c) => c != 'NONE').map((c) {
+          final match = state.catalog
+              .where((item) => item.code == c)
+              .firstOrNull;
+          return FoodPreferenceItemEntity(
+            code: c,
+            nameAr: match?.nameAr ?? '',
+            nameEn: match?.nameEn ?? '',
+            severity: 'High',
+          );
+        }).toList(),
+      );
+      updatedMembers = [...state.members];
+      updatedMembers[state.currentIndex] = updated;
+    }
+    emit(
+      state.copyWith(
+        selectedCodes: next,
+        members: updatedMembers,
+        clearError: true,
+      ),
+    );
   }
 
   void changeAllergySearch(String value) {
@@ -168,9 +195,40 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   void toggleRejected(String code) {
-    final next = <String>{...state.rejectedCodes};
-    next.contains(code) ? next.remove(code) : next.add(code);
-    emit(state.copyWith(rejectedCodes: next));
+    Set<String> next;
+    if (code == FoodPreferenceItemEntity.noneCode) {
+      next = const {FoodPreferenceItemEntity.noneCode};
+    } else {
+      next = Set<String>.of(state.rejectedCodes)
+        ..remove(FoodPreferenceItemEntity.noneCode);
+      if (next.contains(code)) {
+        next.remove(code);
+      } else {
+        next.add(code);
+      }
+      if (next.isEmpty) {
+        next = const {FoodPreferenceItemEntity.noneCode};
+      }
+    }
+    final member = state.currentMember;
+    List<FamilyMemberEntity>? updatedMembers;
+    if (member != null) {
+      final updated = member.copyWith(
+        dislikedFoods: next.map((c) {
+          final match = state.ingredients
+              .where((item) => item.code == c)
+              .firstOrNull;
+          return FoodPreferenceItemEntity(
+            code: c,
+            nameAr: match?.nameAr ?? '',
+            nameEn: match?.nameEn ?? '',
+          );
+        }).toList(),
+      );
+      updatedMembers = [...state.members];
+      updatedMembers[state.currentIndex] = updated;
+    }
+    emit(state.copyWith(rejectedCodes: next, members: updatedMembers));
   }
 
   void selectMember(int index) {
@@ -194,8 +252,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
 
   Future<void> saveCurrent() async {
     final member = state.currentMember;
-    if (member == null || !state.canSave) return;
-    final savedCodes = Set<String>.of(state.selectedCodes);
+    if (member == null) return;
     emit(
       state.copyWith(
         isSaving: true,
@@ -205,107 +262,85 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         clearSaveFailure: true,
       ),
     );
-    final result = await _save(
-      memberId: member.memberId,
-      allergies: state.selectedCodes
-          .map(
-            (code) => FamilyMemberAllergySelection(
-              code: code,
-              severity: code == 'NONE' ? null : 'High',
-            ),
-          )
-          .toList(),
-    );
-    switch (result) {
-      case ApiSuccessResult(data: final saved) when saved:
-        String? optionalSaveErrorMessage;
-        Failure? optionalSaveFailure;
-        final savedRejectedCodes = _savedRejectedSelectionFor(member);
-        if (savedRejectedCodes.length != state.rejectedCodes.length ||
-            !savedRejectedCodes.containsAll(state.rejectedCodes)) {
-          final dislikedResult = await _saveDisliked(
-            memberId: member.memberId,
-            ingredientCodes: state.rejectedCodes.toList(),
-          );
-          if (dislikedResult case ApiErrorResult(:final failure)) {
-            optionalSaveErrorMessage = failure.errorMessage;
-            optionalSaveFailure = failure;
-          }
+
+    String? optionalSaveErrorMessage;
+    Failure? optionalSaveFailure;
+
+    for (final m in state.members) {
+      final savedCodes = _savedSelectionFor(m);
+      if (savedCodes.isEmpty) continue;
+      final result = await _save(
+        memberId: m.memberId,
+        allergies: savedCodes
+            .map(
+              (code) => FamilyMemberAllergySelection(
+                code: code,
+                severity: code == 'NONE' ? null : 'High',
+              ),
+            )
+            .toList(),
+      );
+      if (result case ApiErrorResult(:final failure)) {
+        emit(
+          state.copyWith(
+            isSaving: false,
+            saveFailure: failure,
+            errorMessage: failure.errorMessage,
+          ),
+        );
+        return;
+      }
+      final rejectedCodes = _savedRejectedSelectionFor(m);
+      if (rejectedCodes.isNotEmpty) {
+        final dislikedResult = await _saveDisliked(
+          memberId: m.memberId,
+          ingredientCodes: rejectedCodes.toList(),
+        );
+        if (dislikedResult case ApiErrorResult(:final failure)) {
+          optionalSaveErrorMessage = failure.errorMessage;
+          optionalSaveFailure = failure;
         }
-        final last = state.currentIndex == state.members.length - 1;
-        final updatedMembers = [...state.members];
-        updatedMembers[state.currentIndex] = member.copyWith(
-          allergies: savedCodes
-              .where((code) => code != FoodPreferenceItemEntity.noneCode)
-              .map((code) {
-                final catalogItem = state.catalog.where(
-                  (item) => item.code == code,
-                );
-                final match = catalogItem.isEmpty ? null : catalogItem.first;
-                return FoodPreferenceItemEntity(
-                  code: code,
-                  nameAr: match?.nameAr ?? '',
-                  nameEn: match?.nameEn ?? '',
-                  severity: 'High',
-                );
-              })
-              .toList(),
-          allergiesCompleted: true,
-          hasNoAllergies: savedCodes.contains(
-            FoodPreferenceItemEntity.noneCode,
-          ),
-          dislikedFoods: optionalSaveErrorMessage == null
-              ? state.rejectedCodes.map((code) {
-                  final match = state.ingredients
-                      .where((item) => item.code == code)
-                      .firstOrNull;
-                  return FoodPreferenceItemEntity(
-                    code: code,
-                    nameAr: match?.nameAr ?? '',
-                    nameEn: match?.nameEn ?? '',
-                  );
-                }).toList()
-              : member.dislikedFoods,
-        );
-        final nextIndex = last ? state.currentIndex : state.currentIndex + 1;
-        emit(
-          state.copyWith(
-            isSaving: false,
-            completed: last,
-            optionalSaveErrorMessage: optionalSaveErrorMessage,
-            errorMessage: optionalSaveErrorMessage,
-            saveFailure: optionalSaveFailure,
-            members: updatedMembers,
-            currentIndex: nextIndex,
-            selectedCodes: last
-                ? savedCodes
-                : _savedSelectionFor(updatedMembers[nextIndex]),
-            allergySearch: '',
-            ingredientSearch: '',
-            rejectedCodes: last
-                ? state.rejectedCodes
-                : _savedRejectedSelectionFor(updatedMembers[nextIndex]),
-          ),
-        );
-      case ApiSuccessResult():
-        emit(state.copyWith(isSaving: false, errorMessage: 'error_unknown'));
-      case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isSaving: false,
-            saveFailure: result.failure,
-            errorMessage: result.failure.errorMessage,
-          ),
-        );
+      }
     }
+
+    final last = state.currentIndex == state.members.length - 1;
+    final nextIndex = last ? state.currentIndex : state.currentIndex + 1;
+    emit(
+      state.copyWith(
+        isSaving: false,
+        completed: true,
+        optionalSaveErrorMessage: optionalSaveErrorMessage,
+        errorMessage: optionalSaveErrorMessage,
+        saveFailure: optionalSaveFailure,
+        currentIndex: nextIndex,
+        selectedCodes: last
+            ? state.selectedCodes
+            : _savedSelectionFor(state.members[nextIndex]),
+        rejectedCodes: last
+            ? state.rejectedCodes
+            : _savedRejectedSelectionFor(state.members[nextIndex]),
+      ),
+    );
   }
 
   Set<String> _savedSelectionFor(FamilyMemberEntity member) {
     if (member.hasNoAllergies) return const {'NONE'};
-    return member.allergies.map((allergy) => allergy.code).toSet();
+    final codes = member.allergies
+        .map((allergy) => allergy.code)
+        .where((code) => code.isNotEmpty)
+        .toSet();
+    if (codes.contains('NONE')) return const {'NONE'};
+    return codes;
   }
 
   Set<String> _savedRejectedSelectionFor(FamilyMemberEntity member) {
-    return member.dislikedFoods.map((ingredient) => ingredient.code).toSet();
+    final codes = member.dislikedFoods
+        .map((ingredient) => ingredient.code)
+        .where((code) => code.isNotEmpty)
+        .toSet();
+    if (codes.contains(FoodPreferenceItemEntity.noneCode)) {
+      return const {FoodPreferenceItemEntity.noneCode};
+    }
+    return codes;
   }
 }

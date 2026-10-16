@@ -27,6 +27,9 @@ class FamilyAddressLocationStage extends StatefulWidget {
     this.onSaved,
     this.onAddressSaved,
     this.initialAddress,
+    this.customActionText,
+    this.customActionIcon,
+    this.onCustomAction,
   });
 
   final String memberId;
@@ -34,6 +37,9 @@ class FamilyAddressLocationStage extends StatefulWidget {
   final void Function({String? memberId, CustomerAddressEntity? savedAddress})?
   onAddressSaved;
   final CustomerAddressEntity? initialAddress;
+  final String? customActionText;
+  final Widget? customActionIcon;
+  final VoidCallback? onCustomAction;
 
   @override
   State<FamilyAddressLocationStage> createState() =>
@@ -174,6 +180,9 @@ class _FamilyAddressLocationStageState
                   memberId: widget.memberId,
                   flowController: _entryFlowController,
                   initialAddress: widget.initialAddress,
+                  customActionText: widget.customActionText,
+                  customActionIcon: widget.customActionIcon,
+                  onCustomAction: widget.onCustomAction,
                 ),
               ),
               FamilyAddressCoverageSection(

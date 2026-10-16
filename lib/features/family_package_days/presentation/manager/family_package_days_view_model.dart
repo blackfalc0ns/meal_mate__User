@@ -40,6 +40,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
   int _tiersRequestToken = 0;
   int _flowRequestToken = 0;
+  final Set<String> _memberLoadKeys = <String>{};
+  final Map<String, List<SubscriptionBundleEntity>> _bundlesCache = {};
+  final Map<String, List<SubscriptionDurationEntity>> _durationsCache = {};
+  final Map<String, List<SubscriptionTierEntity>> _tiersCache = {};
 
   void _emit(FamilyPackageDaysState state) {
     if (isClosed) return;
@@ -212,75 +216,129 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         (state.programs.isNotEmpty ? state.programs.first.programId : null);
     if (programId == null || programId.isEmpty) return;
 
-    if (member.programId == null || member.programId!.isEmpty) {
-      final updatedMembers = state.members.map((m) {
-        if (m.memberId == member.memberId) {
-          return m.copyWith(programId: programId);
-        }
-        return m;
-      }).toList();
-      final updatedFlow = state.currentFlow?.copyWith(members: updatedMembers);
-      _emit(state.copyWith(currentFlow: updatedFlow));
-    }
+    final loadKey =
+        '${member.memberId}|$programId|${member.bundleId}|'
+        '${member.durationDays}|${member.includeFriday}';
+    if (!_memberLoadKeys.add(loadKey)) return;
 
-    _emit(
-      state.copyWith(
-        isBundlesLoading: true,
-        isDurationsLoading: true,
-        isTiersLoading: true,
-        clearFailure: true,
-      ),
-    );
-    final bundlesFuture = _getFamilyProgramBundlesUseCase(programId);
-    final durationsFuture = _getFamilyPlanDurationsUseCase(
-      programId: programId,
-      includeFriday: member.includeFriday,
-    );
-    final tiersFuture = _getFamilyPlanTiersUseCase(
-      programId: programId,
-      bundleId: member.bundleId,
-      durationDays: member.durationDays,
-      includeFriday: member.includeFriday,
-      familyMemberId: member.memberId,
-    );
-    final result = await bundlesFuture;
-    if (isClosed || state.selectedMember?.memberId != member.memberId) return;
-    switch (result) {
-      case ApiSuccessResult():
-        final bundles = result.data
-            .where((b) => b.bundleId.isNotEmpty)
-            .toList();
-        int? bundleIdx;
-        if (member.bundleId != null && member.bundleId!.isNotEmpty) {
-          final foundIdx = bundles.indexWhere(
-            (b) => b.bundleId == member.bundleId,
+    try {
+      if (member.programId == null || member.programId!.isEmpty) {
+        final updatedMembers = state.members.map((m) {
+          if (m.memberId == member.memberId) {
+            return m.copyWith(programId: programId);
+          }
+          return m;
+        }).toList();
+        final updatedFlow = state.currentFlow?.copyWith(
+          members: updatedMembers,
+        );
+        _emit(state.copyWith(currentFlow: updatedFlow));
+      }
+
+      _emit(
+        state.copyWith(
+          isBundlesLoading: true,
+          isDurationsLoading: true,
+          isTiersLoading: true,
+          clearFailure: true,
+        ),
+      );
+      final bundlesKey = programId;
+      final durationsKey = '$programId|${member.includeFriday}';
+      final tiersKey = _tiersKey(
+        programId: programId,
+        bundleId: member.bundleId,
+        durationDays: member.durationDays,
+        includeFriday: member.includeFriday,
+        familyMemberId: member.memberId,
+      );
+      final results = await Future.wait([
+        _bundlesCache.containsKey(bundlesKey)
+            ? Future<ApiResult<List<SubscriptionBundleEntity>>>.value(
+                ApiSuccessResult(data: _bundlesCache[bundlesKey]!),
+              )
+            : _getFamilyProgramBundlesUseCase(programId),
+        _durationsCache.containsKey(durationsKey)
+            ? Future<ApiResult<List<SubscriptionDurationEntity>>>.value(
+                ApiSuccessResult(data: _durationsCache[durationsKey]!),
+              )
+            : _getFamilyPlanDurationsUseCase(
+                programId: programId,
+                includeFriday: member.includeFriday,
+              ),
+        _tiersCache.containsKey(tiersKey)
+            ? Future<ApiResult<List<SubscriptionTierEntity>>>.value(
+                ApiSuccessResult(data: _tiersCache[tiersKey]!),
+              )
+            : _getFamilyPlanTiersUseCase(
+                programId: programId,
+                bundleId: member.bundleId,
+                durationDays: member.durationDays,
+                includeFriday: member.includeFriday,
+                familyMemberId: member.memberId,
+              ),
+      ]);
+      final result = results[0] as ApiResult<List<SubscriptionBundleEntity>>;
+      if (isClosed || state.selectedMember?.memberId != member.memberId) return;
+      switch (result) {
+        case ApiSuccessResult():
+          final bundles = result.data
+              .where((b) => b.bundleId.isNotEmpty)
+              .toList();
+          _bundlesCache[bundlesKey] = bundles;
+          int? bundleIdx;
+          if (member.bundleId != null && member.bundleId!.isNotEmpty) {
+            final foundIdx = bundles.indexWhere(
+              (b) => b.bundleId == member.bundleId,
+            );
+            if (foundIdx != -1) bundleIdx = foundIdx;
+          }
+          _emit(
+            state.copyWith(
+              isBundlesLoading: false,
+              bundles: bundles,
+              selectedBundleIndex: bundleIdx,
+              clearSelectedBundle: bundleIdx == null,
+            ),
           );
-          if (foundIdx != -1) bundleIdx = foundIdx;
-        }
-        _emit(
-          state.copyWith(
-            isBundlesLoading: false,
-            bundles: bundles,
-            selectedBundleIndex: bundleIdx,
-            clearSelectedBundle: bundleIdx == null,
-          ),
-        );
-        await _applyDurationsAndTiersForMember(
-          member: member,
-          durationsResult: await durationsFuture,
-          tiersResult: await tiersFuture,
-        );
-      case ApiErrorResult():
-        _emit(
-          state.copyWith(
-            isBundlesLoading: false,
-            isDurationsLoading: false,
-            isTiersLoading: false,
-            failure: result.failure,
-          ),
-        );
+          await _applyDurationsAndTiersForMember(
+            member: member,
+            durationsResult:
+                results[1] as ApiResult<List<SubscriptionDurationEntity>>,
+            tiersResult: results[2] as ApiResult<List<SubscriptionTierEntity>>,
+          );
+          final durationsResult =
+              results[1] as ApiResult<List<SubscriptionDurationEntity>>;
+          if (durationsResult case ApiSuccessResult(:final data)) {
+            _durationsCache[durationsKey] = data;
+          }
+          final tiersResult =
+              results[2] as ApiResult<List<SubscriptionTierEntity>>;
+          if (tiersResult case ApiSuccessResult(:final data)) {
+            _tiersCache[tiersKey] = data;
+          }
+        case ApiErrorResult():
+          _emit(
+            state.copyWith(
+              isBundlesLoading: false,
+              isDurationsLoading: false,
+              isTiersLoading: false,
+              failure: result.failure,
+            ),
+          );
+      }
+    } finally {
+      _memberLoadKeys.remove(loadKey);
     }
   }
+
+  String _tiersKey({
+    required String programId,
+    required String? bundleId,
+    required int? durationDays,
+    required bool includeFriday,
+    required String familyMemberId,
+  }) => '$programId|$bundleId|$durationDays|$includeFriday|$familyMemberId';
 
   Future<void> _applyDurationsAndTiersForMember({
     required FamilyMemberEntity member,
@@ -376,6 +434,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         currentFlow: updatedFlow ?? state.currentFlow,
       ),
     );
+    unawaited(_reloadTiersForCurrentPlan(bundleId: bundle.bundleId));
   }
 
   void _selectDuration(int index) {
@@ -427,6 +486,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   }
 
   Future<void> _reloadTiersForCurrentPlan({
+    String? bundleId,
     int? durationDays,
     bool? includeFriday,
   }) async {
@@ -434,7 +494,8 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     if (member == null) return;
     final programId = state.selectedProgram?.programId ?? member.programId;
     if (programId == null || programId.isEmpty) return;
-    final bundleId = state.selectedBundle?.bundleId ?? member.bundleId;
+    final selectedBundleId =
+        bundleId ?? state.selectedBundle?.bundleId ?? member.bundleId;
     final days =
         durationDays ?? state.customDurationDays ?? member.durationDays;
     final friday = includeFriday ?? state.includeFriday;
@@ -448,17 +509,31 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
       ),
     );
 
-    final result = await _getFamilyPlanTiersUseCase(
+    final cacheKey = _tiersKey(
       programId: programId,
-      bundleId: bundleId,
+      bundleId: selectedBundleId,
       durationDays: days,
       includeFriday: friday,
       familyMemberId: member.memberId,
     );
+    final result = _tiersCache[cacheKey] != null
+        ? ApiSuccessResult<List<SubscriptionTierEntity>>(
+            data: _tiersCache[cacheKey]!,
+          )
+        : await _getFamilyPlanTiersUseCase(
+            programId: programId,
+            bundleId: selectedBundleId,
+            durationDays: days,
+            includeFriday: friday,
+            familyMemberId: member.memberId,
+          );
+    if (result case ApiSuccessResult(:final data)) {
+      _tiersCache[cacheKey] = data;
+    }
     if (isClosed || requestToken != _tiersRequestToken) return;
     if (result case ApiSuccessResult(:final data)) {
       if (state.selectedMember?.memberId != member.memberId ||
-          state.selectedBundle?.bundleId != bundleId ||
+          state.selectedBundle?.bundleId != selectedBundleId ||
           state.customDurationDays != days ||
           state.includeFriday != friday) {
         return;

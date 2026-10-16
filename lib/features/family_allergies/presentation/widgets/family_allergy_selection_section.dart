@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/durations.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_expand_button.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergy_choice_tile.dart';
@@ -33,7 +32,7 @@ class FamilyAllergySelectionSection extends StatefulWidget {
 
 class _FamilyAllergySelectionSectionState
     extends State<FamilyAllergySelectionSection> {
-  static const _collapsedItemCount = 6;
+  static const _collapsedItemCount = 8;
 
   bool _isExpanded = false;
 
@@ -118,34 +117,29 @@ class _FamilyAllergySelectionSectionState
               ),
             ),
           ),
-          const SizedBox(height: Spacing.lg),
-          AnimatedSize(
-            duration: AppDurations.normal,
-            reverseDuration: AppDurations.fast,
-            curve: Curves.easeOutCubic,
-            alignment: AlignmentDirectional.topCenter,
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: visibleItems.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: Spacing.familyAllergiesChoiceHeight,
-                crossAxisSpacing: Spacing.familyAllergiesChoiceColumnGap,
-                mainAxisSpacing: Spacing.familyAllergiesChoiceGap,
-              ),
-              itemBuilder: (context, index) {
-                final item = visibleItems[index];
-                return FamilyAllergyChoiceTile(
-                  label: item.name(locale.localeName),
-                  selected: widget.selected.contains(item.code),
-                  onTap: () => widget.onToggle(item.code),
-                );
-              },
+          const SizedBox(height: Spacing.sm),
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: visibleItems.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: Spacing.familyAllergiesChoiceHeight,
+              crossAxisSpacing: Spacing.familyAllergiesChoiceColumnGap,
+              mainAxisSpacing: Spacing.familyAllergiesChoiceGap,
             ),
+            itemBuilder: (context, index) {
+              final item = visibleItems[index];
+              return FamilyAllergyChoiceTile(
+                label: item.name(locale.localeName),
+                selected: widget.selected.contains(item.code),
+                onTap: () => widget.onToggle(item.code),
+              );
+            },
           ),
           if (canExpand) ...[
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: Spacing.sm),
             FamilyAllergiesExpandButton(
               expanded: _isExpanded,
               onPressed: () => setState(() => _isExpanded = !_isExpanded),

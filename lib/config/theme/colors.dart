@@ -251,6 +251,10 @@ class AppColors {
   static const Color callActionIcon = Color(0xFF1B8E2F);
   static const Color callRippleStroke = Color(0xFFEAF3EE);
   static const Color callCardBorder = Color(0xFFDEDEDE);
+
+  // Family Allergies tokens from Figma.
+  static const Color familyAllergiesSelectedBg = Color(0xFFEAF7EE);
+  static const Color familyAllergiesSelectedPrimary = primary400;
 }
 
 extension CalendarColorScheme on ColorScheme {
@@ -307,3 +311,16 @@ extension CallingColorScheme on ColorScheme {
   Color get callBlack => AppColors.black;
   Color get callShadowSoft => AppColors.shadowSoft;
 }
+
+extension FamilyAllergiesColorScheme on ColorScheme {
+  Color get familyAllergiesSelectedBg => brightness == Brightness.dark
+      ? AppColors.primaryDarker
+      : AppColors.familyAllergiesSelectedBg;
+
+  Color get familyAllergiesSelectedPrimary => brightness == Brightness.dark
+      ? AppColors.primaryLight
+      : AppColors.familyAllergiesSelectedPrimary;
+
+  Color get familyAllergiesIndicatorIcon => AppColors.white;
+}
+

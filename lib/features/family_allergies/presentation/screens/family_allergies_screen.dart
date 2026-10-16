@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -89,8 +90,20 @@ class FamilyAllergiesScreen extends StatelessWidget {
             );
           }
           const content = FamilyAllergiesContent();
+          final Widget animatedContent = MediaQuery.disableAnimationsOf(context)
+              ? content
+              : content
+                    .animate()
+                    .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                    .slideY(
+                      begin: 0.04,
+                      end: 0,
+                      duration: 350.ms,
+                      curve: Curves.easeOutCubic,
+                    );
+
           if (isInFamilyFlow) {
-            return content;
+            return animatedContent;
           }
           return Scaffold(
             backgroundColor: color.surface,
@@ -98,7 +111,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
               title: locale.family_setup_title,
               showBackButton: true,
             ),
-            body: const SafeArea(top: false, child: FamilyAllergiesContent()),
+            body: SafeArea(top: false, child: animatedContent),
           );
         },
       ),

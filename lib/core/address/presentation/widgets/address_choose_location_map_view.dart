@@ -33,6 +33,9 @@ class AddressChooseLocationMapView extends StatefulWidget {
     this.showInitialAddressDetails = true,
     this.flowController,
     this.locationService,
+    this.customActionText,
+    this.customActionIcon,
+    this.onCustomAction,
   });
 
   static const double frameHeight = Spacing.addressesChooseLocationDesignHeight;
@@ -43,6 +46,9 @@ class AddressChooseLocationMapView extends StatefulWidget {
   final bool showInitialAddressDetails;
   final AddressEntryFlowController? flowController;
   final LocationService? locationService;
+  final String? customActionText;
+  final Widget? customActionIcon;
+  final VoidCallback? onCustomAction;
 
   @override
   State<AddressChooseLocationMapView> createState() =>
@@ -61,6 +67,7 @@ class _AddressChooseLocationMapViewState
   GoogleMapController? _mapController;
   Timer? _mapDebounceTimer;
   Timer? _searchDebounceTimer;
+  bool _isLocationModified = false;
   bool _isInitialMapMove = true;
   bool _isProgrammaticMove = false;
   bool _animateCameraToAutofill = false;
@@ -101,14 +108,28 @@ class _AddressChooseLocationMapViewState
     }
     _ownsFlowController = widget.flowController == null;
     _flowController = widget.flowController ?? AddressEntryFlowController();
+    _isLocationModified = widget.initialAddress == null;
     if (widget.initialAddress != null && widget.showInitialAddressDetails) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _showDetailsSheet(context);
+        if (mounted) unawaited(_showDetailsSheet(context));
       });
     }
     _flowController.addListener(_onFlowStageChanged);
     _buildingNumberController.addListener(_onBuildingNumberChanged);
     _fillInitialAddress(widget.initialAddress);
+  }
+
+  @override
+  void didUpdateWidget(covariant AddressChooseLocationMapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialAddress != widget.initialAddress) {
+      _isLocationModified = widget.initialAddress == null;
+      _currentLatitude = widget.initialAddress?.latitude ?? _defaultLatitude;
+      _currentLongitude = widget.initialAddress?.longitude ?? _defaultLongitude;
+      _lastGeocodedLat = widget.initialAddress?.latitude;
+      _lastGeocodedLng = widget.initialAddress?.longitude;
+      _fillInitialAddress(widget.initialAddress);
+    }
   }
 
   @override
@@ -226,33 +247,59 @@ class _AddressChooseLocationMapViewState
                 bottom: Spacing.bottomSheetRadius * 12,
                 child: Center(child: IgnorePointer(child: AddressMapMarker())),
               ),
-              if (_flowController.stage != AddressEntryStage.coveragePreview)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: AddressChooseLocationSheet(
-                    selectedMode: _selectedMode,
-                    isSubmitting: widget.isSubmitting,
-                    searchController: _searchController,
-                    onSearchSubmitted: _onSearchSubmitted,
-                    onSearchChanged: _onSearchChanged,
-                    onModeChanged: (mode) {
-                      setState(() => _selectedMode = mode);
-                      if (mode == AddressLocationMode.fromMap) {
-                        final sent = _triggerReverseGeocode(
-                          context,
-                          force: true,
-                        );
-                        if (sent && mounted) {
-                          _setLocationResolving(true);
-                        }
-                      }
-                    },
-                    onUseCurrentLocation: _onGpsPressed,
-                    onConfirm: () => _prepareAndShowDetails(context),
-                  ),
+              if (_flowController.stage != AddressEntryStage.coveragePreview) ...[
+                Builder(
+                  builder: (context) {
+                    final hasCustomAction = !_isLocationModified &&
+                        widget.customActionText != null &&
+                        widget.onCustomAction != null;
+
+                    return Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: AddressChooseLocationSheet(
+                        selectedMode: _selectedMode,
+                        isSubmitting: widget.isSubmitting,
+                        searchController: _searchController,
+                        onSearchSubmitted: _onSearchSubmitted,
+                        onSearchChanged: _onSearchChanged,
+                        confirmButtonText: hasCustomAction
+                            ? widget.customActionText
+                            : null,
+                        confirmButtonIcon: hasCustomAction
+                            ? (widget.customActionIcon ??
+                                const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: Spacing.iconXs,
+                                ))
+                            : null,
+                        onModeChanged: (mode) {
+                          setState(() {
+                            _selectedMode = mode;
+                            if (widget.initialAddress != null) {
+                              _isLocationModified = true;
+                            }
+                          });
+                          if (mode == AddressLocationMode.fromMap) {
+                            final sent = _triggerReverseGeocode(
+                              context,
+                              force: true,
+                            );
+                            if (sent && mounted) {
+                              _setLocationResolving(true);
+                            }
+                          }
+                        },
+                        onUseCurrentLocation: _onGpsPressed,
+                        onConfirm: hasCustomAction
+                            ? widget.onCustomAction
+                            : () => _prepareAndShowDetails(context),
+                      ),
+                    );
+                  },
                 ),
+              ],
               ValueListenableBuilder<bool>(
                 valueListenable: _isLocationResolvingNotifier,
                 builder: (context, isResolving, _) {
@@ -302,6 +349,16 @@ class _AddressChooseLocationMapViewState
   void _onCameraMove(CameraPosition position) {
     _currentLatitude = position.target.latitude;
     _currentLongitude = position.target.longitude;
+    final initialLat = widget.initialAddress?.latitude;
+    final initialLng = widget.initialAddress?.longitude;
+    if (!_isProgrammaticMove && initialLat != null && initialLng != null) {
+      final latDiff = (_currentLatitude - initialLat).abs();
+      final lngDiff = (_currentLongitude - initialLng).abs();
+      final isModified = latDiff > 0.0003 || lngDiff > 0.0003;
+      if (_isLocationModified != isModified) {
+        setState(() => _isLocationModified = isModified);
+      }
+    }
   }
 
   void _onCameraIdle() {
@@ -321,6 +378,9 @@ class _AddressChooseLocationMapViewState
   }
 
   Future<void> _onGpsPressed() async {
+    if (!_isLocationModified) {
+      setState(() => _isLocationModified = true);
+    }
     _setLocationResolving(true);
     final result = await _locationService.getCurrentLocation();
     if (!mounted) return;
@@ -370,6 +430,9 @@ class _AddressChooseLocationMapViewState
   }
 
   void _executeSearch(String query) {
+    if (!_isLocationModified) {
+      setState(() => _isLocationModified = true);
+    }
     _animateCameraToAutofill = true;
     if (mounted) _setLocationResolving(true);
     context.read<AddressEditorViewModel>().doIntent(

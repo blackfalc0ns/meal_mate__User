@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -21,13 +22,15 @@ class FamilyAllergyChoiceTile extends StatelessWidget {
     final color = context.colorScheme;
 
     return Material(
-      color: selected ? color.primaryContainer : color.surface,
+      color: selected ? color.familyAllergiesSelectedBg : color.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           Spacing.familyAllergiesChoiceRadius,
         ),
         side: BorderSide(
-          color: selected ? color.primary : color.outlineVariant,
+          color: selected
+              ? color.familyAllergiesSelectedPrimary
+              : color.outlineVariant,
         ),
       ),
       child: InkWell(
@@ -44,33 +47,35 @@ class FamilyAllergyChoiceTile extends StatelessWidget {
             ),
             child: Row(
               children: [
+                if (selected)
+                  Container(
+                    width: Spacing.familyAllergiesChoiceIndicatorSize,
+                    height: Spacing.familyAllergiesChoiceIndicatorSize,
+                    decoration: BoxDecoration(
+                      color: color.familyAllergiesSelectedPrimary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check_rounded,
+                      size: Spacing.md,
+                      color: color.familyAllergiesIndicatorIcon,
+                    ),
+                  ),
                 Expanded(
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: getSemiBoldStyle(
+                    style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size10,
-                      color: selected ? color.primary : color.onSurface,
+                      color: selected
+                          ? AppColors.addressesPrimary
+                          : color.onSurface,
                     ),
                   ),
                 ),
-                if (selected)
-                  Container(
-                    width: Spacing.familyAllergiesChoiceIndicatorSize,
-                    height: Spacing.familyAllergiesChoiceIndicatorSize,
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.check_rounded,
-                      size: Spacing.familyAllergiesChoiceCheckSize,
-                      color: color.onPrimary,
-                    ),
-                  ),
               ],
             ),
           ),

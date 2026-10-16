@@ -18,6 +18,8 @@ class AddressChooseLocationSheet extends StatelessWidget {
     this.onModeChanged,
     this.onUseCurrentLocation,
     this.onConfirm,
+    this.confirmButtonText,
+    this.confirmButtonIcon,
   });
 
   final AddressLocationMode? selectedMode;
@@ -28,6 +30,8 @@ class AddressChooseLocationSheet extends StatelessWidget {
   final ValueChanged<AddressLocationMode>? onModeChanged;
   final VoidCallback? onUseCurrentLocation;
   final VoidCallback? onConfirm;
+  final String? confirmButtonText;
+  final Widget? confirmButtonIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +75,9 @@ class AddressChooseLocationSheet extends StatelessWidget {
               onModeChanged: onModeChanged,
               onUseCurrentLocation: onUseCurrentLocation,
             ),
-            const SizedBox(height: Spacing.lg),
+            const SizedBox(height: Spacing.md),
             AppButton.filled(
-              text: locale.address_preview_check_button,
+              text: confirmButtonText ?? locale.address_preview_check_button,
               isLoading: false,
               onPressed: isSubmitting ? null : onConfirm,
               height: Spacing.buttonSmallHeight,
@@ -81,6 +85,8 @@ class AddressChooseLocationSheet extends StatelessWidget {
               color: color.primary,
               textColor: color.onPrimary,
               fontSize: FontSize.size12,
+              iconWidget: confirmButtonIcon,
+              iconBeforeText: false,
             ),
           ],
         ),

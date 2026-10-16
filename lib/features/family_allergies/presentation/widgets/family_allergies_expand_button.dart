@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/durations.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class FamilyAllergiesExpandButton extends StatelessWidget {
@@ -23,6 +22,17 @@ class FamilyAllergiesExpandButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: onPressed,
       iconAlignment: IconAlignment.end,
+      style: TextButton.styleFrom(
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        minimumSize: Size.zero,
+        splashFactory: NoSplash.splashFactory,
+        overlayColor: Colors.transparent,
+        padding: const EdgeInsets.symmetric(
+          vertical: Spacing.xs,
+          horizontal: Spacing.sm,
+        ),
+      ),
       label: Text(
         expanded
             ? locale.family_allergies_show_less
@@ -33,15 +43,12 @@ class FamilyAllergiesExpandButton extends StatelessWidget {
           color: color.primary,
         ),
       ),
-      icon: AnimatedRotation(
-        turns: expanded ? 0.5 : 0,
-        duration: AppDurations.fast,
-        curve: Curves.easeOutCubic,
-        child: Icon(
-          Icons.keyboard_arrow_down_rounded,
-          size: Spacing.iconSm,
-          color: color.primary,
-        ),
+      icon: Icon(
+        expanded
+            ? Icons.keyboard_arrow_up_rounded
+            : Icons.keyboard_arrow_down_rounded,
+        size: Spacing.iconSm,
+        color: color.primary,
       ),
     );
   }

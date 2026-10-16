@@ -7,7 +7,6 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_location_stage.dart';
-import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_actions.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_header.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_member_strip.dart';
 
@@ -17,6 +16,7 @@ class FamilyAddressesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
     return Column(
       key: const ValueKey('family-addresses-content'),
@@ -45,16 +45,26 @@ class FamilyAddressesBody extends StatelessWidget {
               BlocSelector<
                 FamilyAddressesViewModel,
                 FamilyAddressesState,
-                ({String memberId, CustomerAddressEntity? initialAddress})?
+                ({
+                  String memberId,
+                  CustomerAddressEntity? initialAddress,
+                  bool canProceedToAllergies,
+                })?
               >(
                 selector: (state) {
                   final member = state.currentMember;
-                  return member != null
-                      ? (
-                          memberId: member.memberId,
-                          initialAddress: member.deliveryAddress,
-                        )
-                      : null;
+                  if (member == null) return null;
+                  final allCompleted =
+                      state.members.isNotEmpty &&
+                      state.completedMemberIds.length == state.members.length;
+                  final hasSavedAddress =
+                      member.deliveryAddress != null ||
+                      (member.deliveryAddressId?.isNotEmpty ?? false);
+                  return (
+                    memberId: member.memberId,
+                    initialAddress: member.deliveryAddress,
+                    canProceedToAllergies: allCompleted && hasSavedAddress,
+                  );
                 },
                 builder: (context, memberData) {
                   if (memberData == null) {
@@ -65,6 +75,20 @@ class FamilyAddressesBody extends StatelessWidget {
                     key: ValueKey(memberData.memberId),
                     memberId: memberData.memberId,
                     initialAddress: memberData.initialAddress,
+                    customActionText: memberData.canProceedToAllergies
+                        ? locale.family_step_allergies
+                        : null,
+                    customActionIcon: memberData.canProceedToAllergies
+                        ? const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: Spacing.iconXs,
+                          )
+                        : null,
+                    onCustomAction: memberData.canProceedToAllergies
+                        ? context
+                            .read<FamilyAddressesViewModel>()
+                            .proceedToNextStep
+                        : null,
                     onAddressSaved: context
                         .read<FamilyAddressesViewModel>()
                         .addressSaved,
@@ -72,7 +96,6 @@ class FamilyAddressesBody extends StatelessWidget {
                 },
               ),
         ),
-        const FamilyAddressesActions(),
       ],
     ).animate().fadeIn(duration: 250.ms);
   }
