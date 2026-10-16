@@ -14,6 +14,7 @@ FamilyMemberAccessRequestDto _$FamilyMemberAccessRequestDtoFromJson(
   remove: json['remove'] as bool?,
   expectedVersion: (json['expectedVersion'] as num?)?.toInt(),
   generateTemporaryPassword: json['generateTemporaryPassword'] as bool?,
+  credentialOperationKey: json['credentialOperationKey'] as String?,
 );
 
 Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$FamilyMemberAccessRequestDtoToJson(
   'remove': ?instance.remove,
   'expectedVersion': ?instance.expectedVersion,
   'generateTemporaryPassword': ?instance.generateTemporaryPassword,
+  'credentialOperationKey': ?instance.credentialOperationKey,
 };

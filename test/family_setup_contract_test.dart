@@ -106,7 +106,7 @@ void main() {
           ),
         ];
 
-        final state = FamilyPlanState(
+        final state = FamilySubscriptionSetupState(
           currentFlow: const FamilyFlowCurrentResponseDto(
             familyGroupId: 'group-1',
             name: 'Al-Family',

@@ -83,7 +83,10 @@ class FamilyAddressesScreen extends StatelessWidget {
           final members = state.members.asMap().entries.map((entry) {
             return FamilyProgramMemberUiModel(
               name: entry.value.displayName,
-              imageAsset: '',
+              imageAsset: resolveFamilyMemberAvatar(
+                entry.value.gender,
+                entry.key,
+              ),
               status: state.completedMemberIds.contains(entry.value.memberId)
                   ? locale.family_member_completed
                   : locale.family_member_in_progress,

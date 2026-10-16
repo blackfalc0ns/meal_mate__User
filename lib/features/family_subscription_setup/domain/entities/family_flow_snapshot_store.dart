@@ -11,6 +11,11 @@ class FamilyFlowSnapshotStore {
 
   int get revision => _revision;
 
+  void clear() {
+    current = null;
+    _revision++;
+  }
+
   void update(FamilyFlowCurrentEntity value) {
     current = value;
     _revision++;

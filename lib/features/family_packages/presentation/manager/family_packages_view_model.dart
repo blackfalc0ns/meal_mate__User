@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -6,16 +7,16 @@ import 'package:meal_meat_user/features/family_packages/presentation/manager/fam
 import 'package:meal_meat_user/features/family_packages/presentation/manager/family_packages_state.dart';
 
 @injectable
-class FamilyPackagesViewModel extends Cubit<FamilyPlanState> {
+class FamilyPackagesViewModel extends Cubit<FamilyPackagesState> {
   FamilyPackagesViewModel(this._getFamilySizePackagesUseCase)
-    : super(const FamilyPlanState());
+    : super(const FamilyPackagesState());
 
   final GetFamilySizePackagesUseCase _getFamilySizePackagesUseCase;
 
-  void doIntent(FamilyPlanEvent event) {
+  void doIntent(FamilyPackagesEvent event) {
     switch (event) {
       case GetFamilySizePackagesEvent():
-        _getFamilySizePackages();
+        unawaited(_getFamilySizePackages());
       case SelectFamilySizePackageEvent():
         emit(state.copyWith(selectedPackage: event.package));
     }

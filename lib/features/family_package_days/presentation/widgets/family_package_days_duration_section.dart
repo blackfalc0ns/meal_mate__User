@@ -17,7 +17,7 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
     color.surface;
     locale.localeName;
 
-    return BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
+    return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
       buildWhen: (previous, current) =>
           previous.isDurationsLoading != current.isDurationsLoading ||
           previous.durations != current.durations ||

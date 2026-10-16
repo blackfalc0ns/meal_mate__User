@@ -13,7 +13,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/widgets/famil
 class FamilyProgramMemberSection extends StatelessWidget {
   const FamilyProgramMemberSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyProgramsState state;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class FamilyProgramMemberSection extends StatelessWidget {
           member.programId != null && member.programId!.isNotEmpty;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
-        imageAsset: '',
+        imageAsset: resolveFamilyMemberAvatar(member.gender, index),
         status: hasProgram
             ? locale.family_member_completed
             : locale.family_member_in_progress,
@@ -41,7 +41,10 @@ class FamilyProgramMemberSection extends StatelessWidget {
     final activeMemberDetails = selectedMember != null
         ? FamilyProgramMemberDetailsUiModel(
             name: selectedMember.displayName,
-            imageAsset: '',
+            imageAsset: resolveFamilyMemberAvatar(
+              selectedMember.gender,
+              state.selectedMemberIndex,
+            ),
             age: '${selectedMember.ageYears} ${locale.family_year}',
             gender: selectedMember.gender == 2
                 ? locale.family_gender_female
@@ -51,7 +54,10 @@ class FamilyProgramMemberSection extends StatelessWidget {
         : (members.isNotEmpty
               ? FamilyProgramMemberDetailsUiModel(
                   name: members.first.displayName,
-                  imageAsset: '',
+                  imageAsset: resolveFamilyMemberAvatar(
+                    members.first.gender,
+                    0,
+                  ),
                   age: '${members.first.ageYears} ${locale.family_year}',
                   gender: members.first.gender == 2
                       ? locale.family_gender_female

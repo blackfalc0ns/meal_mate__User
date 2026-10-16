@@ -14,14 +14,11 @@ import 'package:meal_meat_user/features/family_shared/presentation/widgets/famil
 class FamilyProgramContent extends StatelessWidget {
   const FamilyProgramContent({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyProgramsState state;
 
   @override
   Widget build(BuildContext context) {
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
-    if (isInFamilyFlow) {
-      FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

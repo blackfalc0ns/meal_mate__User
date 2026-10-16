@@ -51,7 +51,7 @@ class _FamilyPackageDaysSetupScreenState
         return vm;
       },
       child: isInFamilyFlow
-          ? BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
+          ? BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
               builder: _buildContent,
             )
           : Scaffold(
@@ -79,15 +79,17 @@ class _FamilyPackageDaysSetupScreenState
                 ),
               ),
               body: SafeArea(
-                child: BlocBuilder<FamilyPackageDaysViewModel, FamilyPlanState>(
-                  builder: _buildContent,
-                ),
+                child:
+                    BlocBuilder<
+                      FamilyPackageDaysViewModel,
+                      FamilyPackageDaysState
+                    >(builder: _buildContent),
               ),
             ),
     );
   }
 
-  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+  Widget _buildContent(BuildContext context, FamilyPackageDaysState state) {
     if ((state.isLoading || state.isCurrentFlowLoading) &&
         state.members.isEmpty) {
       return const FamilyPackageDaysSetupLoadingSkeleton();
@@ -121,7 +123,7 @@ class _FamilyPackageDaysSetupScreenState
 
   Future<void> _savePlanAndProceed(
     BuildContext context,
-    FamilyPlanState state,
+    FamilyPackageDaysState state,
   ) async {
     var latestState = state;
     final member =

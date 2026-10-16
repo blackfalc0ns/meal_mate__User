@@ -37,7 +37,7 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
           ),
         ),
       child: isInFamilyFlow
-          ? BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
+          ? BlocConsumer<FamilyCheckoutViewModel, FamilyCheckoutState>(
               listener: _onStateChanged,
               builder: _buildContent,
             )
@@ -66,16 +66,17 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
                 ),
               ),
               body: SafeArea(
-                child: BlocConsumer<FamilyCheckoutViewModel, FamilyPlanState>(
-                  listener: _onStateChanged,
-                  builder: _buildContent,
-                ),
+                child:
+                    BlocConsumer<FamilyCheckoutViewModel, FamilyCheckoutState>(
+                      listener: _onStateChanged,
+                      builder: _buildContent,
+                    ),
               ),
             ),
     );
   }
 
-  void _onStateChanged(BuildContext context, FamilyPlanState state) {
+  void _onStateChanged(BuildContext context, FamilyCheckoutState state) {
     if (state.failure != null &&
         !state.isCheckoutLoading &&
         state.checkoutResult == null) {
@@ -110,7 +111,7 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+  Widget _buildContent(BuildContext context, FamilyCheckoutState state) {
     if (state.isSummaryLoading && state.summary == null) {
       return const FamilyPaymentSetupLoadingSkeleton();
     }

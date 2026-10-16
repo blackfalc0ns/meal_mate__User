@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/widgets/fam
 class FamilyPaymentScheduleSection extends StatelessWidget {
   const FamilyPaymentScheduleSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyCheckoutState state;
 
   @override
   Widget build(BuildContext context) {

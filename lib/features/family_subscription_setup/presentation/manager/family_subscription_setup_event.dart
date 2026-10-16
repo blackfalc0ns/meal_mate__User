@@ -1,35 +1,31 @@
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 
-sealed class FamilyPlanEvent {
-  const FamilyPlanEvent();
+sealed class FamilySubscriptionSetupEvent {
+  const FamilySubscriptionSetupEvent();
 }
 
-class GetFamilySubscriptionCurrentEvent extends FamilyPlanEvent {
+class GetFamilySubscriptionCurrentEvent extends FamilySubscriptionSetupEvent {
   const GetFamilySubscriptionCurrentEvent();
 }
 
-class SelectFamilySizePackageEvent extends FamilyPlanEvent {
+class SelectFamilySizePackageEvent extends FamilySubscriptionSetupEvent {
   const SelectFamilySizePackageEvent(this.package);
 
   final FamilySizePackageEntity package;
 }
 
-class UpdateFamilyGroupEvent extends FamilyPlanEvent {
+class UpdateFamilyGroupEvent extends FamilySubscriptionSetupEvent {
   const UpdateFamilyGroupEvent({required this.name, this.familyPackageId});
 
   final String name;
   final String? familyPackageId;
 }
 
-class GetFamilyRelationshipsEvent extends FamilyPlanEvent {
+class GetFamilyRelationshipsEvent extends FamilySubscriptionSetupEvent {
   const GetFamilyRelationshipsEvent();
 }
 
-class GetFamilyAddressesEvent extends FamilyPlanEvent {
-  const GetFamilyAddressesEvent();
-}
-
-class AddFamilyMemberEvent extends FamilyPlanEvent {
+class AddFamilyMemberEvent extends FamilySubscriptionSetupEvent {
   const AddFamilyMemberEvent({
     required this.phone,
     required this.displayName,
@@ -49,7 +45,7 @@ class AddFamilyMemberEvent extends FamilyPlanEvent {
   final String? deliveryAddressId;
 }
 
-class UpdateFamilyMemberEvent extends FamilyPlanEvent {
+class UpdateFamilyMemberEvent extends FamilySubscriptionSetupEvent {
   const UpdateFamilyMemberEvent({
     required this.memberId,
     required this.phone,
@@ -71,18 +67,14 @@ class UpdateFamilyMemberEvent extends FamilyPlanEvent {
   final String? deliveryAddressId;
 }
 
-class LookupFamilyMemberEvent extends FamilyPlanEvent {
+class LookupFamilyMemberEvent extends FamilySubscriptionSetupEvent {
   const LookupFamilyMemberEvent(this.phone);
 
   final String phone;
 }
 
-class DeleteFamilyMemberEvent extends FamilyPlanEvent {
+class DeleteFamilyMemberEvent extends FamilySubscriptionSetupEvent {
   const DeleteFamilyMemberEvent(this.memberId);
 
   final String memberId;
-}
-
-class AbandonFamilyDraftEvent extends FamilyPlanEvent {
-  const AbandonFamilyDraftEvent();
 }

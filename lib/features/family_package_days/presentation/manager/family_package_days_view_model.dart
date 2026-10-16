@@ -19,7 +19,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
-class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
+class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   FamilyPackageDaysViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._getFamilyProgramsUseCase,
@@ -28,7 +28,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     this._getFamilyPlanTiersUseCase,
     this._getSubscriptionTierRestaurantsUseCase,
     this._saveFamilyMemberPlanUseCase,
-  ) : super(const FamilyPlanState());
+  ) : super(const FamilyPackageDaysState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
@@ -41,12 +41,12 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
   int _tiersRequestToken = 0;
   int _flowRequestToken = 0;
 
-  void _emit(FamilyPlanState state) {
+  void _emit(FamilyPackageDaysState state) {
     if (isClosed) return;
     emit(state);
   }
 
-  void doIntent(FamilyPlanEvent event) {
+  void doIntent(FamilyPackageDaysEvent event) {
     if (isClosed) return;
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
@@ -574,6 +574,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
     if (member?.memberSubscriptionId != null) return false;
     if (state.isConvertedFamilyDraft && member?.isManager == true) return true;
 
+    _emit(state.copyWith(isPlanSaving: true));
     final result = await _saveFamilyMemberPlanUseCase(
       memberId: memberId,
       clearPlan: clearPlan,
@@ -591,6 +592,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         _emit(
           state.copyWith(
             currentFlow: result.data,
+            isPlanSaving: false,
             clearFailure: true,
             clearSelectedBundle: clearPlan,
             clearSelectedDuration: clearPlan,
@@ -600,7 +602,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPlanState> {
         );
         return true;
       case ApiErrorResult():
-        _emit(state.copyWith(failure: result.failure));
+        _emit(state.copyWith(isPlanSaving: false, failure: result.failure));
         return false;
     }
   }

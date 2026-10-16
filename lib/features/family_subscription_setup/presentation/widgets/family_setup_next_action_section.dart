@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -20,7 +21,7 @@ class FamilySetupNextActionSection extends StatelessWidget {
       text: locale.family_next_program,
       onPressed: () {
         onSave();
-        context.pushNamed(AppRoutes.familyProgramSetup);
+        unawaited(context.pushNamed(AppRoutes.familyProgramSetup));
       },
       borderRadius: Spacing.radiusPill,
       textColor: color.onPrimary,

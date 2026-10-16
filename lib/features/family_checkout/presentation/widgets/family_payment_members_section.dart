@@ -12,7 +12,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 class FamilyPaymentMembersSection extends StatelessWidget {
   const FamilyPaymentMembersSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyCheckoutState state;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,10 @@ class FamilyPaymentMembersSection extends StatelessWidget {
       final isReady = member.isReady || member.setupStatus == 2;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
-        imageAsset: '',
+        imageAsset: resolveFamilyMemberAvatar(
+          matchingFlowMember?.gender ?? 1,
+          index,
+        ),
         status: !isSubscribed
             ? locale.family_member_unsubscribed_status
             : member.setupStatus == 0
@@ -109,7 +112,7 @@ class FamilyPaymentMembersSection extends StatelessWidget {
       final isReady = member.isReady;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
-        imageAsset: '',
+        imageAsset: resolveFamilyMemberAvatar(member.gender, index),
         status: !isSubscribed
             ? locale.family_member_unsubscribed_status
             : member.setupStatus == 0

@@ -1,4 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
+
+String resolveFamilyMemberAvatar(int gender, [int index = 0]) {
+  if (gender == 2) {
+    return index % 2 == 0
+        ? AssetsFake.familyMemberSarah
+        : AssetsFake.familyMemberMariam;
+  }
+  return index % 2 == 0
+      ? AssetsFake.familyMemberAhmed
+      : AssetsFake.familyMemberYousef;
+}
 
 enum FamilyPackageOptionIcon { cutlery, appleCutlery, spark }
 

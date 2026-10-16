@@ -63,11 +63,17 @@ class _FamilySubscriptionSetupScreenState
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     final body =
-        BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+        BlocListener<
+          FamilySubscriptionSetupViewModel,
+          FamilySubscriptionSetupState
+        >(
           listenWhen: _shouldListenForActions,
           listener: _onActionStateChanged,
           child:
-              BlocConsumer<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+              BlocConsumer<
+                FamilySubscriptionSetupViewModel,
+                FamilySubscriptionSetupState
+              >(
                 listenWhen: _shouldListen,
                 listener: _onStateChanged,
                 buildWhen: (previous, current) =>
@@ -99,7 +105,6 @@ class _FamilySubscriptionSetupScreenState
         }
         vm.doIntent(const GetFamilySubscriptionCurrentEvent());
         vm.doIntent(const GetFamilyRelationshipsEvent());
-        vm.doIntent(const GetFamilyAddressesEvent());
         return vm;
       },
       child: isInFamilyFlow
@@ -133,7 +138,10 @@ class _FamilySubscriptionSetupScreenState
     );
   }
 
-  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+  Widget _buildContent(
+    BuildContext context,
+    FamilySubscriptionSetupState state,
+  ) {
     if (state.isCurrentFlowLoading && state.currentFlow == null) {
       return const FamilySubscriptionSetupLoadingSkeleton();
     }
@@ -176,12 +184,14 @@ class _FamilySubscriptionSetupScreenState
     );
   }
 
-  bool _shouldListen(FamilyPlanState previous, FamilyPlanState current) =>
-      previous.currentFlow != current.currentFlow;
+  bool _shouldListen(
+    FamilySubscriptionSetupState previous,
+    FamilySubscriptionSetupState current,
+  ) => previous.currentFlow != current.currentFlow;
 
   bool _shouldListenForActions(
-    FamilyPlanState previous,
-    FamilyPlanState current,
+    FamilySubscriptionSetupState previous,
+    FamilySubscriptionSetupState current,
   ) =>
       previous.deleteMemberSuccess != current.deleteMemberSuccess ||
       previous.deleteMemberFailure != current.deleteMemberFailure ||
@@ -189,7 +199,10 @@ class _FamilySubscriptionSetupScreenState
       previous.memberSaveFailure != current.memberSaveFailure ||
       (previous.failure != current.failure && current.currentFlow != null);
 
-  void _onActionStateChanged(BuildContext context, FamilyPlanState state) {
+  void _onActionStateChanged(
+    BuildContext context,
+    FamilySubscriptionSetupState state,
+  ) {
     final locale = context.localization;
     if (state.deleteMemberSuccess) {
       CustomSnackbar.showSuccess(
@@ -225,7 +238,10 @@ class _FamilySubscriptionSetupScreenState
     }
   }
 
-  void _onStateChanged(BuildContext context, FamilyPlanState state) {
+  void _onStateChanged(
+    BuildContext context,
+    FamilySubscriptionSetupState state,
+  ) {
     final locale = context.localization;
     final currentFlow = state.currentFlow;
     if (currentFlow == null) return;

@@ -23,7 +23,7 @@ void main() {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const Scaffold(
-            body: FamilyProgramContent(state: FamilyPlanState()),
+            body: FamilyProgramContent(state: FamilyProgramsState()),
           ),
         ),
       );

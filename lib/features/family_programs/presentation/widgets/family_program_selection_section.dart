@@ -15,7 +15,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 class FamilyProgramSelectionSection extends StatelessWidget {
   const FamilyProgramSelectionSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyProgramsState state;
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -43,7 +44,7 @@ class FamilyAllergiesContent extends StatelessWidget {
       final member = entry.value;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
-        imageAsset: '',
+        imageAsset: resolveFamilyMemberAvatar(member.gender, entry.key),
         status: entry.key < state.currentIndex
             ? locale.family_member_completed
             : locale.family_member_in_progress,
@@ -180,7 +181,7 @@ class FamilyAllergiesContent extends StatelessWidget {
             onNext: state.canSave ? viewModel.saveCurrent : null,
             onSkip: () {
               viewModel.toggle('NONE');
-              viewModel.saveCurrent();
+              unawaited(viewModel.saveCurrent());
             },
           ),
         ),

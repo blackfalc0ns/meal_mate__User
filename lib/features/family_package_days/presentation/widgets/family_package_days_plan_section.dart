@@ -19,7 +19,7 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
     this.showActions = true,
   });
 
-  final FamilyPlanState state;
+  final FamilyPackageDaysState state;
   final VoidCallback onNextPressed;
   final String? programId;
   final bool showActions;

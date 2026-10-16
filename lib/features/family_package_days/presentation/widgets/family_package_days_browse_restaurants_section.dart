@@ -18,7 +18,7 @@ class FamilyPackageDaysBrowseRestaurantsSection extends StatelessWidget {
     this.programId,
   });
 
-  final FamilyPlanState state;
+  final FamilyPackageDaysState state;
   final String? programId;
 
   @override

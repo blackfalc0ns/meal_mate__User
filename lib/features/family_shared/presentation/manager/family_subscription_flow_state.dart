@@ -3,6 +3,8 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 
 class FamilySubscriptionFlowState {
   final bool isLoading;
+  final bool isAbandonDraftLoading;
+  final bool isAbandonDraftSuccess;
   final FamilyFlowCurrentEntity? flow;
   final Failure? failure;
   final int currentStep;
@@ -10,6 +12,8 @@ class FamilySubscriptionFlowState {
 
   const FamilySubscriptionFlowState({
     this.isLoading = false,
+    this.isAbandonDraftLoading = false,
+    this.isAbandonDraftSuccess = false,
     this.flow,
     this.failure,
     this.currentStep = 0,
@@ -18,16 +22,23 @@ class FamilySubscriptionFlowState {
 
   FamilySubscriptionFlowState copyWith({
     bool? isLoading,
+    bool? isAbandonDraftLoading,
+    bool? isAbandonDraftSuccess,
     FamilyFlowCurrentEntity? flow,
     Failure? failure,
     int? currentStep,
     String? targetMemberId,
     bool clearFailure = false,
     bool clearTargetMemberId = false,
+    bool clearFlow = false,
   }) {
     return FamilySubscriptionFlowState(
       isLoading: isLoading ?? this.isLoading,
-      flow: flow ?? this.flow,
+      isAbandonDraftLoading:
+          isAbandonDraftLoading ?? this.isAbandonDraftLoading,
+      isAbandonDraftSuccess:
+          isAbandonDraftSuccess ?? this.isAbandonDraftSuccess,
+      flow: clearFlow ? null : (flow ?? this.flow),
       failure: clearFailure ? null : (failure ?? this.failure),
       currentStep: currentStep ?? this.currentStep,
       targetMemberId: clearTargetMemberId

@@ -6,6 +6,8 @@ import 'package:meal_meat_user/features/family_allergies/domain/entities/family_
 import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
@@ -14,10 +16,35 @@ class FamilySubscriptionFlowViewModel
   FamilySubscriptionFlowViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._snapshotStore,
+    this._abandonFamilyDraftUseCase,
   ) : super(FamilySubscriptionFlowState(flow: _snapshotStore.current));
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final FamilyFlowSnapshotStore _snapshotStore;
+  final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
+
+  Future<void> abandonDraft() async {
+    if (state.isAbandonDraftLoading) return;
+    emit(
+      state.copyWith(isAbandonDraftLoading: true, isAbandonDraftSuccess: false),
+    );
+    final result = await _abandonFamilyDraftUseCase();
+    if (isClosed) return;
+    switch (result) {
+      case ApiSuccessResult():
+        FamilyConversionDraftSession.clearConvertedFamilyDraft();
+        _snapshotStore.clear();
+        emit(
+          state.copyWith(
+            isAbandonDraftLoading: false,
+            isAbandonDraftSuccess: true,
+            clearFlow: true,
+          ),
+        );
+      case ApiErrorResult(failure: final failure):
+        emit(state.copyWith(isAbandonDraftLoading: false, failure: failure));
+    }
+  }
 
   Future<void> load({bool forceRefresh = false}) async {
     final cached = _snapshotStore.current;

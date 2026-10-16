@@ -4,7 +4,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 
 void main() {
   test('tracks member deletion independently from general flow loading', () {
-    const initial = FamilyPlanState();
+    const initial = FamilySubscriptionSetupState();
     final loading = initial.copyWith(
       isDeletingMember: true,
       clearDeleteMemberFailure: true,

@@ -1,20 +1,20 @@
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
-sealed class FamilyPlanEvent {
-  const FamilyPlanEvent();
+sealed class FamilyCheckoutEvent {
+  const FamilyCheckoutEvent();
 }
 
-class GetFamilySubscriptionCurrentEvent extends FamilyPlanEvent {
+class GetFamilySubscriptionCurrentEvent extends FamilyCheckoutEvent {
   const GetFamilySubscriptionCurrentEvent();
 }
 
-class GetFamilySummaryEvent extends FamilyPlanEvent {
+class GetFamilySummaryEvent extends FamilyCheckoutEvent {
   const GetFamilySummaryEvent({this.memberId});
 
   final String? memberId;
 }
 
-class SelectFamilyMemberCheckoutEvent extends FamilyPlanEvent {
+class SelectFamilyMemberCheckoutEvent extends FamilyCheckoutEvent {
   const SelectFamilyMemberCheckoutEvent({
     required this.memberId,
     required this.subscribeNow,
@@ -24,13 +24,13 @@ class SelectFamilyMemberCheckoutEvent extends FamilyPlanEvent {
   final bool subscribeNow;
 }
 
-class SelectFamilyPaymentMethodEvent extends FamilyPlanEvent {
+class SelectFamilyPaymentMethodEvent extends FamilyCheckoutEvent {
   const SelectFamilyPaymentMethodEvent(this.paymentMethod);
 
   final PaymentMethodEntity paymentMethod;
 }
 
-class CheckoutFamilySubscriptionEvent extends FamilyPlanEvent {
+class CheckoutFamilySubscriptionEvent extends FamilyCheckoutEvent {
   const CheckoutFamilySubscriptionEvent({
     required this.callbackUrl,
     required this.errorUrl,
@@ -44,7 +44,7 @@ class CheckoutFamilySubscriptionEvent extends FamilyPlanEvent {
   final int paymentMethodId;
 }
 
-class RetryFamilySubscriptionPaymentEvent extends FamilyPlanEvent {
+class RetryFamilySubscriptionPaymentEvent extends FamilyCheckoutEvent {
   const RetryFamilySubscriptionPaymentEvent({
     required this.callbackUrl,
     required this.errorUrl,
@@ -57,7 +57,7 @@ class RetryFamilySubscriptionPaymentEvent extends FamilyPlanEvent {
   final int paymentMethodId;
 }
 
-class UpdateMemberStartDateEvent extends FamilyPlanEvent {
+class UpdateMemberStartDateEvent extends FamilyCheckoutEvent {
   const UpdateMemberStartDateEvent({
     required this.memberId,
     required this.startDate,

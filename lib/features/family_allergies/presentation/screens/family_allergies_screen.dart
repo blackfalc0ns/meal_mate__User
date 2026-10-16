@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,9 +26,11 @@ class FamilyAllergiesScreen extends StatelessWidget {
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider(
-      create: (_) =>
-          getIt<FamilyAllergiesViewModel>()
-            ..load(memberId: FamilyFlowScope.targetMemberIdOf(context)),
+      create: (_) {
+        final vm = getIt<FamilyAllergiesViewModel>();
+        unawaited(vm.load(memberId: FamilyFlowScope.targetMemberIdOf(context)));
+        return vm;
+      },
       child: BlocConsumer<FamilyAllergiesViewModel, FamilyAllergiesState>(
         listenWhen: (previous, current) =>
             (!previous.completed && current.completed) ||
@@ -50,7 +53,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
             );
           }
           if (state.completed) {
-            context.pushNamed(AppRoutes.familyPackageDaysSetup);
+            unawaited(context.pushNamed(AppRoutes.familyPackageDaysSetup));
           }
         },
         builder: (context, state) {

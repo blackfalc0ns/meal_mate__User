@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -12,6 +14,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/manager/famil
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_navigator.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/screens/family_subscription_setup_screen.dart';
 
@@ -28,10 +31,15 @@ class FamilySubscriptionFlowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FamilySubscriptionFlowViewModel>(
-      create: (_) => FamilySubscriptionFlowViewModel(
-        getIt<GetFamilyFlowCurrentUseCase>(),
-        getIt<FamilyFlowSnapshotStore>(),
-      )..load(),
+      create: (_) {
+        final viewModel = FamilySubscriptionFlowViewModel(
+          getIt<GetFamilyFlowCurrentUseCase>(),
+          getIt<FamilyFlowSnapshotStore>(),
+          getIt<AbandonFamilyDraftUseCase>(),
+        );
+        unawaited(viewModel.load());
+        return viewModel;
+      },
       child: FamilyFlowScope(
         targetMemberId:
             initialRoute == AppRoutes.familyProgramSetup &&

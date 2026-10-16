@@ -40,7 +40,7 @@ class FamilyFlowScope extends StatefulWidget {
 
   static void updateFamilyName(BuildContext context, String? name) {
     final notifier = context
-        .dependOnInheritedWidgetOfExactType<_FamilyFlowInherited>()
+        .getInheritedWidgetOfExactType<_FamilyFlowInherited>()
         ?.familyName;
     final normalizedName = name?.trim();
     if (notifier == null ||

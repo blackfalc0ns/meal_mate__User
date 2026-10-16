@@ -43,7 +43,7 @@ void main() {
         supportedLocales: AppLocalizations.supportedLocales,
         home: const Scaffold(
           body: FamilyProgramSelectionSection(
-            state: FamilyPlanState(isProgramsLoading: true),
+            state: FamilyProgramsState(isProgramsLoading: true),
           ),
         ),
       ),

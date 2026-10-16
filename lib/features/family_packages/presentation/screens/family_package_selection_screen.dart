@@ -44,7 +44,7 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: BlocBuilder<FamilyPackagesViewModel, FamilyPlanState>(
+          child: BlocBuilder<FamilyPackagesViewModel, FamilyPackagesState>(
             builder: (context, state) {
               if (state.isPackagesLoading && state.packages.isEmpty) {
                 return const FamilyPackageSelectionLoadingSkeleton();
@@ -75,7 +75,7 @@ class FamilyPackageSelectionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+  Widget _buildContent(BuildContext context, FamilyPackagesState state) {
     final color = context.colorScheme;
     final locale = context.localization;
     final selectedPackage = state.selectedPackage;

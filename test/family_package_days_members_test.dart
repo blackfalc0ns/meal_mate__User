@@ -25,7 +25,7 @@ void main() {
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: FamilyPackageDaysMemberSection(
-            state: FamilyPlanState(
+            state: FamilyPackageDaysState(
               currentFlow: FamilyFlowCurrentEntity(members: members),
             ),
             showSummary: false,

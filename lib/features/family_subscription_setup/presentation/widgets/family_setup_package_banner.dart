@@ -9,7 +9,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 class FamilySetupPackageBanner extends StatelessWidget {
   const FamilySetupPackageBanner({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilySubscriptionSetupState state;
 
   @override
   Widget build(BuildContext context) {

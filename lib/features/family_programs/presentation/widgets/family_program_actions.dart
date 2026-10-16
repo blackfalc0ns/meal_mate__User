@@ -7,11 +7,13 @@ class FamilyProgramActions extends StatelessWidget {
     this.nextText,
     this.nextIcon,
     this.onNextPressed,
+    this.isLoading = false,
   });
 
   final String? nextText;
   final IconData? nextIcon;
   final VoidCallback? onNextPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class FamilyProgramActions extends StatelessWidget {
       primaryText: nextText,
       primaryIcon: nextIcon,
       onPrimaryPressed: onNextPressed,
+      isPrimaryLoading: isLoading,
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/di/di.dart';
@@ -13,7 +14,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
-class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
+class FamilyProgramsViewModel extends Cubit<FamilyProgramsState> {
   FamilyProgramsViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._getFamilyProgramsUseCase,
@@ -24,7 +25,7 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
            (getIt.isRegistered<FamilyFlowSnapshotStore>()
                ? getIt<FamilyFlowSnapshotStore>()
                : FamilyFlowSnapshotStore()),
-       super(const FamilyPlanState());
+       super(const FamilyProgramsState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
@@ -32,20 +33,20 @@ class FamilyProgramsViewModel extends Cubit<FamilyPlanState> {
   final FamilyFlowSnapshotStore _snapshotStore;
   final Map<String, String> _pendingProgramIds = {};
 
-  void doIntent(FamilyPlanEvent event) {
+  void doIntent(FamilyProgramsEvent event) {
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent(memberId: event.memberId);
+        unawaited(_getFamilySubscriptionCurrent(memberId: event.memberId));
       case GetFamilyProgramsEvent():
-        _getPrograms(page: event.page, pageSize: event.pageSize);
+        unawaited(_getPrograms(page: event.page, pageSize: event.pageSize));
       case LoadMoreFamilyProgramsEvent():
-        _loadMorePrograms(pageSize: event.pageSize);
+        unawaited(_loadMorePrograms(pageSize: event.pageSize));
       case SelectFamilyProgramEvent():
         _selectProgram(event.programIndex);
       case SelectFamilyMemberEvent():
         _selectMember(event.memberIndex);
       case SaveFamilyProgramsEvent():
-        _savePendingPrograms();
+        unawaited(_savePendingPrograms());
     }
   }
 

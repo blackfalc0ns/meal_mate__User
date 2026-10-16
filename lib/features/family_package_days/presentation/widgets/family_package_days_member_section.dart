@@ -18,7 +18,7 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
     this.isLoading = false,
   });
 
-  final FamilyPlanState state;
+  final FamilyPackageDaysState state;
   final bool showSummary;
   final bool isLoading;
 
@@ -35,7 +35,7 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
       final isSelected = index == state.selectedMemberIndex;
       return FamilyProgramMemberUiModel(
         name: member.displayName,
-        imageAsset: '',
+        imageAsset: resolveFamilyMemberAvatar(member.gender, index),
         status: member.isReady
             ? locale.family_member_completed
             : locale.family_member_in_progress,
@@ -47,7 +47,10 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
     final activeMemberDetails = selectedMember != null
         ? FamilyProgramMemberDetailsUiModel(
             name: selectedMember.displayName,
-            imageAsset: '',
+            imageAsset: resolveFamilyMemberAvatar(
+              selectedMember.gender,
+              state.selectedMemberIndex,
+            ),
             age: '${selectedMember.ageYears} ${locale.family_year}',
             gender: selectedMember.gender == 2
                 ? locale.family_gender_female
@@ -57,7 +60,10 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
         : (members.isNotEmpty
               ? FamilyProgramMemberDetailsUiModel(
                   name: members.first.displayName,
-                  imageAsset: '',
+                  imageAsset: resolveFamilyMemberAvatar(
+                    members.first.gender,
+                    0,
+                  ),
                   age: '${members.first.ageYears} ${locale.family_year}',
                   gender: members.first.gender == 2
                       ? locale.family_gender_female

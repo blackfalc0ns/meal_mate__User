@@ -1,9 +1,8 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/addresses/domain/usecase/get_customer_addresses_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
-import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/abandon_family_draft_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/add_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/delete_family_member_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
@@ -15,7 +14,8 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_state.dart';
 
 @injectable
-class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
+class FamilySubscriptionSetupViewModel
+    extends Cubit<FamilySubscriptionSetupState> {
   FamilySubscriptionSetupViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._updateFamilyGroupUseCase,
@@ -23,10 +23,8 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
     this._addFamilyMemberUseCase,
     this._updateFamilyMemberUseCase,
     this._deleteFamilyMemberUseCase,
-    this._abandonFamilyDraftUseCase,
-    this._getCustomerAddressesUseCase,
     this._lookupFamilyMemberUseCase,
-  ) : super(const FamilyPlanState());
+  ) : super(const FamilySubscriptionSetupState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final UpdateFamilyGroupUseCase _updateFamilyGroupUseCase;
@@ -34,53 +32,53 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   final AddFamilyMemberUseCase _addFamilyMemberUseCase;
   final UpdateFamilyMemberUseCase _updateFamilyMemberUseCase;
   final DeleteFamilyMemberUseCase _deleteFamilyMemberUseCase;
-  final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
-  final GetCustomerAddressesUseCase _getCustomerAddressesUseCase;
   final LookupFamilyMemberUseCase _lookupFamilyMemberUseCase;
   int _memberLookupRequestId = 0;
 
-  Future<void> doIntent(FamilyPlanEvent event) async {
+  void doIntent(FamilySubscriptionSetupEvent event) {
     switch (event) {
       case SelectFamilySizePackageEvent():
         emit(state.copyWith(selectedPackage: event.package));
       case GetFamilySubscriptionCurrentEvent():
-        _getFamilySubscriptionCurrent();
+        unawaited(_getFamilySubscriptionCurrent());
       case UpdateFamilyGroupEvent():
-        _updateFamilyGroup(
-          name: event.name,
-          familyPackageId: event.familyPackageId,
+        unawaited(
+          _updateFamilyGroup(
+            name: event.name,
+            familyPackageId: event.familyPackageId,
+          ),
         );
       case GetFamilyRelationshipsEvent():
-        _getFamilyRelationships();
-      case GetFamilyAddressesEvent():
-        _getFamilyAddresses();
+        unawaited(_getFamilyRelationships());
       case AddFamilyMemberEvent():
-        await _addFamilyMember(
-          phone: event.phone,
-          displayName: event.displayName,
-          occupation: event.occupation,
-          relationshipCode: event.relationshipCode,
-          gender: event.gender,
-          ageYears: event.ageYears,
-          deliveryAddressId: event.deliveryAddressId,
+        unawaited(
+          _addFamilyMember(
+            phone: event.phone,
+            displayName: event.displayName,
+            occupation: event.occupation,
+            relationshipCode: event.relationshipCode,
+            gender: event.gender,
+            ageYears: event.ageYears,
+            deliveryAddressId: event.deliveryAddressId,
+          ),
         );
       case UpdateFamilyMemberEvent():
-        _updateFamilyMember(
-          memberId: event.memberId,
-          phone: event.phone,
-          displayName: event.displayName,
-          occupation: event.occupation,
-          relationshipCode: event.relationshipCode,
-          gender: event.gender,
-          ageYears: event.ageYears,
-          deliveryAddressId: event.deliveryAddressId,
+        unawaited(
+          _updateFamilyMember(
+            memberId: event.memberId,
+            phone: event.phone,
+            displayName: event.displayName,
+            occupation: event.occupation,
+            relationshipCode: event.relationshipCode,
+            gender: event.gender,
+            ageYears: event.ageYears,
+            deliveryAddressId: event.deliveryAddressId,
+          ),
         );
       case DeleteFamilyMemberEvent():
-        _deleteFamilyMember(event.memberId);
-      case AbandonFamilyDraftEvent():
-        _abandonFamilyDraft();
+        unawaited(_deleteFamilyMember(event.memberId));
       case LookupFamilyMemberEvent():
-        _lookupFamilyMember(event.phone);
+        unawaited(_lookupFamilyMember(event.phone));
     }
   }
 
@@ -145,16 +143,6 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
             failure: result.failure,
           ),
         );
-    }
-  }
-
-  Future<void> _getFamilyAddresses() async {
-    final result = await _getCustomerAddressesUseCase();
-    switch (result) {
-      case ApiSuccessResult():
-        emit(state.copyWith(addresses: result.data));
-      case ApiErrorResult():
-        emit(state.copyWith(failure: result.failure));
     }
   }
 
@@ -309,36 +297,6 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
           state.copyWith(
             isMemberLookupLoading: false,
             memberLookupFailure: result.failure,
-          ),
-        );
-    }
-  }
-
-  Future<void> _abandonFamilyDraft() async {
-    emit(
-      state.copyWith(
-        isAbandonDraftLoading: true,
-        isAbandonDraftSuccess: false,
-        clearFailure: true,
-      ),
-    );
-    final result = await _abandonFamilyDraftUseCase();
-    switch (result) {
-      case ApiSuccessResult():
-        FamilyConversionDraftSession.clearConvertedFamilyDraft();
-        emit(
-          state.copyWith(
-            isAbandonDraftLoading: false,
-            isAbandonDraftSuccess: true,
-            clearCurrentFlow: true,
-          ),
-        );
-      case ApiErrorResult():
-        emit(
-          state.copyWith(
-            isAbandonDraftLoading: false,
-            isAbandonDraftSuccess: false,
-            failure: result.failure,
           ),
         );
     }

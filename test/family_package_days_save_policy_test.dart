@@ -23,7 +23,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase
 
 void main() {
   test('custom duration can be cleared when switching members', () {
-    const state = FamilyPlanState(customDurationDays: 12);
+    const state = FamilyPackageDaysState(customDurationDays: 12);
 
     expect(
       state.copyWith(clearCustomDuration: true).customDurationDays,

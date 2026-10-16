@@ -20,7 +20,7 @@ class FamilyPackageDaysContent extends StatelessWidget {
     this.programId,
   });
 
-  final FamilyPlanState state;
+  final FamilyPackageDaysState state;
   final VoidCallback onNextPressed;
   final String? programId;
 

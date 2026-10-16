@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,24 +36,39 @@ class FamilyProgramSetupScreen extends StatelessWidget {
           ),
         )
         ..doIntent(const GetFamilyProgramsEvent()),
-      child: BlocListener<FamilyProgramsViewModel, FamilyPlanState>(
-        listenWhen: (previous, current) =>
-            previous.isPlanSaving && !current.isPlanSaving,
-        listener: (context, state) {
-          if (state.failure != null) {
-            CustomSnackbar.showError(
-              context: context,
-              message: ErrorMessagePresenter.fromFailure(
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<FamilyProgramsViewModel, FamilyProgramsState>(
+            listenWhen: (previous, current) =>
+                previous.currentFlow?.name != current.currentFlow?.name &&
+                current.currentFlow?.name != null,
+            listener: (context, state) {
+              FamilyFlowScope.updateFamilyName(
                 context,
-                state.failure!,
-              ),
-            );
-          } else {
-            context.pushNamed(AppRoutes.familyAddresses);
-          }
-        },
+                state.currentFlow?.name,
+              );
+            },
+          ),
+          BlocListener<FamilyProgramsViewModel, FamilyProgramsState>(
+            listenWhen: (previous, current) =>
+                previous.isPlanSaving && !current.isPlanSaving,
+            listener: (context, state) {
+              if (state.failure != null) {
+                CustomSnackbar.showError(
+                  context: context,
+                  message: ErrorMessagePresenter.fromFailure(
+                    context,
+                    state.failure!,
+                  ),
+                );
+              } else {
+                unawaited(context.pushNamed(AppRoutes.familyAddresses));
+              }
+            },
+          ),
+        ],
         child: isInFamilyFlow
-            ? BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
+            ? BlocBuilder<FamilyProgramsViewModel, FamilyProgramsState>(
                 buildWhen: _shouldRebuildContent,
                 builder: _buildContent,
               )
@@ -82,10 +98,11 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                   ),
                 ),
                 body: SafeArea(
-                  child: BlocBuilder<FamilyProgramsViewModel, FamilyPlanState>(
-                    buildWhen: _shouldRebuildContent,
-                    builder: _buildContent,
-                  ),
+                  child:
+                      BlocBuilder<FamilyProgramsViewModel, FamilyProgramsState>(
+                        buildWhen: _shouldRebuildContent,
+                        builder: _buildContent,
+                      ),
                 ),
               ),
       ),
@@ -93,8 +110,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
   }
 
   bool _shouldRebuildContent(
-    FamilyPlanState previous,
-    FamilyPlanState current,
+    FamilyProgramsState previous,
+    FamilyProgramsState current,
   ) {
     return previous.currentFlow != current.currentFlow ||
         previous.programs != current.programs ||
@@ -107,7 +124,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         (current.programs.isEmpty && previous.failure != current.failure);
   }
 
-  Widget _buildContent(BuildContext context, FamilyPlanState state) {
+  Widget _buildContent(BuildContext context, FamilyProgramsState state) {
     if (state.isLoading && state.programs.isEmpty && state.members.isEmpty) {
       return const FamilyProgramSetupLoadingSkeleton();
     }

@@ -14,7 +14,7 @@ void main() {
   testWidgets(
     'package and days keeps the family header and selected member fixed while plan data shimmers',
     (tester) async {
-      const state = FamilyPlanState(
+      const state = FamilyPackageDaysState(
         isBundlesLoading: true,
         currentFlow: FamilyFlowCurrentEntity(
           name: 'Stable family',

@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/domain/entitie
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
-class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
+class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
   FamilyCheckoutViewModel(
     this._getFamilyFlowCurrentUseCase,
     this._getFamilySummaryUseCase,
@@ -23,7 +23,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     this._selectFamilyMemberCheckoutUseCase,
     this._saveFamilyMemberStartDateUseCase, [
     this._retryFamilySubscriptionPaymentUseCase,
-  ]) : super(const FamilyPlanState());
+  ]) : super(const FamilyCheckoutState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilySummaryUseCase _getFamilySummaryUseCase;
@@ -63,7 +63,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyPlanState> {
     return _lastIdempotencyKey!;
   }
 
-  void doIntent(FamilyPlanEvent event) {
+  void doIntent(FamilyCheckoutEvent event) {
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
         unawaited(_getFamilySubscriptionCurrent());

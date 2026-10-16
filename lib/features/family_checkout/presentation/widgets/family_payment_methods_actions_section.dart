@@ -15,7 +15,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 class FamilyPaymentMethodsActionsSection extends StatelessWidget {
   const FamilyPaymentMethodsActionsSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyCheckoutState state;
 
   @override
   Widget build(BuildContext context) {

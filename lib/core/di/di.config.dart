@@ -58,6 +58,8 @@ import '../../features/auth/domain/usecase/login_usecase.dart' as _i911;
 import '../../features/auth/domain/usecase/logout_usecase.dart' as _i757;
 import '../../features/auth/domain/usecase/refresh_token_usecase.dart' as _i501;
 import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
+import '../../features/auth/domain/usecase/resend_family_first_login_otp_usecase.dart'
+    as _i15;
 import '../../features/auth/domain/usecase/resend_password_otp_usecase.dart'
     as _i610;
 import '../../features/auth/domain/usecase/resend_phone_otp_usecase.dart'
@@ -192,8 +194,12 @@ import '../../features/family_management/member/data/repo/family_member_reposito
     as _i385;
 import '../../features/family_management/member/domain/repo/family_member_repository.dart'
     as _i381;
+import '../../features/family_management/member/domain/usecase/detach_family_member_usecase.dart'
+    as _i812;
 import '../../features/family_management/member/domain/usecase/get_family_member_access_usecase.dart'
     as _i190;
+import '../../features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart'
+    as _i128;
 import '../../features/family_management/member/domain/usecase/get_family_member_detail_usecase.dart'
     as _i556;
 import '../../features/family_management/member/domain/usecase/get_family_member_permissions_usecase.dart'
@@ -712,6 +718,21 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i389.GetCalendarAvailableMealsUseCase>(),
         gh<_i896.SaveCalendarDayMealsUseCase>(),
         gh<_i133.SetCalendarDayRestaurantUseCase>(),
+        gh<_i438.ConfirmCalendarDayMealsUseCase>(),
+        gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
+      ),
+    );
+    gh.factory<_i800.FamilyMemberViewModel>(
+      () => _i800.FamilyMemberViewModel(
+        gh<_i556.GetFamilyMemberDetailUseCase>(),
+        gh<_i190.GetFamilyMemberAccessUseCase>(),
+        gh<_i191.UpdateFamilyMemberAccessUseCase>(),
+        gh<_i63.GetFamilyMemberPermissionsUseCase>(),
+        gh<_i146.UpdateFamilyMemberPermissionsUseCase>(),
+        gh<_i236.UpdateFamilyMemberBasicInfoUseCase>(),
+        gh<_i353.RenewFamilyMemberSubscriptionUseCase>(),
+        gh<_i812.DetachFamilyMemberUseCase>(),
       ),
     );
     gh.lazySingleton<_i227.TokenService>(
@@ -986,8 +1007,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i69.InfluencerWalletRepository>(),
       ),
     );
+    gh.factory<_i812.DetachFamilyMemberUseCase>(
+      () => _i812.DetachFamilyMemberUseCase(gh<_i381.FamilyMemberRepository>()),
+    );
     gh.factory<_i190.GetFamilyMemberAccessUseCase>(
       () => _i190.GetFamilyMemberAccessUseCase(
+        gh<_i381.FamilyMemberRepository>(),
+      ),
+    );
+    gh.factory<_i128.GetFamilyMemberCapabilitiesUseCase>(
+      () => _i128.GetFamilyMemberCapabilitiesUseCase(
         gh<_i381.FamilyMemberRepository>(),
       ),
     );
@@ -1185,17 +1214,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i311.ProfileRepository>(
       () => _i1015.ProfileRepositoryImpl(gh<_i998.ProfileRemoteDataSource>()),
-    );
-    gh.factory<_i800.FamilyMemberViewModel>(
-      () => _i800.FamilyMemberViewModel(
-        gh<_i556.GetFamilyMemberDetailUseCase>(),
-        gh<_i190.GetFamilyMemberAccessUseCase>(),
-        gh<_i191.UpdateFamilyMemberAccessUseCase>(),
-        gh<_i63.GetFamilyMemberPermissionsUseCase>(),
-        gh<_i146.UpdateFamilyMemberPermissionsUseCase>(),
-        gh<_i236.UpdateFamilyMemberBasicInfoUseCase>(),
-        gh<_i353.RenewFamilyMemberSubscriptionUseCase>(),
-      ),
     );
     gh.factory<_i801.GetFamilySizePackagesUseCase>(
       () => _i801.GetFamilySizePackagesUseCase(
@@ -1756,6 +1774,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i932.FamilySubscriptionFlowViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
+        gh<_i873.AbandonFamilyDraftUseCase>(),
       ),
     );
     gh.factory<_i912.OffersViewModel>(
@@ -1825,6 +1844,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i829.ResumeSubscriptionUseCase>(),
       ),
     );
+    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
+      () => _i693.FamilySubscriptionSetupViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i482.UpdateFamilyGroupUseCase>(),
+        gh<_i804.GetFamilyRelationshipsUseCase>(),
+        gh<_i843.AddFamilyMemberUseCase>(),
+        gh<_i237.UpdateFamilyMemberUseCase>(),
+        gh<_i880.DeleteFamilyMemberUseCase>(),
+        gh<_i973.LookupFamilyMemberUseCase>(),
+      ),
+    );
     gh.factory<_i603.FamilyAddressesViewModel>(
       () => _i603.FamilyAddressesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1836,19 +1866,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i739.MarkNotificationReadUseCase>(),
         gh<_i152.MarkAllNotificationsReadUseCase>(),
         gh<_i540.NotificationBadgeViewModel>(),
-      ),
-    );
-    gh.factory<_i693.FamilySubscriptionSetupViewModel>(
-      () => _i693.FamilySubscriptionSetupViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i482.UpdateFamilyGroupUseCase>(),
-        gh<_i804.GetFamilyRelationshipsUseCase>(),
-        gh<_i843.AddFamilyMemberUseCase>(),
-        gh<_i237.UpdateFamilyMemberUseCase>(),
-        gh<_i880.DeleteFamilyMemberUseCase>(),
-        gh<_i873.AbandonFamilyDraftUseCase>(),
-        gh<_i945.GetCustomerAddressesUseCase>(),
-        gh<_i973.LookupFamilyMemberUseCase>(),
       ),
     );
     gh.factory<_i749.ForgotPasswordUseCase>(
@@ -1868,6 +1885,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i769.RegisterUseCase>(
       () => _i769.RegisterUseCase(gh<_i2.AuthRepository>()),
+    );
+    gh.factory<_i15.ResendFamilyFirstLoginOtpUseCase>(
+      () => _i15.ResendFamilyFirstLoginOtpUseCase(gh<_i2.AuthRepository>()),
     );
     gh.factory<_i610.ResendPasswordOtpUseCase>(
       () => _i610.ResendPasswordOtpUseCase(gh<_i2.AuthRepository>()),

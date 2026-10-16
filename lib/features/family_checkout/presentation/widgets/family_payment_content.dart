@@ -16,7 +16,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/widgets/famil
 class FamilyPaymentContent extends StatelessWidget {
   const FamilyPaymentContent({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyCheckoutState state;
 
   @override
   Widget build(BuildContext context) {

@@ -21,7 +21,7 @@ void main() {
 
   test('stale conversion session does not lock a new unpaid manager', () {
     FamilyConversionDraftSession.markConvertedFamilyDraft();
-    const state = FamilyPlanState(
+    const state = FamilyPackageDaysState(
       currentFlow: FamilyFlowCurrentEntity(
         status: 1,
         managerPrepaid: false,
@@ -33,7 +33,7 @@ void main() {
   });
 
   test('server prepaid flag still locks the selected manager', () {
-    const state = FamilyPlanState(
+    const state = FamilyPackageDaysState(
       currentFlow: FamilyFlowCurrentEntity(
         status: 1,
         managerPrepaid: true,

@@ -4111,9 +4111,8 @@ class _ApiServices implements ApiServices {
     try {
       _value = _result.data!
           .map(
-            (dynamic i) => FamilyCapabilityResponseDto.fromJson(
-              i as Map<String, dynamic>,
-            ),
+            (dynamic i) =>
+                FamilyCapabilityResponseDto.fromJson(i as Map<String, dynamic>),
           )
           .toList();
     } on Object catch (e, s) {
@@ -4256,6 +4255,95 @@ class _ApiServices implements ApiServices {
     late SubscriptionUpgradeStatusResponseDto _value;
     try {
       _value = SubscriptionUpgradeStatusResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> getSubscriptionAutoRenewal(
+    String subscriptionId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionAutoRenewalDto _value;
+    try {
+      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> updateSubscriptionAutoRenewalConsent(
+    String subscriptionId,
+    SubscriptionAutoRenewalConsentRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal/consent',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionAutoRenewalDto _value;
+    try {
+      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionAutoRenewalDto> deleteSubscriptionAutoRenewalConsent(
+    String subscriptionId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal/consent',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionAutoRenewalDto _value;
+    try {
+      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -4993,95 +5081,6 @@ class _ApiServices implements ApiServices {
     late CampaignPaymentResponseDto _value;
     try {
       _value = CampaignPaymentResponseDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<SubscriptionAutoRenewalDto> getSubscriptionAutoRenewal(
-    String subscriptionId,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late SubscriptionAutoRenewalDto _value;
-    try {
-      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<SubscriptionAutoRenewalDto> updateSubscriptionAutoRenewalConsent(
-    String subscriptionId,
-    SubscriptionAutoRenewalConsentRequestDto request,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
-    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
-      Options(method: 'PUT', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal/consent',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late SubscriptionAutoRenewalDto _value;
-    try {
-      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<SubscriptionAutoRenewalDto> deleteSubscriptionAutoRenewalConsent(
-    String subscriptionId,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<SubscriptionAutoRenewalDto>(
-      Options(method: 'DELETE', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/customer/subscriptions/${subscriptionId}/auto-renewal/consent',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late SubscriptionAutoRenewalDto _value;
-    try {
-      _value = SubscriptionAutoRenewalDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

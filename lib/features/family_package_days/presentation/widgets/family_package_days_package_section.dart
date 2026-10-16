@@ -14,7 +14,7 @@ import 'package:meal_meat_user/features/family_shared/presentation/models/family
 class FamilyPackageDaysPackageSection extends StatelessWidget {
   const FamilyPackageDaysPackageSection({super.key, required this.state});
 
-  final FamilyPlanState state;
+  final FamilyPackageDaysState state;
 
   @override
   Widget build(BuildContext context) {
