@@ -10,7 +10,9 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
@@ -42,7 +44,8 @@ class FamilyProgramSetupScreen extends StatelessWidget {
           final flow = context
               .read<FamilySubscriptionFlowViewModel>()
               .state
-              .flow;
+              .flow ??
+              getIt<FamilyFlowSnapshotStore>().current;
           if (flow != null) {
             viewModel.doIntent(SetFamilyFlowEvent(flow));
           }
@@ -89,6 +92,11 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                   ),
                 );
               } else {
+                if (isInFamilyFlow && state.currentFlow != null) {
+                  context
+                      .read<FamilySubscriptionFlowViewModel>()
+                      .updateFlow(state.currentFlow!);
+                }
                 unawaited(context.pushNamed(AppRoutes.familyAddresses));
               }
             },
@@ -96,7 +104,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         ],
         child: isInFamilyFlow
             ? BlocBuilder<FamilyProgramsViewModel, FamilyProgramsState>(
-                buildWhen: _shouldRebuildContent,
+                buildWhen: shouldRebuildContent,
                 builder: _buildContent,
               )
             : Scaffold(
@@ -127,7 +135,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
                 body: SafeArea(
                   child:
                       BlocBuilder<FamilyProgramsViewModel, FamilyProgramsState>(
-                        buildWhen: _shouldRebuildContent,
+                        buildWhen: shouldRebuildContent,
                         builder: _buildContent,
                       ),
                 ),
@@ -136,7 +144,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
     );
   }
 
-  bool _shouldRebuildContent(
+  static bool shouldRebuildContent(
     FamilyProgramsState previous,
     FamilyProgramsState current,
   ) {
@@ -148,6 +156,7 @@ class FamilyProgramSetupScreen extends StatelessWidget {
         previous.isProgramsLoading != current.isProgramsLoading ||
         previous.isLoadingMorePrograms != current.isLoadingMorePrograms ||
         previous.hasMorePrograms != current.hasMorePrograms ||
+        previous.isPlanSaving != current.isPlanSaving ||
         (current.programs.isEmpty && previous.failure != current.failure);
   }
 
@@ -170,6 +179,20 @@ class FamilyProgramSetupScreen extends StatelessWidget {
       );
     }
 
-    return FamilyProgramContent(state: state);
+    final color = context.colorScheme;
+    return Stack(
+      children: [
+        FamilyProgramContent(state: state),
+        if (state.isPlanSaving)
+          Positioned.fill(
+            child: AbsorbPointer(
+              child: ColoredBox(
+                color: color.scrim.withValues(alpha: 0.32),
+                child: const Center(child: CustomProgressIndicator()),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }

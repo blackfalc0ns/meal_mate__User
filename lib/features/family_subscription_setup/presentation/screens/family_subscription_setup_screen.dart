@@ -15,6 +15,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/presentation/m
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/manager/family_subscription_setup_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_subscription_setup_content.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_subscription_setup_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_view_model.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 
 class FamilySubscriptionSetupScreen extends StatefulWidget {
@@ -48,10 +49,18 @@ class _FamilySubscriptionSetupScreenState
     final name = _familyNameController.text.trim();
     if (name.isEmpty) return;
 
-    context.read<FamilySubscriptionSetupViewModel>().doIntent(
+    final vm = context.read<FamilySubscriptionSetupViewModel>();
+    final currentFlow = vm.state.currentFlow;
+    final currentName = currentFlow?.name?.trim();
+    final currentPackageId = currentFlow?.selectedFamilyPackageId;
+    final targetPackageId = widget.selectedPackage?.id ?? currentPackageId;
+
+    if (name == currentName && targetPackageId == currentPackageId) return;
+
+    vm.doIntent(
       UpdateFamilyGroupEvent(
         name: name,
-        familyPackageId: widget.selectedPackage?.id,
+        familyPackageId: targetPackageId,
       ),
     );
   }
@@ -248,6 +257,7 @@ class _FamilySubscriptionSetupScreenState
 
     if (FamilyFlowScope.isActive(context)) {
       FamilyFlowScope.updateFamilyName(context, currentFlow.name);
+      context.read<FamilySubscriptionFlowViewModel>().updateFlow(currentFlow);
     }
 
     if (_familyNameController.text.isEmpty &&

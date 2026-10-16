@@ -47,9 +47,9 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
   final UpdateFamilyMemberAddressFn? _update;
 
   @override
-  Set<AddressEditorAction> get supportedActions => const {
-    AddressEditorAction.add,
-    AddressEditorAction.update,
+  Set<AddressEditorAction> get supportedActions => {
+    if (_add != null) AddressEditorAction.add,
+    if (_update != null) AddressEditorAction.update,
   };
 
   @override
@@ -104,12 +104,11 @@ class FamilyAddressEditorOperations implements AddressEditorOperations {
     if (_update != null) {
       return _update(memberId, addressId, request);
     }
-    if (_add != null) {
-      return _add(memberId, request);
-    }
     return Future.value(
       ApiErrorResult(
-        failure: Failure(errorMessage: 'Update operation not configured'),
+        failure: Failure(
+          errorMessage: 'Update address is not supported for family members',
+        ),
       ),
     );
   }

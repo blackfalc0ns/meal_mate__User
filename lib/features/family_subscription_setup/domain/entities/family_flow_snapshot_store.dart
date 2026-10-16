@@ -17,7 +17,45 @@ class FamilyFlowSnapshotStore {
   }
 
   void update(FamilyFlowCurrentEntity value) {
-    current = value;
+    final previous = current;
+    if (previous == null) {
+      current = value;
+    } else {
+      final mergedMembers = value.members.map((newMember) {
+        final oldMember = previous.members
+            .where((m) => m.memberId == newMember.memberId)
+            .firstOrNull;
+        if (oldMember == null) return newMember;
+        return newMember.copyWith(
+          programId: newMember.programId ?? oldMember.programId,
+          bundleId: newMember.bundleId ?? oldMember.bundleId,
+          selectedTier: newMember.selectedTier ?? oldMember.selectedTier,
+          durationDays: newMember.durationDays ?? oldMember.durationDays,
+          includeFriday: newMember.includeFriday || oldMember.includeFriday,
+          deliveryAddressId:
+              newMember.deliveryAddressId ?? oldMember.deliveryAddressId,
+          deliveryAddress:
+              newMember.deliveryAddress ?? oldMember.deliveryAddress,
+          allergies: newMember.allergies.isNotEmpty
+              ? newMember.allergies
+              : oldMember.allergies,
+          allergiesCompleted:
+              newMember.allergiesCompleted || oldMember.allergiesCompleted,
+          hasNoAllergies: newMember.hasNoAllergies || oldMember.hasNoAllergies,
+          dislikedFoods: newMember.dislikedFoods.isNotEmpty
+              ? newMember.dislikedFoods
+              : oldMember.dislikedFoods,
+          dietaryPreferences: newMember.dietaryPreferences.isNotEmpty
+              ? newMember.dietaryPreferences
+              : oldMember.dietaryPreferences,
+          dietaryCompleted:
+              newMember.dietaryCompleted || oldMember.dietaryCompleted,
+          hasNoDietaryRestriction: newMember.hasNoDietaryRestriction ||
+              oldMember.hasNoDietaryRestriction,
+        );
+      }).toList();
+      current = value.copyWith(members: mergedMembers);
+    }
     _revision++;
   }
 

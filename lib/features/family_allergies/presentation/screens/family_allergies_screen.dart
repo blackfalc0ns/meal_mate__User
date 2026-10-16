@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -11,6 +10,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_event.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_content.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_loading_skeleton.dart';
@@ -28,7 +28,11 @@ class FamilyAllergiesScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final vm = getIt<FamilyAllergiesViewModel>();
-        unawaited(vm.load(memberId: FamilyFlowScope.targetMemberIdOf(context)));
+        vm.doIntent(
+          LoadFamilyAllergiesEvent(
+            memberId: FamilyFlowScope.targetMemberIdOf(context),
+          ),
+        );
         return vm;
       },
       child: BlocConsumer<FamilyAllergiesViewModel, FamilyAllergiesState>(
@@ -56,6 +60,11 @@ class FamilyAllergiesScreen extends StatelessWidget {
             unawaited(context.pushNamed(AppRoutes.familyPackageDaysSetup));
           }
         },
+        buildWhen: (previous, current) =>
+            (previous.isLoading && previous.members.isEmpty) !=
+                (current.isLoading && current.members.isEmpty) ||
+            (previous.failure != null && previous.members.isEmpty) !=
+                (current.failure != null && current.members.isEmpty),
         builder: (context, state) {
           if (state.isLoading && state.members.isEmpty) {
             return const FamilyAllergiesLoadingSkeleton();
@@ -63,8 +72,10 @@ class FamilyAllergiesScreen extends StatelessWidget {
           if (state.failure != null && state.members.isEmpty) {
             final errorWidget = ApiErrorWidget(
               exception: state.failure!.exception,
-              onRetry: () => context.read<FamilyAllergiesViewModel>().load(
-                memberId: FamilyFlowScope.targetMemberIdOf(context),
+              onRetry: () => context.read<FamilyAllergiesViewModel>().doIntent(
+                LoadFamilyAllergiesEvent(
+                  memberId: FamilyFlowScope.targetMemberIdOf(context),
+                ),
               ),
             );
             if (isInFamilyFlow) return errorWidget;
@@ -77,9 +88,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
               body: SafeArea(top: false, child: errorWidget),
             );
           }
-          final content = FamilyAllergiesContent(
-            state: state,
-          ).animate().fadeIn(duration: 250.ms);
+          const content = FamilyAllergiesContent();
           if (isInFamilyFlow) {
             return content;
           }
@@ -89,7 +98,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
               title: locale.family_setup_title,
               showBackButton: true,
             ),
-            body: SafeArea(top: false, child: content),
+            body: const SafeArea(top: false, child: FamilyAllergiesContent()),
           );
         },
       ),

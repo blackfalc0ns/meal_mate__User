@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/address/domain/usecase/geocode_address_usecase.dart';
 import 'package:meal_meat_user/core/address/domain/usecase/get_locations_catalog_usecase.dart';
@@ -10,18 +9,16 @@ import 'package:meal_meat_user/core/address/presentation/manager/address_editor_
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_state.dart';
 import 'package:meal_meat_user/core/address/presentation/manager/address_editor_view_model.dart';
 import 'package:meal_meat_user/core/address/presentation/manager/address_entry_flow_controller.dart';
-import 'package:meal_meat_user/core/address/presentation/widgets/address_choose_location_map_view.dart';
-import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_loading_skeleton.dart';
-import 'package:meal_meat_user/core/address/presentation/widgets/address_coverage_preview_bottom_sheet.dart';
-import 'package:meal_meat_user/core/constants/durations.dart';
+import 'package:meal_meat_user/core/address/presentation/widgets/address_loading_overlay.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
-import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_address_editor_operations.dart';
 import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_coverage_section.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_location_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_map_section.dart';
 
 class FamilyAddressLocationStage extends StatefulWidget {
   const FamilyAddressLocationStage({
@@ -107,8 +104,6 @@ class _FamilyAddressLocationStageState
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.localization;
-
     return BlocProvider<AddressEditorViewModel>.value(
       value: _viewModel,
       child: BlocConsumer<AddressEditorViewModel, AddressEditorState>(
@@ -175,116 +170,23 @@ class _FamilyAddressLocationStageState
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child:
-                    BlocSelector<
-                      AddressEditorViewModel,
-                      AddressEditorState,
-                      ({LocationsCatalogState locations, bool isSubmitting})
-                    >(
-                      selector: (s) => (
-                        locations: s.locations,
-                        isSubmitting: s.action.isLoading,
-                      ),
-                      builder: (context, mapData) {
-                        return AddressChooseLocationMapView(
-                          key: ValueKey(widget.memberId),
-                          locations: mapData.locations,
-                          flowController: _entryFlowController,
-                          initialAddress: widget.initialAddress,
-                          showInitialAddressDetails: false,
-                          isSubmitting: mapData.isSubmitting,
-                        );
-                      },
-                    ),
+                child: FamilyAddressMapSection(
+                  memberId: widget.memberId,
+                  flowController: _entryFlowController,
+                  initialAddress: widget.initialAddress,
+                ),
               ),
-              BlocSelector<
-                AddressEditorViewModel,
-                AddressEditorState,
-                AddressCoveragePreviewState
-              >(
-                selector: (s) => s.coveragePreview,
-                builder: (context, coverage) {
-                  final preview = coverage.preview;
-                  if (coverage.isLoading && preview == null) {
-                    return const PositionedDirectional(
-                      start: 0,
-                      end: 0,
-                      bottom: 0,
-                      child: AddressCoverageLoadingSkeleton(),
-                    );
-                  }
-                  if (coverage.isSuccess && preview != null) {
-                    return PositionedDirectional(
-                      start: 0,
-                      end: 0,
-                      bottom: 0,
-                      child: TweenAnimationBuilder<double>(
-                        key: ValueKey(coverage.sessionId),
-                        tween: Tween<double>(begin: 1, end: 0),
-                        duration: AppDurations.normal,
-                        curve: Curves.easeOutCubic,
-                        builder: (context, progress, child) =>
-                            FractionalTranslation(
-                              translation: Offset(Spacing.zero, progress),
-                              child: child,
-                            ),
-                        child:
-                            BlocSelector<
-                              AddressEditorViewModel,
-                              AddressEditorState,
-                              bool
-                            >(
-                              selector: (s) => s.action.isLoading,
-                              builder: (context, isSubmitting) {
-                                return AddressCoveragePreviewBottomSheet(
-                                  key: ValueKey(coverage.sessionId),
-                                  preview: preview,
-                                  isSubmitting: isSubmitting,
-                                  confirmButtonText:
-                                      locale.address_coverage_confirm_save,
-                                  popOnConfirm: false,
-                                  requireFamilyCoverage: true,
-                                  isLoadingMore: coverage.isLoadingMore,
-                                  hasMoreRestaurants: coverage.canLoadMore,
-                                  loadMoreFailure: coverage.loadMoreFailure,
-                                  onLoadMoreRestaurants: () => unawaited(
-                                    context.read<AddressEditorViewModel>().doIntent(
-                                      const LoadMoreAddressCoverageRestaurantsEvent(),
-                                    ),
-                                  ),
-                                  onConfirm: () {
-                                    if (!preview.canSetAsDefault ||
-                                        preview.resolvedRegionId == null ||
-                                        preview.conflictMessage != null ||
-                                        preview.servingRestaurants.isEmpty) {
-                                      return;
-                                    }
-                                    unawaited(
-                                      context
-                                          .read<AddressEditorViewModel>()
-                                          .doIntent(
-                                            const ConfirmPendingAddressActionEvent(),
-                                          ),
-                                    );
-                                  },
-                                  onChooseAnother: () {
-                                    _shownSessionId = null;
-                                    _entryFlowController.chooseLocation();
-                                    unawaited(
-                                      context
-                                          .read<AddressEditorViewModel>()
-                                          .doIntent(
-                                            const ClearCoveragePreviewEvent(),
-                                          ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
+              FamilyAddressCoverageSection(
+                flowController: _entryFlowController,
+                onResetShownSession: () {
+                  _shownSessionId = null;
+                },
+              ),
+              BlocSelector<AddressEditorViewModel, AddressEditorState, bool>(
+                selector: (s) => s.action.isLoading,
+                builder: (context, isLoading) {
+                  if (!isLoading) return const SizedBox.shrink();
+                  return const AddressLoadingOverlay();
                 },
               ),
             ],

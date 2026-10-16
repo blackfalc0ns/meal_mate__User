@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -8,24 +7,40 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_event.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_actions.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_information_note.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergy_selection_section.dart';
-import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_no_allergies_tile.dart';
-import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_member_strip.dart';
-import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
-import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_catalog_entity.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_header.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/widgets/family_allergies_member_strip.dart';
 
 class FamilyAllergiesContent extends StatelessWidget {
-  const FamilyAllergiesContent({super.key, required this.state});
-  final FamilyAllergiesState state;
+  const FamilyAllergiesContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<FamilyAllergiesViewModel, FamilyAllergiesState>(
+      buildWhen: (previous, current) =>
+          previous.members != current.members ||
+          previous.currentIndex != current.currentIndex ||
+          previous.catalog != current.catalog ||
+          previous.ingredients != current.ingredients ||
+          previous.selectedCodes != current.selectedCodes ||
+          previous.rejectedCodes != current.rejectedCodes ||
+          previous.allergySearch != current.allergySearch ||
+          previous.ingredientSearch != current.ingredientSearch ||
+          previous.isSaving != current.isSaving ||
+          previous.saveFailure != current.saveFailure ||
+          previous.errorMessage != current.errorMessage ||
+          previous.completed != current.completed,
+      builder: _buildContent,
+    );
+  }
+
+  Widget _buildContent(BuildContext context, FamilyAllergiesState state) {
     final color = context.colorScheme;
     final locale = context.localization;
     final viewModel = context.read<FamilyAllergiesViewModel>();
@@ -40,49 +55,17 @@ class FamilyAllergiesContent extends StatelessWidget {
       state.ingredientSearch,
       locale.localeName,
     );
-    final members = state.members.asMap().entries.map((entry) {
-      final member = entry.value;
-      return FamilyProgramMemberUiModel(
-        name: member.displayName,
-        imageAsset: resolveFamilyMemberAvatar(member.gender, entry.key),
-        status: entry.key < state.currentIndex
-            ? locale.family_member_completed
-            : locale.family_member_in_progress,
-        isSelected: entry.key == state.currentIndex,
-        isInProgress: entry.key >= state.currentIndex,
-      );
-    }).toList();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!isInFamilyFlow) ...[
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Spacing.familySetupHorizontalPadding,
-            ),
-            child: Column(
-              children: [
-                FamilySetupHeaderBadge(),
-                SizedBox(height: Spacing.md),
-                FamilyProgramStepper(
-                  currentStep: 3,
-                  includeFamilyCreationStep: true,
-                ),
-              ],
-            ),
-          ),
-        ],
-        Padding(
-          padding: const EdgeInsets.symmetric(
+        if (!isInFamilyFlow) const FamilyAllergiesHeader(),
+        const Padding(
+          padding: EdgeInsets.symmetric(
             horizontal: Spacing.familySetupHorizontalPadding,
           ),
-          child: FamilyProgramMemberStrip(
-            members: members,
-            onSelectMember: viewModel.selectMember,
-          ),
+          child: FamilyAllergiesMemberStrip(),
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.md),
         Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -101,34 +84,27 @@ class FamilyAllergiesContent extends StatelessWidget {
                     color: color.onSurface,
                   ),
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.xxs),
                 Text(
-                  state.currentMember == null
-                      ? locale.family_allergies_food_subtitle
-                      : locale.family_allergies_member(
-                          state.currentMember!.displayName,
-                        ),
+                  locale.family_allergies_food_subtitle,
+
                   textAlign: TextAlign.start,
-                  style: getRegularStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: Spacing.familyAllergiesSectionGap),
+                const SizedBox(height: Spacing.md),
                 FamilyAllergySelectionSection(
                   title: locale.family_allergies_common,
                   searchHint: locale.family_allergies_search,
                   items: allergyItems,
                   selected: state.selectedCodes,
-                  onSearch: viewModel.changeAllergySearch,
-                  onToggle: viewModel.toggle,
-                ),
-                const SizedBox(height: Spacing.familyAllergiesSectionGap),
-                FamilyNoAllergiesTile(
-                  label: locale.family_allergies_none,
-                  selected: state.selectedCodes.contains('NONE'),
-                  onTap: () => viewModel.toggle('NONE'),
+                  onSearch: (value) =>
+                      viewModel.doIntent(ChangeAllergySearchEvent(value)),
+                  onToggle: (code) =>
+                      viewModel.doIntent(ToggleFamilyAllergyEvent(code)),
                 ),
                 const SizedBox(height: Spacing.familyAllergiesSectionGap),
                 FamilyAllergySelectionSection(
@@ -136,8 +112,10 @@ class FamilyAllergiesContent extends StatelessWidget {
                   searchHint: locale.family_allergies_ingredient_search,
                   items: ingredientItems,
                   selected: state.rejectedCodes,
-                  onSearch: viewModel.changeIngredientSearch,
-                  onToggle: viewModel.toggleRejected,
+                  onSearch: (value) =>
+                      viewModel.doIntent(ChangeIngredientSearchEvent(value)),
+                  onToggle: (code) =>
+                      viewModel.doIntent(ToggleRejectedIngredientEvent(code)),
                 ),
                 const SizedBox(height: Spacing.familyAllergiesSectionGap),
                 FamilyAllergiesInformationNote(
@@ -178,10 +156,14 @@ class FamilyAllergiesContent extends StatelessWidget {
                 ? locale.family_next_package_days
                 : locale.family_allergies_save_next_member,
             isLoading: state.isSaving,
-            onNext: state.canSave ? viewModel.saveCurrent : null,
+            onNext: state.canSave
+                ? () => viewModel.doIntent(
+                    const SaveCurrentFamilyAllergiesEvent(),
+                  )
+                : null,
             onSkip: () {
-              viewModel.toggle('NONE');
-              unawaited(viewModel.saveCurrent());
+              viewModel.doIntent(const ToggleFamilyAllergyEvent('NONE'));
+              viewModel.doIntent(const SaveCurrentFamilyAllergiesEvent());
             },
           ),
         ),

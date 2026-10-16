@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_event.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
@@ -12,6 +16,22 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
   final GetFamilyFlowCurrentUseCase _getFlow;
   int _activeLoadId = 0;
 
+  void doIntent(FamilyAddressesEvent event) {
+    switch (event) {
+      case LoadFamilyAddressesEvent():
+        unawaited(load(memberId: event.memberId));
+      case SelectFamilyAddressMemberEvent():
+        selectMember(event.index);
+      case SaveFamilyMemberAddressEvent():
+        addressSaved(
+          memberId: event.memberId,
+          savedAddress: event.savedAddress,
+        );
+      case ProceedToNextAddressStepEvent():
+        proceedToNextStep();
+    }
+  }
+
   Future<void> load({String? memberId}) async {
     final requestId = ++_activeLoadId;
     emit(state.copyWith(isLoading: true, clearError: true, clearFailure: true));
@@ -19,7 +39,11 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     if (isClosed || requestId != _activeLoadId) return;
     switch (result) {
       case ApiSuccessResult():
-        final members = result.data.members;
+        final members = memberId == null
+            ? result.data.members
+            : result.data.members
+                  .where((member) => member.memberId == memberId)
+                  .toList();
         final targetIndex = memberId != null
             ? members.indexWhere((m) => m.memberId == memberId)
             : -1;
@@ -68,6 +92,25 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     if (state.members.isEmpty) return;
     final targetMemberId = memberId ?? state.currentMember?.memberId;
     if (targetMemberId == null) return;
+
+    final targetMember = state.members.cast<FamilyMemberEntity?>().firstWhere(
+      (m) => m?.memberId == targetMemberId,
+      orElse: () => null,
+    );
+    if (targetMember == null) return;
+
+    final isAlreadyCompleted = state.completedMemberIds.contains(
+      targetMemberId,
+    );
+    final isSameAddress =
+        savedAddress != null &&
+        (targetMember.deliveryAddress == savedAddress ||
+            (savedAddress.addressId.isNotEmpty &&
+                targetMember.deliveryAddressId == savedAddress.addressId));
+
+    if (isAlreadyCompleted && isSameAddress) {
+      return;
+    }
 
     final updatedMembers = state.members.map((m) {
       if (m.memberId == targetMemberId) {

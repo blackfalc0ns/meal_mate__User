@@ -55,7 +55,10 @@ class _FamilyAllergySelectionSectionState
         : widget.items.take(_collapsedItemCount).toList();
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.familyAllergiesCardPadding),
+      padding: const EdgeInsets.symmetric(
+        vertical: Spacing.md,
+        horizontal: Spacing.md,
+      ),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.familyAllergiesCardRadius),
@@ -74,9 +77,9 @@ class _FamilyAllergySelectionSectionState
           Text(
             widget.title,
             textAlign: TextAlign.start,
-            style: getSemiBoldStyle(
+            style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
+              fontSize: FontSize.size13,
               color: color.onSurface,
             ),
           ),

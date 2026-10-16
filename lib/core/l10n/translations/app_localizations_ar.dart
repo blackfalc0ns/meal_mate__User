@@ -5427,8 +5427,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا توجد مطاعم تخدم هذه المنطقة حالياً';
 
   @override
-  String get address_serving_restaurants_title =>
-      'المطاعم التي تخدم منطقتك الجديدة';
+  String get address_serving_restaurants_title => 'المطاعم التي تخدم منطقتك';
 
   @override
   String get address_coverage_notice_action => 'حسناً، فهمت';

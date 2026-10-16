@@ -7,6 +7,7 @@ import 'package:meal_meat_user/features/family_allergies/domain/entities/family_
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_event.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
@@ -29,7 +30,27 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
   final Map<String, Timer> _saveTimers = {};
   final Map<String, int> _saveVersions = {};
+  final Map<String, Timer> _searchTimers = {};
   int _activeLoadId = 0;
+
+  void doIntent(FamilyAllergiesEvent event) {
+    switch (event) {
+      case LoadFamilyAllergiesEvent():
+        unawaited(load(memberId: event.memberId));
+      case ToggleFamilyAllergyEvent():
+        toggle(event.code);
+      case ToggleRejectedIngredientEvent():
+        toggleRejected(event.code);
+      case ChangeAllergySearchEvent():
+        changeAllergySearch(event.value);
+      case ChangeIngredientSearchEvent():
+        changeIngredientSearch(event.value);
+      case SelectFamilyAllergyMemberEvent():
+        selectMember(event.index);
+      case SaveCurrentFamilyAllergiesEvent():
+        unawaited(saveCurrent());
+    }
+  }
 
   @override
   Future<void> close() {
@@ -37,6 +58,10 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
       timer.cancel();
     }
     _saveTimers.clear();
+    for (final timer in _searchTimers.values) {
+      timer.cancel();
+    }
+    _searchTimers.clear();
     return super.close();
   }
 
@@ -101,11 +126,26 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   void changeAllergySearch(String value) {
-    emit(state.copyWith(allergySearch: value));
+    _debounceSearch('allergy', value, (query) {
+      emit(state.copyWith(allergySearch: query));
+    });
   }
 
   void changeIngredientSearch(String value) {
-    emit(state.copyWith(ingredientSearch: value));
+    _debounceSearch('ingredient', value, (query) {
+      emit(state.copyWith(ingredientSearch: query));
+    });
+  }
+
+  void _debounceSearch(
+    String key,
+    String value,
+    void Function(String value) apply,
+  ) {
+    _searchTimers[key]?.cancel();
+    _searchTimers[key] = Timer(const Duration(milliseconds: 300), () {
+      if (!isClosed) apply(value);
+    });
   }
 
   void toggleRejected(String code) {
@@ -212,6 +252,10 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   void selectMember(int index) {
     if (state.isSaving || index < 0 || index >= state.members.length) return;
     if (index == state.currentIndex) return;
+    for (final timer in _searchTimers.values) {
+      timer.cancel();
+    }
+    _searchTimers.clear();
     emit(
       state.copyWith(
         currentIndex: index,

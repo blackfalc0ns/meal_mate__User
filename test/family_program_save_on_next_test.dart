@@ -8,7 +8,9 @@ import 'package:meal_meat_user/features/family_package_days/domain/usecase/save_
 import 'package:meal_meat_user/features/family_programs/domain/repo/family_programs_repository.dart';
 import 'package:meal_meat_user/features/family_programs/domain/usecase/get_family_programs_usecase.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_event.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_state.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/manager/family_programs_view_model.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/screens/family_program_setup_screen.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart';
@@ -59,8 +61,8 @@ void main() {
     expect(viewModel.state.isPlanSaving, isTrue);
 
     planRepository.response.complete(
-      ApiSuccessResult(
-        data: const FamilyFlowCurrentEntity(
+      const ApiSuccessResult(
+        data: FamilyFlowCurrentEntity(
           members: [
             FamilyMemberEntity(
               memberId: 'member-1',
@@ -106,8 +108,8 @@ void main() {
     viewModel.doIntent(const SaveFamilyProgramsEvent());
     expect(planRepository.requests, [('member-1', 'program-1')]);
     planRepository.response.complete(
-      ApiSuccessResult(
-        data: const FamilyFlowCurrentEntity(
+      const ApiSuccessResult(
+        data: FamilyFlowCurrentEntity(
           members: [
             FamilyMemberEntity(
               memberId: 'member-1',
@@ -147,6 +149,23 @@ void main() {
       ApiSuccessResult(data: viewModel.state.currentFlow!),
     );
     await viewModel.stream.firstWhere((state) => !state.isPlanSaving);
+  });
+
+  test('shouldRebuildContent triggers when isPlanSaving changes', () {
+    const idleState = FamilyProgramsState(isPlanSaving: false);
+    const savingState = FamilyProgramsState(isPlanSaving: true);
+
+    expect(
+      FamilyProgramSetupScreen.shouldRebuildContent(idleState, savingState),
+      isTrue,
+      reason: 'Should rebuild to show loading indicator on save start',
+    );
+
+    expect(
+      FamilyProgramSetupScreen.shouldRebuildContent(savingState, idleState),
+      isTrue,
+      reason: 'Should rebuild to reset button when save finishes',
+    );
   });
 }
 
@@ -196,8 +215,8 @@ class _ProgramsRepository implements FamilyProgramsRepository {
   Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
     int? page,
     int? pageSize,
-  }) async => ApiSuccessResult(
-    data: const [
+  }) async => const ApiSuccessResult(
+    data: [
       SubscriptionProgramEntity(
         programId: 'program-1',
         code: 'one',

@@ -30,7 +30,7 @@ class FamilyProgramActionsSection extends StatelessWidget {
         FamilyProgramActions(
           nextText: locale.family_allergies_next_location,
           nextIcon: Icons.arrow_forward_ios_rounded,
-          isLoading: state.isPlanSaving,
+          isLoading: false,
           progress: progress,
           progressLabel: totalCount > 1 && !allCompleted
               ? '($completedCount/$totalCount)'

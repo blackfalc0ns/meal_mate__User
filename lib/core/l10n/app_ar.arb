@@ -1990,7 +1990,7 @@
   "address_restaurant_does_not_service_region": "المطعم المشترك معه حالياً لا يخدم هذه المنطقة. يرجى اختيار عنوان آخر.",
   "address_coverage_notice_title": "تنبيه تغطية المطاعم",
   "address_no_serving_restaurants": "لا توجد مطاعم تخدم هذه المنطقة حالياً",
-  "address_serving_restaurants_title": "المطاعم التي تخدم منطقتك الجديدة",
+  "address_serving_restaurants_title": "المطاعم التي تخدم منطقتك",
   "address_coverage_notice_action": "حسناً، فهمت",
   "address_preview_check_button": "متابعة وتحقق من التغطية",
   "address_coverage_covered_title": "منطقتك مغطاة بمطاعم اشتراكك",

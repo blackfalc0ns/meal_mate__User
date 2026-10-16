@@ -1014,6 +1014,12 @@ class AddressEditorViewModel extends Cubit<AddressEditorState> {
     _coverageSessionId++;
     emit(
       state.copyWith(
+        action: state.action.copyWith(
+          isLoading: true,
+          isSuccess: false,
+          clearError: true,
+          clearAddress: true,
+        ),
         coveragePreview: AddressCoveragePreviewState(
           sessionId: _coverageSessionId,
         ),

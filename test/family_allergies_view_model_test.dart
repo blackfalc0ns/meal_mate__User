@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/family_allergies/domain/repo/family_alle
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
+import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_event.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart';
@@ -19,6 +20,39 @@ import 'package:meal_meat_user/features/food_preferences/domain/repo/food_prefer
 import 'package:meal_meat_user/features/food_preferences/domain/usecase/get_food_preferences_catalog_usecase.dart';
 
 void main() {
+  test('debounces allergy search updates', () async {
+    final viewModel = FamilyAllergiesViewModel(
+      GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
+      GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
+      SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
+      SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
+    );
+    addTearDown(viewModel.close);
+
+    await viewModel.load();
+    viewModel.doIntent(const ChangeAllergySearchEvent('mi'));
+
+    expect(viewModel.state.allergySearch, isEmpty);
+    await Future<void>.delayed(const Duration(milliseconds: 350));
+
+    expect(viewModel.state.allergySearch, 'mi');
+  });
+
+  test('routes toggle allergy through doIntent', () async {
+    final viewModel = FamilyAllergiesViewModel(
+      GetFamilyFlowCurrentUseCase(_FamilySubscriptionSetupRepository()),
+      GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
+      SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
+      SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
+    );
+    addTearDown(viewModel.close);
+
+    await viewModel.load();
+    viewModel.doIntent(const ToggleFamilyAllergyEvent('MILK'));
+
+    expect(viewModel.state.selectedCodes, contains('MILK'));
+  });
+
   test('NONE is sent as the selected allergy code', () {
     const request = FamilyMemberAllergiesRequestDto(
       allergies: [FamilyMemberAllergyRequestDto(code: 'NONE')],
@@ -103,6 +137,7 @@ void main() {
     expect(viewModel.state.rejectedCodes, {'INGREDIENT:avocado'});
 
     viewModel.changeIngredientSearch('أفو');
+    await Future<void>.delayed(const Duration(milliseconds: 350));
     expect(viewModel.state.ingredientSearch, 'أفو');
   });
 
