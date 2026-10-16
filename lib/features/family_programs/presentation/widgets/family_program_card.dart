@@ -42,9 +42,11 @@ class FamilyProgramCard extends StatelessWidget {
                 vertical: Spacing.xs,
               ),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? color.primaryContainer.withValues(alpha: 0.08)
-                    : color.surface,
+                color:
+                    // isSelected
+                    //  ? color.primaryContainer.withValues(alpha: 0.08)
+                    //  :
+                    color.surface,
                 borderRadius: cardBorderRadius,
                 border: Border.all(
                   color: isSelected ? color.primary : color.outlineVariant,
@@ -87,11 +89,11 @@ class FamilyProgramCard extends StatelessWidget {
                           program.description,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: getRegularStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
+                            fontSize: FontSize.size10,
                             color: color.onSurfaceVariant,
-                          ).copyWith(height: 1.35),
+                          ).copyWith(height: 1.4),
                         ),
                       ],
                     ),
