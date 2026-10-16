@@ -5575,7 +5575,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_allergies_save_next_member => 'حفظ والمتابعة';
 
   @override
-  String get family_allergies_next_location => 'التالي: الموقع';
+  String get family_allergies_next_location => 'التالي : الموقع';
 
   @override
   String get family_allergies_next_payment => 'التالي: الدفع';
