@@ -77,11 +77,11 @@ class FamilyProgramMemberSection extends StatelessWidget {
               }
             },
           ),
-          const SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.md),
         ],
         if (activeMemberDetails != null) ...[
           FamilyProgramSummaryCard(member: activeMemberDetails),
-          const SizedBox(height: Spacing.familyProgramTitleTopGap),
+          const SizedBox(height: Spacing.sm),
         ],
       ],
     );

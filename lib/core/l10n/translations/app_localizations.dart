@@ -8960,6 +8960,12 @@ abstract class AppLocalizations {
   /// **'Family Members'**
   String get family_members_count_label;
 
+  /// No description provided for @family_setup_members_counter.
+  ///
+  /// In en, this message translates to:
+  /// **'{max} of {current}'**
+  String family_setup_members_counter(int max, int current);
+
   /// No description provided for @family_members_max_reached.
   ///
   /// In en, this message translates to:

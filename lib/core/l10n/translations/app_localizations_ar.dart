@@ -2772,7 +2772,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_error_already_in_family =>
-      'This phone number already belongs to another family.';
+      'رقم الهاتف مسجل بالفعل في مجموعة عائلية أخرى.';
 
   @override
   String get family_error_plan_locked =>
@@ -4727,6 +4727,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_members_count_label => 'أفراد العائلة';
+
+  @override
+  String family_setup_members_counter(int max, int current) {
+    return '$max من $current';
+  }
 
   @override
   String get family_members_max_reached => 'وصلت الحد الأقصى لأفراد هذه الباقة';

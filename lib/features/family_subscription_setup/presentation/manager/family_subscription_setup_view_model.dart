@@ -39,7 +39,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
   final LookupFamilyMemberUseCase _lookupFamilyMemberUseCase;
   int _memberLookupRequestId = 0;
 
-  void doIntent(FamilyPlanEvent event) {
+  Future<void> doIntent(FamilyPlanEvent event) async {
     switch (event) {
       case SelectFamilySizePackageEvent():
         emit(state.copyWith(selectedPackage: event.package));
@@ -55,7 +55,7 @@ class FamilySubscriptionSetupViewModel extends Cubit<FamilyPlanState> {
       case GetFamilyAddressesEvent():
         _getFamilyAddresses();
       case AddFamilyMemberEvent():
-        _addFamilyMember(
+        await _addFamilyMember(
           phone: event.phone,
           displayName: event.displayName,
           occupation: event.occupation,

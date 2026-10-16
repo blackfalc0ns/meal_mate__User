@@ -4802,6 +4802,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_members_count_label => 'Family Members';
 
   @override
+  String family_setup_members_counter(int max, int current) {
+    return '$max of $current';
+  }
+
+  @override
   String get family_members_max_reached =>
       'Maximum members limit reached for this package';
 

@@ -12,19 +12,25 @@ class FamilySetupFormCard extends StatelessWidget {
     required this.nameController,
     required this.phoneController,
     required this.ageController,
-    required this.relationshipText,
+    required this.relationshipController,
     required this.onRelationshipTap,
     this.gender,
     required this.onGenderChanged,
+    this.isPhoneLoading = false,
+    this.phoneError,
+    this.onPhoneChanged,
   });
 
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController ageController;
-  final String relationshipText;
+  final TextEditingController relationshipController;
   final VoidCallback onRelationshipTap;
   final int? gender;
   final ValueChanged<int> onGenderChanged;
+  final bool isPhoneLoading;
+  final String? phoneError;
+  final ValueChanged<String>? onPhoneChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +55,21 @@ class FamilySetupFormCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FamilySetupField(
-            label: locale.family_full_name,
-            hint: locale.family_full_name_hint,
-            icon: Icons.person_outline_rounded,
-            controller: nameController,
-          ),
-          const SizedBox(height: Spacing.md),
-          FamilySetupField(
             label: locale.family_phone_number,
             hint: locale.family_phone_number_hint,
             icon: Icons.phone_outlined,
             controller: phoneController,
             keyboardType: TextInputType.phone,
+            isLoading: isPhoneLoading,
+            errorText: phoneError,
+            onChanged: onPhoneChanged,
+          ),
+          const SizedBox(height: Spacing.md),
+          FamilySetupField(
+            label: locale.family_full_name,
+            hint: locale.family_full_name_hint,
+            icon: Icons.person_outline_rounded,
+            controller: nameController,
           ),
           const SizedBox(height: Spacing.md),
           Row(
@@ -69,9 +78,8 @@ class FamilySetupFormCard extends StatelessWidget {
               Expanded(
                 child: FamilySetupField(
                   label: locale.family_relation,
-                  hint: relationshipText.isNotEmpty
-                      ? relationshipText
-                      : locale.family_relation_hint,
+                  hint: locale.family_relation_hint,
+                  controller: relationshipController,
                   icon: Icons.person_rounded,
                   trailing: Icons.keyboard_arrow_down_rounded,
                   readOnly: true,
@@ -95,7 +103,11 @@ class FamilySetupFormCard extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.wc_rounded, size: Spacing.iconSm, color: color.primary),
+              Icon(
+                Icons.wc_rounded,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
               const SizedBox(width: Spacing.xs),
               Text(
                 locale.family_gender,

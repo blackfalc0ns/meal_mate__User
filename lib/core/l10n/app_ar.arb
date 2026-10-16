@@ -1017,6 +1017,7 @@
   "family_phone_number": "رقم الموبايل",
   "family_phone_number_hint": "+965 0000 0000",
   "family_phone_lookup": "بحث عن الفرد",
+  "family_error_already_in_family": "رقم الهاتف مسجل بالفعل في مجموعة عائلية أخرى.",
   "family_occupation": "المهنة",
   "family_occupation_hint": "اكتب المهنة (اختياري)",
   "family_relation": "صلة القرابة",
@@ -1717,6 +1718,17 @@
     }
   },
   "family_members_count_label": "أفراد العائلة",
+  "family_setup_members_counter": "{max} من {current}",
+  "@family_setup_members_counter": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
   "family_members_max_reached": "وصلت الحد الأقصى لأفراد هذه الباقة",
   "family_members_min_warning": "يرجى إضافة {min} أفراد على الأقل لتفعيل خصم هذه الباقة والدفع",
   "@family_members_min_warning": {

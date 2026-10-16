@@ -54,12 +54,12 @@ class FamilySetupNameSection extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
             hintStyle: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size12,
               color: color.onSurfaceVariant.withValues(alpha: 0.48),
             ),
             textStyle: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size13,
               color: color.onSurface,
             ),
             onSubmitted: (_) => onSubmitted(),

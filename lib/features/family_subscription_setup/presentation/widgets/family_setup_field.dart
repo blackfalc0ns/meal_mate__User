@@ -18,6 +18,8 @@ class FamilySetupField extends StatelessWidget {
     this.onTap,
     this.keyboardType,
     this.onChanged,
+    this.isLoading = false,
+    this.errorText,
   });
 
   final String label;
@@ -30,13 +32,27 @@ class FamilySetupField extends StatelessWidget {
   final VoidCallback? onTap;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
+  final bool isLoading;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
     Widget? suffixWidget;
-    if (suffix != null) {
+    if (isLoading) {
+      suffixWidget = Padding(
+        padding: const EdgeInsets.all(Spacing.sm),
+        child: SizedBox(
+          width: Spacing.iconSm,
+          height: Spacing.iconSm,
+          child: CircularProgressIndicator(
+            strokeWidth: Spacing.border * 2,
+            color: color.primary,
+          ),
+        ),
+      );
+    } else if (suffix != null) {
       suffixWidget = Container(
         width: 48,
         alignment: Alignment.center,
@@ -51,7 +67,7 @@ class FamilySetupField extends StatelessWidget {
           suffix!,
           style: getRegularStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size11,
             color: color.onSurfaceVariant,
           ),
         ),
@@ -84,7 +100,7 @@ class FamilySetupField extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xss),
         SizedBox(
-          height: Spacing.familySetupInputHeight,
+          height: errorText != null ? null : Spacing.familySetupInputHeight,
           child: AppTextField(
             controller: controller,
             readOnly: readOnly,
@@ -92,6 +108,7 @@ class FamilySetupField extends StatelessWidget {
             keyboardType: keyboardType,
             onChanged: onChanged,
             hint: hint,
+            errorText: errorText,
             textAlign: TextAlign.start,
             borderRadius: Spacing.familySetupInputRadius,
             borderColor: color.outlineVariant,
@@ -100,12 +117,12 @@ class FamilySetupField extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.md),
             hintStyle: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size12,
               color: color.onSurfaceVariant.withValues(alpha: 0.48),
             ),
             textStyle: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size10,
+              fontSize: FontSize.size13,
               color: color.onSurface,
             ),
           ),

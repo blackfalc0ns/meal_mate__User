@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 class FamilyFlowActions extends StatelessWidget {
   const FamilyFlowActions({
     super.key,
+    this.showSecondary = true,
     this.secondaryText,
     this.secondaryIcon,
     this.secondaryIconWidget,
@@ -22,6 +23,7 @@ class FamilyFlowActions extends StatelessWidget {
     this.gap = Spacing.md,
   });
 
+  final bool showSecondary;
   final String? secondaryText;
   final IconData? secondaryIcon;
   final Widget? secondaryIconWidget;
@@ -43,40 +45,59 @@ class FamilyFlowActions extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final isPrimaryEnabled = onPrimaryPressed != null && !isPrimaryLoading;
+    final primaryTextColor = isPrimaryEnabled
+        ? color.onPrimary
+        : color.onSurface.withValues(alpha: 0.38);
+
+    final resolvedPrimaryText = primaryText ?? locale.family_next_payment;
+    final Widget resolvedPrimaryIcon =
+        primaryIconWidget ??
+        (primaryIcon != null
+            ? Icon(primaryIcon, color: primaryTextColor, size: Spacing.iconMd)
+            : Icon(
+                Icons.chevron_right_rounded,
+                color: primaryTextColor,
+                size: Spacing.iconMd,
+              ));
+
+    if (!showSecondary) {
+      return AppButton.filled(
+        iconBeforeText: false,
+        text: resolvedPrimaryText,
+        onPressed: onPrimaryPressed,
+        isLoading: isPrimaryLoading,
+        height: Spacing.familySetupBottomButtonHeight,
+        borderRadius: Spacing.radiusPill,
+        textColor: primaryTextColor,
+        fontSize: FontSize.size11,
+        iconWidget: resolvedPrimaryIcon,
+      );
+    }
+
     final resolvedSecondaryText =
         secondaryText ?? locale.family_previous_program;
     final resolvedSecondaryCallback = secondaryText == null
         ? (onSecondaryPressed ?? () => Navigator.maybePop(context))
         : onSecondaryPressed;
 
-    final Widget? resolvedSecondaryIcon = secondaryIconWidget ??
-        (secondaryIcon != null
-            ? Icon(
-                secondaryIcon,
-                color: color.primary,
-                size: Spacing.iconMd,
-              )
-            : (secondaryText == null
-                ? Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: color.primary,
-                    size: Spacing.iconMd,
-                  )
-                : null));
+    final isSecondaryEnabled =
+        resolvedSecondaryCallback != null && !isSecondaryLoading;
+    final secondaryColor = isSecondaryEnabled
+        ? color.primary
+        : color.onSurface.withValues(alpha: 0.38);
 
-    final resolvedPrimaryText = primaryText ?? locale.family_next_payment;
-    final Widget resolvedPrimaryIcon = primaryIconWidget ??
-        (primaryIcon != null
-            ? Icon(
-                primaryIcon,
-                color: color.onPrimary,
-                size: Spacing.iconMd,
-              )
-            : Icon(
-                Icons.chevron_left_rounded,
-                color: color.onPrimary,
-                size: Spacing.iconMd,
-              ));
+    final Widget? resolvedSecondaryIcon =
+        secondaryIconWidget ??
+        (secondaryIcon != null
+            ? Icon(secondaryIcon, color: secondaryColor, size: Spacing.iconMd)
+            : (secondaryText == null
+                  ? Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: secondaryColor,
+                      size: Spacing.iconMd,
+                    )
+                  : null));
 
     return Row(
       children: [
@@ -89,8 +110,8 @@ class FamilyFlowActions extends StatelessWidget {
             isLoading: isSecondaryLoading,
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
-            color: color.primary,
-            textColor: color.primary,
+            color: secondaryColor,
+            textColor: secondaryColor,
             fontSize: FontSize.size11,
             iconWidget: resolvedSecondaryIcon,
           ),
@@ -101,11 +122,11 @@ class FamilyFlowActions extends StatelessWidget {
           child: AppButton.filled(
             iconBeforeText: false,
             text: resolvedPrimaryText,
-            onPressed: isPrimaryLoading ? null : onPrimaryPressed,
+            onPressed: onPrimaryPressed,
             isLoading: isPrimaryLoading,
             height: Spacing.familySetupBottomButtonHeight,
             borderRadius: Spacing.radiusPill,
-            textColor: color.onPrimary,
+            textColor: primaryTextColor,
             fontSize: FontSize.size11,
             iconWidget: resolvedPrimaryIcon,
           ),

@@ -1728,6 +1728,17 @@
     }
   },
   "family_members_count_label": "Family Members",
+  "family_setup_members_counter": "{max} of {current}",
+  "@family_setup_members_counter": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
   "family_members_max_reached": "Maximum members limit reached for this package",
   "family_members_min_warning": "Please add at least {min} members to activate this package discount and proceed to checkout",
   "@family_members_min_warning": {

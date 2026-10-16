@@ -19,6 +19,7 @@ class AppTextField extends StatelessWidget {
     this.hint,
     this.hintStyle,
     this.errorText,
+    this.errorMaxLines = 2,
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
@@ -51,6 +52,7 @@ class AppTextField extends StatelessWidget {
   final String? hint;
   final TextStyle? hintStyle;
   final String? errorText;
+  final int? errorMaxLines;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
@@ -115,6 +117,7 @@ class AppTextField extends StatelessWidget {
         labelText: label,
         hintText: hint,
         errorText: errorText,
+        errorMaxLines: errorMaxLines,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         filled: true,

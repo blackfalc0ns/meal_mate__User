@@ -5,7 +5,7 @@ import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/family_subscription_setup/presentation/widgets/family_add_member_dialog.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_meals_table.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_members_strip.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_plan_hero_card.dart';
@@ -54,8 +54,9 @@ class FamilyPlanDetailsScreen extends StatelessWidget {
                               const SizedBox(height: Spacing.xs),
                               FamilyMembersStrip(
                                 members: currentPlan.members,
-                                onAddTap: () => FamilyAddMemberDialog.show(
-                                  context: context,
+                                onAddTap: () => Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.familySubscriptionSetup,
                                 ),
                               ),
                               const SizedBox(height: Spacing.md),

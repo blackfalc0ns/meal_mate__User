@@ -62,6 +62,34 @@ class _FamilySubscriptionSetupScreenState
     final locale = context.localization;
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
+    final body =
+        BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+          listenWhen: _shouldListenForActions,
+          listener: _onActionStateChanged,
+          child:
+              BlocConsumer<FamilySubscriptionSetupViewModel, FamilyPlanState>(
+                listenWhen: _shouldListen,
+                listener: _onStateChanged,
+                buildWhen: (previous, current) =>
+                    previous.currentFlow != current.currentFlow ||
+                    previous.selectedPackage != current.selectedPackage ||
+                    previous.members != current.members ||
+                    previous.relationships != current.relationships ||
+                    previous.isMemberSaving != current.isMemberSaving ||
+                    previous.isMemberLookupLoading !=
+                        current.isMemberLookupLoading ||
+                    previous.memberLookup != current.memberLookup ||
+                    previous.memberLookupFailure !=
+                        current.memberLookupFailure ||
+                    previous.memberSaveSuccess != current.memberSaveSuccess ||
+                    previous.isCurrentFlowLoading !=
+                        current.isCurrentFlowLoading ||
+                    previous.failure != current.failure ||
+                    previous.isDeletingMember != current.isDeletingMember,
+                builder: _buildContent,
+              ),
+        );
+
     return BlocProvider<FamilySubscriptionSetupViewModel>(
       create: (_) {
         final vm = getIt<FamilySubscriptionSetupViewModel>();
@@ -75,19 +103,7 @@ class _FamilySubscriptionSetupScreenState
         return vm;
       },
       child: isInFamilyFlow
-          ? BlocListener<FamilySubscriptionSetupViewModel, FamilyPlanState>(
-              listenWhen: _shouldListenForActions,
-              listener: _onActionStateChanged,
-              child:
-                  BlocConsumer<
-                    FamilySubscriptionSetupViewModel,
-                    FamilyPlanState
-                  >(
-                    listenWhen: _shouldListen,
-                    listener: _onStateChanged,
-                    builder: _buildContent,
-                  ),
-            )
+          ? body
           : Scaffold(
               appBar: CustomAppBar(
                 showBackButton: true,
@@ -112,25 +128,7 @@ class _FamilySubscriptionSetupScreenState
                   ],
                 ),
               ),
-              body: SafeArea(
-                child:
-                    BlocListener<
-                      FamilySubscriptionSetupViewModel,
-                      FamilyPlanState
-                    >(
-                      listenWhen: _shouldListenForActions,
-                      listener: _onActionStateChanged,
-                      child:
-                          BlocConsumer<
-                            FamilySubscriptionSetupViewModel,
-                            FamilyPlanState
-                          >(
-                            listenWhen: _shouldListen,
-                            listener: _onStateChanged,
-                            builder: _buildContent,
-                          ),
-                    ),
-              ),
+              body: SafeArea(child: body),
             ),
     );
   }
@@ -153,7 +151,15 @@ class _FamilySubscriptionSetupScreenState
     return Stack(
       children: [
         FamilySubscriptionSetupContent(
-          state: state,
+          members: state.members,
+          maxMembers: state.maxMembers,
+          minMembers: state.minMembers,
+          relationships: state.relationships,
+          isMemberSaving: state.isMemberSaving,
+          isMemberLookupLoading: state.isMemberLookupLoading,
+          memberLookup: state.memberLookup,
+          memberLookupFailure: state.memberLookupFailure,
+          memberSaveSuccess: state.memberSaveSuccess,
           familyNameController: _familyNameController,
           onSaveFamilyName: () => _onSaveFamilyName(context),
         ),
