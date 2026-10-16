@@ -1,5 +1,13 @@
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
+
 sealed class FamilyProgramsEvent {
   const FamilyProgramsEvent();
+}
+
+class SetFamilyFlowEvent extends FamilyProgramsEvent {
+  const SetFamilyFlowEvent(this.flow);
+
+  final FamilyFlowCurrentEntity? flow;
 }
 
 class GetFamilySubscriptionCurrentEvent extends FamilyProgramsEvent {

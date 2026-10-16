@@ -37,6 +37,8 @@ class FamilyProgramsViewModel extends Cubit<FamilyProgramsState> {
     switch (event) {
       case GetFamilySubscriptionCurrentEvent():
         unawaited(_getFamilySubscriptionCurrent(memberId: event.memberId));
+      case SetFamilyFlowEvent():
+        _setFamilyFlow(event.flow);
       case GetFamilyProgramsEvent():
         unawaited(_getPrograms(page: event.page, pageSize: event.pageSize));
       case LoadMoreFamilyProgramsEvent():
@@ -48,6 +50,20 @@ class FamilyProgramsViewModel extends Cubit<FamilyProgramsState> {
       case SaveFamilyProgramsEvent():
         unawaited(_savePendingPrograms());
     }
+  }
+
+  void _setFamilyFlow(FamilyFlowCurrentEntity? flow) {
+    if (flow == null) return;
+    final selectedIndex = state.selectedMemberIndex < flow.members.length
+        ? state.selectedMemberIndex
+        : 0;
+    emit(
+      state.copyWith(
+        currentFlow: flow,
+        isCurrentFlowLoading: false,
+        selectedMemberIndex: selectedIndex,
+      ),
+    );
   }
 
   Future<void> _getFamilySubscriptionCurrent({String? memberId}) async {

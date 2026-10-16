@@ -67,11 +67,9 @@ class FamilyFlowScaffold extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: Spacing.familySetupHorizontalPadding,
-              end: Spacing.familySetupHorizontalPadding,
-              top: Spacing.md,
-              bottom: Spacing.md,
+            padding: const EdgeInsetsDirectional.symmetric(
+              vertical: Spacing.md,
+              horizontal: Spacing.sm,
             ),
             child: ValueListenableBuilder<int>(
               valueListenable: currentStepListenable,

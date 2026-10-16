@@ -18,6 +18,8 @@ import 'package:meal_meat_user/features/family_programs/presentation/manager/fam
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_content.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_state.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_view_model.dart';
 
 class FamilyProgramSetupScreen extends StatelessWidget {
   const FamilyProgramSetupScreen({super.key});
@@ -29,15 +31,41 @@ class FamilyProgramSetupScreen extends StatelessWidget {
     final isInFamilyFlow = FamilyFlowScope.isActive(context);
 
     return BlocProvider<FamilyProgramsViewModel>(
-      create: (_) => getIt<FamilyProgramsViewModel>()
-        ..doIntent(
-          GetFamilySubscriptionCurrentEvent(
-            memberId: FamilyFlowScope.targetMemberIdOf(context),
-          ),
-        )
-        ..doIntent(const GetFamilyProgramsEvent()),
+      create: (_) {
+        final viewModel = getIt<FamilyProgramsViewModel>();
+        if (!isInFamilyFlow) {
+          viewModel.doIntent(
+            GetFamilySubscriptionCurrentEvent(
+              memberId: FamilyFlowScope.targetMemberIdOf(context),
+            ),
+          );
+        } else {
+          final flow = context
+              .read<FamilySubscriptionFlowViewModel>()
+              .state
+              .flow;
+          if (flow != null) {
+            viewModel.doIntent(SetFamilyFlowEvent(flow));
+          }
+        }
+        viewModel.doIntent(const GetFamilyProgramsEvent());
+        return viewModel;
+      },
       child: MultiBlocListener(
         listeners: [
+          if (isInFamilyFlow)
+            BlocListener<
+              FamilySubscriptionFlowViewModel,
+              FamilySubscriptionFlowState
+            >(
+              listenWhen: (previous, current) =>
+                  previous.flow != current.flow && current.flow != null,
+              listener: (context, state) {
+                context.read<FamilyProgramsViewModel>().doIntent(
+                  SetFamilyFlowEvent(state.flow),
+                );
+              },
+            ),
           BlocListener<FamilyProgramsViewModel, FamilyProgramsState>(
             listenWhen: (previous, current) =>
                 previous.currentFlow?.name != current.currentFlow?.name &&
