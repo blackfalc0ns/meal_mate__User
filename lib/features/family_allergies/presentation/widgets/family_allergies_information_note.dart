@@ -27,7 +27,7 @@ class FamilyAllergiesInformationNote extends StatelessWidget {
         children: [
           Icon(
             Icons.health_and_safety_outlined,
-            size: Spacing.iconLg,
+            size: Spacing.iconMd,
             color: color.primary,
           ),
           const SizedBox(width: Spacing.xs),
@@ -36,9 +36,9 @@ class FamilyAllergiesInformationNote extends StatelessWidget {
               text,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: getRegularStyle(
+              style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size9,
+                fontSize: FontSize.size10,
                 color: color.primary,
               ),
             ),

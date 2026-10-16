@@ -28,8 +28,6 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   final GetFoodPreferencesCatalogUseCase _getCatalog;
   final SaveFamilyMemberAllergiesUseCase _save;
   final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
-  final Map<String, Timer> _saveTimers = {};
-  final Map<String, int> _saveVersions = {};
   final Map<String, Timer> _searchTimers = {};
   int _activeLoadId = 0;
 
@@ -54,10 +52,6 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
 
   @override
   Future<void> close() {
-    for (final timer in _saveTimers.values) {
-      timer.cancel();
-    }
-    _saveTimers.clear();
     for (final timer in _searchTimers.values) {
       timer.cancel();
     }
@@ -122,19 +116,44 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
       next.contains(code) ? next.remove(code) : next.add(code);
     }
     emit(state.copyWith(selectedCodes: next, clearError: true));
-    unawaited(_autoSaveAllergies(next));
   }
 
   void changeAllergySearch(String value) {
     _debounceSearch('allergy', value, (query) {
       emit(state.copyWith(allergySearch: query));
+      unawaited(_searchAllergies(query));
     });
   }
 
   void changeIngredientSearch(String value) {
     _debounceSearch('ingredient', value, (query) {
       emit(state.copyWith(ingredientSearch: query));
+      unawaited(_searchIngredients(query));
     });
+  }
+
+  Future<void> _searchAllergies(String query) async {
+    final result = await _getCatalog.searchAllergies(
+      page: 1,
+      pageSize: 50,
+      search: query.trim().isEmpty ? null : query.trim(),
+    );
+    if (isClosed) return;
+    if (result case ApiSuccessResult(data: final items)) {
+      emit(state.copyWith(catalog: items));
+    }
+  }
+
+  Future<void> _searchIngredients(String query) async {
+    final result = await _getCatalog.searchIngredients(
+      page: 1,
+      pageSize: 50,
+      search: query.trim().isEmpty ? null : query.trim(),
+    );
+    if (isClosed) return;
+    if (result case ApiSuccessResult(data: final items)) {
+      emit(state.copyWith(ingredients: items));
+    }
   }
 
   void _debounceSearch(
@@ -152,101 +171,6 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     final next = <String>{...state.rejectedCodes};
     next.contains(code) ? next.remove(code) : next.add(code);
     emit(state.copyWith(rejectedCodes: next));
-    unawaited(_autoSaveDisliked(next));
-  }
-
-  Future<void> _autoSaveAllergies(Set<String> nextCodes) async {
-    final member = state.currentMember;
-    if (member == null) return;
-    final key = '${member.memberId}:allergies';
-    final version = (_saveVersions[key] ?? 0) + 1;
-    _saveVersions[key] = version;
-    _saveTimers[key]?.cancel();
-    _saveTimers[key] = Timer(const Duration(milliseconds: 500), () async {
-      if (_saveVersions[key] != version || isClosed) return;
-      emit(state.copyWith(isSaving: true, clearError: true));
-      final result = await _save(
-        memberId: member.memberId,
-        allergies: nextCodes
-            .map(
-              (c) => FamilyMemberAllergySelection(
-                code: c,
-                severity: c == 'NONE' ? null : 'High',
-              ),
-            )
-            .toList(),
-      );
-      if (result case ApiErrorResult(:final failure)) {
-        emit(
-          state.copyWith(
-            saveFailure: failure,
-            errorMessage: failure.errorMessage,
-          ),
-        );
-      }
-      if (result case ApiSuccessResult(data: true)) {
-        await _refreshMember(member.memberId, key, version);
-      }
-      if (!isClosed && _saveVersions[key] == version) {
-        emit(state.copyWith(isSaving: false));
-      }
-    });
-  }
-
-  Future<void> _autoSaveDisliked(Set<String> nextCodes) async {
-    final member = state.currentMember;
-    if (member == null) return;
-    final key = '${member.memberId}:disliked';
-    final version = (_saveVersions[key] ?? 0) + 1;
-    _saveVersions[key] = version;
-    _saveTimers[key]?.cancel();
-    _saveTimers[key] = Timer(const Duration(milliseconds: 500), () async {
-      if (_saveVersions[key] != version || isClosed) return;
-      emit(state.copyWith(isSaving: true, clearError: true));
-      final dislikedResult = await _saveDisliked(
-        memberId: member.memberId,
-        ingredientCodes: nextCodes.toList(),
-      );
-      if (dislikedResult case ApiErrorResult(:final failure)) {
-        emit(
-          state.copyWith(
-            saveFailure: failure,
-            errorMessage: failure.errorMessage,
-          ),
-        );
-      }
-      if (dislikedResult case ApiSuccessResult()) {
-        await _refreshMember(member.memberId, key, version);
-      }
-      if (!isClosed && _saveVersions[key] == version) {
-        emit(state.copyWith(isSaving: false));
-      }
-    });
-  }
-
-  Future<void> _refreshMember(String memberId, String key, int version) async {
-    final result = await _getFlow();
-    if (isClosed || _saveVersions[key] != version) return;
-    if (result case ApiSuccessResult(data: final flow)) {
-      final index = state.members.indexWhere((m) => m.memberId == memberId);
-      final refreshed = flow.members
-          .where((m) => m.memberId == memberId)
-          .firstOrNull;
-      if (index >= 0 && refreshed != null) {
-        final members = [...state.members]..[index] = refreshed;
-        emit(
-          state.copyWith(
-            members: members,
-            selectedCodes: index == state.currentIndex
-                ? _savedSelectionFor(refreshed)
-                : state.selectedCodes,
-            rejectedCodes: index == state.currentIndex
-                ? _savedRejectedSelectionFor(refreshed)
-                : state.rejectedCodes,
-          ),
-        );
-      }
-    }
   }
 
   void selectMember(int index) {
@@ -271,11 +195,6 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   Future<void> saveCurrent() async {
     final member = state.currentMember;
     if (member == null || !state.canSave) return;
-    for (final suffix in const ['allergies', 'disliked']) {
-      final key = '${member.memberId}:$suffix';
-      _saveTimers[key]?.cancel();
-      _saveVersions[key] = (_saveVersions[key] ?? 0) + 1;
-    }
     final savedCodes = Set<String>.of(state.selectedCodes);
     emit(
       state.copyWith(

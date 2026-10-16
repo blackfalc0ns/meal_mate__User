@@ -26,14 +26,18 @@ class FamilyAllergiesMemberStrip extends StatelessWidget {
             .entries
             .map((entry) {
               final member = entry.value;
+              final isCompleted =
+                  member.allergiesCompleted ||
+                  member.hasNoAllergies ||
+                  member.allergies.isNotEmpty;
               return FamilyProgramMemberUiModel(
                 name: member.displayName,
                 imageAsset: resolveFamilyMemberAvatar(member.gender, entry.key),
-                status: entry.key < data.index
+                status: isCompleted
                     ? locale.family_member_completed
                     : locale.family_member_in_progress,
                 isSelected: entry.key == data.index,
-                isInProgress: entry.key >= data.index,
+                isInProgress: !isCompleted,
               );
             })
             .toList(growable: false);

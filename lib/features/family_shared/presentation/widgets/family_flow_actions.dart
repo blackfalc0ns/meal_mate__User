@@ -71,34 +71,36 @@ class FamilyFlowActions extends StatelessWidget {
                 size: Spacing.iconMd,
               ));
 
+    final primaryButton = TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.0, end: effectiveProgress),
+      duration: const Duration(milliseconds: 650),
+      curve: Curves.easeInOutCubic,
+      builder: (context, animProgress, _) {
+        final isPartial = animProgress > 0 && animProgress < 1;
+        return AppButton.filled(
+          iconBeforeText: false,
+          text: resolvedPrimaryText,
+          onPressed: onPrimaryPressed,
+          isLoading: isPrimaryLoading,
+          height: Spacing.familySetupBottomButtonHeight,
+          borderRadius: Spacing.radiusPill,
+          textColor: primaryTextColor,
+          gradient: isPartial
+              ? LinearGradient(
+                  begin: AlignmentDirectional.centerStart,
+                  end: AlignmentDirectional.centerEnd,
+                  colors: [color.primary, color.surfaceContainerHighest],
+                  stops: [animProgress, animProgress],
+                )
+              : null,
+          fontSize: FontSize.size11,
+          iconWidget: resolvedPrimaryIcon,
+        );
+      },
+    );
+
     if (!showSecondary) {
-      return TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0.0, end: effectiveProgress),
-        duration: const Duration(milliseconds: 650),
-        curve: Curves.easeInOutCubic,
-        builder: (context, animProgress, _) {
-          final isPartial = animProgress > 0 && animProgress < 1;
-          return AppButton.filled(
-            iconBeforeText: false,
-            text: resolvedPrimaryText,
-            onPressed: onPrimaryPressed,
-            isLoading: isPrimaryLoading,
-            height: Spacing.familySetupBottomButtonHeight,
-            borderRadius: Spacing.radiusPill,
-            textColor: primaryTextColor,
-            gradient: isPartial
-                ? LinearGradient(
-                    begin: AlignmentDirectional.centerStart,
-                    end: AlignmentDirectional.centerEnd,
-                    colors: [color.primary, color.surfaceContainerHighest],
-                    stops: [animProgress, animProgress],
-                  )
-                : null,
-            fontSize: FontSize.size11,
-            iconWidget: resolvedPrimaryIcon,
-          );
-        },
-      );
+      return primaryButton;
     }
 
     final resolvedSecondaryText =
@@ -145,17 +147,7 @@ class FamilyFlowActions extends StatelessWidget {
         SizedBox(width: gap),
         Expanded(
           flex: primaryFlex,
-          child: AppButton.filled(
-            iconBeforeText: false,
-            text: resolvedPrimaryText,
-            onPressed: onPrimaryPressed,
-            isLoading: isPrimaryLoading,
-            height: Spacing.familySetupBottomButtonHeight,
-            borderRadius: Spacing.radiusPill,
-            textColor: primaryTextColor,
-            fontSize: FontSize.size11,
-            iconWidget: resolvedPrimaryIcon,
-          ),
+          child: primaryButton,
         ),
       ],
     );

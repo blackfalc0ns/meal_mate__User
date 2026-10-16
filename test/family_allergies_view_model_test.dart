@@ -286,6 +286,22 @@ class _FoodPreferencesRepository implements FoodPreferencesRepository {
   }
 
   @override
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesAllergies({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) async => ApiSuccessResult(data: catalog.allergens);
+
+  @override
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesIngredients({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) async => ApiSuccessResult(data: catalog.ingredients);
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

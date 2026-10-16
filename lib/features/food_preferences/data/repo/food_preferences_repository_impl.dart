@@ -51,6 +51,37 @@ class FoodPreferencesRepositoryImpl implements FoodPreferencesRepository {
   }
 
   @override
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesAllergies({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) => safeApiCall(() async {
+    final response = await _remoteDataSource.getFoodPreferencesAllergies(
+      page: page,
+      pageSize: pageSize,
+      search: search,
+    );
+    return response.toAllergyCatalog();
+  });
+
+  @override
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesIngredients({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) => safeApiCall(() async {
+    final response = await _remoteDataSource
+        .getFoodPreferencesDislikedIngredients(
+          page: page,
+          pageSize: pageSize,
+          search: search,
+        );
+    return response.toDislikedIngredientCatalog();
+  });
+
+  @override
   Future<ApiResult<void>> updateFoodPreferences(
     FoodPreferencesEntity preferences,
   ) {

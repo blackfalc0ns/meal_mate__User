@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/config/theme/font_manager.dart';
-import 'package:meal_meat_user/config/theme/spacing.dart';
-import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
+import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions.dart';
 
 class FamilyAllergiesActions extends StatelessWidget {
   const FamilyAllergiesActions({
@@ -10,45 +7,26 @@ class FamilyAllergiesActions extends StatelessWidget {
     required this.nextText,
     required this.isLoading,
     required this.onNext,
-    required this.onSkip,
+    this.progress,
+    this.progressLabel,
   });
 
   final String nextText;
   final bool isLoading;
   final VoidCallback? onNext;
-  final VoidCallback onSkip;
+  final double? progress;
+  final String? progressLabel;
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-
-    return Row(
-      children: [
-        SizedBox(
-          width: Spacing.familyAllergiesSkipWidth,
-          child: AppButton.outlined(
-            text: locale.skip,
-            height: Spacing.familyAllergiesActionsHeight,
-            borderRadius: Spacing.familyAllergiesActionsRadius,
-            color: color.primary,
-            fontSize: FontSize.size12,
-            onPressed: isLoading ? null : onSkip,
-          ),
-        ),
-        const SizedBox(width: Spacing.familyAllergiesActionsGap),
-        Expanded(
-          child: AppButton.filled(
-            text: nextText,
-            height: Spacing.familyAllergiesActionsHeight,
-            borderRadius: Spacing.familyAllergiesActionsRadius,
-            color: color.primary,
-            fontSize: FontSize.size12,
-            isLoading: isLoading,
-            onPressed: onNext,
-          ),
-        ),
-      ],
+    return FamilyProgramActions(
+      nextText: nextText,
+      nextIcon: Icons.arrow_forward_ios_rounded,
+      onNextPressed: onNext,
+      isLoading: isLoading,
+      progress: progress,
+      progressLabel: progressLabel,
+      showSecondary: false,
     );
   }
 }

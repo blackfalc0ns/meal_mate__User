@@ -12,4 +12,24 @@ class GetFoodPreferencesCatalogUseCase {
   Future<ApiResult<FoodPreferencesCatalogEntity>> call() {
     return _repository.getFoodPreferencesCatalog();
   }
+
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>> searchAllergies({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) => _repository.searchFoodPreferencesAllergies(
+    page: page,
+    pageSize: pageSize,
+    search: search,
+  );
+
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>> searchIngredients({
+    required int page,
+    required int pageSize,
+    String? search,
+  }) => _repository.searchFoodPreferencesIngredients(
+    page: page,
+    pageSize: pageSize,
+    search: search,
+  );
 }

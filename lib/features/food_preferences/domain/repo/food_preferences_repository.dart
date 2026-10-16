@@ -7,6 +7,20 @@ abstract interface class FoodPreferencesRepository {
 
   Future<ApiResult<FoodPreferencesCatalogEntity>> getFoodPreferencesCatalog();
 
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesAllergies({
+    required int page,
+    required int pageSize,
+    String? search,
+  });
+
+  Future<ApiResult<List<FoodPreferenceCatalogItemEntity>>>
+  searchFoodPreferencesIngredients({
+    required int page,
+    required int pageSize,
+    String? search,
+  });
+
   Future<ApiResult<void>> updateFoodPreferences(
     FoodPreferencesEntity preferences,
   );

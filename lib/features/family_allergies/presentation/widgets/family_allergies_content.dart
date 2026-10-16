@@ -55,6 +55,17 @@ class FamilyAllergiesContent extends StatelessWidget {
       state.ingredientSearch,
       locale.localeName,
     );
+    final totalCount = state.members.length;
+    final completedCount = state.members.asMap().entries.where((entry) {
+      final m = entry.value;
+      if (entry.key == state.currentIndex) {
+        return state.selectedCodes.isNotEmpty;
+      }
+      return m.allergiesCompleted || m.hasNoAllergies || m.allergies.isNotEmpty;
+    }).length;
+    final progress = totalCount > 0 ? (completedCount / totalCount) : 0.0;
+    final allCompleted = totalCount > 0 && completedCount == totalCount;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -87,7 +98,6 @@ class FamilyAllergiesContent extends StatelessWidget {
                 const SizedBox(height: Spacing.xxs),
                 Text(
                   locale.family_allergies_food_subtitle,
-
                   textAlign: TextAlign.start,
                   style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
@@ -152,19 +162,20 @@ class FamilyAllergiesContent extends StatelessWidget {
             bottom: Spacing.md,
           ),
           child: FamilyAllergiesActions(
-            nextText: state.currentIndex == state.members.length - 1
+            nextText:
+                state.currentIndex == state.members.length - 1 || allCompleted
                 ? locale.family_next_package_days
                 : locale.family_allergies_save_next_member,
             isLoading: state.isSaving,
+            progress: progress,
+            progressLabel: totalCount > 1 && !allCompleted
+                ? '($completedCount/$totalCount)'
+                : null,
             onNext: state.canSave
                 ? () => viewModel.doIntent(
                     const SaveCurrentFamilyAllergiesEvent(),
                   )
                 : null,
-            onSkip: () {
-              viewModel.doIntent(const ToggleFamilyAllergyEvent('NONE'));
-              viewModel.doIntent(const SaveCurrentFamilyAllergiesEvent());
-            },
           ),
         ),
       ],

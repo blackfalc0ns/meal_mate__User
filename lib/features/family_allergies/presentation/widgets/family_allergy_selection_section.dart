@@ -89,17 +89,17 @@ class _FamilyAllergySelectionSectionState
             child: TextField(
               onChanged: widget.onSearch,
               textAlign: TextAlign.start,
-              style: getRegularStyle(
+              style: getMediumStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
+                fontSize: FontSize.size11,
                 color: color.onSurface,
               ),
               decoration: InputDecoration(
                 fillColor: Colors.transparent,
                 hintText: widget.searchHint,
-                hintStyle: getRegularStyle(
+                hintStyle: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size10,
+                  fontSize: FontSize.size11,
                   color: color.onSurfaceVariant,
                 ),
                 suffixIcon: Icon(
