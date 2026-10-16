@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -171,8 +170,6 @@ class FamilyProgramSetupScreen extends StatelessWidget {
       );
     }
 
-    return FamilyProgramContent(
-      state: state,
-    ).animate().fadeIn(duration: 250.ms);
+    return FamilyProgramContent(state: state);
   }
 }

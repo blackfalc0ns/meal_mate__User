@@ -21,6 +21,8 @@ class FamilyFlowActions extends StatelessWidget {
     this.isPrimaryLoading = false,
     this.primaryFlex = 1,
     this.gap = Spacing.md,
+    this.progress,
+    this.progressLabel,
   });
 
   final bool showSecondary;
@@ -39,6 +41,8 @@ class FamilyFlowActions extends StatelessWidget {
   final int primaryFlex;
 
   final double gap;
+  final double? progress;
+  final String? progressLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,9 @@ class FamilyFlowActions extends StatelessWidget {
         ? color.onPrimary
         : color.onSurface.withValues(alpha: 0.38);
 
-    final resolvedPrimaryText = primaryText ?? locale.family_next_payment;
+    final resolvedPrimaryText = progressLabel == null
+        ? (primaryText ?? locale.family_next_payment)
+        : '${primaryText ?? locale.family_next_payment}  $progressLabel';
     final Widget resolvedPrimaryIcon =
         primaryIconWidget ??
         (primaryIcon != null
@@ -62,7 +68,10 @@ class FamilyFlowActions extends StatelessWidget {
               ));
 
     if (!showSecondary) {
-      return AppButton.filled(
+      return _ProgressButton(
+        progress: progress,
+        enabled: isPrimaryEnabled,
+        child: AppButton.filled(
         iconBeforeText: false,
         text: resolvedPrimaryText,
         onPressed: onPrimaryPressed,
@@ -72,6 +81,7 @@ class FamilyFlowActions extends StatelessWidget {
         textColor: primaryTextColor,
         fontSize: FontSize.size11,
         iconWidget: resolvedPrimaryIcon,
+        ),
       );
     }
 

@@ -22,83 +22,92 @@ class FamilyProgramSummaryCard extends StatelessWidget {
         border: Border.all(color: color.outlineVariant),
         borderRadius: BorderRadius.circular(Spacing.md),
       ),
-      child: Row(
-        children: [
-          ClipOval(
-            child: member.imageAsset.isNotEmpty
-                ? Image.asset(
-                    member.imageAsset,
-                    width: Spacing.familyProgramSummaryAvatarSize,
-                    height: Spacing.familyProgramSummaryAvatarSize,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => Icon(
-                      Icons.person_rounded,
-                      color: color.primary,
-                      size: Spacing.familyProgramSummaryAvatarSize,
-                    ),
-                  )
-                : Container(
-                    width: Spacing.familyProgramSummaryAvatarSize,
-                    height: Spacing.familyProgramSummaryAvatarSize,
-                    color: color.surfaceContainerHighest,
-                    child: Icon(
-                      Icons.person_rounded,
-                      color: color.primary,
-                      size: Spacing.iconMd,
+      clipBehavior: Clip.hardEdge,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 220),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        layoutBuilder: (currentChild, previousChildren) {
+          return Stack(
+            fit: StackFit.expand,
+            children: <Widget>[...previousChildren, ?currentChild],
+          );
+        },
+        transitionBuilder: (child, animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(0, -0.2),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
                     ),
                   ),
+              child: child,
+            ),
+          );
+        },
+        child: Row(
+          key: ValueKey(
+            '${member.name}_${member.age}_${member.gender}_${member.imageAsset}_${member.roleLabel}',
           ),
-          const SizedBox(width: Spacing.sm),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  member.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
-                    color: color.onSurface,
+          children: [
+            ClipOval(
+              child: member.imageAsset.isNotEmpty
+                  ? Image.asset(
+                      member.imageAsset,
+                      width: Spacing.familyProgramSummaryAvatarSize,
+                      height: Spacing.familyProgramSummaryAvatarSize,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Icon(
+                        Icons.person_rounded,
+                        color: color.primary,
+                        size: Spacing.familyProgramSummaryAvatarSize,
+                      ),
+                    )
+                  : Container(
+                      width: Spacing.familyProgramSummaryAvatarSize,
+                      height: Spacing.familyProgramSummaryAvatarSize,
+                      color: color.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.person_rounded,
+                        color: color.primary,
+                        size: Spacing.iconMd,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: Spacing.sm),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    member.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: getSemiBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size14,
+                      color: color.onSurface,
+                    ),
                   ),
-                ),
-                const SizedBox(height: Spacing.xs),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_month_rounded,
-                      size: Spacing.iconSm,
-                      color: color.primary,
-                    ),
-                    const SizedBox(width: Spacing.xss),
-                    Flexible(
-                      child: Text(
-                        member.age,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
-                        ),
+                  const SizedBox(height: Spacing.xs),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_month_rounded,
+                        size: Spacing.iconSm,
+                        color: color.primary,
                       ),
-                    ),
-                    if (member.gender.isNotEmpty) ...[
-                      const SizedBox(width: Spacing.md),
-                      Container(
-                        width: Spacing.xss,
-                        height: Spacing.xss,
-                        decoration: BoxDecoration(
-                          color: color.primary,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: Spacing.xs),
+                      const SizedBox(width: Spacing.xss),
                       Flexible(
                         child: Text(
-                          member.gender,
+                          member.age,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: getRegularStyle(
@@ -108,32 +117,56 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (member.gender.isNotEmpty) ...[
+                        const SizedBox(width: Spacing.md),
+                        Container(
+                          width: Spacing.xss,
+                          height: Spacing.xss,
+                          decoration: BoxDecoration(
+                            color: color.primary,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: Text(
+                            member.gender,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-              ],
-            ),
-          ),
-          if (member.roleLabel.isNotEmpty) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xss,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-              ),
-              child: Text(
-                member.roleLabel,
-                style: getSemiBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size10,
-                  color: color.primary,
-                ),
+                  ),
+                ],
               ),
             ),
+            if (member.roleLabel.isNotEmpty) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.sm,
+                  vertical: Spacing.xss,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                ),
+                child: Text(
+                  member.roleLabel,
+                  style: getSemiBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size10,
+                    color: color.primary,
+                  ),
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

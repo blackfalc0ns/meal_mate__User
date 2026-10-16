@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
@@ -113,19 +114,28 @@ class FamilyProgramCard extends StatelessWidget {
               PositionedDirectional(
                 top: -Spacing.xs,
                 start: -Spacing.xs,
-                child: Container(
-                  width: Spacing.familyProgramCheckSize,
-                  height: Spacing.familyProgramCheckSize,
-                  decoration: BoxDecoration(
-                    color: color.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.check_rounded,
-                    color: color.onPrimary,
-                    size: Spacing.iconSm,
-                  ),
-                ),
+                child:
+                    Container(
+                          width: Spacing.familyProgramCheckSize,
+                          height: Spacing.familyProgramCheckSize,
+                          decoration: BoxDecoration(
+                            color: color.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.check_rounded,
+                            color: color.onPrimary,
+                            size: Spacing.iconSm,
+                          ),
+                        )
+                        .animate()
+                        .scale(
+                          begin: const Offset(0.3, 0.3),
+                          end: const Offset(1.0, 1.0),
+                          duration: 200.ms,
+                          curve: Curves.easeOutBack,
+                        )
+                        .fadeIn(duration: 150.ms),
               ),
           ],
         ),

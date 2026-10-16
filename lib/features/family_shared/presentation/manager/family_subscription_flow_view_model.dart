@@ -15,16 +15,17 @@ class FamilySubscriptionFlowViewModel
     extends Cubit<FamilySubscriptionFlowState> {
   FamilySubscriptionFlowViewModel(
     this._getFamilyFlowCurrentUseCase,
-    this._snapshotStore,
+    this._snapshotStore, [
     this._abandonFamilyDraftUseCase,
-  ) : super(FamilySubscriptionFlowState(flow: _snapshotStore.current));
+  ]) : super(FamilySubscriptionFlowState(flow: _snapshotStore.current));
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final FamilyFlowSnapshotStore _snapshotStore;
-  final AbandonFamilyDraftUseCase _abandonFamilyDraftUseCase;
+  final AbandonFamilyDraftUseCase? _abandonFamilyDraftUseCase;
 
   Future<void> abandonDraft() async {
     if (state.isAbandonDraftLoading) return;
+    if (_abandonFamilyDraftUseCase == null) return;
     emit(
       state.copyWith(isAbandonDraftLoading: true, isAbandonDraftSuccess: false),
     );
