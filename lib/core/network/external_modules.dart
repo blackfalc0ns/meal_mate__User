@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +8,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meal_meat_user/core/services/language_interceptor.dart';
-
 import 'package:meal_meat_user/core/services/server_time_interceptor.dart';
 import '../di/di.dart';
 import '../services/server_time_service.dart';
@@ -27,7 +24,7 @@ abstract class ExternalModules {
   ) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: NetworkConstants.baseUrl,
+        baseUrl: NetworkConstants.baseUrl.trim(),
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
@@ -65,84 +62,6 @@ abstract class ExternalModules {
       compact: true,
       maxWidth: 120,
       enabled: kDebugMode,
-      logPrint: (object) {
-        final text = object.toString();
-        final sanitized = text
-            .replaceAll(
-              RegExp(r'"password"\s*:\s*"[^"]*"'),
-              '"password": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"newPassword"\s*:\s*"[^"]*"'),
-              '"newPassword": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"currentPassword"\s*:\s*"[^"]*"'),
-              '"currentPassword": "[REDACTED]"',
-            )
-            .replaceAll(RegExp(r'"otp"\s*:\s*"[^"]*"'), '"otp": "[REDACTED]"')
-            .replaceAll(RegExp(r'"code"\s*:\s*"[^"]*"'), '"code": "[REDACTED]"')
-            .replaceAll(
-              RegExp(r'"accessToken"\s*:\s*"[^"]*"'),
-              '"accessToken": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"refreshToken"\s*:\s*"[^"]*"'),
-              '"refreshToken": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"paymentUrl"\s*:\s*"[^"]*"'),
-              '"paymentUrl": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"cvv"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"cvv": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"cardNumber"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"cardNumber": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"controlProof"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"controlProof": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"proof"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"proof": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"sdp"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"sdp": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"candidate"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"candidate": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"credential"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"credential": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(
-                r'"(?:customerPhone|phone|phoneNumber)"\s*:\s*"[^"]*"',
-                caseSensitive: false,
-              ),
-              '"customerPhone": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'"deliveryAddress"\s*:\s*"[^"]*"', caseSensitive: false),
-              '"deliveryAddress": "[REDACTED]"',
-            )
-            .replaceAll(
-              RegExp(r'X-Voice-Device-Proof:\s*[^\r\n]+', caseSensitive: false),
-              'X-Voice-Device-Proof: [REDACTED]',
-            )
-            .replaceAll(
-              RegExp(r'Bearer\s+[A-Za-z0-9\-_.=]+'),
-              'Bearer [REDACTED]',
-            );
-        developer.log(sanitized, name: 'DIO');
-      },
     );
   }
 
@@ -154,9 +73,7 @@ abstract class ExternalModules {
   @lazySingleton
   FlutterSecureStorage flutterSecureStorage() {
     return const FlutterSecureStorage(
-      aOptions: AndroidOptions(
-        resetOnError: true,
-      ),
+      aOptions: AndroidOptions(resetOnError: true),
     );
   }
 

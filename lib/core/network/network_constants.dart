@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = "https://maelmate.runasp.net";
+  static const String baseUrl = "https://api.trymealmate.com";
   static const String authorization = 'Authorization';
   static const String bearer = "Bearer";
   static const String voiceDeviceSessionHeader = 'X-Voice-Device-Session';
@@ -259,7 +259,6 @@ abstract class EndPoints {
       '/api/v2/voice-calls/{callId}/reports/connected';
   static const String voiceCallHeartbeat =
       '/api/v2/voice-calls/{callId}/heartbeat';
-  static const String voiceCallDisplay =
-      '/api/v2/voice-calls/{callId}/display';
+  static const String voiceCallDisplay = '/api/v2/voice-calls/{callId}/display';
   static const String voiceCallHub = '/hubs/voice-call-v2';
 }

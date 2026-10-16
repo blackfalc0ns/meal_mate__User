@@ -36,6 +36,13 @@ class CallingViewModel extends Cubit<CallingState> {
   StreamSubscription<VoiceCallDisplayEntity?>? _displaySubscription;
   StreamSubscription<int>? _durationSubscription;
 
+  @override
+  void emit(CallingState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
+
   void _initSubscriptions() {
     final manager = _voiceCallManager;
     if (manager == null) return;

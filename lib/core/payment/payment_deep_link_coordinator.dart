@@ -13,9 +13,9 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
     required TokenService tokenService,
     required PaymentAttemptStore paymentAttemptStore,
     required AppNavigatorService navigatorService,
-  })  : _tokenService = tokenService,
-        _paymentAttemptStore = paymentAttemptStore,
-        _navigatorService = navigatorService;
+  }) : _tokenService = tokenService,
+       _paymentAttemptStore = paymentAttemptStore,
+       _navigatorService = navigatorService;
 
   final TokenService _tokenService;
   final PaymentAttemptStore _paymentAttemptStore;
@@ -60,8 +60,16 @@ class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
         return true;
       }
     }
+    // Swallow system resume/launcher intents that send an empty route or '/'
+    // (e.g. when CallKit or Android system brings the app back to foreground)
+    // to prevent Flutter from pushing duplicate '/' onto the Navigator stack.
+    final path = uri.path;
+    if (uri.scheme.isEmpty && (path.isEmpty || path == '/')) {
+      return true;
+    }
     return super.didPushRouteInformation(routeInformation);
   }
+
 
   Future<void> handleReturn(PaymentReturn paymentReturn) async {
     final now = DateTime.now();

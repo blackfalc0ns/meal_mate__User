@@ -5,7 +5,6 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../../../core/network/api_results.dart';
 import '../../../../core/services/app_navigator_service.dart';
 import '../../../../core/services/language_service.dart';
@@ -159,6 +158,7 @@ class VoiceCallManager with WidgetsBindingObserver {
   Timer? _heartbeatTimer;
   Timer? _durationTimer;
   Timer? _ringDeadlineTimer;
+  final Stopwatch _ringStopwatch = Stopwatch();
   final Stopwatch _durationStopwatch = Stopwatch();
   int _baseDurationSeconds = 0;
   int _secondsElapsed = 0;
@@ -221,6 +221,21 @@ class VoiceCallManager with WidgetsBindingObserver {
         '[VoiceCallManager] App resumed. Reconciling voice call state...',
       );
       unawaited(_reconcileAfterResume());
+    } else if (state == AppLifecycleState.paused) {
+      if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
+        debugPrint(
+          '[VoiceCallManager] App moved to background while ringing; triggering CallKit notification',
+        );
+        unawaited(_callKitService.stopForegroundRingtone());
+        unawaited(
+          _callKitService.showIncomingCall(
+            callId: _currentSnapshot!.callId,
+            callerName: _currentDisplay?.driverName ?? 'مندوب التوصيل',
+            callerRole: _currentDisplay?.driverRole ?? 'مندوب التوصيل',
+            tripStopId: _currentSnapshot!.tripStopId,
+          ),
+        );
+      }
     }
   }
 
@@ -498,24 +513,51 @@ class VoiceCallManager with WidgetsBindingObserver {
         );
         _ringDeadlineTimer?.cancel();
         _ringDeadlineTimer = null;
+        _ringStopwatch.stop();
+        _ringStopwatch.reset();
         await _callKitService.endCall(snapshot.callId);
         await _reconcileCall(snapshot.callId);
         await _cleanupCall();
         return;
       }
 
-      final remaining = deadline != null
-          ? deadline.difference(nowServer)
-          : const Duration(seconds: 30);
+      Duration remaining;
+      if (deadline != null && _serverTimeService.hasSynced) {
+        final diff = deadline.difference(nowServer);
+        remaining = diff > Duration.zero ? diff : const Duration(seconds: 30);
+      } else if (deadline != null && snapshot.startedAtUtc != null) {
+        final totalWindow = deadline.difference(snapshot.startedAtUtc!);
+        remaining = totalWindow > Duration.zero
+            ? totalWindow
+            : const Duration(seconds: 30);
+      } else {
+        remaining = const Duration(seconds: 30);
+      }
       final durationSec = remaining.inSeconds > 0 ? remaining.inSeconds : 30;
 
       _ringDeadlineTimer?.cancel();
+      _ringStopwatch.reset();
+      _ringStopwatch.start();
       _ringDeadlineTimer = Timer(remaining, () async {
+        if (_currentSnapshot?.callId != snapshot.callId ||
+            _currentSnapshot?.status != VoiceCallStatus.ringing ||
+            _inFlightAccepts.containsKey(snapshot.callId)) {
+          debugPrint(
+            '[VoiceCallManager] Ring deadline timer reached but call is no longer ringing (${_currentSnapshot?.status}). Ignoring.',
+          );
+          _ringDeadlineTimer?.cancel();
+          _ringDeadlineTimer = null;
+          _ringStopwatch.stop();
+          _ringStopwatch.reset();
+          return;
+        }
         debugPrint(
           '[VoiceCallManager] Ring deadline timer reached for call ${snapshot.callId}. Dismissing UI & reconciling.',
         );
         _ringDeadlineTimer?.cancel();
         _ringDeadlineTimer = null;
+        _ringStopwatch.stop();
+        _ringStopwatch.reset();
         await _callKitService.endCall(snapshot.callId);
         await _reconcileCall(snapshot.callId);
         if (_currentSnapshot?.status == VoiceCallStatus.ringing) {
@@ -540,6 +582,9 @@ class VoiceCallManager with WidgetsBindingObserver {
         snapshot.status == VoiceCallStatus.active) {
       _ringDeadlineTimer?.cancel();
       _ringDeadlineTimer = null;
+      _ringStopwatch.stop();
+      _ringStopwatch.reset();
+      await _callKitService.setCallConnected(snapshot.callId);
       _startHeartbeatTimer(snapshot.callId);
       if (snapshot.status == VoiceCallStatus.active) {
         if (snapshot.connectedAtUtc != null) {
@@ -567,16 +612,44 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
     switch (event.type) {
       case CallKitActionType.accept:
-        unawaited(answerCall(event.callId));
+        unawaited(_acceptCallKitCall(event.callId));
       case CallKitActionType.decline:
+        if (_inFlightAccepts.containsKey(event.callId) ||
+            _currentSnapshot?.status != VoiceCallStatus.ringing) {
+          debugPrint(
+            '[VoiceCallManager] Discarding stale CallKit decline for non-ringing call ${event.callId} (${_currentSnapshot?.status})',
+          );
+          return;
+        }
         unawaited(handleReceiverHangup(event.callId));
       case CallKitActionType.ended:
+        if (_inFlightAccepts.containsKey(event.callId) ||
+            _currentSnapshot?.status == VoiceCallStatus.accepted ||
+            _currentSnapshot?.status == VoiceCallStatus.connecting) {
+          debugPrint(
+            '[VoiceCallManager] Discarding CallKit ended for call ${event.callId} during connection transition (${_currentSnapshot?.status})',
+          );
+          return;
+        }
         unawaited(handleReceiverHangup(event.callId));
       case CallKitActionType.timeout:
+        if (_inFlightAccepts.containsKey(event.callId) ||
+            _currentSnapshot?.status != VoiceCallStatus.ringing) {
+          debugPrint(
+            '[VoiceCallManager] Discarding CallKit timeout for non-ringing call ${event.callId} (${_currentSnapshot?.status})',
+          );
+          return;
+        }
         unawaited(_handleRingTimeout(event.callId));
       case CallKitActionType.other:
         break;
     }
+  }
+
+  Future<void> _acceptCallKitCall(String callId) async {
+    await _callKitService.setCallConnected(callId);
+    await _callKitService.hideIncomingCall(callId);
+    await answerCall(callId);
   }
 
   Future<void> _handleRingTimeout(String callId) async {
@@ -584,6 +657,8 @@ class VoiceCallManager with WidgetsBindingObserver {
     if (_currentSnapshot != null && _currentSnapshot!.callId != callId) return;
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
+    _ringStopwatch.stop();
+    _ringStopwatch.reset();
     await _reconcileCall(callId);
     if (_currentSnapshot?.callId == callId &&
         _currentSnapshot?.status == VoiceCallStatus.ringing) {
@@ -606,6 +681,15 @@ class VoiceCallManager with WidgetsBindingObserver {
       );
       await _callKitService.endCall(callId);
       await _cleanupCall(targetCallId: callId);
+      return const ApiSuccessResult<void>(data: null);
+    }
+
+    if (_inFlightAccepts.containsKey(callId) ||
+        current.status == VoiceCallStatus.accepted ||
+        current.status == VoiceCallStatus.connecting) {
+      debugPrint(
+        '[VoiceCallManager] Ignoring CallKit hangup for call $callId during connection transition (${current.status})',
+      );
       return const ApiSuccessResult<void>(data: null);
     }
 
@@ -1250,10 +1334,13 @@ class VoiceCallManager with WidgetsBindingObserver {
               snapshot?.winningDeviceSessionId ==
                   _currentDeviceSession?.deviceSessionId);
     }
+
     if (!valid()) return false;
     debugPrint('[VoiceCallManager] answerCall: $callId');
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
+    _ringStopwatch.stop();
+    _ringStopwatch.reset();
 
     if (!_signalRService.isConnected || !_signalRService.isBound) {
       debugPrint(
@@ -1288,6 +1375,8 @@ class VoiceCallManager with WidgetsBindingObserver {
       return false;
     }
 
+    await _callKitService.setCallConnected(callId);
+
     final iceResult = await _getVoiceIceServersUseCase(callId);
     if (!valid()) return false;
     if (iceResult is! ApiSuccessResult<VoiceIceServersConfigEntity>) {
@@ -1303,8 +1392,8 @@ class VoiceCallManager with WidgetsBindingObserver {
 
     // Ensure microphone permission is requested before initializing audio
     try {
-      final isGranted =
-          await VoicePermissionService.instance.isMicrophoneGranted();
+      final isGranted = await VoicePermissionService.instance
+          .isMicrophoneGranted();
       if (!isGranted) {
         debugPrint(
           '[VoiceCallManager] Requesting microphone permission before answering call $callId',
@@ -1534,6 +1623,8 @@ class VoiceCallManager with WidgetsBindingObserver {
     _outboundIceCandidates.clear();
     _ringDeadlineTimer?.cancel();
     _ringDeadlineTimer = null;
+    _ringStopwatch.stop();
+    _ringStopwatch.reset();
     _heartbeatTimer?.cancel();
     _heartbeatTimer = null;
     _stopDurationTimer();

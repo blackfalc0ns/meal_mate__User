@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/services/voice_permission_service.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -107,6 +108,10 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
         if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
+          } else {
+            unawaited(
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home),
+            );
           }
         }
       },

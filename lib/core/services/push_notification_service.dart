@@ -37,8 +37,9 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         if (decoded is Map<String, dynamic>) {
           final callId = decoded['callId']?.toString();
           final eventType = decoded['eventType']?.toString().toLowerCase();
-          final payload =
-              decoded['payload'] is Map ? decoded['payload'] as Map : null;
+          final payload = decoded['payload'] is Map
+              ? decoded['payload'] as Map
+              : null;
           final status = payload?['status']?.toString().toLowerCase();
 
           if (callId != null && callId.isNotEmpty) {
@@ -60,8 +61,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
                     );
                   }
                   final nowServer = DateTime.now().toUtc().add(
-                        Duration(milliseconds: serverOffsetMs),
-                      );
+                    Duration(milliseconds: serverOffsetMs),
+                  );
                   final diff = deadline.difference(nowServer);
                   if (diff.isNegative || diff.inMilliseconds <= 0) {
                     debugPrint(
@@ -325,7 +326,11 @@ class PushNotificationService {
             await GetIt.instance<VoiceCallManager>().ensureDeviceRegistered(
               fcmDeviceTokenId: fcmDeviceTokenId,
               apnsVoipToken: voipToken,
-              force: false,
+              // The app can create an anonymous voice session during startup
+              // before authentication. Once the FCM registry ID is available
+              // after login/token refresh, re-register so the voice session is
+              // associated with the authenticated account and this token.
+              force: true,
             );
           }
         }
@@ -402,7 +407,9 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(message.data);
+        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(
+          message.data,
+        );
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push: $e');
       }
@@ -446,7 +453,9 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(message.data);
+        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(
+          message.data,
+        );
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push tap: $e');
       }

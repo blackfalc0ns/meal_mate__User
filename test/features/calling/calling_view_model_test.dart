@@ -83,6 +83,9 @@ class FakeWebRtcServiceForVm extends Fake implements VoiceWebRtcService {
 
   @override
   bool get isSpeakerOn => speakerOn;
+
+  @override
+  bool get hasAudioPermissionError => false;
 }
 
 void main() {

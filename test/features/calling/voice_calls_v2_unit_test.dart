@@ -233,7 +233,16 @@ class FakeCallKitService extends Fake implements VoiceCallKitService {
     endedCalls.add(callId);
   }
 
+  final List<String> connectedCalls = [];
   int endAllCallsCount = 0;
+  @override
+  Future<void> setCallConnected(String callId) async {
+    connectedCalls.add(callId);
+  }
+
+  @override
+  Future<void> hideIncomingCall(String callId) async {}
+
   @override
   Future<void> endAllCalls() async {
     endAllCallsCount++;
@@ -250,6 +259,12 @@ class FakeCallKitService extends Fake implements VoiceCallKitService {
   }) async {
     shownCalls.add(callId);
   }
+
+  @override
+  Future<void> startForegroundRingtone() async {}
+
+  @override
+  Future<void> stopForegroundRingtone() async {}
 
   @override
   void dispose() {
@@ -892,13 +907,38 @@ void main() {
     );
   });
 
-  group('VoiceCallKitService Programmatic Suppression', () {
+  group('VoiceCallKitService Programmatic Suppression & Connected Transition', () {
     test('programmatic endCall adds callId to suppression set', () async {
       final kit = VoiceCallKitService();
       await kit.endCall('call-501');
 
       // The callId was registered for programmatic suppression so duplicate native events won't cascade
       kit.dispose();
+    });
+
+    test('setCallConnected marks call connected and cleans up appropriately', () async {
+      final kit = VoiceCallKitService();
+      await kit.setCallConnected('call-502');
+      // Calling a second time is safely deduplicated
+      await kit.setCallConnected('call-502');
+      kit.dispose();
+    });
+
+    test('applying active snapshot invokes setCallConnected on CallKit', () async {
+      final envelope = {
+        'eventId': 'ev-act-kit-1',
+        'callId': 'call-act-kit-1',
+        'sequence': 2,
+        'payload': {
+          'status': 'Active',
+          'connectedAtUtc': DateTime.now().toUtc().toIso8601String(),
+        },
+      };
+
+      manager.handleSignalRCallEventForTesting(envelope);
+      await pumpEventQueue();
+
+      expect(callKit.connectedCalls.contains('call-act-kit-1'), isTrue);
     });
   });
 

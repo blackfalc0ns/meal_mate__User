@@ -463,6 +463,8 @@ class RouteGenerator {
           settings: settings,
           page: PaymentSuccessScreen(args: args),
         );
+      case '/':
+      case '':
       case AppRoutes.splash:
         return _buildRoute(settings: settings, page: const SplashScreen());
       case AppRoutes.onboarding:

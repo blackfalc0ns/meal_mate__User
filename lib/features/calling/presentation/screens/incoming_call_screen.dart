@@ -92,6 +92,10 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
         if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
+          } else {
+            unawaited(
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home),
+            );
           }
         } else if (state.status == VoiceCallStatus.accepted ||
             state.status == VoiceCallStatus.connecting ||
