@@ -46,33 +46,25 @@ class FamilyProgramCard extends StatelessWidget {
                 vertical: Spacing.xs,
               ),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? color.primaryContainer.withValues(alpha: 0.12)
-                    : color.surface,
                 borderRadius: BorderRadius.circular(
                   Spacing.familyProgramCardSelectedRadius,
                 ),
                 border: Border.all(
-                  color: isSelected ? color.primary : borderColor,
-                  width: isSelected
-                      ? Spacing.familySelectedBorderWidth
-                      : Spacing.border,
+                  color: isSelected ? color.primary : color.onError,
+                  width:
+                      // isSelected
+                      //     ? Spacing.familySelectedBorderWidth
+                      // :
+                      Spacing.border,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.04),
-                    blurRadius: Spacing.md,
-                    offset: const Offset(0, Spacing.xs),
-                  ),
-                ],
               ),
               child: Row(
                 children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(height: Spacing.sm),
                         Text(
                           program.title,
                           maxLines: 1,
@@ -83,41 +75,31 @@ class FamilyProgramCard extends StatelessWidget {
                             color: color.onSurface,
                           ),
                         ),
-                        const SizedBox(height: Spacing.sm),
+                        const SizedBox(height: Spacing.xs),
                         Text(
                           program.description,
-                          maxLines: 2,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.right,
-                          style: getBoldStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size9,
                             color: color.onSurfaceVariant,
-                          ).copyWith(height: 1.45),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
-                  // if (program.imageAsset.startsWith('assets/'))
-                  //   Image.asset(
-                  //     program.imageAsset,
-                  //     width: Spacing.familyProgramImageSize,
-                  //     height: Spacing.familyProgramImageSize,
-                  //     fit: BoxFit.contain,
-                  //     errorBuilder: (_, _, _) => Icon(
-                  //       Icons.restaurant_rounded,
-                  //       color: color.primary,
-                  //       size: Spacing.familyProgramImageSize,
-                  //     ),
-                  //   )
-                  // else
-                  AppCachedNetworkImage(
-                    imageUrl: program.imageAsset,
-                    width: Spacing.familyProgramImageSize,
-                    height: Spacing.familyProgramImageSize,
-                    fit: BoxFit.cover,
-                    semanticLabel: program.title,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                    child: AppCachedNetworkImage(
+                      imageUrl: program.imageAsset,
+                      width: 52,
+                      height: 52,
+                      fit: BoxFit.cover,
+                      semanticLabel: program.title,
+                    ),
                   ),
                 ],
               ),
@@ -125,7 +107,7 @@ class FamilyProgramCard extends StatelessWidget {
             if (isSelected)
               PositionedDirectional(
                 top: -Spacing.sm,
-                end: -Spacing.xs,
+                start: -Spacing.xs,
                 child: Container(
                   width: Spacing.familyProgramCheckSize,
                   height: Spacing.familyProgramCheckSize,

@@ -35,18 +35,13 @@ class FamilyProgramMemberCard extends StatelessWidget {
             height: Spacing.familyProgramMemberCardHeight,
             padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
             decoration: BoxDecoration(
-              color: member.isExcluded
-                  ? color.surfaceContainerHighest.withValues(alpha: 0.35)
-                  : member.isSelected
-                  ? color.primary.withValues(alpha: 0.08)
-                  : color.surface,
               border: Border.all(
                 color: member.isExcluded
                     ? color.outlineVariant.withValues(alpha: 0.5)
                     : member.isSelected
                     ? color.primary
                     : color.outlineVariant,
-                width: member.isSelected && !member.isExcluded ? 1.5 : 1.0,
+                width: 2,
               ),
               borderRadius: BorderRadius.circular(
                 Spacing.familyProgramMemberCardRadius,
@@ -99,11 +94,7 @@ class FamilyProgramMemberCard extends StatelessWidget {
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size9,
-                          color: member.isExcluded
-                              ? color.onSurfaceVariant.withValues(alpha: 0.7)
-                              : member.isSelected
-                              ? color.primary
-                              : color.onSurface,
+                          color: color.onSurface,
                         ),
                       ),
                       const SizedBox(height: Spacing.xs),

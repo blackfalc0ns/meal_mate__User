@@ -18,9 +18,9 @@ class FamilyProgramSummaryCard extends StatelessWidget {
       height: Spacing.familyProgramSummaryHeight,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
       decoration: BoxDecoration(
-        color: color.surfaceContainerHighest.withValues(alpha: 0.30),
+        color: const Color(0xffFAFBF9),
         border: Border.all(color: color.outlineVariant),
-        borderRadius: BorderRadius.circular(Spacing.familyProgramSummaryRadius),
+        borderRadius: BorderRadius.circular(Spacing.md),
       ),
       child: Row(
         children: [
@@ -48,7 +48,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                     ),
                   ),
           ),
-          const SizedBox(width: Spacing.xs),
+          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +86,7 @@ class FamilyProgramSummaryCard extends StatelessWidget {
                       ),
                     ),
                     if (member.gender.isNotEmpty) ...[
-                      const SizedBox(width: Spacing.xs),
+                      const SizedBox(width: Spacing.md),
                       Container(
                         width: Spacing.xss,
                         height: Spacing.xss,
