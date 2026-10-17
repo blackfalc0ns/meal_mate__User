@@ -28,15 +28,18 @@ class CalendarDeliveryTrackButton extends StatelessWidget {
     return AppButton(
       text: buttonText,
       onPressed: onPressed,
-      icon: isTrackable
-          ? Icons.location_on_rounded
-          : Icons.arrow_forward_ios_rounded,
-      iconBeforeText: true,
-      height: Spacing.buttonSmallHeight,
+      iconWidget: Icon(
+        isTrackable
+            ? Icons.location_on_rounded
+            : Icons.arrow_forward_ios_rounded,
+        color: color.primary,
+        size: Spacing.iconSm,
+      ),
+      color: color.surface,
+      textColor: color.primary,
+      height: Spacing.avatarSm,
       borderRadius: Spacing.buttonSmallRadius,
-      color: isTrackable ? color.primary : color.surfaceContainerHighest,
-      textColor: isTrackable ? color.onPrimary : color.onSurface,
-      fontSize: FontSize.size13,
+      fontSize: FontSize.size12,
     );
   }
 }

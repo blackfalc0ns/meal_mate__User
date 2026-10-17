@@ -3641,6 +3641,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_delivery_track_order => 'Track Order';
 
   @override
+  String get calendar_delivery_badge_todays_box => 'Today\'s Box';
+
+  @override
+  String get calendar_delivery_arrives_in_prefix => 'Arrives in';
+
+  @override
+  String calendar_delivery_minutes_suffix(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get calendar_delivery_driver_role => 'Delivery Driver';
+
+  @override
+  String get calendar_delivery_photo_at_door => 'Photo of box at front door';
+
+  @override
+  String get calendar_delivery_view_proof_photo => 'View Delivery Photo';
+
+  @override
+  String calendar_delivery_delivered_today_format(String time) {
+    return 'Today, $time';
+  }
+
+  @override
   String get calendar_delivery_order_code_label => 'Order #';
 
   @override

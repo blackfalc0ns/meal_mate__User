@@ -99,6 +99,7 @@ class CustomerDeliveryItemEntity {
     this.destinationAddress,
     this.deliveryDetailsUrl,
     this.detailsUrl,
+    this.deliveryPhotoUrl,
   });
 
   final String? subscriptionId;
@@ -126,6 +127,7 @@ class CustomerDeliveryItemEntity {
   final String? destinationAddress;
   final String? deliveryDetailsUrl;
   final String? detailsUrl;
+  final String? deliveryPhotoUrl;
 
   bool get isOutForDelivery =>
       deliveryStatus == CustomerDeliveryStatus.outForDelivery;

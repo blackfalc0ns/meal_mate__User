@@ -3582,6 +3582,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_delivery_track_order => 'تتبع الطلب';
 
   @override
+  String get calendar_delivery_badge_todays_box => 'بوكس اليوم';
+
+  @override
+  String get calendar_delivery_arrives_in_prefix => 'سيصل خلال';
+
+  @override
+  String calendar_delivery_minutes_suffix(String minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get calendar_delivery_driver_role => 'سائق التوصيل';
+
+  @override
+  String get calendar_delivery_photo_at_door => 'تصوير البوكس أمام المنزل';
+
+  @override
+  String get calendar_delivery_view_proof_photo => 'عرض صورة التسليم';
+
+  @override
+  String calendar_delivery_delivered_today_format(String time) {
+    return 'اليوم، $time';
+  }
+
+  @override
   String get calendar_delivery_order_code_label => 'رقم الطلب';
 
   @override

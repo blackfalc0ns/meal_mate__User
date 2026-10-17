@@ -1333,6 +1333,27 @@
     }
   },
   "calendar_delivery_track_order": "تتبع الطلب",
+  "calendar_delivery_badge_todays_box": "بوكس اليوم",
+  "calendar_delivery_arrives_in_prefix": "سيصل خلال",
+  "calendar_delivery_minutes_suffix": "{minutes} دقيقة",
+  "@calendar_delivery_minutes_suffix": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_delivery_driver_role": "سائق التوصيل",
+  "calendar_delivery_photo_at_door": "تصوير البوكس أمام المنزل",
+  "calendar_delivery_view_proof_photo": "عرض صورة التسليم",
+  "calendar_delivery_delivered_today_format": "اليوم، {time}",
+  "@calendar_delivery_delivered_today_format": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "calendar_delivery_order_code_label": "رقم الطلب",
   "calendar_delivery_step_prepared": "تم التجهيز",
   "calendar_delivery_step_out": "خرج للتوصيل",

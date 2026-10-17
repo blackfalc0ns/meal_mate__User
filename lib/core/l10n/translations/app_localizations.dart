@@ -6806,6 +6806,48 @@ abstract class AppLocalizations {
   /// **'Track Order'**
   String get calendar_delivery_track_order;
 
+  /// No description provided for @calendar_delivery_badge_todays_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Box'**
+  String get calendar_delivery_badge_todays_box;
+
+  /// No description provided for @calendar_delivery_arrives_in_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives in'**
+  String get calendar_delivery_arrives_in_prefix;
+
+  /// No description provided for @calendar_delivery_minutes_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String calendar_delivery_minutes_suffix(String minutes);
+
+  /// No description provided for @calendar_delivery_driver_role.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Driver'**
+  String get calendar_delivery_driver_role;
+
+  /// No description provided for @calendar_delivery_photo_at_door.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo of box at front door'**
+  String get calendar_delivery_photo_at_door;
+
+  /// No description provided for @calendar_delivery_view_proof_photo.
+  ///
+  /// In en, this message translates to:
+  /// **'View Delivery Photo'**
+  String get calendar_delivery_view_proof_photo;
+
+  /// No description provided for @calendar_delivery_delivered_today_format.
+  ///
+  /// In en, this message translates to:
+  /// **'Today, {time}'**
+  String calendar_delivery_delivered_today_format(String time);
+
   /// No description provided for @calendar_delivery_order_code_label.
   ///
   /// In en, this message translates to:
