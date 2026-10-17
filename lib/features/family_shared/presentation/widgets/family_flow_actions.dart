@@ -145,10 +145,7 @@ class FamilyFlowActions extends StatelessWidget {
           ),
         ),
         SizedBox(width: gap),
-        Expanded(
-          flex: primaryFlex,
-          child: primaryButton,
-        ),
+        Expanded(flex: primaryFlex, child: primaryButton),
       ],
     );
   }

@@ -99,7 +99,7 @@ void main() {
   });
 
   testWidgets(
-    'family info expands beside the icon then collapses automatically',
+    'family flow scaffold displays home action in app bar and shows home icon',
     (tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -122,18 +122,11 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(PopupMenuButton<void>), findsNothing);
-      expect(find.text('عائلة yyyy'), findsNothing);
-      await tester.tap(find.byKey(const ValueKey('family-flow-info-button')));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 250));
-
-      expect(find.text('عائلة yyyy'), findsOneWidget);
-
-      await tester.pump(const Duration(seconds: 3));
-      await tester.pump(const Duration(milliseconds: 250));
-
-      expect(find.text('عائلة yyyy'), findsNothing);
+      expect(find.byIcon(Icons.home_rounded), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('family-flow-home-button')),
+        findsOneWidget,
+      );
     },
   );
 }

@@ -17,10 +17,7 @@ final class SelectFamilyAddressMemberEvent extends FamilyAddressesEvent {
 }
 
 final class SaveFamilyMemberAddressEvent extends FamilyAddressesEvent {
-  const SaveFamilyMemberAddressEvent({
-    this.memberId,
-    this.savedAddress,
-  });
+  const SaveFamilyMemberAddressEvent({this.memberId, this.savedAddress});
 
   final String? memberId;
   final CustomerAddressEntity? savedAddress;

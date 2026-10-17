@@ -15,7 +15,9 @@ class FoodPreferencesDietaryRequestDto {
         .where((c) => c.trim().isNotEmpty)
         .toList();
     return {
-      'dietaryPreferenceCodes': codes.isEmpty ? const ['NONE'] : codes,
+      'dietaryPreferenceCodes': codes.isEmpty
+          ? const ['NO_DIETARY_RESTRICTIONS']
+          : codes,
     };
   }
 }

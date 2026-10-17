@@ -1009,7 +1009,7 @@
   "family_price_details": "تفاصيل السعر",
   "family_base_price_two_members": "السعر الأساسي (لـ 2 أفراد)",
   "family_extra_members_price": "أفراد إضافيون (2 x 7.500 KWD)",
-  "family_total": "الإجمالي:",
+  "family_total": "إجمالي اشتراك العائلة:",
   "family_confirm_plan": "تأكيد الباقة",
   "family_add_member_dialog_subtitle": "أدخل بيانات الفرد لإضافته إلى الباقة العائلية",
   "family_full_name": "الاسم الكامل",
@@ -1124,7 +1124,7 @@
   "family_subscription_program_value": "متوازن",
   "family_subscription_package_value": "4 وجبات + سناك",
   "family_subscription_days_value": "7 أيام في الأسبوع",
-  "family_price_duration_total": "إجمالي المدة",
+  "family_price_duration_total": "إجمالي اشتراك الأفراد",
   "family_new_members_subtotal": "إجمالي الأعضاء الجدد",
   "family_price_discount": "خصم العائلة (10%)",
   "family_price_tax_total": "الإجمالي شامل الضريبة (15)",
@@ -2844,5 +2844,32 @@
   "family_credential_already_issued": "تم إصدار كلمة المرور مسبقاً. يلزم إجراء إعادة تعيين صريحة لإنشاء كلمة مرور جديدة.",
   "family_credential_reset_action": "إعادة تعيين كلمة المرور",
   "family_permission_prerequisites": "المتطلبات الأساسية:",
-  "family_permission_close": "إغلاق"
+  "family_permission_close": "إغلاق",
+  "family_member_available_restaurants": "المطاعم المتاحة",
+  "family_member_no_restaurants": "لا توجد مطاعم متاحة لهذا الفرد",
+  "family_restaurant_occurrence_count": "{count, plural, =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}}",
+  "@family_restaurant_occurrence_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_restaurant_repetition_title": "تكرار المطاعم",
+  "family_restaurant_repetition_summary": "الحد الأقصى لتكرار أي مطعم هو {limit} مرات خلال فترة الاشتراك",
+  "@family_restaurant_repetition_summary": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_restaurants_count": "{count, plural, =1{مطعم واحد} =2{مطعمان} few{{count} مطاعم} many{{count} مطعم} other{{count} مطعم}}",
+  "@family_member_restaurants_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

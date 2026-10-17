@@ -35,9 +35,7 @@ class FamilyPaymentPriceSection extends StatelessWidget {
     final data = summary;
     if (data == null) return null;
 
-    final currency = data.currencyCode.isNotEmpty
-        ? data.currencyCode
-        : locale.currency;
+    final currency = resolveFamilyCurrency(locale, data.currencyCode);
     final discountPercentInt = (data.familyDiscountPercent * 100).round();
     final discountLabel = discountPercentInt > 0
         ? locale.family_package_discount_badge('$discountPercentInt%')
@@ -47,14 +45,15 @@ class FamilyPaymentPriceSection extends StatelessWidget {
       badge: discountLabel,
       note: locale.family_payment_note,
       totalLabel: locale.family_total,
-      totalValue: '${data.finalPrice.toStringAsFixed(3)} $currency',
+      totalValue: '${formatFamilyPrice(data.finalPrice)} $currency',
       rows: [
         FamilyPaymentPriceRowUiModel(
           label: data.managerPrepaid
               ? locale.family_new_members_subtotal
               : locale.family_price_duration_total,
-          value: (data.managerPrepaid ? data.newMembersSubtotal : data.subtotal)
-              .toStringAsFixed(3),
+          value: formatFamilyPrice(
+            data.managerPrepaid ? data.newMembersSubtotal : data.subtotal,
+          ),
         ),
         if (data.managerPrepaid)
           FamilyPaymentPriceRowUiModel(
@@ -67,12 +66,12 @@ class FamilyPaymentPriceSection extends StatelessWidget {
             label: discountPercentInt > 0
                 ? locale.family_package_discount_badge('$discountPercentInt%')
                 : locale.family_price_discount,
-            value: '-${data.familyDiscountAmount.toStringAsFixed(3)}',
+            value: '-${formatFamilyPrice(data.familyDiscountAmount)}',
             isDiscount: true,
           ),
         FamilyPaymentPriceRowUiModel(
           label: locale.family_total,
-          value: data.finalPrice.toStringAsFixed(3),
+          value: formatFamilyPrice(data.finalPrice),
           isStrong: true,
         ),
       ],

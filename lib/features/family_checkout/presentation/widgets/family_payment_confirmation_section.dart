@@ -10,6 +10,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/manager/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_confirmation_summary_card.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 
 class FamilyPaymentConfirmationSection extends StatelessWidget {
   const FamilyPaymentConfirmationSection({super.key, required this.state});
@@ -23,7 +24,6 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     final languageCode = Localizations.localeOf(context).languageCode;
     final summary = state.summary;
     final selectedMemberSummary = summary?.selectedMember;
-    final activeMemberDetails = _activeMemberDetails(context);
     final activeMemberId =
         selectedMemberSummary?.memberId ??
         state.selectedSummaryMemberId ??
@@ -32,7 +32,20 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     final matchingFlowMember = state.members
         .where((m) => m.memberId == activeMemberId)
         .firstOrNull;
-    final isSubscribed = matchingFlowMember?.subscribeNow ?? false;
+    final isManager =
+        selectedMemberSummary?.isManager == true ||
+        matchingFlowMember?.isManager == true ||
+        (state.members.firstOrNull?.memberId == activeMemberId);
+    final isSubscribed =
+        isManager || (matchingFlowMember?.subscribeNow ?? false);
+    final activeMemberDetails = _activeMemberDetails(
+      context,
+      activeMemberId,
+      matchingFlowMember,
+    );
+    final includeFriday =
+        selectedMemberSummary?.includeFriday == true ||
+        (matchingFlowMember?.includeFriday ?? false);
     final selectionSummary = selectedMemberSummary == null
         ? null
         : _selectionSummary(
@@ -42,6 +55,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
             managerPrepaid: summary?.managerPrepaid ?? false,
             selectedMemberSummary: selectedMemberSummary,
             startDate: matchingFlowMember?.startDate,
+            includeFriday: includeFriday,
           );
 
     return Column(
@@ -51,7 +65,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
           locale.family_payment_confirm_title,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size12,
+            fontSize: FontSize.size13,
             color: color.onSurface,
           ),
         ),
@@ -61,15 +75,17 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
             member: activeMemberDetails,
             summary: selectionSummary,
             isSubscribed: isSubscribed,
-            onToggleSubscription: (value) {
-              if (activeMemberId == null) return;
-              context.read<FamilyCheckoutViewModel>().doIntent(
-                SelectFamilyMemberCheckoutEvent(
-                  memberId: activeMemberId,
-                  subscribeNow: value,
-                ),
-              );
-            },
+            onToggleSubscription: isManager
+                ? null
+                : (value) {
+                    if (activeMemberId == null) return;
+                    context.read<FamilyCheckoutViewModel>().doIntent(
+                      SelectFamilyMemberCheckoutEvent(
+                        memberId: activeMemberId,
+                        subscribeNow: value,
+                      ),
+                    );
+                  },
           ),
         ],
       ],
@@ -78,15 +94,29 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
 
   FamilyProgramMemberDetailsUiModel? _activeMemberDetails(
     BuildContext context,
+    String? activeMemberId,
+    FamilyMemberEntity? matchingFlowMember,
   ) {
     final locale = context.localization;
     final selectedMemberSummary = state.summary?.selectedMember;
+    final summaryMembers = state.summary?.members ?? const [];
     final fallbackMembers = state.members;
+    final summaryIndex = summaryMembers.indexWhere(
+      (m) => m.memberId == activeMemberId,
+    );
+    final memberIndex = fallbackMembers.indexWhere(
+      (m) => m.memberId == activeMemberId,
+    );
+    final effectiveIndex = summaryIndex >= 0
+        ? summaryIndex
+        : (memberIndex >= 0 ? memberIndex : 0);
+    final gender = matchingFlowMember?.gender ?? 1;
+    final avatarAsset = resolveFamilyMemberAvatar(gender, effectiveIndex);
 
     if (selectedMemberSummary != null) {
       return FamilyProgramMemberDetailsUiModel(
         name: selectedMemberSummary.displayName,
-        imageAsset: '',
+        imageAsset: avatarAsset,
         age: '',
         gender: '',
         roleLabel:
@@ -99,14 +129,16 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
 
     if (fallbackMembers.isEmpty) return null;
 
+    final fallbackIsManager =
+        fallbackMembers.first.isManager ||
+        (fallbackMembers.first.memberId == activeMemberId);
+
     return FamilyProgramMemberDetailsUiModel(
       name: fallbackMembers.first.displayName,
-      imageAsset: '',
+      imageAsset: avatarAsset,
       age: '',
       gender: '',
-      roleLabel: fallbackMembers.first.isManager
-          ? locale.family_primary_member
-          : '',
+      roleLabel: fallbackIsManager ? locale.family_primary_member : '',
     );
   }
 
@@ -117,6 +149,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     required bool managerPrepaid,
     required FamilySelectedMemberSummaryEntity selectedMemberSummary,
     String? startDate,
+    required bool includeFriday,
   }) {
     final rows = <FamilySelectionSummaryRowData>[];
     final programName = selectedMemberSummary.programName(languageCode);
@@ -145,11 +178,14 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
     }
 
     if (durationText.isNotEmpty) {
+      final fridaySubtext = includeFriday
+          ? locale.subscription_with_friday
+          : locale.subscription_without_friday;
       rows.add(
         FamilySelectionSummaryRowData(
           icon: FamilySelectionSummaryIcon.calendar,
           label: locale.family_subscription_days_label,
-          value: durationText,
+          value: '$durationText $fridaySubtext',
         ),
       );
     }
@@ -168,9 +204,9 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
       rows.add(
         FamilySelectionSummaryRowData(
           icon: FamilySelectionSummaryIcon.receipt,
-          label: locale.family_weekly_price,
+          label: locale.subscription_summary_total_price_label,
           value:
-              '${selectedMemberSummary.memberPrice.toStringAsFixed(3)} $currency',
+              '${formatFamilyPrice(selectedMemberSummary.memberPrice)} $currency',
           isPrice: true,
         ),
       );
@@ -178,7 +214,7 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
       rows.add(
         FamilySelectionSummaryRowData(
           icon: FamilySelectionSummaryIcon.receipt,
-          label: locale.family_weekly_price,
+          label: locale.subscription_summary_total_price_label,
           value: locale.billing_paid,
           isPrice: true,
         ),
@@ -194,9 +230,6 @@ class FamilyPaymentConfirmationSection extends StatelessWidget {
   }
 
   String _currency(BuildContext context, FamilySummaryEntity? summary) {
-    final locale = context.localization;
-    return summary?.currencyCode.isNotEmpty == true
-        ? summary!.currencyCode
-        : locale.currency;
+    return resolveFamilyCurrency(context.localization, summary?.currencyCode);
   }
 }

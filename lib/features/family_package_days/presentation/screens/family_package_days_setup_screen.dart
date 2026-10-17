@@ -18,6 +18,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_content.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_setup_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/manager/family_subscription_flow_view_model.dart';
 
 class FamilyPackageDaysSetupScreen extends StatefulWidget {
   const FamilyPackageDaysSetupScreen({super.key, this.programId});
@@ -152,9 +153,7 @@ class _FamilyPackageDaysSetupScreenState
             child: AbsorbPointer(
               child: ColoredBox(
                 color: color.scrim.withValues(alpha: 0.32),
-                child: const Center(
-                  child: CustomProgressIndicator(),
-                ),
+                child: const Center(child: CustomProgressIndicator()),
               ),
             ),
           ),
@@ -168,6 +167,11 @@ class _FamilyPackageDaysSetupScreenState
     if (!context.mounted) return;
     if (!saved) {
       final failure = vm.state.failure;
+      if (failure?.code == 'family.checkout_pending') {
+        context.read<FamilySubscriptionFlowViewModel>().setStep(5);
+        context.pushReplacementNamed(AppRoutes.familyPaymentSetup);
+        return;
+      }
       if (failure != null) {
         CustomSnackbar.showError(
           context: context,
@@ -177,6 +181,7 @@ class _FamilyPackageDaysSetupScreenState
       return;
     }
 
+    context.read<FamilySubscriptionFlowViewModel>().setStep(5);
     context.pushNamed(AppRoutes.familyPaymentSetup);
   }
 }

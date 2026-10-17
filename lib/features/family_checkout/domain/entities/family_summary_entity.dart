@@ -157,6 +157,74 @@ class FamilyMealOverviewEntity {
   List<bool> get mealChecks => [breakfast, lunch, snack, dinner];
 }
 
+class FamilyMemberRestaurantEntity {
+  final String restaurantId;
+  final String? logoUrl;
+  final String? name;
+  final String? nameAr;
+  final int occurrenceCount;
+
+  const FamilyMemberRestaurantEntity({
+    required this.restaurantId,
+    this.logoUrl,
+    this.name,
+    this.nameAr,
+    this.occurrenceCount = 0,
+  });
+
+  String displayName(String languageCode) {
+    if (languageCode.toLowerCase().startsWith('en') &&
+        (name?.isNotEmpty ?? false)) {
+      return name!;
+    }
+    return nameAr ?? name ?? '';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FamilyMemberRestaurantEntity &&
+          runtimeType == other.runtimeType &&
+          restaurantId == other.restaurantId &&
+          logoUrl == other.logoUrl &&
+          name == other.name &&
+          nameAr == other.nameAr &&
+          occurrenceCount == other.occurrenceCount;
+
+  @override
+  int get hashCode =>
+      restaurantId.hashCode ^
+      logoUrl.hashCode ^
+      name.hashCode ^
+      nameAr.hashCode ^
+      occurrenceCount.hashCode;
+}
+
+class FamilyMemberRestaurantRepetitionEntity {
+  final int limit;
+  final int restaurantCount;
+  final int durationDays;
+
+  const FamilyMemberRestaurantRepetitionEntity({
+    this.limit = 0,
+    this.restaurantCount = 0,
+    this.durationDays = 0,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FamilyMemberRestaurantRepetitionEntity &&
+          runtimeType == other.runtimeType &&
+          limit == other.limit &&
+          restaurantCount == other.restaurantCount &&
+          durationDays == other.durationDays;
+
+  @override
+  int get hashCode =>
+      limit.hashCode ^ restaurantCount.hashCode ^ durationDays.hashCode;
+}
+
 class FamilyMemberScheduleEntity {
   final String memberId;
   final String? paymentDate;
@@ -165,7 +233,8 @@ class FamilyMemberScheduleEntity {
   final int deliveryDaysCount;
   final int mealsPerDay;
   final int totalMeals;
-  final List<String> restaurants;
+  final List<FamilyMemberRestaurantEntity> restaurants;
+  final FamilyMemberRestaurantRepetitionEntity? restaurantRepetition;
 
   const FamilyMemberScheduleEntity({
     required this.memberId,
@@ -176,6 +245,7 @@ class FamilyMemberScheduleEntity {
     this.mealsPerDay = 0,
     this.totalMeals = 0,
     this.restaurants = const [],
+    this.restaurantRepetition,
   });
 }
 
@@ -241,6 +311,7 @@ class FamilySummaryEntity {
   final bool managerIndividualIsLive;
   final bool isInitialPurchaseOrReactivation;
   final FamilySummaryAvailabilityEntity? availability;
+  final FamilyMemberRestaurantRepetitionEntity? restaurantRepetition;
 
   const FamilySummaryEntity({
     this.familyGroupId,
@@ -284,6 +355,7 @@ class FamilySummaryEntity {
     this.managerIndividualIsLive = false,
     this.isInitialPurchaseOrReactivation = true,
     this.availability,
+    this.restaurantRepetition,
   });
 
   /// The scope of new subscriptions on this checkout invoice.

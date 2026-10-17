@@ -131,6 +131,48 @@ class FamilyMealOverviewDto {
 }
 
 @JsonSerializable(createToJson: false)
+class FamilyMemberRestaurantDto {
+  const FamilyMemberRestaurantDto({
+    this.restaurantId,
+    this.logoUrl,
+    this.name,
+    this.nameAr,
+    this.occurrenceCount,
+  });
+
+  @JsonKey(readValue: _readRestaurantId)
+  final String? restaurantId;
+  final String? logoUrl;
+  final String? name;
+  final String? nameAr;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? occurrenceCount;
+
+  factory FamilyMemberRestaurantDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilyMemberRestaurantDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class FamilyMemberRestaurantRepetitionDto {
+  const FamilyMemberRestaurantRepetitionDto({
+    this.limit,
+    this.restaurantCount,
+    this.durationDays,
+  });
+
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? limit;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? restaurantCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? durationDays;
+
+  factory FamilyMemberRestaurantRepetitionDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$FamilyMemberRestaurantRepetitionDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class FamilyMemberScheduleDto {
   const FamilyMemberScheduleDto({
     this.memberId,
@@ -141,6 +183,7 @@ class FamilyMemberScheduleDto {
     this.mealsPerDay,
     this.totalMeals,
     this.restaurants,
+    this.restaurantRepetition,
   });
 
   @JsonKey(readValue: _readMemberId)
@@ -154,7 +197,9 @@ class FamilyMemberScheduleDto {
   final int? mealsPerDay;
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? totalMeals;
-  final List<dynamic>? restaurants;
+  @JsonKey(fromJson: _restaurantsFromJson)
+  final List<FamilyMemberRestaurantDto>? restaurants;
+  final FamilyMemberRestaurantRepetitionDto? restaurantRepetition;
 
   factory FamilyMemberScheduleDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyMemberScheduleDtoFromJson(json);
@@ -230,6 +275,7 @@ class FamilySummaryResponseDto {
     this.managerIndividualIsLive,
     this.isInitialPurchaseOrReactivation,
     this.availability,
+    this.restaurantRepetition,
   });
 
   final String? familyGroupId;
@@ -293,9 +339,40 @@ class FamilySummaryResponseDto {
   final bool? managerIndividualIsLive;
   final bool? isInitialPurchaseOrReactivation;
   final FamilySummaryAvailabilityDto? availability;
+  final FamilyMemberRestaurantRepetitionDto? restaurantRepetition;
 
   factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilySummaryResponseDtoFromJson(json);
+}
+
+Object? _readRestaurantId(Map<dynamic, dynamic> json, String key) {
+  final val = json[key] ?? json['restaurantId'] ?? json['id'];
+  return val?.toString();
+}
+
+List<FamilyMemberRestaurantDto>? _restaurantsFromJson(dynamic value) {
+  if (value == null) return null;
+  if (value is! List) return null;
+  final list = <FamilyMemberRestaurantDto>[];
+  for (final item in value) {
+    if (item is Map<String, dynamic>) {
+      list.add(FamilyMemberRestaurantDto.fromJson(item));
+    } else if (item is Map) {
+      list.add(
+        FamilyMemberRestaurantDto.fromJson(Map<String, dynamic>.from(item)),
+      );
+    } else if (item is String) {
+      list.add(
+        FamilyMemberRestaurantDto(
+          restaurantId: item,
+          name: item,
+          nameAr: item,
+          occurrenceCount: 1,
+        ),
+      );
+    }
+  }
+  return list;
 }
 
 Object? _readMemberId(Map<dynamic, dynamic> json, String key) {
@@ -343,7 +420,8 @@ Object? _readIsReady(Map<dynamic, dynamic> json, String key) {
   }
   final status = json['setupStatus'];
   if (status is String &&
-      (status.toLowerCase() == 'ready' || status.toLowerCase() == 'completed')) {
+      (status.toLowerCase() == 'ready' ||
+          status.toLowerCase() == 'completed')) {
     return true;
   }
   if (status == 2) return true;

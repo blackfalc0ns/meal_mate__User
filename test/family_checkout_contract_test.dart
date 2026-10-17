@@ -139,19 +139,15 @@ void main() {
           ingredientCodes: [],
         );
         final emptyJson = emptyDto.toJson();
-        expect(emptyJson, {
-          'ingredientCodes': ['NONE'],
-        });
-        expect(emptyJson.length, 1);
+        expect(emptyJson['ingredientCodes'], isEmpty);
+        expect(emptyJson['eatsEverything'], true);
 
         const codesDto = FoodPreferencesDislikedIngredientsRequestDto(
           ingredientCodes: ['INGREDIENT:guid-1'],
         );
         final codesJson = codesDto.toJson();
-        expect(codesJson, {
-          'ingredientCodes': ['INGREDIENT:guid-1'],
-        });
-        expect(codesJson.length, 1);
+        expect(codesJson['ingredientCodes'], ['INGREDIENT:guid-1']);
+        expect(codesJson['eatsEverything'], false);
       },
     );
 
@@ -163,7 +159,7 @@ void main() {
         );
         final emptyJson = emptyDto.toJson();
         expect(emptyJson, {
-          'dietaryPreferenceCodes': ['NONE'],
+          'dietaryPreferenceCodes': ['NO_DIETARY_RESTRICTIONS'],
         });
         expect(emptyJson.length, 1);
 
@@ -216,7 +212,10 @@ void main() {
         expect(schedule.deliveryDaysCount, 20);
         expect(schedule.mealsPerDay, 2);
         expect(schedule.totalMeals, 40);
-        expect(schedule.restaurants, ['Diet Kitchen', 'Healthy Corner']);
+        expect(
+          schedule.restaurants.map((r) => r.name).toList(),
+          ['Diet Kitchen', 'Healthy Corner'],
+        );
       },
     );
 

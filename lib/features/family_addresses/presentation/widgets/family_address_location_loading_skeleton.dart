@@ -38,8 +38,8 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
           child: Container(
             key: const ValueKey('family-addresses-sheet-skeleton'),
             padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.lg,
-              vertical: Spacing.lg,
+              horizontal: Spacing.md,
+              vertical: Spacing.sm,
             ),
             decoration: BoxDecoration(
               color: color.surface,
@@ -75,12 +75,12 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: Spacing.md),
+                  SizedBox(height: Spacing.sm),
                   ShimmerPlaceholder.rect(
                     height: Spacing.inputHeight,
                     borderRadius: Spacing.radiusMd,
                   ),
-                  SizedBox(height: Spacing.md),
+                  SizedBox(height: Spacing.sm),
                   Row(
                     children: [
                       Expanded(
@@ -98,7 +98,7 @@ class FamilyAddressLocationLoadingSkeleton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: Spacing.lg),
+                  SizedBox(height: Spacing.sm),
                   ShimmerPlaceholder.rect(
                     height: Spacing.buttonHeight,
                     borderRadius: Spacing.radiusPill,

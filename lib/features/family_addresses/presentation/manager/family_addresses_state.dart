@@ -29,11 +29,9 @@ class FamilyAddressesState {
       ? null
       : members[currentIndex];
 
-  FamilyMemberEntity? get manager =>
-      members.cast<FamilyMemberEntity?>().firstWhere(
-        (m) => m?.isManager == true,
-        orElse: () => null,
-      );
+  FamilyMemberEntity? get manager => members
+      .cast<FamilyMemberEntity?>()
+      .firstWhere((m) => m?.isManager == true, orElse: () => null);
 
   bool get isManagerAddressAvailable =>
       manager?.deliveryAddress != null ||

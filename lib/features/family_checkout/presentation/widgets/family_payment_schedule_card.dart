@@ -27,7 +27,7 @@ class FamilyPaymentScheduleCard extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.xs,
+            horizontal: Spacing.xxs,
             vertical: Spacing.sm,
           ),
           decoration: BoxDecoration(
@@ -42,7 +42,7 @@ class FamilyPaymentScheduleCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(

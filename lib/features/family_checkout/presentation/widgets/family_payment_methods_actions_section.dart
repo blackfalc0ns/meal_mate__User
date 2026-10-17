@@ -77,15 +77,24 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
               : () {
                   final methodId = state.selectedPaymentMethod?.id;
                   if (methodId == null) return;
-                  context.read<FamilyCheckoutViewModel>().doIntent(
-                    CheckoutFamilySubscriptionEvent(
-                      callbackUrl: 'mealmate://checkout/success',
-                      errorUrl: 'mealmate://checkout/error',
-                      correlationId: context
-                          .read<FamilyCheckoutViewModel>()
-                          .correlationId,
-                      paymentMethodId: methodId,
-                    ),
+                  final viewModel = context.read<FamilyCheckoutViewModel>();
+                  final isPending =
+                      state.summary?.checkoutBlockReason ==
+                      'family.checkout_pending';
+                  viewModel.doIntent(
+                    isPending
+                        ? RetryFamilySubscriptionPaymentEvent(
+                            callbackUrl: 'mealmate://checkout/success',
+                            errorUrl: 'mealmate://checkout/error',
+                            correlationId: viewModel.correlationId,
+                            paymentMethodId: methodId,
+                          )
+                        : CheckoutFamilySubscriptionEvent(
+                            callbackUrl: 'mealmate://checkout/success',
+                            errorUrl: 'mealmate://checkout/error',
+                            correlationId: viewModel.correlationId,
+                            paymentMethodId: methodId,
+                          ),
                   );
                 },
         ),

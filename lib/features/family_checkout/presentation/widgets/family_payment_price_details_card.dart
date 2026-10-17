@@ -35,15 +35,12 @@ class FamilyPaymentPriceDetailsCard extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: ColoredBox(
               color: color.surface,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-                child: Text(
-                  locale.family_price_details,
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onSurface,
-                  ),
+              child: Text(
+                locale.family_price_details,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size13,
+                  color: color.onSurface,
                 ),
               ),
             ),

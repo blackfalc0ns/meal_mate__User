@@ -12,6 +12,22 @@ String resolveFamilyMemberAvatar(int gender, [int index = 0]) {
       : AssetsFake.familyMemberYousef;
 }
 
+String formatFamilyPrice(num price) {
+  final fixed3 = price.toStringAsFixed(3);
+  if (fixed3.endsWith('0')) {
+    return fixed3.substring(0, fixed3.length - 1);
+  }
+  return fixed3;
+}
+
+String resolveFamilyCurrency(dynamic locale, [String? currencyCode]) {
+  final trimmed = currencyCode?.trim() ?? '';
+  if (trimmed.isEmpty || trimmed.toUpperCase() == 'KWD') {
+    return locale.currency as String;
+  }
+  return trimmed;
+}
+
 enum FamilyPackageOptionIcon { cutlery, appleCutlery, spark }
 
 enum FamilySelectionSummaryIcon { balance, cutlery, calendar, check, receipt }

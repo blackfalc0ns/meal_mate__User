@@ -23,7 +23,7 @@ class FamilyPaymentPriceRow extends StatelessWidget {
 
           style: getSemiBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size11,
             color: color.onSurfaceVariant,
           ),
         ),

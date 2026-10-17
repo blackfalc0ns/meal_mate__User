@@ -2746,7 +2746,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_extra_members_price => 'أفراد إضافيون (2 x 7.500 KWD)';
 
   @override
-  String get family_total => 'الإجمالي:';
+  String get family_total => 'إجمالي اشتراك العائلة:';
 
   @override
   String get family_confirm_plan => 'تأكيد الباقة';
@@ -3093,7 +3093,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_subscription_days_value => '7 أيام في الأسبوع';
 
   @override
-  String get family_price_duration_total => 'إجمالي المدة';
+  String get family_price_duration_total => 'إجمالي اشتراك الأفراد';
 
   @override
   String get family_new_members_subtotal => 'إجمالي الأعضاء الجدد';
@@ -7368,4 +7368,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_permission_prerequisites => 'المتطلبات الأساسية:';
+
+  @override
+  String get family_member_available_restaurants => 'المطاعم المتاحة';
+
+  @override
+  String get family_member_no_restaurants => 'لا توجد مطاعم متاحة لهذا الفرد';
+
+  @override
+  String family_restaurant_occurrence_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مرة',
+      many: '$count مرة',
+      few: '$count مرات',
+      two: 'مرتان',
+      one: 'مرة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get family_restaurant_repetition_title => 'تكرار المطاعم';
+
+  @override
+  String family_restaurant_repetition_summary(int limit) {
+    return 'الحد الأقصى لتكرار أي مطعم هو $limit مرات خلال فترة الاشتراك';
+  }
+
+  @override
+  String family_member_restaurants_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مطعم',
+      many: '$count مطعم',
+      few: '$count مطاعم',
+      two: 'مطعمان',
+      one: 'مطعم واحد',
+    );
+    return '$_temp0';
+  }
 }

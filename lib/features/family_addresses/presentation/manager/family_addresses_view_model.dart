@@ -16,11 +16,12 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
   FamilyAddressesViewModel(
     this._getFlow, [
     FamilyFlowSnapshotStore? snapshotStore,
-  ])  : _snapshotStore = snapshotStore ??
-            (getIt.isRegistered<FamilyFlowSnapshotStore>()
-                ? getIt<FamilyFlowSnapshotStore>()
-                : FamilyFlowSnapshotStore()),
-        super(const FamilyAddressesState());
+  ]) : _snapshotStore =
+           snapshotStore ??
+           (getIt.isRegistered<FamilyFlowSnapshotStore>()
+               ? getIt<FamilyFlowSnapshotStore>()
+               : FamilyFlowSnapshotStore()),
+       super(const FamilyAddressesState());
 
   final GetFamilyFlowCurrentUseCase _getFlow;
   final FamilyFlowSnapshotStore _snapshotStore;
@@ -153,17 +154,16 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     if (state.isManagerAddressAppliedToAll) {
       final updatedMembers = state.members.map((m) {
         if (m.isManager) return m;
-        return m.copyWith(
-          deliveryAddressId: null,
-          deliveryAddress: null,
-        );
+        return m.copyWith(deliveryAddressId: null, deliveryAddress: null);
       }).toList();
 
       final completedMemberIds = state.members
-          .where((m) =>
-              m.isManager &&
-              (m.deliveryAddress != null ||
-                  (m.deliveryAddressId?.isNotEmpty ?? false)))
+          .where(
+            (m) =>
+                m.isManager &&
+                (m.deliveryAddress != null ||
+                    (m.deliveryAddressId?.isNotEmpty ?? false)),
+          )
           .map((m) => m.memberId)
           .toSet();
 

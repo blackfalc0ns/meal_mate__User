@@ -67,7 +67,7 @@ class FamilyPaymentConfirmationSummaryCard extends StatelessWidget {
                     member.name,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
+                      fontSize: FontSize.size11,
                       color: isSubscribed
                           ? color.onSurface
                           : color.onSurfaceVariant,

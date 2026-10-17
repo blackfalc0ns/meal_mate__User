@@ -62,6 +62,29 @@ extension FamilyMealOverviewDtoMapper on FamilyMealOverviewDto {
   }
 }
 
+extension FamilyMemberRestaurantDtoMapper on FamilyMemberRestaurantDto {
+  FamilyMemberRestaurantEntity toEntity() {
+    return FamilyMemberRestaurantEntity(
+      restaurantId: restaurantId ?? '',
+      logoUrl: logoUrl,
+      name: name,
+      nameAr: nameAr,
+      occurrenceCount: occurrenceCount ?? 0,
+    );
+  }
+}
+
+extension FamilyMemberRestaurantRepetitionDtoMapper
+    on FamilyMemberRestaurantRepetitionDto {
+  FamilyMemberRestaurantRepetitionEntity toEntity() {
+    return FamilyMemberRestaurantRepetitionEntity(
+      limit: limit ?? 0,
+      restaurantCount: restaurantCount ?? 0,
+      durationDays: durationDays ?? 0,
+    );
+  }
+}
+
 extension FamilyMemberScheduleDtoMapper on FamilyMemberScheduleDto {
   FamilyMemberScheduleEntity toEntity() {
     return FamilyMemberScheduleEntity(
@@ -73,7 +96,8 @@ extension FamilyMemberScheduleDtoMapper on FamilyMemberScheduleDto {
       mealsPerDay: mealsPerDay ?? 0,
       totalMeals: totalMeals ?? 0,
       restaurants:
-          restaurants?.map((item) => item.toString()).toList() ?? const [],
+          restaurants?.map((item) => item.toEntity()).toList() ?? const [],
+      restaurantRepetition: restaurantRepetition?.toEntity(),
     );
   }
 }
@@ -142,9 +166,9 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       currentPurchaseCount: currentPurchaseCount,
       managerSeatExempt: managerSeatExempt ?? false,
       managerIndividualIsLive: managerIndividualIsLive ?? false,
-      isInitialPurchaseOrReactivation:
-          isInitialPurchaseOrReactivation ?? true,
+      isInitialPurchaseOrReactivation: isInitialPurchaseOrReactivation ?? true,
       availability: availability?.toEntity(),
+      restaurantRepetition: restaurantRepetition?.toEntity(),
     );
   }
 }

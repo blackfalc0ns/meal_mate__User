@@ -39,13 +39,16 @@ class FamilyPaymentSummaryRow extends StatelessWidget {
                 ),
               ),
 
-              const Spacer(),
-              Text(
-                row.value,
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size10,
-                  color: color.onSurfaceVariant,
+              const SizedBox(width: Spacing.sm),
+              Expanded(
+                child: Text(
+                  row.value,
+                  textAlign: TextAlign.end,
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size11,
+                    color: color.onSurfaceVariant,
+                  ),
                 ),
               ),
             ],

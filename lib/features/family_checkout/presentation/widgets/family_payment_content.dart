@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_member_restaurants_card.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_confirmation_section.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_meal_overview_section.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_members_section.dart';
@@ -29,41 +30,59 @@ class FamilyPaymentContent extends StatelessWidget {
       FamilyFlowScope.updateFamilyName(context, state.currentFlow?.name);
     }
 
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.familySetupHorizontalPadding,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              if (!isInFamilyFlow) ...[
+    return Column(
+      children: [
+        if (!isInFamilyFlow)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.familySetupHorizontalPadding,
+            ),
+            child: Column(
+              children: [
                 FamilySetupHeaderBadge(title: state.currentFlow?.name),
                 const SizedBox(height: Spacing.familyProgramProgressTopGap),
                 const FamilyProgramStepper(
                   currentStep: 5,
                   includeFamilyCreationStep: true,
                 ),
+                const SizedBox(height: Spacing.familyProgramMemberTopGap),
               ],
-              const SizedBox(height: Spacing.familyProgramMemberTopGap),
-              FamilyPaymentMembersSection(state: state),
-              const SizedBox(height: Spacing.md),
-              if (state.isSummaryLoading)
-                const FamilyMemberContentLoadingSkeleton()
-              else ...[
-                FamilyPaymentConfirmationSection(state: state),
-                const SizedBox(height: Spacing.lg),
-                FamilyPaymentScheduleSection(state: state),
-                FamilyPaymentPriceSection(summary: state.summary),
-                FamilyPaymentMealOverviewSection(
-                  summary: state.summary,
-                  flowMembers: state.members,
+            ),
+          ),
+        Expanded(
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.familySetupHorizontalPadding,
                 ),
-                FamilyPaymentMethodsActionsSection(state: state),
-              ],
-              const SizedBox(height: Spacing.xxxl),
-            ]),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    if (isInFamilyFlow)
+                      const SizedBox(height: Spacing.familyProgramMemberTopGap),
+                    FamilyPaymentMembersSection(state: state),
+                    const SizedBox(height: Spacing.md),
+                    if (state.isSummaryLoading)
+                      const FamilyMemberContentLoadingSkeleton()
+                    else ...[
+                      FamilyPaymentConfirmationSection(state: state),
+                      const SizedBox(height: Spacing.md),
+                      const FamilyMemberRestaurantsCard(),
+                      const SizedBox(height: Spacing.lg),
+                      FamilyPaymentScheduleSection(state: state),
+                      FamilyPaymentPriceSection(summary: state.summary),
+                      FamilyPaymentMealOverviewSection(
+                        summary: state.summary,
+                        flowMembers: state.members,
+                      ),
+                      FamilyPaymentMethodsActionsSection(state: state),
+                    ],
+                    const SizedBox(height: Spacing.xxxl),
+                  ]),
+                ),
+              ),
+            ],
           ),
         ),
       ],

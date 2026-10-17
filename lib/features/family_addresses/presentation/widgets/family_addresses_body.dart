@@ -98,8 +98,8 @@ class FamilyAddressesBody extends StatelessWidget {
                         : null,
                     onCustomAction: memberData.canProceedToAllergies
                         ? context
-                            .read<FamilyAddressesViewModel>()
-                            .proceedToNextStep
+                              .read<FamilyAddressesViewModel>()
+                              .proceedToNextStep
                         : null,
                     onAddressSaved: context
                         .read<FamilyAddressesViewModel>()

@@ -122,7 +122,7 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                                   data.managerName!,
                                 )
                               : locale
-                                  .family_apply_manager_address_generic_subtitle,
+                                    .family_apply_manager_address_generic_subtitle,
                           style: getRegularStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size9,

@@ -2797,7 +2797,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_extra_members_price => 'Extra members (2 x 7.500 KWD)';
 
   @override
-  String get family_total => 'Total:';
+  String get family_total => 'Total family subscription:';
 
   @override
   String get family_confirm_plan => 'Confirm plan';
@@ -3147,7 +3147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_subscription_days_value => '7 days a week';
 
   @override
-  String get family_price_duration_total => 'Total duration';
+  String get family_price_duration_total => 'Members subscriptions total';
 
   @override
   String get family_new_members_subtotal => 'New members subtotal';
@@ -7492,4 +7492,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_permission_prerequisites => 'Prerequisites:';
+
+  @override
+  String get family_member_available_restaurants => 'Available restaurants';
+
+  @override
+  String get family_member_no_restaurants =>
+      'No restaurants available for this member';
+
+  @override
+  String family_restaurant_occurrence_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count times',
+      one: '1 time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get family_restaurant_repetition_title => 'Restaurant repetition';
+
+  @override
+  String family_restaurant_repetition_summary(int limit) {
+    return 'Maximum repetition for any restaurant is $limit times during the subscription';
+  }
+
+  @override
+  String family_member_restaurants_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count restaurants',
+      one: '1 restaurant',
+    );
+    return '$_temp0';
+  }
 }

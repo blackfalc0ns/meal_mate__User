@@ -1742,6 +1742,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i427.ConvertFromIndividualUseCase>(),
       ),
     );
+    gh.factory<_i597.FamilyPackageDaysViewModel>(
+      () => _i597.FamilyPackageDaysViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i577.GetFamilyProgramsUseCase>(),
+        gh<_i448.GetFamilyProgramBundlesUseCase>(),
+        gh<_i570.GetFamilyPlanDurationsUseCase>(),
+        gh<_i870.GetFamilyPlanTiersUseCase>(),
+        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
+        gh<_i600.SaveFamilyMemberPlanUseCase>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+      ),
+    );
     gh.factory<_i147.AutoSelectCalendarDayUseCase>(
       () => _i147.AutoSelectCalendarDayUseCase(gh<_i333.CalendarRepository>()),
     );
@@ -1779,17 +1791,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i133.SetCalendarDayRestaurantUseCase>(
       () =>
           _i133.SetCalendarDayRestaurantUseCase(gh<_i333.CalendarRepository>()),
-    );
-    gh.factory<_i597.FamilyPackageDaysViewModel>(
-      () => _i597.FamilyPackageDaysViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i577.GetFamilyProgramsUseCase>(),
-        gh<_i448.GetFamilyProgramBundlesUseCase>(),
-        gh<_i570.GetFamilyPlanDurationsUseCase>(),
-        gh<_i870.GetFamilyPlanTiersUseCase>(),
-        gh<_i726.GetSubscriptionTierRestaurantsUseCase>(),
-        gh<_i600.SaveFamilyMemberPlanUseCase>(),
-      ),
     );
     gh.factory<_i932.FamilySubscriptionFlowViewModel>(
       () => _i932.FamilySubscriptionFlowViewModel(

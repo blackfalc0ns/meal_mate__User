@@ -16,8 +16,10 @@ import 'package:meal_meat_user/features/family_checkout/presentation/manager/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_content.dart';
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_setup_loading_skeleton.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_home_action.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 
 class FamilyPaymentSetupScreen extends StatelessWidget {
   const FamilyPaymentSetupScreen({super.key});
@@ -64,6 +66,7 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                actions: const [FamilyFlowHomeAction()],
               ),
               body: SafeArea(
                 child:
@@ -125,8 +128,21 @@ class FamilyPaymentSetupScreen extends StatelessWidget {
       );
     }
 
-    return FamilyPaymentContent(state: state)
-        .animate(key: const ValueKey('family-payment-content'))
-        .fadeIn(duration: 250.ms);
+    return Stack(
+      children: [
+        FamilyPaymentContent(state: state)
+            .animate(key: const ValueKey('family-payment-content'))
+            .fadeIn(duration: 250.ms),
+        if (state.isCheckoutLoading || state.isRetryLoading)
+          Positioned.fill(
+            child: AbsorbPointer(
+              child: ColoredBox(
+                color: context.colorScheme.scrim.withValues(alpha: 0.32),
+                child: const Center(child: CustomProgressIndicator()),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }

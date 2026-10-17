@@ -1009,7 +1009,7 @@
   "family_price_details": "Price details",
   "family_base_price_two_members": "Base price (for 2 members)",
   "family_extra_members_price": "Extra members (2 x 7.500 KWD)",
-  "family_total": "Total:",
+  "family_total": "Total family subscription:",
   "family_confirm_plan": "Confirm plan",
   "family_add_member_dialog_subtitle": "Enter member details to add them to the family plan",
   "family_full_name": "Full name",
@@ -1127,7 +1127,7 @@
   "family_subscription_program_value": "Balanced",
   "family_subscription_package_value": "4 meals + snack",
   "family_subscription_days_value": "7 days a week",
-  "family_price_duration_total": "Total duration",
+  "family_price_duration_total": "Members subscriptions total",
   "family_new_members_subtotal": "New members subtotal",
   "family_price_discount": "Family discount (10%)",
   "family_price_tax_total": "Total including tax (15%)",
@@ -2893,5 +2893,32 @@
   "family_credential_already_issued": "Password already issued. An explicit reset is required to generate a new password.",
   "family_credential_reset_action": "Reset Password",
   "family_permission_prerequisites": "Prerequisites:",
-  "family_permission_close": "Close"
+  "family_permission_close": "Close",
+  "family_member_available_restaurants": "Available restaurants",
+  "family_member_no_restaurants": "No restaurants available for this member",
+  "family_restaurant_occurrence_count": "{count, plural, =1{1 time} other{{count} times}}",
+  "@family_restaurant_occurrence_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "family_restaurant_repetition_title": "Restaurant repetition",
+  "family_restaurant_repetition_summary": "Maximum repetition for any restaurant is {limit} times during the subscription",
+  "@family_restaurant_repetition_summary": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "family_member_restaurants_count": "{count, plural, =1{1 restaurant} other{{count} restaurants}}",
+  "@family_member_restaurants_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

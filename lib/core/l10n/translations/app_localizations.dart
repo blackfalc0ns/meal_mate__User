@@ -5225,7 +5225,7 @@ abstract class AppLocalizations {
   /// No description provided for @family_total.
   ///
   /// In en, this message translates to:
-  /// **'Total:'**
+  /// **'Total family subscription:'**
   String get family_total;
 
   /// No description provided for @family_confirm_plan.
@@ -5885,7 +5885,7 @@ abstract class AppLocalizations {
   /// No description provided for @family_price_duration_total.
   ///
   /// In en, this message translates to:
-  /// **'Total duration'**
+  /// **'Members subscriptions total'**
   String get family_price_duration_total;
 
   /// No description provided for @family_new_members_subtotal.
@@ -13675,6 +13675,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prerequisites:'**
   String get family_permission_prerequisites;
+
+  /// No description provided for @family_member_available_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Available restaurants'**
+  String get family_member_available_restaurants;
+
+  /// No description provided for @family_member_no_restaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants available for this member'**
+  String get family_member_no_restaurants;
+
+  /// No description provided for @family_restaurant_occurrence_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 time} other{{count} times}}'**
+  String family_restaurant_occurrence_count(int count);
+
+  /// No description provided for @family_restaurant_repetition_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant repetition'**
+  String get family_restaurant_repetition_title;
+
+  /// No description provided for @family_restaurant_repetition_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum repetition for any restaurant is {limit} times during the subscription'**
+  String family_restaurant_repetition_summary(int limit);
+
+  /// No description provided for @family_member_restaurants_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 restaurant} other{{count} restaurants}}'**
+  String family_member_restaurants_count(int count);
 }
 
 class _AppLocalizationsDelegate

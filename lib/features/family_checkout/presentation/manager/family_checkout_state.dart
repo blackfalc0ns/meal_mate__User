@@ -66,6 +66,22 @@ class FamilyCheckoutState {
       currentFlow?.managerPrepaid ??
       FamilyConversionDraftSession.isConvertedFamilyDraft;
 
+  String? get activeMemberId =>
+      selectedSummaryMemberId ??
+      summary?.selectedMemberId ??
+      summary?.selectedMember?.memberId ??
+      members.firstOrNull?.memberId;
+
+  FamilyMemberScheduleEntity? scheduleForMember(String? memberId) {
+    if (memberId == null || summary == null) return null;
+    return summary!.memberSchedules
+        .where((s) => s.memberId == memberId)
+        .firstOrNull;
+  }
+
+  FamilyMemberScheduleEntity? get activeMemberSchedule =>
+      scheduleForMember(activeMemberId);
+
   FamilyCheckoutState copyWith({
     bool? isCurrentFlowLoading,
     FamilyFlowCurrentEntity? currentFlow,
