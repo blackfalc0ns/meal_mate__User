@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/services/token_interceptor.dart';
@@ -573,12 +573,14 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.customerDeliveryWidget)
+  @Headers({'X-Bilingual': 'true'})
   Future<CustomerDeliveryWidgetResponseDto> getCustomerDeliveryWidget({
     @Query('serviceDate') String? serviceDate,
     @Query('subscriptionId') String? subscriptionId,
   });
 
   @GET(EndPoints.customerSubscriptionDayDeliveryDetails)
+  @Headers({'X-Bilingual': 'true'})
   Future<CustomerDeliveryDetailsResponseDto>
   getCustomerSubscriptionDayDeliveryDetails(
     @Path('subscriptionDayId') String subscriptionDayId,

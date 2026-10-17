@@ -112,6 +112,7 @@ class _CalendarScreenState extends State<CalendarScreen>
           ),
         );
       }
+      unawaited(_overviewViewModel.loadDeliveryWidget());
     }
   }
 

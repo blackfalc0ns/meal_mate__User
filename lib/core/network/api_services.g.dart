@@ -2245,7 +2245,8 @@ class _ApiServices implements ApiServices {
       r'subscriptionId': subscriptionId,
     };
     queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'X-Bilingual': 'true'};
+    _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<CustomerDeliveryWidgetResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
@@ -2273,7 +2274,8 @@ class _ApiServices implements ApiServices {
   getCustomerSubscriptionDayDeliveryDetails(String subscriptionDayId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'X-Bilingual': 'true'};
+    _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<CustomerDeliveryDetailsResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)

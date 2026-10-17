@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +11,6 @@ import 'package:meal_meat_user/core/services/language_interceptor.dart';
 
 import '../services/token_interceptor.dart';
 import 'network_constants.dart';
-import 'sensitive_data_sanitizer.dart';
 
 @module
 abstract class ExternalModules {

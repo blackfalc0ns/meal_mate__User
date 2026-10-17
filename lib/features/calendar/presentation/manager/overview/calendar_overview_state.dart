@@ -41,6 +41,9 @@ class CalendarOverviewState {
   CustomerDeliveryItemEntity? get currentDeliveryItem =>
       deliveryWidget?.items.firstOrNull;
 
+  List<CustomerDeliveryItemEntity> get deliveryItems =>
+      deliveryWidget?.items ?? const [];
+
   bool get hasDeliveryWidget =>
       deliveryWidget != null && deliveryWidget!.isNotEmpty;
 

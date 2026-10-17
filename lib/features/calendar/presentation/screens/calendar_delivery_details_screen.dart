@@ -31,18 +31,28 @@ class CalendarDeliveryDetailsScreen extends StatefulWidget {
 }
 
 class _CalendarDeliveryDetailsScreenState
-    extends State<CalendarDeliveryDetailsScreen> {
+    extends State<CalendarDeliveryDetailsScreen>
+    with WidgetsBindingObserver {
   late final CalendarDeliveryDetailsViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _viewModel = widget.viewModel ?? getIt<CalendarDeliveryDetailsViewModel>();
     unawaited(_viewModel.loadDetails(widget.subscriptionDayId));
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      unawaited(_viewModel.loadDetails(widget.subscriptionDayId));
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     if (widget.viewModel == null) {
       unawaited(_viewModel.close());
     }

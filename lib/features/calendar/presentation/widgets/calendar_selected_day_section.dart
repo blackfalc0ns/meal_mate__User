@@ -41,14 +41,14 @@ class CalendarSelectedDaySection extends StatelessWidget {
         CalendarDayEntity? selectedDay,
         bool isSelectedDayLoading,
         bool canConfirm,
-        CustomerDeliveryItemEntity? deliveryItem,
+        List<CustomerDeliveryItemEntity> deliveryItems,
       })
     >(
       selector: (state) => (
         selectedDay: state.selectedDay,
         isSelectedDayLoading: state.isSelectedDayLoading,
         canConfirm: state.canConfirmSelectedDayMeals,
-        deliveryItem: state.currentDeliveryItem,
+        deliveryItems: state.deliveryItems,
       ),
       builder: (context, overviewData) {
         return BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(
@@ -56,7 +56,7 @@ class CalendarSelectedDaySection extends StatelessWidget {
           builder: (context, isConfirming) {
             return CalendarDayContent(
               selectedDay: overviewData.selectedDay,
-              deliveryItem: overviewData.deliveryItem,
+              deliveryItems: overviewData.deliveryItems,
               showBottomSpace: showBottomSpace,
               onSelectRestaurant: onSelectRestaurant,
               onChangeMeal: onChangeMeal,

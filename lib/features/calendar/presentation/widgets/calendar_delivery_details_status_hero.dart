@@ -24,8 +24,15 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
         ? locale.calendar_delivery_delivered_success_title
         : deliveryItem.localizedStatus(locale.localeName);
 
-    final timeStr = _formatTime(deliveryItem.deliveredAtUtc ?? deliveryItem.pickedUpAtUtc ?? DateTime.now());
+    final deliveredAt = deliveryItem.deliveredAtUtc;
+    final timeStr = deliveredAt != null ? _formatTime(deliveredAt) : null;
     final addressStr = deliveryItem.destinationAddress ?? '';
+
+    final subtitle = isDelivered
+        ? (timeStr != null && addressStr.isNotEmpty
+            ? locale.calendar_delivery_delivered_at_format(timeStr, addressStr)
+            : addressStr)
+        : addressStr;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -69,12 +76,10 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
             color: color.onSurface,
           ),
         ),
-        if (addressStr.isNotEmpty) ...[
+        if (subtitle.isNotEmpty) ...[
           const SizedBox(height: Spacing.xs),
           Text(
-            isDelivered
-                ? locale.calendar_delivery_delivered_at_format(timeStr, addressStr)
-                : addressStr,
+            subtitle,
             textAlign: TextAlign.center,
             style: getRegularStyle(
               fontFamily: FontConstant.alexandria,

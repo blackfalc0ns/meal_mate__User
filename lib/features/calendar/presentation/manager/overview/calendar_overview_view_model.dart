@@ -24,8 +24,8 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     this._getCalendarUseCase,
     this._getCalendarDayUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
-    this._sharedPrefHelper,
-    this._getCustomerDeliveryWidgetUseCase, [
+    this._sharedPrefHelper, [
+    this._getCustomerDeliveryWidgetUseCase,
     this._notificationBadgeViewModel,
     this._realtimeService,
   ]) : super(const CalendarOverviewState()) {
@@ -37,17 +37,28 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
-  final GetCustomerDeliveryWidgetUseCase _getCustomerDeliveryWidgetUseCase;
+  final GetCustomerDeliveryWidgetUseCase? _getCustomerDeliveryWidgetUseCase;
   final NotificationBadgeViewModel? _notificationBadgeViewModel;
   final CustomerDeliveryRealtimeService? _realtimeService;
 
   StreamSubscription<String>? _realtimeSubscription;
+  Timer? _deliveryReconciliationTimer;
   int _calendarRequestGeneration = 0;
   int _dayRequestGeneration = 0;
   int _deliveryRequestGeneration = 0;
 
   void _listenToRealtimeDelivery() {
+    unawaited(_realtimeService?.connect());
     _realtimeSubscription = _realtimeService?.onDeliveryChanged.listen((_) {
+      if (isClosed) return;
+      unawaited(loadDeliveryWidget());
+    });
+  }
+
+  void _scheduleDeliveryReconciliation(int seconds) {
+    _deliveryReconciliationTimer?.cancel();
+    if (isClosed || seconds <= 0) return;
+    _deliveryReconciliationTimer = Timer(Duration(seconds: seconds), () {
       if (isClosed) return;
       unawaited(loadDeliveryWidget());
     });
@@ -55,6 +66,7 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
 
   @override
   Future<void> close() async {
+    _deliveryReconciliationTimer?.cancel();
     await _realtimeSubscription?.cancel();
     return super.close();
   }
@@ -246,11 +258,13 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
   }
 
   Future<void> _loadDeliveryWidgetForDate(DateTime targetDate) async {
+    final useCase = _getCustomerDeliveryWidgetUseCase;
+    if (useCase == null) return;
     final dateStr = DateFormat('yyyy-MM-dd').format(targetDate);
     final generation = ++_deliveryRequestGeneration;
     emit(state.copyWith(isDeliveryLoading: true, clearDeliveryFailure: true));
 
-    final result = await _getCustomerDeliveryWidgetUseCase(
+    final result = await useCase(
       serviceDate: dateStr,
       subscriptionId:
           state.subscriptionId.isNotEmpty ? state.subscriptionId : null,
@@ -266,6 +280,9 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
             isDeliveryLoading: false,
             clearDeliveryFailure: true,
           ),
+        );
+        _scheduleDeliveryReconciliation(
+          result.data.refreshAfterSeconds ?? 30,
         );
       case ApiErrorResult():
         emit(

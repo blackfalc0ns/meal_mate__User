@@ -25,6 +25,7 @@ class CalendarDayContent extends StatelessWidget {
     super.key,
     required this.selectedDay,
     this.deliveryItem,
+    this.deliveryItems = const [],
     required this.showBottomSpace,
     required this.onSelectRestaurant,
     required this.onChangeMeal,
@@ -37,6 +38,7 @@ class CalendarDayContent extends StatelessWidget {
   });
   final CalendarDayEntity? selectedDay;
   final CustomerDeliveryItemEntity? deliveryItem;
+  final List<CustomerDeliveryItemEntity> deliveryItems;
   final bool showBottomSpace;
   final VoidCallback onSelectRestaurant;
   final VoidCallback onChangeMeal;
@@ -84,14 +86,15 @@ class CalendarDayContent extends StatelessWidget {
                   '${selectedDay?.date?.toIso8601String()}_${hasMeals}_${selectedDay?.isFrozen}',
                 ),
                 children: [
-                  if (deliveryItem != null) ...[
+                  for (final item in (deliveryItems.isNotEmpty
+                      ? deliveryItems
+                      : (deliveryItem != null ? [deliveryItem!] : const <CustomerDeliveryItemEntity>[]))) ...[
                     CalendarDeliveryCard(
                       key: ValueKey(
-                        'delivery_${deliveryItem?.orderCode ?? selectedDay?.date?.toIso8601String()}',
+                        'delivery_${item.orderCode ?? item.subscriptionDayId ?? selectedDay?.date?.toIso8601String()}',
                       ),
-                      deliveryItem: deliveryItem!,
-                      onTrackOrDetails: () =>
-                          onTrackDelivery?.call(deliveryItem!),
+                      deliveryItem: item,
+                      onTrackOrDetails: () => onTrackDelivery?.call(item),
                     )
                         .animate()
                         .fadeIn(duration: 250.ms)

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 enum CustomerDeliveryStatus {
+  notStarted,
   scheduled,
   preparing,
   ready,
@@ -8,21 +9,28 @@ enum CustomerDeliveryStatus {
   arrived,
   delivered,
   failed,
+  returnedToKitchen,
+  frozen,
   cancelled,
+  trackingUnavailable,
   unknown;
 
   static CustomerDeliveryStatus fromString(String? raw) {
     if (raw == null) return CustomerDeliveryStatus.unknown;
-    final normalized = raw.trim().toLowerCase();
+    final normalized = raw.trim().toLowerCase().replaceAll('_', '').replaceAll('-', '');
     return switch (normalized) {
+      'notstarted' => CustomerDeliveryStatus.notStarted,
       'scheduled' => CustomerDeliveryStatus.scheduled,
       'preparing' => CustomerDeliveryStatus.preparing,
-      'ready' => CustomerDeliveryStatus.ready,
-      'outfordelivery' || 'out_for_delivery' => CustomerDeliveryStatus.outForDelivery,
+      'ready' || 'readyforpickup' => CustomerDeliveryStatus.ready,
+      'outfordelivery' => CustomerDeliveryStatus.outForDelivery,
       'arrived' => CustomerDeliveryStatus.arrived,
       'delivered' => CustomerDeliveryStatus.delivered,
       'failed' => CustomerDeliveryStatus.failed,
+      'returnedtokitchen' => CustomerDeliveryStatus.returnedToKitchen,
+      'frozen' => CustomerDeliveryStatus.frozen,
       'cancelled' || 'canceled' => CustomerDeliveryStatus.cancelled,
+      'trackingunavailable' => CustomerDeliveryStatus.trackingUnavailable,
       _ => CustomerDeliveryStatus.unknown,
     };
   }
@@ -129,7 +137,11 @@ class CustomerDeliveryItemEntity {
   bool get isCancelled => deliveryStatus == CustomerDeliveryStatus.cancelled;
 
   bool get isTerminalStatus =>
-      isTerminal || isDelivered || isFailed || isCancelled;
+      isTerminal ||
+      isDelivered ||
+      isFailed ||
+      isCancelled ||
+      deliveryStatus == CustomerDeliveryStatus.returnedToKitchen;
 
   bool get canTrack => isOutForDelivery && isTrackable && !isTerminalStatus;
 
@@ -154,22 +166,30 @@ class CustomerDeliveryItemEntity {
       return deliveryStatusText!;
     }
     return switch (deliveryStatus) {
+      CustomerDeliveryStatus.notStarted =>
+        languageCode.startsWith('ar') ? 'لم يبدأ التجهيز' : 'Not Started',
       CustomerDeliveryStatus.scheduled =>
         languageCode.startsWith('ar') ? 'مجدول' : 'Scheduled',
       CustomerDeliveryStatus.preparing =>
-        languageCode.startsWith('ar') ? 'قيد التحضير' : 'Preparing',
+        languageCode.startsWith('ar') ? 'جارٍ التجهيز' : 'Preparing',
       CustomerDeliveryStatus.ready =>
-        languageCode.startsWith('ar') ? 'جاهز للتوصيل' : 'Ready',
+        languageCode.startsWith('ar') ? 'تم التجهيز' : 'Ready',
       CustomerDeliveryStatus.outForDelivery =>
         languageCode.startsWith('ar') ? 'خرج للتوصيل' : 'Out for Delivery',
       CustomerDeliveryStatus.arrived =>
         languageCode.startsWith('ar') ? 'وصل السائق' : 'Driver Arrived',
       CustomerDeliveryStatus.delivered =>
-        languageCode.startsWith('ar') ? 'تم التوصيل' : 'Delivered',
+        languageCode.startsWith('ar') ? 'تم التسليم' : 'Delivered',
       CustomerDeliveryStatus.failed =>
-        languageCode.startsWith('ar') ? 'تعذر التوصيل' : 'Delivery Failed',
+        languageCode.startsWith('ar') ? 'تعذر التسليم' : 'Delivery Failed',
+      CustomerDeliveryStatus.returnedToKitchen =>
+        languageCode.startsWith('ar') ? 'أُعيد للمطعم' : 'Returned to Kitchen',
+      CustomerDeliveryStatus.frozen =>
+        languageCode.startsWith('ar') ? 'اليوم مجمّد' : 'Frozen',
       CustomerDeliveryStatus.cancelled =>
-        languageCode.startsWith('ar') ? 'ملغي' : 'Cancelled',
+        languageCode.startsWith('ar') ? 'ملغى' : 'Cancelled',
+      CustomerDeliveryStatus.trackingUnavailable =>
+        languageCode.startsWith('ar') ? 'التتبع غير متاح' : 'Tracking Unavailable',
       CustomerDeliveryStatus.unknown =>
         languageCode.startsWith('ar') ? 'غير معروف' : 'Unknown',
     };

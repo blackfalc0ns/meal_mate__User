@@ -420,7 +420,7 @@ Future<void> configureDependencies() async {
   }
   if (!getIt.isRegistered<CustomerDeliveryRealtimeService>()) {
     getIt.registerLazySingleton<CustomerDeliveryRealtimeService>(
-      CustomerDeliveryRealtimeServiceImpl.new,
+      () => CustomerDeliveryRealtimeServiceImpl(getIt<TokenService>()),
     );
   }
   if (!getIt.isRegistered<CalendarOverviewViewModel>()) {
@@ -444,6 +444,9 @@ Future<void> configureDependencies() async {
     getIt.registerFactory<CalendarDeliveryDetailsViewModel>(
       () => CalendarDeliveryDetailsViewModel(
         getIt<GetCustomerDeliveryDetailsUseCase>(),
+        getIt.isRegistered<CustomerDeliveryRealtimeService>()
+            ? getIt<CustomerDeliveryRealtimeService>()
+            : null,
       ),
     );
   }
