@@ -53,8 +53,8 @@ class AddressChooseLocationSheet extends StatelessWidget {
         ],
       ),
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.lg,
-        vertical: Spacing.sm,
+        horizontal: Spacing.screenH,
+        vertical: Spacing.xss,
       ),
       child: SafeArea(
         top: false,

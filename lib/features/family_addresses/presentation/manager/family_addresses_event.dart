@@ -29,3 +29,7 @@ final class SaveFamilyMemberAddressEvent extends FamilyAddressesEvent {
 final class ProceedToNextAddressStepEvent extends FamilyAddressesEvent {
   const ProceedToNextAddressStepEvent();
 }
+
+final class ToggleApplyManagerAddressEvent extends FamilyAddressesEvent {
+  const ToggleApplyManagerAddressEvent();
+}

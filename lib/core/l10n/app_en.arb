@@ -1061,6 +1061,18 @@
   "family_step_create_family": "Create family",
   "family_step_program": "Program",
   "family_step_location": "Location",
+  "family_apply_manager_address_title": "Apply Manager's Address",
+  "family_apply_manager_address_subtitle": "Use {name}'s address as the family manager address for all members",
+  "@family_apply_manager_address_subtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Ahmed"
+      }
+    }
+  },
+  "family_apply_manager_address_generic_subtitle": "Use the family manager's address for all members",
+  "family_apply_manager_address_no_manager_address": "Please set the family manager's address first",
   "family_step_allergies": "Allergies",
   "family_step_package_days": "Package and days",
   "family_step_payment": "Payment",
@@ -1309,6 +1321,51 @@
   "calendar_error_selection_locked": "This day is locked and can no longer be edited",
   "calendar_error_day_unavailable": "This day is currently unavailable",
   "calendar_error_fulfillment_not_ready": "Subscription is not ready yet, please try again later",
+  "calendar_delivery_title_out_for_delivery": "Today's meals are on the way",
+  "calendar_delivery_title_delivered": "Today's box delivered",
+  "calendar_delivery_title_preparing": "Meals are being prepared",
+  "calendar_delivery_title_scheduled": "Delivery scheduled",
+  "calendar_delivery_title_arrived": "Driver has arrived",
+  "calendar_delivery_title_failed": "Delivery failed",
+  "calendar_delivery_eta_format": "Arriving in {minutes} min",
+  "@calendar_delivery_eta_format": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_delivery_track_order": "Track Order",
+  "calendar_delivery_order_code_label": "Order #",
+  "calendar_delivery_step_prepared": "Prepared",
+  "calendar_delivery_step_out": "Out for delivery",
+  "calendar_delivery_step_arrived": "Driver arrived",
+  "calendar_delivery_step_delivered": "Delivered",
+  "calendar_delivery_details_title": "Delivery Details",
+  "calendar_delivery_delivered_success_title": "Box delivered successfully",
+  "calendar_delivery_delivered_at_format": "Delivered at {time} to {address}",
+  "@calendar_delivery_delivered_at_format": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_delivery_info_section_title": "Delivery Information",
+  "calendar_delivery_driver_label": "Delivery Driver",
+  "calendar_delivery_method_label": "Delivery Method",
+  "calendar_delivery_date_label": "Delivery Date",
+  "calendar_delivery_timeline_title": "Order Timeline",
+  "calendar_delivery_need_help": "Need help?",
+  "calendar_delivery_support_subtitle": "Contact customer support for assistance",
+  "calendar_delivery_back_to_calendar": "Back to Calendar",
+  "calendar_delivery_rate_experience": "Rate Experience",
+  "calendar_delivery_report_issue": "Report an Issue",
+  "calendar_delivery_direct_delivery": "Direct Delivery",
+  "calendar_delivery_default_driver_name": "Driver",
   "meal_details_optional_notes_title": "Optional notes",
   "meal_details_optional_notes_hint": "Example: no onion, no garlic, extra vegetables...",
   "meal_details_select_meal_button": "Select this meal",

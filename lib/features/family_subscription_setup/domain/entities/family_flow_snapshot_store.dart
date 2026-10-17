@@ -36,22 +36,28 @@ class FamilyFlowSnapshotStore {
               newMember.deliveryAddressId ?? oldMember.deliveryAddressId,
           deliveryAddress:
               newMember.deliveryAddress ?? oldMember.deliveryAddress,
-          allergies: newMember.allergies.isNotEmpty
+          allergies: newMember.allergiesCompleted || newMember.hasNoAllergies
               ? newMember.allergies
               : oldMember.allergies,
-          allergiesCompleted:
-              newMember.allergiesCompleted || oldMember.allergiesCompleted,
-          hasNoAllergies: newMember.hasNoAllergies || oldMember.hasNoAllergies,
+          allergiesCompleted: newMember.allergiesCompleted
+              ? true
+              : oldMember.allergiesCompleted,
+          hasNoAllergies: newMember.allergiesCompleted
+              ? newMember.hasNoAllergies
+              : oldMember.hasNoAllergies,
           dislikedFoods: newMember.dislikedFoods.isNotEmpty
               ? newMember.dislikedFoods
               : oldMember.dislikedFoods,
-          dietaryPreferences: newMember.dietaryPreferences.isNotEmpty
+          dietaryPreferences:
+              newMember.dietaryCompleted || newMember.hasNoDietaryRestriction
               ? newMember.dietaryPreferences
               : oldMember.dietaryPreferences,
-          dietaryCompleted:
-              newMember.dietaryCompleted || oldMember.dietaryCompleted,
-          hasNoDietaryRestriction: newMember.hasNoDietaryRestriction ||
-              oldMember.hasNoDietaryRestriction,
+          dietaryCompleted: newMember.dietaryCompleted
+              ? true
+              : oldMember.dietaryCompleted,
+          hasNoDietaryRestriction: newMember.dietaryCompleted
+              ? newMember.hasNoDietaryRestriction
+              : oldMember.hasNoDietaryRestriction,
         );
       }).toList();
       current = value.copyWith(members: mergedMembers);

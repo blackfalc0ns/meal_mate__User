@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/calling/domain/entities/call_driver_enti
 import 'package:meal_meat_user/features/calling/presentation/screens/active_call_screen.dart';
 import 'package:meal_meat_user/features/calling/presentation/screens/incoming_call_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen.dart';
+import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_delivery_details_screen.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/meal_details_entity.dart';
 import 'package:meal_meat_user/features/meal_details/domain/entities/subscription_meal_details_args.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/screens/meal_details_screen.dart';
@@ -225,7 +226,6 @@ class RouteGenerator {
       case AppRoutes.familyPlanDetails:
       case AppRoutes.familySubscriptionSettings:
       case AppRoutes.familyHome:
-      case '/family/home':
         return _buildRoute(settings: settings, page: const FamilyHomeScreen());
       case AppRoutes.restaurantTierUpgrade:
         final args = settings.arguments is RestaurantTierUpgradeArgs
@@ -266,16 +266,13 @@ class RouteGenerator {
         );
       case AppRoutes.familySubscriptionMembers:
       case AppRoutes.familyMembers:
-      case '/family/members':
       case AppRoutes.familySwitcher:
-      case '/family/switcher':
         return _buildRoute(
           settings: settings,
           page: const FamilyMembersScreen(),
         );
       case AppRoutes.familySubscriptionMemberDetails:
       case AppRoutes.familyMemberDetail:
-      case '/family/member-detail':
         final member = switch (settings.arguments) {
           final FamilyMemberSummaryEntity summary => summary,
           final FamilyMemberDetailEntity detail => FamilyMemberSummaryEntity(
@@ -445,6 +442,18 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: CalendarScreen(subscriptionId: subscriptionId),
+        );
+      case AppRoutes.calendarDeliveryDetails:
+        final subscriptionDayId = switch (settings.arguments) {
+          final String id => id,
+          final Map map => map['subscriptionDayId']?.toString() ?? '',
+          _ => '',
+        };
+        return _buildRoute(
+          settings: settings,
+          page: CalendarDeliveryDetailsScreen(
+            subscriptionDayId: subscriptionDayId,
+          ),
         );
       case AppRoutes.mealDetails:
         final meal = settings.arguments is MealDetailsEntity

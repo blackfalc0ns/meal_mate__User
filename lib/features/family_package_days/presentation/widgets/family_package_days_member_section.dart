@@ -13,18 +13,34 @@ import 'package:meal_meat_user/features/family_shared/presentation/widgets/famil
 class FamilyPackageDaysMemberSection extends StatelessWidget {
   const FamilyPackageDaysMemberSection({
     super.key,
-    required this.state,
+    this.state,
     this.showSummary = true,
     this.isLoading = false,
   });
 
-  final FamilyPackageDaysState state;
+  final FamilyPackageDaysState? state;
   final bool showSummary;
   final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
+    if (state != null) {
+      return _buildContent(context, state!);
+    }
+    return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
+      buildWhen: (previous, current) =>
+          previous.members != current.members ||
+          previous.selectedMemberIndex != current.selectedMemberIndex ||
+          previous.isPlanSaving != current.isPlanSaving ||
+          previous.selectedBundleIndex != current.selectedBundleIndex ||
+          previous.selectedDurationIndex != current.selectedDurationIndex ||
+          previous.customDurationDays != current.customDurationDays ||
+          previous.selectedTierIndex != current.selectedTierIndex,
+      builder: _buildContent,
+    );
+  }
+
+  Widget _buildContent(BuildContext context, FamilyPackageDaysState state) {
     final locale = context.localization;
     final members = state.members;
     final selectedMember = state.selectedMember;
@@ -33,14 +49,15 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
       final index = entry.key;
       final member = entry.value;
       final isSelected = index == state.selectedMemberIndex;
+      final isCompleted = state.isMemberPlanReady(member);
       return FamilyProgramMemberUiModel(
         name: member.displayName,
         imageAsset: resolveFamilyMemberAvatar(member.gender, index),
-        status: member.isReady
+        status: isCompleted
             ? locale.family_member_completed
             : locale.family_member_in_progress,
         isSelected: isSelected,
-        isInProgress: !member.isReady,
+        isInProgress: !isCompleted,
       );
     }).toList();
 
@@ -91,20 +108,11 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
                     }
                   },
           ),
-          const SizedBox(height: Spacing.familyProgramSummaryTopGap),
+          const SizedBox(height: Spacing.sm),
         ],
         if (showSummary && activeMemberDetails != null) ...[
           FamilyProgramSummaryCard(member: activeMemberDetails),
-          const SizedBox(height: Spacing.familyPackageTitleTopGap),
         ],
-        if (selectedMember?.isInCheckoutBasket == true && !isLoading)
-          TextButton.icon(
-            onPressed: () => context
-                .read<FamilyPackageDaysViewModel>()
-                .doIntent(ClearFamilyMemberPlanEvent(selectedMember!.memberId)),
-            icon: Icon(Icons.remove_shopping_cart_outlined, color: color.error),
-            label: Text(locale.family_cancel),
-          ),
       ],
     );
   }

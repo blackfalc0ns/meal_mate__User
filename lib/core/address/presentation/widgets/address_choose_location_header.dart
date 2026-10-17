@@ -17,8 +17,8 @@ class AddressChooseLocationHeader extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: Spacing.addressesChooseLocationHeroIconSize,
-          height: Spacing.addressesChooseLocationHeroIconSize,
+          width: Spacing.xxl,
+          height: Spacing.xxl,
           decoration: BoxDecoration(
             color: color.secondaryContainer,
             borderRadius: BorderRadius.circular(Spacing.sm),
@@ -26,8 +26,8 @@ class AddressChooseLocationHeader extends StatelessWidget {
           child: Center(
             child: SvgPicture.asset(
               Assets.addressesIconHome,
-              width: Spacing.iconLg,
-              height: Spacing.iconLg,
+              width: Spacing.iconMd,
+              height: Spacing.iconMd,
               colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
             ),
           ),
@@ -44,7 +44,7 @@ class AddressChooseLocationHeader extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size16,
+                  fontSize: FontSize.size15,
                   color: color.primary,
                 ),
               ),
@@ -55,7 +55,7 @@ class AddressChooseLocationHeader extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
+                  fontSize: FontSize.size10,
                   color: color.onSurfaceVariant,
                 ),
               ),

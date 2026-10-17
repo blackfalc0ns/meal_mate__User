@@ -1,6 +1,7 @@
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 
 class CalendarOverviewState {
   const CalendarOverviewState({
@@ -12,6 +13,9 @@ class CalendarOverviewState {
     this.isSelectedDayLoading = false,
     this.hasNoSubscription = false,
     this.calendarFailure,
+    this.deliveryWidget,
+    this.isDeliveryLoading = false,
+    this.deliveryFailure,
   });
 
   final String subscriptionId;
@@ -22,6 +26,9 @@ class CalendarOverviewState {
   final bool isSelectedDayLoading;
   final bool hasNoSubscription;
   final Failure? calendarFailure;
+  final CustomerDeliveryWidgetEntity? deliveryWidget;
+  final bool isDeliveryLoading;
+  final Failure? deliveryFailure;
 
   CalendarDayEntity? get selectedDay {
     final date = selectedDate;
@@ -30,6 +37,12 @@ class CalendarOverviewState {
         .where((day) => day.date != null && _isSameDay(day.date!, date))
         .firstOrNull;
   }
+
+  CustomerDeliveryItemEntity? get currentDeliveryItem =>
+      deliveryWidget?.items.firstOrNull;
+
+  bool get hasDeliveryWidget =>
+      deliveryWidget != null && deliveryWidget!.isNotEmpty;
 
   bool get hasCalendarData => days.isNotEmpty;
 
@@ -61,9 +74,14 @@ class CalendarOverviewState {
     bool? isSelectedDayLoading,
     bool? hasNoSubscription,
     Failure? calendarFailure,
+    CustomerDeliveryWidgetEntity? deliveryWidget,
+    bool? isDeliveryLoading,
+    Failure? deliveryFailure,
     bool clearCalendar = false,
     bool clearSelectedDate = false,
     bool clearCalendarFailure = false,
+    bool clearDeliveryWidget = false,
+    bool clearDeliveryFailure = false,
   }) {
     return CalendarOverviewState(
       subscriptionId: subscriptionId ?? this.subscriptionId,
@@ -78,6 +96,13 @@ class CalendarOverviewState {
       calendarFailure: clearCalendarFailure
           ? null
           : calendarFailure ?? this.calendarFailure,
+      deliveryWidget: clearDeliveryWidget
+          ? null
+          : deliveryWidget ?? this.deliveryWidget,
+      isDeliveryLoading: isDeliveryLoading ?? this.isDeliveryLoading,
+      deliveryFailure: clearDeliveryFailure
+          ? null
+          : deliveryFailure ?? this.deliveryFailure,
     );
   }
 

@@ -6,7 +6,7 @@ import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_state.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_content.dart';
-import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_member_content_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_options_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 
@@ -41,7 +41,7 @@ void main() {
           locale: const Locale('ar'),
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          home: Scaffold(
+          home: const Scaffold(
             body: FamilyPackageDaysContent(
               state: state,
               onNextPressed: _doNothing,
@@ -52,7 +52,7 @@ void main() {
 
       expect(find.text('Stable family'), findsOneWidget);
       expect(find.text('Stable member'), findsNWidgets(2));
-      expect(find.byType(FamilyMemberContentLoadingSkeleton), findsOneWidget);
+      expect(find.byType(FamilyPackageOptionsLoadingSkeleton), findsOneWidget);
     },
   );
 

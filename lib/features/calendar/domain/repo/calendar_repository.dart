@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 
 abstract interface class CalendarRepository {
   Future<ApiResult<CalendarSubscriptionEntity>> getCalendar({
@@ -60,5 +61,14 @@ abstract interface class CalendarRepository {
     required String subscriptionId,
     required String date,
     required String localeName,
+  });
+
+  Future<ApiResult<CustomerDeliveryWidgetEntity>> getDeliveryWidget({
+    String? serviceDate,
+    String? subscriptionId,
+  });
+
+  Future<ApiResult<CustomerDeliveryDetailsEntity>> getDeliveryDetails({
+    required String subscriptionDayId,
   });
 }

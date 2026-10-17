@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -30,6 +31,29 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   final SaveFamilyMemberDislikedIngredientsUseCase _saveDisliked;
   final Map<String, Timer> _searchTimers = {};
   int _activeLoadId = 0;
+  bool _isModified = false;
+  Map<String, Set<String>> _initialAllergies = {};
+  Map<String, Set<String>> _initialDisliked = {};
+
+  void resetCompleted() {
+    emit(state.copyWith(completed: false));
+  }
+
+  bool _hasAnyActualChanges() {
+    for (final m in state.members) {
+      final savedCodes = _savedSelectionFor(m);
+      final initialCodes = _initialAllergies[m.memberId] ?? const <String>{};
+      if (!setEquals(savedCodes, initialCodes)) {
+        return true;
+      }
+      final rejectedCodes = _savedRejectedSelectionFor(m);
+      final initialRejected = _initialDisliked[m.memberId] ?? const <String>{};
+      if (!setEquals(rejectedCodes, initialRejected)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   void doIntent(FamilyAllergiesEvent event) {
     switch (event) {
@@ -73,6 +97,15 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
           : -1;
       final initialIndex = targetIndex >= 0 ? targetIndex : 0;
       final currentMember = members.isNotEmpty ? members[initialIndex] : null;
+      _isModified = false;
+      _initialAllergies = {
+        for (final m in members)
+          m.memberId: Set<String>.from(_savedSelectionFor(m)),
+      };
+      _initialDisliked = {
+        for (final m in members)
+          m.memberId: Set<String>.from(_savedRejectedSelectionFor(m)),
+      };
       emit(
         state.copyWith(
           isLoading: false,
@@ -106,6 +139,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   void toggle(String code) {
+    _isModified = true;
     final next = <String>{...state.selectedCodes};
     if (code == 'NONE') {
       next
@@ -195,6 +229,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   void toggleRejected(String code) {
+    _isModified = true;
     Set<String> next;
     if (code == FoodPreferenceItemEntity.noneCode) {
       next = const {FoodPreferenceItemEntity.noneCode};
@@ -253,6 +288,24 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   Future<void> saveCurrent() async {
     final member = state.currentMember;
     if (member == null) return;
+
+    final allCompleted = state.members.isNotEmpty &&
+        state.members.every(
+          (m) =>
+              m.allergiesCompleted ||
+              m.hasNoAllergies ||
+              m.allergies.isNotEmpty,
+        );
+
+    final needsSave = !allCompleted || _isModified || _hasAnyActualChanges();
+    if (!needsSave) {
+      if (state.completed) {
+        emit(state.copyWith(completed: false));
+      }
+      emit(state.copyWith(completed: true, isSaving: false));
+      return;
+    }
+
     emit(
       state.copyWith(
         isSaving: true,
@@ -302,6 +355,16 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         }
       }
     }
+
+    _isModified = false;
+    _initialAllergies = {
+      for (final m in state.members)
+        m.memberId: Set<String>.from(_savedSelectionFor(m)),
+    };
+    _initialDisliked = {
+      for (final m in state.members)
+        m.memberId: Set<String>.from(_savedRejectedSelectionFor(m)),
+    };
 
     final last = state.currentIndex == state.members.length - 1;
     final nextIndex = last ? state.currentIndex : state.currentIndex + 1;

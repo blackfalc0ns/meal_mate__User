@@ -13,17 +13,21 @@ class FamilyPackageDaysState {
     this.isCurrentFlowLoading = false,
     this.currentFlow,
     this.isProgramsLoading = false,
+    this.programsFailure,
     this.programs = const [],
     this.selectedProgramIndex,
     this.isBundlesLoading = false,
+    this.bundlesFailure,
     this.bundles = const [],
     this.selectedBundleIndex,
     this.isDurationsLoading = false,
+    this.durationsFailure,
     this.durations = const [],
     this.selectedDurationIndex,
     this.customDurationDays,
     this.includeFriday = false,
     this.isTiersLoading = false,
+    this.tiersFailure,
     this.tiers = const [],
     this.selectedTierIndex,
     this.isBrowseRestaurantsLoading = false,
@@ -40,20 +44,24 @@ class FamilyPackageDaysState {
   final FamilyFlowCurrentEntity? currentFlow;
 
   final bool isProgramsLoading;
+  final Failure? programsFailure;
   final List<SubscriptionProgramEntity> programs;
   final int? selectedProgramIndex;
 
   final bool isBundlesLoading;
+  final Failure? bundlesFailure;
   final List<SubscriptionBundleEntity> bundles;
   final int? selectedBundleIndex;
 
   final bool isDurationsLoading;
+  final Failure? durationsFailure;
   final List<SubscriptionDurationEntity> durations;
   final int? selectedDurationIndex;
   final int? customDurationDays;
   final bool includeFriday;
 
   final bool isTiersLoading;
+  final Failure? tiersFailure;
   final List<SubscriptionTierEntity> tiers;
   final int? selectedTierIndex;
 
@@ -66,6 +74,11 @@ class FamilyPackageDaysState {
   final int selectedMemberIndex;
   final bool isPlanSaving;
   final Failure? failure;
+
+  bool get programsLoading => isProgramsLoading;
+  bool get bundlesLoading => isBundlesLoading;
+  bool get durationsLoading => isDurationsLoading;
+  bool get tiersLoading => isTiersLoading;
 
   bool get isLoading =>
       isCurrentFlowLoading ||
@@ -127,18 +140,48 @@ class FamilyPackageDaysState {
     return tiers[index];
   }
 
+  bool isMemberPlanReady(FamilyMemberEntity member) {
+    if (member.isReady || member.isPlanCompleted) return true;
+    if (member.memberId == selectedMember?.memberId) {
+      final hasProgram =
+          (member.programId != null && member.programId!.isNotEmpty) ||
+          selectedProgram != null ||
+          programs.isNotEmpty;
+      final hasBundle =
+          (member.bundleId != null && member.bundleId!.isNotEmpty) ||
+          selectedBundle != null;
+      final days = member.durationDays ?? selectedDurationDays;
+      final hasDuration = days != null && days > 0;
+      final hasTier = member.selectedTier != null || selectedTier != null;
+      return hasProgram && hasBundle && hasDuration && hasTier;
+    }
+    return false;
+  }
+
+  int get completedMembersCount =>
+      plannedMembers.where(isMemberPlanReady).length;
+
   FamilyPackageDaysState copyWith({
     bool? isCurrentFlowLoading,
     FamilyFlowCurrentEntity? currentFlow,
     bool? isProgramsLoading,
+    bool? programsLoading,
+    Failure? programsFailure,
+    bool clearProgramsFailure = false,
     List<SubscriptionProgramEntity>? programs,
     int? selectedProgramIndex,
     bool clearSelectedProgram = false,
     bool? isBundlesLoading,
+    bool? bundlesLoading,
+    Failure? bundlesFailure,
+    bool clearBundlesFailure = false,
     List<SubscriptionBundleEntity>? bundles,
     int? selectedBundleIndex,
     bool clearSelectedBundle = false,
     bool? isDurationsLoading,
+    bool? durationsLoading,
+    Failure? durationsFailure,
+    bool clearDurationsFailure = false,
     List<SubscriptionDurationEntity>? durations,
     int? selectedDurationIndex,
     bool clearSelectedDuration = false,
@@ -146,6 +189,9 @@ class FamilyPackageDaysState {
     bool clearCustomDuration = false,
     bool? includeFriday,
     bool? isTiersLoading,
+    bool? tiersLoading,
+    Failure? tiersFailure,
+    bool clearTiersFailure = false,
     List<SubscriptionTierEntity>? tiers,
     int? selectedTierIndex,
     bool clearSelectedTier = false,
@@ -164,17 +210,29 @@ class FamilyPackageDaysState {
     return FamilyPackageDaysState(
       isCurrentFlowLoading: isCurrentFlowLoading ?? this.isCurrentFlowLoading,
       currentFlow: currentFlow ?? this.currentFlow,
-      isProgramsLoading: isProgramsLoading ?? this.isProgramsLoading,
+      isProgramsLoading:
+          programsLoading ?? isProgramsLoading ?? this.isProgramsLoading,
+      programsFailure: clearProgramsFailure
+          ? null
+          : (programsFailure ?? this.programsFailure),
       programs: programs ?? this.programs,
       selectedProgramIndex: clearSelectedProgram
           ? null
           : (selectedProgramIndex ?? this.selectedProgramIndex),
-      isBundlesLoading: isBundlesLoading ?? this.isBundlesLoading,
+      isBundlesLoading:
+          bundlesLoading ?? isBundlesLoading ?? this.isBundlesLoading,
+      bundlesFailure: clearBundlesFailure
+          ? null
+          : (bundlesFailure ?? this.bundlesFailure),
       bundles: bundles ?? this.bundles,
       selectedBundleIndex: clearSelectedBundle
           ? null
           : (selectedBundleIndex ?? this.selectedBundleIndex),
-      isDurationsLoading: isDurationsLoading ?? this.isDurationsLoading,
+      isDurationsLoading:
+          durationsLoading ?? isDurationsLoading ?? this.isDurationsLoading,
+      durationsFailure: clearDurationsFailure
+          ? null
+          : (durationsFailure ?? this.durationsFailure),
       durations: durations ?? this.durations,
       selectedDurationIndex: clearSelectedDuration
           ? null
@@ -183,7 +241,10 @@ class FamilyPackageDaysState {
           ? null
           : (customDurationDays ?? this.customDurationDays),
       includeFriday: includeFriday ?? this.includeFriday,
-      isTiersLoading: isTiersLoading ?? this.isTiersLoading,
+      isTiersLoading: tiersLoading ?? isTiersLoading ?? this.isTiersLoading,
+      tiersFailure: clearTiersFailure
+          ? null
+          : (tiersFailure ?? this.tiersFailure),
       tiers: tiers ?? this.tiers,
       selectedTierIndex: clearSelectedTier
           ? null

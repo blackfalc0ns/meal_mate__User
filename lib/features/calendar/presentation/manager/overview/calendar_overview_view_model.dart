@@ -8,9 +8,11 @@ import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/calendar/data/services/customer_delivery_realtime_service.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_customer_delivery_widget_usecase.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_event.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
 import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
@@ -22,19 +24,40 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     this._getCalendarUseCase,
     this._getCalendarDayUseCase,
     this._getCurrentCustomerSubscriptionUseCase,
-    this._sharedPrefHelper, [
+    this._sharedPrefHelper,
+    this._getCustomerDeliveryWidgetUseCase, [
     this._notificationBadgeViewModel,
-  ]) : super(const CalendarOverviewState());
+    this._realtimeService,
+  ]) : super(const CalendarOverviewState()) {
+    _listenToRealtimeDelivery();
+  }
 
   final GetCalendarUseCase _getCalendarUseCase;
   final GetCalendarDayUseCase _getCalendarDayUseCase;
   final GetCurrentCustomerSubscriptionUseCase
   _getCurrentCustomerSubscriptionUseCase;
   final SharedPrefHelper _sharedPrefHelper;
+  final GetCustomerDeliveryWidgetUseCase _getCustomerDeliveryWidgetUseCase;
   final NotificationBadgeViewModel? _notificationBadgeViewModel;
+  final CustomerDeliveryRealtimeService? _realtimeService;
 
+  StreamSubscription<String>? _realtimeSubscription;
   int _calendarRequestGeneration = 0;
   int _dayRequestGeneration = 0;
+  int _deliveryRequestGeneration = 0;
+
+  void _listenToRealtimeDelivery() {
+    _realtimeSubscription = _realtimeService?.onDeliveryChanged.listen((_) {
+      if (isClosed) return;
+      unawaited(loadDeliveryWidget());
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    await _realtimeSubscription?.cancel();
+    return super.close();
+  }
 
   void doIntent(CalendarOverviewEvent event) {
     switch (event) {
@@ -50,6 +73,8 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
         selectDay(day: event.day, localeName: event.localeName);
       case ReplaceCalendarDayEvent():
         replaceDay(event.day);
+      case LoadDeliveryWidgetEvent():
+        unawaited(loadDeliveryWidget(date: event.date));
     }
   }
 
@@ -134,6 +159,9 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
             clearCalendarFailure: true,
           ),
         );
+        if (selectedDate != null) {
+          unawaited(_loadDeliveryWidgetForDate(selectedDate));
+        }
         await _loadSelectedDayDetails(localeName);
       case ApiErrorResult():
         if (retryWithCurrentOnNotFound &&
@@ -172,6 +200,7 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     unawaited(
       _loadSelectedDayDetailsForDate(day.date!, localeName: localeName),
     );
+    unawaited(_loadDeliveryWidgetForDate(day.date!));
   }
 
   void replaceDay(CalendarDayEntity updatedDay) {
@@ -204,7 +233,48 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
   }
 
   Future<void> refreshDay(DateTime date, {required String localeName}) async {
-    await _loadSelectedDayDetailsForDate(date, localeName: localeName);
+    await Future.wait([
+      _loadSelectedDayDetailsForDate(date, localeName: localeName),
+      _loadDeliveryWidgetForDate(date),
+    ]);
+  }
+
+  Future<void> loadDeliveryWidget({DateTime? date}) async {
+    final targetDate = date ?? state.selectedDate;
+    if (targetDate == null) return;
+    await _loadDeliveryWidgetForDate(targetDate);
+  }
+
+  Future<void> _loadDeliveryWidgetForDate(DateTime targetDate) async {
+    final dateStr = DateFormat('yyyy-MM-dd').format(targetDate);
+    final generation = ++_deliveryRequestGeneration;
+    emit(state.copyWith(isDeliveryLoading: true, clearDeliveryFailure: true));
+
+    final result = await _getCustomerDeliveryWidgetUseCase(
+      serviceDate: dateStr,
+      subscriptionId:
+          state.subscriptionId.isNotEmpty ? state.subscriptionId : null,
+    );
+
+    if (isClosed || generation != _deliveryRequestGeneration) return;
+
+    switch (result) {
+      case ApiSuccessResult():
+        emit(
+          state.copyWith(
+            deliveryWidget: result.data,
+            isDeliveryLoading: false,
+            clearDeliveryFailure: true,
+          ),
+        );
+      case ApiErrorResult():
+        emit(
+          state.copyWith(
+            deliveryFailure: result.failure,
+            isDeliveryLoading: false,
+          ),
+        );
+    }
   }
 
   Future<void> _loadSelectedDayDetails(String localeName) async {

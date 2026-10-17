@@ -11,8 +11,10 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_daily_macros_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_day_meals_loading_skeleton.dart';
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_delivery_card.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_empty_meals_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_frozen_day_state.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meal_card.dart';
@@ -22,20 +24,24 @@ class CalendarDayContent extends StatelessWidget {
   const CalendarDayContent({
     super.key,
     required this.selectedDay,
+    this.deliveryItem,
     required this.showBottomSpace,
     required this.onSelectRestaurant,
     required this.onChangeMeal,
     required this.onMealTap,
+    this.onTrackDelivery,
     this.onConfirmSelections,
     this.isConfirming = false,
     this.canConfirm = false,
     this.isLoading = false,
   });
   final CalendarDayEntity? selectedDay;
+  final CustomerDeliveryItemEntity? deliveryItem;
   final bool showBottomSpace;
   final VoidCallback onSelectRestaurant;
   final VoidCallback onChangeMeal;
   final void Function(CalendarMealEntity, CalendarRestaurantEntity?) onMealTap;
+  final void Function(CustomerDeliveryItemEntity)? onTrackDelivery;
   final VoidCallback? onConfirmSelections;
   final bool isConfirming;
   final bool canConfirm;
@@ -78,6 +84,25 @@ class CalendarDayContent extends StatelessWidget {
                   '${selectedDay?.date?.toIso8601String()}_${hasMeals}_${selectedDay?.isFrozen}',
                 ),
                 children: [
+                  if (deliveryItem != null) ...[
+                    CalendarDeliveryCard(
+                      key: ValueKey(
+                        'delivery_${deliveryItem?.orderCode ?? selectedDay?.date?.toIso8601String()}',
+                      ),
+                      deliveryItem: deliveryItem!,
+                      onTrackOrDetails: () =>
+                          onTrackDelivery?.call(deliveryItem!),
+                    )
+                        .animate()
+                        .fadeIn(duration: 250.ms)
+                        .slideX(
+                          begin: slideBegin,
+                          end: 0,
+                          duration: 250.ms,
+                          curve: Curves.easeOutCubic,
+                        ),
+                    const SizedBox(height: Spacing.md),
+                  ],
                   if (selectedDay?.isFrozen == true)
                     const CalendarFrozenDayState()
                   else if (!hasMeals)

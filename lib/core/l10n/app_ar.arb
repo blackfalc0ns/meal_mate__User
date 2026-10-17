@@ -1058,6 +1058,18 @@
   "family_step_create_family": "انشاء العائلة",
   "family_step_program": "البرنامج",
   "family_step_location": "الموقع",
+  "family_apply_manager_address_title": "تطبيق عنوان المدير",
+  "family_apply_manager_address_subtitle": "استخدم عنوان {name} كعنوان مدير العائلة لجميع الأفراد",
+  "@family_apply_manager_address_subtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "أحمد"
+      }
+    }
+  },
+  "family_apply_manager_address_generic_subtitle": "استخدم عنوان مدير العائلة لجميع الأفراد",
+  "family_apply_manager_address_no_manager_address": "يرجى تحديد عنوان مدير العائلة أولاً",
   "family_step_allergies": "الحساسية",
   "family_step_package_days": "الباقة والأيام",
   "family_step_payment": "الدفع",
@@ -1306,6 +1318,51 @@
   "calendar_error_selection_locked": "تم قفل هذا اليوم ولم يعد قابلاً للتعديل",
   "calendar_error_day_unavailable": "هذا اليوم غير متاح حالياً",
   "calendar_error_fulfillment_not_ready": "الاشتراك غير جاهز حالياً، يرجى إعادة المحاولة لاحقاً",
+  "calendar_delivery_title_out_for_delivery": "وجبات اليوم في الطريق",
+  "calendar_delivery_title_delivered": "تم تسليم بوكس اليوم",
+  "calendar_delivery_title_preparing": "جاري تجهيز وجباتك",
+  "calendar_delivery_title_scheduled": "التوصيل مجدول",
+  "calendar_delivery_title_arrived": "وصل مندوب التوصيل",
+  "calendar_delivery_title_failed": "تعذر التوصيل",
+  "calendar_delivery_eta_format": "سيصل خلال {minutes} دقيقة",
+  "@calendar_delivery_eta_format": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_delivery_track_order": "تتبع الطلب",
+  "calendar_delivery_order_code_label": "رقم الطلب",
+  "calendar_delivery_step_prepared": "تم التجهيز",
+  "calendar_delivery_step_out": "خرج للتوصيل",
+  "calendar_delivery_step_arrived": "وصل المندوب",
+  "calendar_delivery_step_delivered": "تم التسليم",
+  "calendar_delivery_details_title": "تفاصيل التوصيل",
+  "calendar_delivery_delivered_success_title": "تم تسليم البوكس بنجاح",
+  "calendar_delivery_delivered_at_format": "تم التسليم في {time} إلى {address}",
+  "@calendar_delivery_delivered_at_format": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "calendar_delivery_info_section_title": "تفاصيل التسليم",
+  "calendar_delivery_driver_label": "مندوب التوصيل",
+  "calendar_delivery_method_label": "طريقة التوصيل",
+  "calendar_delivery_date_label": "تاريخ التوصيل",
+  "calendar_delivery_timeline_title": "مراحل الطلب",
+  "calendar_delivery_need_help": "تحتاج مساعدة؟",
+  "calendar_delivery_support_subtitle": "تواصل مع الدعم الفني لحل أي مشكلة",
+  "calendar_delivery_back_to_calendar": "العودة للتقويم",
+  "calendar_delivery_rate_experience": "تقييم التجربة",
+  "calendar_delivery_report_issue": "إبلاغ عن مشكلة",
+  "calendar_delivery_direct_delivery": "توصيل مباشر",
+  "calendar_delivery_default_driver_name": "المندوب",
   "meal_details_optional_notes_title": "ملاحظات اختيارية",
   "meal_details_optional_notes_hint": "مثال: بدون بصل، بدون ثوم، زيادة خضار...",
   "meal_details_select_meal_button": "اختيار هذه الوجبة",

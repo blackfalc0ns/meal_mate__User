@@ -58,6 +58,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
             );
           }
           if (state.completed) {
+            context.read<FamilyAllergiesViewModel>().resetCompleted();
             unawaited(context.pushNamed(AppRoutes.familyPackageDaysSetup));
           }
         },

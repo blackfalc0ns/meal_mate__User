@@ -4,6 +4,8 @@ import 'package:meal_meat_user/features/calendar/data/models/response/calendar_a
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 
+import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
+
 abstract interface class CalendarRemoteDataSource {
   Future<CalendarResponseDto> getCalendar(String subscriptionId);
 
@@ -49,5 +51,14 @@ abstract interface class CalendarRemoteDataSource {
   Future<CalendarDayResponseDto> confirmDayMeals({
     required String subscriptionId,
     required String date,
+  });
+
+  Future<CustomerDeliveryWidgetResponseDto> getDeliveryWidget({
+    String? serviceDate,
+    String? subscriptionId,
+  });
+
+  Future<CustomerDeliveryDetailsResponseDto> getDeliveryDetails({
+    required String subscriptionDayId,
   });
 }

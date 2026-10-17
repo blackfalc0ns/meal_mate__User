@@ -101,7 +101,7 @@ class FamilyPackageOptionCard extends StatelessWidget {
           if (selected)
             PositionedDirectional(
               top: -Spacing.sm,
-              end: -Spacing.xs,
+              start: -Spacing.xs,
               child: CircleAvatar(
                 radius: Spacing.sm,
                 backgroundColor: color.primary,

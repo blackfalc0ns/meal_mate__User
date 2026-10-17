@@ -236,6 +236,46 @@ void main() {
       expect(viewModel.state.completed, isTrue);
     },
   );
+
+  test('does not send save request when returning and no data has changed', () async {
+    final allergiesRepository = _FamilyAllergiesRepository();
+    final viewModel = FamilyAllergiesViewModel(
+      GetFamilyFlowCurrentUseCase(
+        _FamilySubscriptionSetupRepository(
+          members: const [
+            FamilyMemberEntity(
+              memberId: 'member-1',
+              role: 1,
+              displayName: 'First',
+              relationshipCode: 'SELF',
+              gender: 1,
+              ageYears: 30,
+              setupStatus: 0,
+              includeFriday: false,
+              isCurrentUser: true,
+              allergiesCompleted: true,
+              hasNoAllergies: true,
+            ),
+          ],
+        ),
+      ),
+      GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
+      SaveFamilyMemberAllergiesUseCase(allergiesRepository),
+      SaveFamilyMemberDislikedIngredientsUseCase(allergiesRepository),
+    );
+    addTearDown(viewModel.close);
+
+    await viewModel.load();
+    expect(viewModel.state.isSaving, isFalse);
+
+    // Call saveCurrent without changing any allergies
+    allergiesRepository.saveCount = 0;
+    await viewModel.saveCurrent();
+
+    expect(allergiesRepository.saveCount, 0);
+    expect(viewModel.state.completed, isTrue);
+    expect(viewModel.state.isSaving, isFalse);
+  });
 }
 
 class _FamilySubscriptionSetupRepository
@@ -309,6 +349,7 @@ class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
   List<String>? savedIngredientCodes;
   bool failDislikedSave = false;
   bool pauseSave = false;
+  int saveCount = 0;
   final pendingSave = Completer<ApiResult<bool>>();
 
   @override
@@ -316,6 +357,7 @@ class _FamilyAllergiesRepository implements FamilyAllergiesRepository {
     required String memberId,
     required List<FamilyMemberAllergySelection> allergies,
   }) {
+    saveCount++;
     if (pauseSave) {
       return pendingSave.future;
     }

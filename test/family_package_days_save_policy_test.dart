@@ -67,8 +67,8 @@ void main() {
 class _FlowRepository implements FamilySubscriptionSetupRepository {
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>>
-  getFamilySubscriptionCurrent() async => ApiSuccessResult(
-    data: const FamilyFlowCurrentEntity(
+  getFamilySubscriptionCurrent() async => const ApiSuccessResult(
+    data: FamilyFlowCurrentEntity(
       members: [
         FamilyMemberEntity(
           memberId: 'member-1',
@@ -94,12 +94,12 @@ class _ProgramsRepository implements FamilyProgramsRepository {
   Future<ApiResult<List<SubscriptionProgramEntity>>> getFamilyPrograms({
     int? page,
     int? pageSize,
-  }) async => ApiSuccessResult(data: const []);
+  }) async => const ApiSuccessResult(data: []);
 
   @override
   Future<ApiResult<List<SubscriptionBundleEntity>>> getFamilyProgramBundles(
     String programId,
-  ) async => ApiSuccessResult(data: const []);
+  ) async => const ApiSuccessResult(data: []);
 }
 
 class _TierRepository implements SubscriptionTierRepository {
@@ -114,7 +114,7 @@ class _CountingPlanRepository implements FamilyPackageDaysRepository {
   Future<ApiResult<List<SubscriptionDurationEntity>>> getDurations({
     required String programId,
     required bool includeFriday,
-  }) async => ApiSuccessResult(data: const []);
+  }) async => const ApiSuccessResult(data: []);
 
   @override
   Future<ApiResult<List<SubscriptionTierEntity>>> getTiers({
@@ -123,7 +123,7 @@ class _CountingPlanRepository implements FamilyPackageDaysRepository {
     int? durationDays,
     required bool includeFriday,
     required String familyMemberId,
-  }) async => ApiSuccessResult(data: const []);
+  }) async => const ApiSuccessResult(data: []);
 
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>> saveFamilyMemberPlan({
@@ -137,7 +137,7 @@ class _CountingPlanRepository implements FamilyPackageDaysRepository {
     String? startDate,
   }) async {
     requests++;
-    return ApiSuccessResult(data: const FamilyFlowCurrentEntity());
+    return const ApiSuccessResult(data: FamilyFlowCurrentEntity());
   }
 
   @override

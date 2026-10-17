@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/address/domain/entities/customer_address_ent
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
+import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_apply_manager_banner.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_address_location_stage.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_header.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_member_strip.dart';
@@ -28,7 +29,7 @@ class FamilyAddressesBody extends StatelessWidget {
             padding: EdgeInsetsDirectional.only(
               start: Spacing.familySetupHorizontalPadding,
               end: Spacing.xs,
-              bottom: Spacing.md,
+              bottom: Spacing.xs,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -36,6 +37,13 @@ class FamilyAddressesBody extends StatelessWidget {
                 FamilyAddressesHeader(),
                 SizedBox(height: Spacing.xs),
                 FamilyAddressesMemberStrip(),
+                SizedBox(height: Spacing.xs),
+                Padding(
+                  padding: EdgeInsetsDirectional.only(
+                    end: Spacing.familySetupHorizontalPadding - Spacing.xs,
+                  ),
+                  child: FamilyAddressApplyManagerBanner(),
+                ),
               ],
             ),
           ),
@@ -55,8 +63,10 @@ class FamilyAddressesBody extends StatelessWidget {
                   final member = state.currentMember;
                   if (member == null) return null;
                   final allCompleted =
-                      state.members.isNotEmpty &&
-                      state.completedMemberIds.length == state.members.length;
+                      state.completed ||
+                      (state.members.isNotEmpty &&
+                          state.completedMemberIds.length ==
+                              state.members.length);
                   final hasSavedAddress =
                       member.deliveryAddress != null ||
                       (member.deliveryAddressId?.isNotEmpty ?? false);
@@ -72,7 +82,9 @@ class FamilyAddressesBody extends StatelessWidget {
                   }
 
                   return FamilyAddressLocationStage(
-                    key: ValueKey(memberData.memberId),
+                    key: ValueKey(
+                      '${memberData.memberId}-${memberData.initialAddress?.addressId ?? "empty"}',
+                    ),
                     memberId: memberData.memberId,
                     initialAddress: memberData.initialAddress,
                     customActionText: memberData.canProceedToAllergies

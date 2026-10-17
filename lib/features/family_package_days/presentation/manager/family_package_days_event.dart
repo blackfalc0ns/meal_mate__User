@@ -95,3 +95,15 @@ class SaveFamilyMemberPlanEvent extends FamilyPackageDaysEvent {
   final bool? includeFriday;
   final String? startDate;
 }
+
+class RetryFamilyBundlesEvent extends FamilyPackageDaysEvent {
+  const RetryFamilyBundlesEvent();
+}
+
+class RetryFamilyDurationsEvent extends FamilyPackageDaysEvent {
+  const RetryFamilyDurationsEvent();
+}
+
+class RetryFamilyTiersEvent extends FamilyPackageDaysEvent {
+  const RetryFamilyTiersEvent();
+}

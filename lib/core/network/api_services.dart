@@ -59,6 +59,7 @@ import 'package:meal_meat_user/features/calendar/data/models/request/calendar_se
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_available_meals_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
@@ -569,6 +570,18 @@ abstract class ApiServices {
   Future<CalendarDayResponseDto> confirmSubscriptionCalendarDay(
     @Path('subscriptionId') String subscriptionId,
     @Path('date') String date,
+  );
+
+  @GET(EndPoints.customerDeliveryWidget)
+  Future<CustomerDeliveryWidgetResponseDto> getCustomerDeliveryWidget({
+    @Query('serviceDate') String? serviceDate,
+    @Query('subscriptionId') String? subscriptionId,
+  });
+
+  @GET(EndPoints.customerSubscriptionDayDeliveryDetails)
+  Future<CustomerDeliveryDetailsResponseDto>
+  getCustomerSubscriptionDayDeliveryDetails(
+    @Path('subscriptionDayId') String subscriptionDayId,
   );
 
   @GET(EndPoints.customerSubscriptionCurrent)

@@ -87,7 +87,16 @@ class _FamilyAddressLocationStageState
   @override
   void didUpdateWidget(covariant FamilyAddressLocationStage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.memberId == widget.memberId) return;
+    if (oldWidget.memberId == widget.memberId) {
+      if (oldWidget.initialAddress != widget.initialAddress) {
+        unawaited(
+          _viewModel.doIntent(
+            GetLocationsCatalogEvent(initialAddress: widget.initialAddress),
+          ),
+        );
+      }
+      return;
+    }
 
     _shownSessionId = null;
     _entryFlowController.chooseLocation();

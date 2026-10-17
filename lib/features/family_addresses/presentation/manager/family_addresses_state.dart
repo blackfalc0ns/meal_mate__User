@@ -29,6 +29,41 @@ class FamilyAddressesState {
       ? null
       : members[currentIndex];
 
+  FamilyMemberEntity? get manager =>
+      members.cast<FamilyMemberEntity?>().firstWhere(
+        (m) => m?.isManager == true,
+        orElse: () => null,
+      );
+
+  bool get isManagerAddressAvailable =>
+      manager?.deliveryAddress != null ||
+      (manager?.deliveryAddressId?.isNotEmpty ?? false);
+
+  bool get isManagerAddressAppliedToAll {
+    final mgr = manager;
+    if (mgr == null) return false;
+    final mgrAddress = mgr.deliveryAddress;
+    final mgrAddressId = mgr.deliveryAddressId ?? mgrAddress?.addressId;
+    if ((mgrAddressId == null || mgrAddressId.isEmpty) && mgrAddress == null) {
+      return false;
+    }
+    if (members.length <= 1) return false;
+
+    return members.every((m) {
+      if (m.memberId == mgr.memberId) return true;
+      if (mgrAddressId != null &&
+          mgrAddressId.isNotEmpty &&
+          m.deliveryAddressId == mgrAddressId) {
+        return true;
+      }
+      if (m.deliveryAddress != null && mgrAddress != null) {
+        return m.deliveryAddress!.latitude == mgrAddress.latitude &&
+            m.deliveryAddress!.longitude == mgrAddress.longitude;
+      }
+      return false;
+    });
+  }
+
   FamilyAddressesState copyWith({
     String? familyName,
     bool? isLoading,

@@ -45,13 +45,12 @@ class _FamilyPackageDaysSetupScreenState
         );
         if (widget.programId != null && widget.programId!.isNotEmpty) {
           vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
-        } else {
-          vm.doIntent(const GetFamilyProgramsEvent());
         }
         return vm;
       },
       child: isInFamilyFlow
           ? BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
+              buildWhen: _shouldRebuildSetupScreen,
               builder: _buildContent,
             )
           : Scaffold(
@@ -83,10 +82,27 @@ class _FamilyPackageDaysSetupScreenState
                     BlocBuilder<
                       FamilyPackageDaysViewModel,
                       FamilyPackageDaysState
-                    >(builder: _buildContent),
+                    >(
+                      buildWhen: _shouldRebuildSetupScreen,
+                      builder: _buildContent,
+                    ),
               ),
             ),
     );
+  }
+
+  bool _shouldRebuildSetupScreen(
+    FamilyPackageDaysState previous,
+    FamilyPackageDaysState current,
+  ) {
+    final prevHasMembers = previous.members.isNotEmpty;
+    final currHasMembers = current.members.isNotEmpty;
+    if (prevHasMembers != currHasMembers) return true;
+    if (!currHasMembers) {
+      return previous.isCurrentFlowLoading != current.isCurrentFlowLoading ||
+          previous.failure != current.failure;
+    }
+    return false;
   }
 
   Widget _buildContent(BuildContext context, FamilyPackageDaysState state) {
@@ -107,62 +123,55 @@ class _FamilyPackageDaysSetupScreenState
           );
           if (widget.programId != null && widget.programId!.isNotEmpty) {
             vm.doIntent(GetFamilyBundlesEvent(widget.programId!));
-          } else {
-            vm.doIntent(const GetFamilyProgramsEvent());
           }
         },
       );
     }
 
     return FamilyPackageDaysContent(
-      state: state,
       programId: widget.programId,
-      onNextPressed: () => _savePlanAndProceed(context, state),
+      onNextPressed: () => _savePlanAndProceed(context),
     );
   }
 
-  Future<void> _savePlanAndProceed(
-    BuildContext context,
-    FamilyPackageDaysState state,
-  ) async {
-    var latestState = state;
+  Future<void> _savePlanAndProceed(BuildContext context) async {
+    final vm = context.read<FamilyPackageDaysViewModel>();
+    var latestState = vm.state;
     final member =
-        state.selectedMember ??
-        (state.members.isNotEmpty ? state.members.first : null);
+        latestState.selectedMember ??
+        (latestState.members.isNotEmpty ? latestState.members.first : null);
     final programId =
         widget.programId ??
-        state.selectedProgram?.programId ??
+        latestState.selectedProgram?.programId ??
         member?.programId ??
-        (state.programs.isNotEmpty ? state.programs.first.programId : '');
-    final bundle = state.selectedBundle;
-    final duration = state.selectedDuration;
-    final durationDays = duration?.durationDays ?? state.customDurationDays;
-    final tier = state.selectedTier;
+        (latestState.programs.isNotEmpty
+            ? latestState.programs.first.programId
+            : '');
+    final bundle = latestState.selectedBundle;
+    final duration = latestState.selectedDuration;
+    final durationDays =
+        duration?.durationDays ?? latestState.customDurationDays;
+    final tier = latestState.selectedTier;
 
     if (member != null &&
-        !state.isSelectedManagerPlanLocked &&
+        !latestState.isSelectedManagerPlanLocked &&
         programId.isNotEmpty &&
         bundle != null &&
         durationDays != null &&
         durationDays > 0 &&
         tier != null) {
       final tierInt = int.tryParse(tier.tier) ?? 1;
-      final saved = await context
-          .read<FamilyPackageDaysViewModel>()
-          .saveMemberPlanAndWait(
-            memberId: member.memberId,
-            programId: programId,
-            bundleId: bundle.bundleId,
-            tier: tierInt,
-            durationDays: durationDays,
-            includeFriday: state.includeFriday,
-          );
+      final saved = await vm.saveMemberPlanAndWait(
+        memberId: member.memberId,
+        programId: programId,
+        bundleId: bundle.bundleId,
+        tier: tierInt,
+        durationDays: durationDays,
+        includeFriday: latestState.includeFriday,
+      );
       if (!context.mounted) return;
       if (!saved) {
-        final failure = context
-            .read<FamilyPackageDaysViewModel>()
-            .state
-            .failure;
+        final failure = vm.state.failure;
         if (failure != null) {
           CustomSnackbar.showError(
             context: context,
@@ -171,21 +180,24 @@ class _FamilyPackageDaysSetupScreenState
         }
         return;
       }
-      latestState = context.read<FamilyPackageDaysViewModel>().state;
+      latestState = vm.state;
     }
 
     final hasUnreadyMembers = latestState.plannedMembers.any(
-      (m) => m.memberId != member?.memberId && !m.isReady,
+      (m) =>
+          m.memberId != member?.memberId &&
+          !latestState.isMemberPlanReady(m),
     );
 
     if (hasUnreadyMembers) {
       final nextIndex = latestState.members.indexWhere(
-        (m) => m.hasProgram && m.memberId != member?.memberId && !m.isReady,
+        (m) =>
+            m.hasProgram &&
+            m.memberId != member?.memberId &&
+            !latestState.isMemberPlanReady(m),
       );
       if (nextIndex != -1) {
-        context.read<FamilyPackageDaysViewModel>().doIntent(
-          SelectFamilyMemberEvent(nextIndex),
-        );
+        vm.doIntent(SelectFamilyMemberPackageDaysEvent(nextIndex));
       }
       Navigator.maybePop(context);
     } else {

@@ -349,9 +349,11 @@ class _AddressChooseLocationMapViewState
   void _onCameraMove(CameraPosition position) {
     _currentLatitude = position.target.latitude;
     _currentLongitude = position.target.longitude;
-    final initialLat = widget.initialAddress?.latitude;
-    final initialLng = widget.initialAddress?.longitude;
-    if (!_isProgrammaticMove && initialLat != null && initialLng != null) {
+    if (_isInitialMapMove || _isProgrammaticMove) return;
+
+    if (widget.initialAddress != null) {
+      final initialLat = widget.initialAddress!.latitude ?? _defaultLatitude;
+      final initialLng = widget.initialAddress!.longitude ?? _defaultLongitude;
       final latDiff = (_currentLatitude - initialLat).abs();
       final lngDiff = (_currentLongitude - initialLng).abs();
       final isModified = latDiff > 0.0003 || lngDiff > 0.0003;

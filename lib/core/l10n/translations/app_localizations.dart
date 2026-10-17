@@ -5534,6 +5534,30 @@ abstract class AppLocalizations {
   /// **'Location'**
   String get family_step_location;
 
+  /// No description provided for @family_apply_manager_address_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Manager\'s Address'**
+  String get family_apply_manager_address_title;
+
+  /// No description provided for @family_apply_manager_address_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {name}\'s address as the family manager address for all members'**
+  String family_apply_manager_address_subtitle(String name);
+
+  /// No description provided for @family_apply_manager_address_generic_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the family manager\'s address for all members'**
+  String get family_apply_manager_address_generic_subtitle;
+
+  /// No description provided for @family_apply_manager_address_no_manager_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Please set the family manager\'s address first'**
+  String get family_apply_manager_address_no_manager_address;
+
   /// No description provided for @family_step_allergies.
   ///
   /// In en, this message translates to:
@@ -6733,6 +6757,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscription is not ready yet, please try again later'**
   String get calendar_error_fulfillment_not_ready;
+
+  /// No description provided for @calendar_delivery_title_out_for_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s meals are on the way'**
+  String get calendar_delivery_title_out_for_delivery;
+
+  /// No description provided for @calendar_delivery_title_delivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s box delivered'**
+  String get calendar_delivery_title_delivered;
+
+  /// No description provided for @calendar_delivery_title_preparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals are being prepared'**
+  String get calendar_delivery_title_preparing;
+
+  /// No description provided for @calendar_delivery_title_scheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery scheduled'**
+  String get calendar_delivery_title_scheduled;
+
+  /// No description provided for @calendar_delivery_title_arrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver has arrived'**
+  String get calendar_delivery_title_arrived;
+
+  /// No description provided for @calendar_delivery_title_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery failed'**
+  String get calendar_delivery_title_failed;
+
+  /// No description provided for @calendar_delivery_eta_format.
+  ///
+  /// In en, this message translates to:
+  /// **'Arriving in {minutes} min'**
+  String calendar_delivery_eta_format(String minutes);
+
+  /// No description provided for @calendar_delivery_track_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Order'**
+  String get calendar_delivery_track_order;
+
+  /// No description provided for @calendar_delivery_order_code_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Order #'**
+  String get calendar_delivery_order_code_label;
+
+  /// No description provided for @calendar_delivery_step_prepared.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared'**
+  String get calendar_delivery_step_prepared;
+
+  /// No description provided for @calendar_delivery_step_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Out for delivery'**
+  String get calendar_delivery_step_out;
+
+  /// No description provided for @calendar_delivery_step_arrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver arrived'**
+  String get calendar_delivery_step_arrived;
+
+  /// No description provided for @calendar_delivery_step_delivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get calendar_delivery_step_delivered;
+
+  /// No description provided for @calendar_delivery_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Details'**
+  String get calendar_delivery_details_title;
+
+  /// No description provided for @calendar_delivery_delivered_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Box delivered successfully'**
+  String get calendar_delivery_delivered_success_title;
+
+  /// No description provided for @calendar_delivery_delivered_at_format.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered at {time} to {address}'**
+  String calendar_delivery_delivered_at_format(String time, String address);
+
+  /// No description provided for @calendar_delivery_info_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Information'**
+  String get calendar_delivery_info_section_title;
+
+  /// No description provided for @calendar_delivery_driver_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Driver'**
+  String get calendar_delivery_driver_label;
+
+  /// No description provided for @calendar_delivery_method_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Method'**
+  String get calendar_delivery_method_label;
+
+  /// No description provided for @calendar_delivery_date_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Date'**
+  String get calendar_delivery_date_label;
+
+  /// No description provided for @calendar_delivery_timeline_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Timeline'**
+  String get calendar_delivery_timeline_title;
+
+  /// No description provided for @calendar_delivery_need_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Need help?'**
+  String get calendar_delivery_need_help;
+
+  /// No description provided for @calendar_delivery_support_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact customer support for assistance'**
+  String get calendar_delivery_support_subtitle;
+
+  /// No description provided for @calendar_delivery_back_to_calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Calendar'**
+  String get calendar_delivery_back_to_calendar;
+
+  /// No description provided for @calendar_delivery_rate_experience.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Experience'**
+  String get calendar_delivery_rate_experience;
+
+  /// No description provided for @calendar_delivery_report_issue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report an Issue'**
+  String get calendar_delivery_report_issue;
+
+  /// No description provided for @calendar_delivery_direct_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Delivery'**
+  String get calendar_delivery_direct_delivery;
+
+  /// No description provided for @calendar_delivery_default_driver_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get calendar_delivery_default_driver_name;
 
   /// No description provided for @meal_details_optional_notes_title.
   ///

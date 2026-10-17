@@ -85,8 +85,17 @@ import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
+import '../../features/calendar/data/data_source/calendar_remote_data_source.dart';
+import '../../features/calendar/data/data_source/calendar_remote_data_source_impl.dart';
+import '../../features/calendar/data/repo/calendar_repository_impl.dart';
+import '../../features/calendar/domain/repo/calendar_repository.dart';
 import '../../features/calendar/domain/usecase/confirm_calendar_day_meals_usecase.dart';
 import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart';
+import '../../features/calendar/domain/usecase/get_customer_delivery_widget_usecase.dart';
+import '../../features/calendar/domain/usecase/get_customer_delivery_details_usecase.dart';
+import '../../features/calendar/presentation/manager/overview/calendar_overview_view_model.dart';
+import '../../features/calendar/presentation/manager/delivery/calendar_delivery_details_view_model.dart';
+import '../../features/calendar/data/services/customer_delivery_realtime_service.dart';
 import '../../features/offers/data/data_source/offers_remote_data_source.dart';
 import '../../features/offers/data/data_source/offers_remote_data_source_impl.dart';
 import '../../features/offers/data/repo/offers_repository_impl.dart';
@@ -355,6 +364,86 @@ Future<void> configureDependencies() async {
         getIt(),
         getIt(),
         getIt(),
+      ),
+    );
+  }
+  // Calendar
+  if (!getIt.isRegistered<CalendarRemoteDataSource>()) {
+    getIt.registerLazySingleton<CalendarRemoteDataSource>(
+      () => CalendarRemoteDataSourceImpl(getIt<ApiServices>()),
+    );
+  }
+  if (!getIt.isRegistered<CalendarRepository>()) {
+    getIt.registerLazySingleton<CalendarRepository>(
+      () => CalendarRepositoryImpl(getIt<CalendarRemoteDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCalendarUseCase>()) {
+    getIt.registerFactory<GetCalendarUseCase>(
+      () => GetCalendarUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCalendarDayUseCase>()) {
+    getIt.registerFactory<GetCalendarDayUseCase>(
+      () => GetCalendarDayUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCalendarRestaurantsUseCase>()) {
+    getIt.registerFactory<GetCalendarRestaurantsUseCase>(
+      () => GetCalendarRestaurantsUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCalendarAvailableMealsUseCase>()) {
+    getIt.registerFactory<GetCalendarAvailableMealsUseCase>(
+      () => GetCalendarAvailableMealsUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<SaveCalendarDayMealsUseCase>()) {
+    getIt.registerFactory<SaveCalendarDayMealsUseCase>(
+      () => SaveCalendarDayMealsUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<SetCalendarDayRestaurantUseCase>()) {
+    getIt.registerFactory<SetCalendarDayRestaurantUseCase>(
+      () => SetCalendarDayRestaurantUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCustomerDeliveryWidgetUseCase>()) {
+    getIt.registerFactory<GetCustomerDeliveryWidgetUseCase>(
+      () => GetCustomerDeliveryWidgetUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<GetCustomerDeliveryDetailsUseCase>()) {
+    getIt.registerFactory<GetCustomerDeliveryDetailsUseCase>(
+      () => GetCustomerDeliveryDetailsUseCase(getIt<CalendarRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<CustomerDeliveryRealtimeService>()) {
+    getIt.registerLazySingleton<CustomerDeliveryRealtimeService>(
+      CustomerDeliveryRealtimeServiceImpl.new,
+    );
+  }
+  if (!getIt.isRegistered<CalendarOverviewViewModel>()) {
+    getIt.registerFactory<CalendarOverviewViewModel>(
+      () => CalendarOverviewViewModel(
+        getIt<GetCalendarUseCase>(),
+        getIt<GetCalendarDayUseCase>(),
+        getIt<GetCurrentCustomerSubscriptionUseCase>(),
+        getIt<SharedPrefHelper>(),
+        getIt<GetCustomerDeliveryWidgetUseCase>(),
+        getIt.isRegistered<NotificationBadgeViewModel>()
+            ? getIt<NotificationBadgeViewModel>()
+            : null,
+        getIt.isRegistered<CustomerDeliveryRealtimeService>()
+            ? getIt<CustomerDeliveryRealtimeService>()
+            : null,
+      ),
+    );
+  }
+  if (!getIt.isRegistered<CalendarDeliveryDetailsViewModel>()) {
+    getIt.registerFactory<CalendarDeliveryDetailsViewModel>(
+      () => CalendarDeliveryDetailsViewModel(
+        getIt<GetCustomerDeliveryDetailsUseCase>(),
       ),
     );
   }

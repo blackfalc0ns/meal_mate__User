@@ -2909,6 +2909,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_step_location => 'الموقع';
 
   @override
+  String get family_apply_manager_address_title => 'تطبيق عنوان المدير';
+
+  @override
+  String family_apply_manager_address_subtitle(String name) {
+    return 'استخدم عنوان $name كعنوان مدير العائلة لجميع الأفراد';
+  }
+
+  @override
+  String get family_apply_manager_address_generic_subtitle =>
+      'استخدم عنوان مدير العائلة لجميع الأفراد';
+
+  @override
+  String get family_apply_manager_address_no_manager_address =>
+      'يرجى تحديد عنوان مدير العائلة أولاً';
+
+  @override
   String get family_step_allergies => 'الحساسية';
 
   @override
@@ -3537,6 +3553,97 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get calendar_error_fulfillment_not_ready =>
       'الاشتراك غير جاهز حالياً، يرجى إعادة المحاولة لاحقاً';
+
+  @override
+  String get calendar_delivery_title_out_for_delivery =>
+      'وجبات اليوم في الطريق';
+
+  @override
+  String get calendar_delivery_title_delivered => 'تم تسليم بوكس اليوم';
+
+  @override
+  String get calendar_delivery_title_preparing => 'جاري تجهيز وجباتك';
+
+  @override
+  String get calendar_delivery_title_scheduled => 'التوصيل مجدول';
+
+  @override
+  String get calendar_delivery_title_arrived => 'وصل مندوب التوصيل';
+
+  @override
+  String get calendar_delivery_title_failed => 'تعذر التوصيل';
+
+  @override
+  String calendar_delivery_eta_format(String minutes) {
+    return 'سيصل خلال $minutes دقيقة';
+  }
+
+  @override
+  String get calendar_delivery_track_order => 'تتبع الطلب';
+
+  @override
+  String get calendar_delivery_order_code_label => 'رقم الطلب';
+
+  @override
+  String get calendar_delivery_step_prepared => 'تم التجهيز';
+
+  @override
+  String get calendar_delivery_step_out => 'خرج للتوصيل';
+
+  @override
+  String get calendar_delivery_step_arrived => 'وصل المندوب';
+
+  @override
+  String get calendar_delivery_step_delivered => 'تم التسليم';
+
+  @override
+  String get calendar_delivery_details_title => 'تفاصيل التوصيل';
+
+  @override
+  String get calendar_delivery_delivered_success_title =>
+      'تم تسليم البوكس بنجاح';
+
+  @override
+  String calendar_delivery_delivered_at_format(String time, String address) {
+    return 'تم التسليم في $time إلى $address';
+  }
+
+  @override
+  String get calendar_delivery_info_section_title => 'تفاصيل التسليم';
+
+  @override
+  String get calendar_delivery_driver_label => 'مندوب التوصيل';
+
+  @override
+  String get calendar_delivery_method_label => 'طريقة التوصيل';
+
+  @override
+  String get calendar_delivery_date_label => 'تاريخ التوصيل';
+
+  @override
+  String get calendar_delivery_timeline_title => 'مراحل الطلب';
+
+  @override
+  String get calendar_delivery_need_help => 'تحتاج مساعدة؟';
+
+  @override
+  String get calendar_delivery_support_subtitle =>
+      'تواصل مع الدعم الفني لحل أي مشكلة';
+
+  @override
+  String get calendar_delivery_back_to_calendar => 'العودة للتقويم';
+
+  @override
+  String get calendar_delivery_rate_experience => 'تقييم التجربة';
+
+  @override
+  String get calendar_delivery_report_issue => 'إبلاغ عن مشكلة';
+
+  @override
+  String get calendar_delivery_direct_delivery => 'توصيل مباشر';
+
+  @override
+  String get calendar_delivery_default_driver_name => 'المندوب';
 
   @override
   String get meal_details_optional_notes_title => 'ملاحظات اختيارية';

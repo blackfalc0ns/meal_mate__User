@@ -2235,6 +2235,68 @@ class _ApiServices implements ApiServices {
   }
 
   @override
+  Future<CustomerDeliveryWidgetResponseDto> getCustomerDeliveryWidget({
+    String? serviceDate,
+    String? subscriptionId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'serviceDate': serviceDate,
+      r'subscriptionId': subscriptionId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CustomerDeliveryWidgetResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/delivery-widget',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CustomerDeliveryWidgetResponseDto _value;
+    try {
+      _value = CustomerDeliveryWidgetResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<CustomerDeliveryDetailsResponseDto>
+  getCustomerSubscriptionDayDeliveryDetails(String subscriptionDayId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CustomerDeliveryDetailsResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-days/${subscriptionDayId}/delivery-details',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CustomerDeliveryDetailsResponseDto _value;
+    try {
+      _value = CustomerDeliveryDetailsResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<SubscriptionBillingCurrentResponseDto>
   getCurrentCustomerSubscription() async {
     final _extra = <String, dynamic>{};

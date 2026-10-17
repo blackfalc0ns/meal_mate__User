@@ -6,6 +6,7 @@ import 'package:meal_meat_user/features/calendar/data/models/request/calendar_se
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_available_meals_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
 
 @Injectable(as: CalendarRemoteDataSource)
 class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
@@ -102,5 +103,25 @@ class CalendarRemoteDataSourceImpl implements CalendarRemoteDataSource {
     required String date,
   }) {
     return _apiServices.confirmSubscriptionCalendarDay(subscriptionId, date);
+  }
+
+  @override
+  Future<CustomerDeliveryWidgetResponseDto> getDeliveryWidget({
+    String? serviceDate,
+    String? subscriptionId,
+  }) {
+    return _apiServices.getCustomerDeliveryWidget(
+      serviceDate: serviceDate,
+      subscriptionId: subscriptionId,
+    );
+  }
+
+  @override
+  Future<CustomerDeliveryDetailsResponseDto> getDeliveryDetails({
+    required String subscriptionDayId,
+  }) {
+    return _apiServices.getCustomerSubscriptionDayDeliveryDetails(
+      subscriptionDayId,
+    );
   }
 }

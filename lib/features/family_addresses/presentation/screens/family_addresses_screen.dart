@@ -35,7 +35,9 @@ class FamilyAddressesScreen extends StatelessWidget {
             (previous.familyName != current.familyName &&
                 current.familyName != null) ||
             (current.completed &&
-                previous.addressSaveRevision != current.addressSaveRevision),
+                (previous.addressSaveRevision !=
+                        current.addressSaveRevision ||
+                    !previous.completed)),
         listener: (context, state) {
           if (isInFamilyFlow && state.familyName != null) {
             FamilyFlowScope.updateFamilyName(context, state.familyName);

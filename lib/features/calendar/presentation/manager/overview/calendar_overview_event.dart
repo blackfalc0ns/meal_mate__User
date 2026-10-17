@@ -28,3 +28,10 @@ class ReplaceCalendarDayEvent extends CalendarOverviewEvent {
 
   final CalendarDayEntity day;
 }
+
+class LoadDeliveryWidgetEvent extends CalendarOverviewEvent {
+  const LoadDeliveryWidgetEvent({this.date});
+
+  final DateTime? date;
+}
+

@@ -2961,6 +2961,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_step_location => 'Location';
 
   @override
+  String get family_apply_manager_address_title => 'Apply Manager\'s Address';
+
+  @override
+  String family_apply_manager_address_subtitle(String name) {
+    return 'Use $name\'s address as the family manager address for all members';
+  }
+
+  @override
+  String get family_apply_manager_address_generic_subtitle =>
+      'Use the family manager\'s address for all members';
+
+  @override
+  String get family_apply_manager_address_no_manager_address =>
+      'Please set the family manager\'s address first';
+
+  @override
   String get family_step_allergies => 'Allergies';
 
   @override
@@ -3596,6 +3612,97 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calendar_error_fulfillment_not_ready =>
       'Subscription is not ready yet, please try again later';
+
+  @override
+  String get calendar_delivery_title_out_for_delivery =>
+      'Today\'s meals are on the way';
+
+  @override
+  String get calendar_delivery_title_delivered => 'Today\'s box delivered';
+
+  @override
+  String get calendar_delivery_title_preparing => 'Meals are being prepared';
+
+  @override
+  String get calendar_delivery_title_scheduled => 'Delivery scheduled';
+
+  @override
+  String get calendar_delivery_title_arrived => 'Driver has arrived';
+
+  @override
+  String get calendar_delivery_title_failed => 'Delivery failed';
+
+  @override
+  String calendar_delivery_eta_format(String minutes) {
+    return 'Arriving in $minutes min';
+  }
+
+  @override
+  String get calendar_delivery_track_order => 'Track Order';
+
+  @override
+  String get calendar_delivery_order_code_label => 'Order #';
+
+  @override
+  String get calendar_delivery_step_prepared => 'Prepared';
+
+  @override
+  String get calendar_delivery_step_out => 'Out for delivery';
+
+  @override
+  String get calendar_delivery_step_arrived => 'Driver arrived';
+
+  @override
+  String get calendar_delivery_step_delivered => 'Delivered';
+
+  @override
+  String get calendar_delivery_details_title => 'Delivery Details';
+
+  @override
+  String get calendar_delivery_delivered_success_title =>
+      'Box delivered successfully';
+
+  @override
+  String calendar_delivery_delivered_at_format(String time, String address) {
+    return 'Delivered at $time to $address';
+  }
+
+  @override
+  String get calendar_delivery_info_section_title => 'Delivery Information';
+
+  @override
+  String get calendar_delivery_driver_label => 'Delivery Driver';
+
+  @override
+  String get calendar_delivery_method_label => 'Delivery Method';
+
+  @override
+  String get calendar_delivery_date_label => 'Delivery Date';
+
+  @override
+  String get calendar_delivery_timeline_title => 'Order Timeline';
+
+  @override
+  String get calendar_delivery_need_help => 'Need help?';
+
+  @override
+  String get calendar_delivery_support_subtitle =>
+      'Contact customer support for assistance';
+
+  @override
+  String get calendar_delivery_back_to_calendar => 'Back to Calendar';
+
+  @override
+  String get calendar_delivery_rate_experience => 'Rate Experience';
+
+  @override
+  String get calendar_delivery_report_issue => 'Report an Issue';
+
+  @override
+  String get calendar_delivery_direct_delivery => 'Direct Delivery';
+
+  @override
+  String get calendar_delivery_default_driver_name => 'Driver';
 
   @override
   String get meal_details_optional_notes_title => 'Optional notes';

@@ -141,7 +141,10 @@ class SubscriptionTierEntity {
     );
   }
 
-  RestaurantPackageTierUiModel toTierUiModel(String localeName) {
+  RestaurantPackageTierUiModel toTierUiModel(
+    String localeName, {
+    bool isPriceLoading = false,
+  }) {
     final lower = tier.toLowerCase();
     final icon =
         lower.contains('max') ||
@@ -176,6 +179,7 @@ class SubscriptionTierEntity {
       isPopular: isRecommended,
       price: formattedPriceStr,
       currency: effectiveCurrency,
+      isPriceLoading: isPriceLoading,
       canSelect: effectiveCanSelect,
       isAvailable: isAvailable,
       disabledReason: disabledReason,

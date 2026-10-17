@@ -7,7 +7,9 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_availa
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurants_page_entity.dart';
+import 'package:meal_meat_user/features/calendar/data/mapper/customer_delivery_mapper.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 
 @Injectable(as: CalendarRepository)
@@ -183,6 +185,32 @@ class CalendarRepositoryImpl implements CalendarRepository {
         date: date,
       );
       return response.toEntity(localeName);
+    });
+  }
+
+  @override
+  Future<ApiResult<CustomerDeliveryWidgetEntity>> getDeliveryWidget({
+    String? serviceDate,
+    String? subscriptionId,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getDeliveryWidget(
+        serviceDate: serviceDate,
+        subscriptionId: subscriptionId,
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<CustomerDeliveryDetailsEntity>> getDeliveryDetails({
+    required String subscriptionDayId,
+  }) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getDeliveryDetails(
+        subscriptionDayId: subscriptionDayId,
+      );
+      return response.toEntity();
     });
   }
 }

@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/flow/calendar_flow_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/meal_selection/meal_selection_state.dart';
@@ -39,12 +41,14 @@ class CalendarSelectedDaySection extends StatelessWidget {
         CalendarDayEntity? selectedDay,
         bool isSelectedDayLoading,
         bool canConfirm,
+        CustomerDeliveryItemEntity? deliveryItem,
       })
     >(
       selector: (state) => (
         selectedDay: state.selectedDay,
         isSelectedDayLoading: state.isSelectedDayLoading,
         canConfirm: state.canConfirmSelectedDayMeals,
+        deliveryItem: state.currentDeliveryItem,
       ),
       builder: (context, overviewData) {
         return BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(
@@ -52,10 +56,24 @@ class CalendarSelectedDaySection extends StatelessWidget {
           builder: (context, isConfirming) {
             return CalendarDayContent(
               selectedDay: overviewData.selectedDay,
+              deliveryItem: overviewData.deliveryItem,
               showBottomSpace: showBottomSpace,
               onSelectRestaurant: onSelectRestaurant,
               onChangeMeal: onChangeMeal,
               onMealTap: onMealTap,
+              onTrackDelivery: (deliveryItem) {
+                final subscriptionDayId = deliveryItem.subscriptionDayId ??
+                    overviewData.selectedDay?.id ??
+                    '';
+                if (subscriptionDayId.isNotEmpty) {
+                  unawaited(
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.calendarDeliveryDetails,
+                      arguments: subscriptionDayId,
+                    ),
+                  );
+                }
+              },
               onConfirmSelections:
                   onConfirmSelections ??
                   () {

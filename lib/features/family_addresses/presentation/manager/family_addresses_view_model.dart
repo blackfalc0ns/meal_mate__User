@@ -3,17 +3,27 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_event.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
 class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
-  FamilyAddressesViewModel(this._getFlow) : super(const FamilyAddressesState());
+  FamilyAddressesViewModel(
+    this._getFlow, [
+    FamilyFlowSnapshotStore? snapshotStore,
+  ])  : _snapshotStore = snapshotStore ??
+            (getIt.isRegistered<FamilyFlowSnapshotStore>()
+                ? getIt<FamilyFlowSnapshotStore>()
+                : FamilyFlowSnapshotStore()),
+        super(const FamilyAddressesState());
 
   final GetFamilyFlowCurrentUseCase _getFlow;
+  final FamilyFlowSnapshotStore _snapshotStore;
   int _activeLoadId = 0;
 
   void doIntent(FamilyAddressesEvent event) {
@@ -29,6 +39,8 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         );
       case ProceedToNextAddressStepEvent():
         proceedToNextStep();
+      case ToggleApplyManagerAddressEvent():
+        toggleApplyManagerAddress();
     }
   }
 
@@ -99,17 +111,8 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     );
     if (targetMember == null) return;
 
-    final isAlreadyCompleted = state.completedMemberIds.contains(
-      targetMemberId,
-    );
-    final isSameAddress =
-        savedAddress != null &&
-        (targetMember.deliveryAddress == savedAddress ||
-            (savedAddress.addressId.isNotEmpty &&
-                targetMember.deliveryAddressId == savedAddress.addressId));
-
-    if (isAlreadyCompleted && isSameAddress) {
-      return;
+    if (savedAddress != null) {
+      _snapshotStore.updateMemberDeliveryAddress(targetMemberId, savedAddress);
     }
 
     final updatedMembers = state.members.map((m) {
@@ -141,9 +144,68 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     );
   }
 
+  void toggleApplyManagerAddress() {
+    if (state.members.isEmpty) return;
+    final manager = state.manager;
+    final managerAddress = manager?.deliveryAddress;
+    if (managerAddress == null) return;
+
+    if (state.isManagerAddressAppliedToAll) {
+      final updatedMembers = state.members.map((m) {
+        if (m.isManager) return m;
+        return m.copyWith(
+          deliveryAddressId: null,
+          deliveryAddress: null,
+        );
+      }).toList();
+
+      final completedMemberIds = state.members
+          .where((m) =>
+              m.isManager &&
+              (m.deliveryAddress != null ||
+                  (m.deliveryAddressId?.isNotEmpty ?? false)))
+          .map((m) => m.memberId)
+          .toSet();
+
+      emit(
+        state.copyWith(
+          members: updatedMembers,
+          completedMemberIds: completedMemberIds,
+          completed: false,
+          addressSaveRevision: state.addressSaveRevision + 1,
+          clearError: true,
+        ),
+      );
+    } else {
+      final addressId = managerAddress.addressId.isNotEmpty
+          ? managerAddress.addressId
+          : (manager?.deliveryAddressId ?? '');
+
+      final updatedMembers = state.members.map((m) {
+        _snapshotStore.updateMemberDeliveryAddress(m.memberId, managerAddress);
+        return m.copyWith(
+          deliveryAddressId: addressId,
+          deliveryAddress: managerAddress,
+        );
+      }).toList();
+
+      final allMemberIds = updatedMembers.map((m) => m.memberId).toSet();
+      emit(
+        state.copyWith(
+          members: updatedMembers,
+          completedMemberIds: allMemberIds,
+          completed: true,
+          addressSaveRevision: state.addressSaveRevision + 1,
+          clearError: true,
+        ),
+      );
+    }
+  }
+
   void proceedToNextStep() {
     if (state.members.isEmpty) return;
     final allCompleted =
+        state.completed ||
         state.completedMemberIds.length == state.members.length;
     if (!allCompleted) return;
     emit(
