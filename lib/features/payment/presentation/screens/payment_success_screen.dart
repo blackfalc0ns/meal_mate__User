@@ -13,6 +13,9 @@ import 'package:meal_meat_user/features/payment/presentation/widgets/success/sub
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_hero_header.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_summary_card.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_top_bar.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_management/overview/domain/usecase/get_family_home_usecase.dart';
 
 /// Screen displayed after a successful subscription payment / activation.
 /// Conforms to Figma M-06.08 - Subscription / Success (node 3356:7428).
@@ -82,6 +85,41 @@ class PaymentSuccessScreen extends StatelessWidget {
                   child: Column(
                     key: const ValueKey('subscription-success-content'),
                     children: [
+                      if (resolvedArgs.isFamily)
+                        FutureBuilder(
+                          future: getIt<GetFamilyHomeUseCase>()(),
+                          builder: (context, snapshot) {
+                            final result = snapshot.data;
+                            if (result == null || result is! ApiSuccessResult) {
+                              return const SizedBox.shrink();
+                            }
+                            final data = (result as ApiSuccessResult).data;
+                            final members = data.members;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.md,
+                              ),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final member in members)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                              end: Spacing.sm,
+                                            ),
+                                        child: Chip(
+                                          avatar: const Icon(Icons.person),
+                                          label: Text(member.displayName),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       const SubscriptionSuccessHeroHeader(),
                       SubscriptionSuccessSummaryCard(args: resolvedArgs),
                       const SizedBox(height: Spacing.xs),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
@@ -9,6 +10,7 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_event.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_state.dart';
@@ -95,6 +97,7 @@ class _FamilyPackageDaysSetupScreenState
     FamilyPackageDaysState previous,
     FamilyPackageDaysState current,
   ) {
+    if (previous.isPlanSaving != current.isPlanSaving) return true;
     final prevHasMembers = previous.members.isNotEmpty;
     final currHasMembers = current.members.isNotEmpty;
     if (prevHasMembers != currHasMembers) return true;
@@ -108,7 +111,10 @@ class _FamilyPackageDaysSetupScreenState
   Widget _buildContent(BuildContext context, FamilyPackageDaysState state) {
     if ((state.isLoading || state.isCurrentFlowLoading) &&
         state.members.isEmpty) {
-      return const FamilyPackageDaysSetupLoadingSkeleton();
+      const skeleton = FamilyPackageDaysSetupLoadingSkeleton();
+      return context.areAnimationsDisabled
+          ? skeleton
+          : skeleton.animate().fadeIn(duration: 250.ms);
     }
 
     if (state.failure != null && state.members.isEmpty) {
@@ -128,80 +134,49 @@ class _FamilyPackageDaysSetupScreenState
       );
     }
 
-    return FamilyPackageDaysContent(
+    final color = context.colorScheme;
+    final content = FamilyPackageDaysContent(
       programId: widget.programId,
       onNextPressed: () => _savePlanAndProceed(context),
+    );
+
+    final Widget animatedContent = context.areAnimationsDisabled
+        ? content
+        : content.animate().fadeIn(duration: 300.ms, curve: Curves.easeOut);
+
+    return Stack(
+      children: [
+        animatedContent,
+        if (state.isPlanSaving)
+          Positioned.fill(
+            child: AbsorbPointer(
+              child: ColoredBox(
+                color: color.scrim.withValues(alpha: 0.32),
+                child: const Center(
+                  child: CustomProgressIndicator(),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 
   Future<void> _savePlanAndProceed(BuildContext context) async {
     final vm = context.read<FamilyPackageDaysViewModel>();
-    var latestState = vm.state;
-    final member =
-        latestState.selectedMember ??
-        (latestState.members.isNotEmpty ? latestState.members.first : null);
-    final programId =
-        widget.programId ??
-        latestState.selectedProgram?.programId ??
-        member?.programId ??
-        (latestState.programs.isNotEmpty
-            ? latestState.programs.first.programId
-            : '');
-    final bundle = latestState.selectedBundle;
-    final duration = latestState.selectedDuration;
-    final durationDays =
-        duration?.durationDays ?? latestState.customDurationDays;
-    final tier = latestState.selectedTier;
-
-    if (member != null &&
-        !latestState.isSelectedManagerPlanLocked &&
-        programId.isNotEmpty &&
-        bundle != null &&
-        durationDays != null &&
-        durationDays > 0 &&
-        tier != null) {
-      final tierInt = int.tryParse(tier.tier) ?? 1;
-      final saved = await vm.saveMemberPlanAndWait(
-        memberId: member.memberId,
-        programId: programId,
-        bundleId: bundle.bundleId,
-        tier: tierInt,
-        durationDays: durationDays,
-        includeFriday: latestState.includeFriday,
-      );
-      if (!context.mounted) return;
-      if (!saved) {
-        final failure = vm.state.failure;
-        if (failure != null) {
-          CustomSnackbar.showError(
-            context: context,
-            message: ErrorMessagePresenter.fromFailure(context, failure),
-          );
-        }
-        return;
+    final saved = await vm.saveAllMemberPlansAndWait();
+    if (!context.mounted) return;
+    if (!saved) {
+      final failure = vm.state.failure;
+      if (failure != null) {
+        CustomSnackbar.showError(
+          context: context,
+          message: ErrorMessagePresenter.fromFailure(context, failure),
+        );
       }
-      latestState = vm.state;
+      return;
     }
 
-    final hasUnreadyMembers = latestState.plannedMembers.any(
-      (m) =>
-          m.memberId != member?.memberId &&
-          !latestState.isMemberPlanReady(m),
-    );
-
-    if (hasUnreadyMembers) {
-      final nextIndex = latestState.members.indexWhere(
-        (m) =>
-            m.hasProgram &&
-            m.memberId != member?.memberId &&
-            !latestState.isMemberPlanReady(m),
-      );
-      if (nextIndex != -1) {
-        vm.doIntent(SelectFamilyMemberPackageDaysEvent(nextIndex));
-      }
-      Navigator.maybePop(context);
-    } else {
-      context.pushNamed(AppRoutes.familyPaymentSetup);
-    }
+    context.pushNamed(AppRoutes.familyPaymentSetup);
   }
 }

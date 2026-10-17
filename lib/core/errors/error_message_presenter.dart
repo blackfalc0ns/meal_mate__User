@@ -160,6 +160,11 @@ class ErrorMessagePresenter {
   static bool _looksTechnical(String message) {
     final lower = message.toLowerCase();
 
+    // Detect technical namespaced codes (e.g. subscription_flow.no_restaurants_for_selection, auth.foo)
+    if (!message.contains(' ') && (message.contains('.') || message.contains('_'))) {
+      return true;
+    }
+
     // Detect HTML tags or server redirect response bodies
     if (lower.contains('<html') ||
         lower.contains('<!doctype') ||

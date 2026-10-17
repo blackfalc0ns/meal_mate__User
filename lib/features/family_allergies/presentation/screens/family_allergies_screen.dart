@@ -9,6 +9,7 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_state.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_event.dart';
@@ -63,6 +64,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
           }
         },
         buildWhen: (previous, current) =>
+            previous.isSaving != current.isSaving ||
             (previous.isLoading && previous.members.isEmpty) !=
                 (current.isLoading && current.members.isEmpty) ||
             (previous.failure != null && previous.members.isEmpty) !=
@@ -91,7 +93,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
             );
           }
           const content = FamilyAllergiesContent();
-          final Widget animatedContent = MediaQuery.disableAnimationsOf(context)
+          final Widget animatedContent = context.areAnimationsDisabled
               ? content
               : content
                     .animate()
@@ -103,8 +105,23 @@ class FamilyAllergiesScreen extends StatelessWidget {
                       curve: Curves.easeOutCubic,
                     );
 
+          final Widget bodyWithOverlay = Stack(
+            children: [
+              animatedContent,
+              if (state.isSaving)
+                Positioned.fill(
+                  child: AbsorbPointer(
+                    child: ColoredBox(
+                      color: color.scrim.withValues(alpha: 0.32),
+                      child: const Center(child: CustomProgressIndicator()),
+                    ),
+                  ),
+                ),
+            ],
+          );
+
           if (isInFamilyFlow) {
-            return animatedContent;
+            return bodyWithOverlay;
           }
           return Scaffold(
             backgroundColor: color.surface,
@@ -112,7 +129,7 @@ class FamilyAllergiesScreen extends StatelessWidget {
               title: locale.family_setup_title,
               showBackButton: true,
             ),
-            body: SafeArea(top: false, child: animatedContent),
+            body: SafeArea(top: false, child: bodyWithOverlay),
           );
         },
       ),

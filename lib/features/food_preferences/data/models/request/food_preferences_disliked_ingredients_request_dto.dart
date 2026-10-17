@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/food_preferences/domain/entities/food_preferences_entity.dart';
 
 part 'food_preferences_disliked_ingredients_request_dto.g.dart';
 
@@ -11,9 +12,20 @@ class FoodPreferencesDislikedIngredientsRequestDto {
   final List<String> ingredientCodes;
 
   Map<String, dynamic> toJson() {
-    final codes = ingredientCodes.where((c) => c.trim().isNotEmpty).toList();
+    final cleanCodes = ingredientCodes
+        .where(
+          (c) =>
+              c.trim().isNotEmpty &&
+              c.trim().toUpperCase() != FoodPreferenceItemEntity.noneCode,
+        )
+        .toList();
     return {
-      'ingredientCodes': codes.isEmpty ? const ['NONE'] : codes,
+      'ingredientCodes': cleanCodes,
+      'selectedCodes': cleanCodes,
+      'dislikedIngredients': cleanCodes,
+      'dislikedFoods': cleanCodes,
+      'eatsEverything': cleanCodes.isEmpty,
     };
   }
 }
+

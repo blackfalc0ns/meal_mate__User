@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
+import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector.dart';
 import 'package:meal_meat_user/core/widget/subscription_duration/subscription_duration_selector_skeleton.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/manager/family_package_days_event.dart';
@@ -19,6 +21,7 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
     }
     return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
       buildWhen: (previous, current) =>
+          previous.isMemberChanging != current.isMemberChanging ||
           previous.isDurationsLoading != current.isDurationsLoading ||
           previous.durationsFailure != current.durationsFailure ||
           previous.durations != current.durations ||
@@ -41,7 +44,8 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
       );
     }
 
-    if (state.isDurationsLoading && state.durations.isEmpty) {
+    if (state.isMemberChanging ||
+        (state.isDurationsLoading && state.durations.isEmpty)) {
       return const SubscriptionDurationSelectorSkeleton();
     }
 
@@ -49,7 +53,7 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return AbsorbPointer(
+    final selector = AbsorbPointer(
       absorbing: state.isSelectedManagerPlanLocked,
       child: SubscriptionDurationSelector(
         selectedIndex: state.selectedDurationIndex,
@@ -75,5 +79,15 @@ class FamilyPackageDaysDurationSection extends StatelessWidget {
         isLoading: state.isDurationsLoading && state.durations.isEmpty,
       ),
     );
+
+    if (context.areAnimationsDisabled) {
+      return selector;
+    }
+
+    return selector
+        .animate(
+          key: ValueKey('member-${state.selectedMemberIndex}-durations'),
+        )
+        .fadeIn(duration: 250.ms, curve: Curves.easeOut);
   }
 }

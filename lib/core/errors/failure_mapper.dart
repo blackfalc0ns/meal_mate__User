@@ -99,6 +99,7 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'no_prepared_restaurants':
     case 'noPreparedRestaurants':
       return locale.subscription_flow_no_prepared_restaurants;
+    case 'subscription_flow.no_restaurants_for_selection':
     case 'no_restaurants_for_selection':
     case 'periodUnavailable':
       return locale.subscription_flow_period_unavailable;
@@ -348,6 +349,30 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'family.detach_requires_active_account':
       return locale.family_detach_requires_active_account;
     default:
+      if (message.startsWith('subscription_flow.')) {
+        final stripped = message.substring('subscription_flow.'.length);
+        final mapped = mapFailureMessage(context, stripped);
+        if (mapped != stripped) {
+          return mapped;
+        }
+      }
+      if (message.startsWith('family.')) {
+        final stripped = message.substring('family.'.length);
+        final mapped = mapFailureMessage(context, stripped);
+        if (mapped != stripped) {
+          return mapped;
+        }
+      }
+      if (message.startsWith('checkout.')) {
+        final stripped = message.substring('checkout.'.length);
+        final mapped = mapFailureMessage(context, stripped);
+        if (mapped != stripped) {
+          return mapped;
+        }
+      }
+      if (!message.contains(' ') && (message.contains('.') || message.contains('_'))) {
+        return locale.error_unknown;
+      }
       return message;
   }
 }

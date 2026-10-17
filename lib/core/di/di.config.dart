@@ -87,6 +87,8 @@ import '../../features/calendar/data/data_source/calendar_remote_data_source_imp
     as _i970;
 import '../../features/calendar/data/repo/calendar_repository_impl.dart'
     as _i787;
+import '../../features/calendar/data/services/customer_delivery_realtime_service.dart'
+    as _i378;
 import '../../features/calendar/domain/repo/calendar_repository.dart' as _i333;
 import '../../features/calendar/domain/usecase/auto_select_calendar_day_usecase.dart'
     as _i147;
@@ -108,6 +110,8 @@ import '../../features/calendar/domain/usecase/save_calendar_day_meals_usecase.d
     as _i896;
 import '../../features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart'
     as _i133;
+import '../../features/calendar/presentation/manager/delivery/calendar_delivery_details_view_model.dart'
+    as _i1027;
 import '../../features/calendar/presentation/manager/flow/calendar_flow_view_model.dart'
     as _i807;
 import '../../features/calendar/presentation/manager/meal_selection/meal_selection_view_model.dart'
@@ -709,6 +713,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i378.CustomerDeliveryRealtimeService>(
+      () => _i378.CustomerDeliveryRealtimeServiceImpl(),
     );
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
@@ -1832,16 +1839,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i790.GetSubscriptionPackagesUseCase>(),
       ),
     );
-    gh.factory<_i568.CalendarOverviewViewModel>(
-      () => _i568.CalendarOverviewViewModel(
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i34.GetCurrentCustomerSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
-        gh<_i640.GetCustomerDeliveryWidgetUseCase>(),
-        gh<_i540.NotificationBadgeViewModel>(),
-      ),
-    );
     gh.lazySingleton<_i63.PushNotificationService>(
       () => _i63.PushNotificationService(
         gh<_i892.FirebaseMessaging>(),
@@ -2014,6 +2011,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
+    gh.factory<_i568.CalendarOverviewViewModel>(
+      () => _i568.CalendarOverviewViewModel(
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i34.GetCurrentCustomerSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i640.GetCustomerDeliveryWidgetUseCase>(),
+        gh<_i540.NotificationBadgeViewModel>(),
+        gh<_i378.CustomerDeliveryRealtimeService>(),
+      ),
+    );
     gh.factory<_i1055.FamilyOverviewViewModel>(
       () => _i1055.FamilyOverviewViewModel(
         gh<_i932.GetFamilyHomeUseCase>(),
@@ -2025,6 +2033,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
         gh<_i227.TokenService>(),
         gh<_i43.BiometricService>(),
+      ),
+    );
+    gh.factory<_i1027.CalendarDeliveryDetailsViewModel>(
+      () => _i1027.CalendarDeliveryDetailsViewModel(
+        gh<_i681.GetCustomerDeliveryDetailsUseCase>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

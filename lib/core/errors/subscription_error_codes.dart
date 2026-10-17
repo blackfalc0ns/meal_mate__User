@@ -50,7 +50,12 @@ class SubscriptionErrorCodes {
       'subscription_flow.no_prepared_restaurants';
 
   /// Error code when no restaurants can serve the entire period.
-  static const String periodUnavailable = 'no_restaurants_for_selection';
+  static const String periodUnavailable =
+      'subscription_flow.no_restaurants_for_selection';
+
+  /// Legacy code when no restaurants can serve the entire period.
+  static const String periodUnavailableLegacy =
+      'no_restaurants_for_selection';
 
   /// Error code when selection (duration, start date) is required.
   static const String selectionRequired =

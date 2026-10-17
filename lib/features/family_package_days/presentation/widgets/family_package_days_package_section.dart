@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -24,6 +25,7 @@ class FamilyPackageDaysPackageSection extends StatelessWidget {
     }
     return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
       buildWhen: (previous, current) =>
+          previous.isMemberChanging != current.isMemberChanging ||
           previous.isBundlesLoading != current.isBundlesLoading ||
           previous.bundlesFailure != current.bundlesFailure ||
           previous.bundles != current.bundles ||
@@ -89,21 +91,38 @@ class FamilyPackageDaysPackageSection extends StatelessWidget {
               const RetryFamilyBundlesEvent(),
             ),
           )
-        else if (state.isBundlesLoading && state.bundles.isEmpty)
+        else if (state.isMemberChanging ||
+            (state.isBundlesLoading && state.bundles.isEmpty))
           const FamilyPackageOptionsLoadingSkeleton()
         else if (selectedPackageOptions.isNotEmpty)
-          AbsorbPointer(
-            absorbing: state.isSelectedManagerPlanLocked,
-            child: FamilyPackageOptionsGrid(
-              options: selectedPackageOptions,
-              onOptionSelected: (index) {
-                context.read<FamilyPackageDaysViewModel>().doIntent(
-                  SelectFamilyBundleEvent(index),
-                );
-              },
-            ),
-          ),
+          _buildAnimatedGrid(context, state, selectedPackageOptions),
       ],
     );
+  }
+
+  Widget _buildAnimatedGrid(
+    BuildContext context,
+    FamilyPackageDaysState state,
+    List<FamilyPackageOptionUiModel> options,
+  ) {
+    final grid = AbsorbPointer(
+      absorbing: state.isSelectedManagerPlanLocked,
+      child: FamilyPackageOptionsGrid(
+        options: options,
+        onOptionSelected: (index) {
+          context.read<FamilyPackageDaysViewModel>().doIntent(
+            SelectFamilyBundleEvent(index),
+          );
+        },
+      ),
+    );
+
+    if (context.areAnimationsDisabled) {
+      return grid;
+    }
+
+    return grid
+        .animate(key: ValueKey('member-${state.selectedMemberIndex}-packages'))
+        .fadeIn(duration: 250.ms, curve: Curves.easeOut);
   }
 }

@@ -179,6 +179,26 @@ class FamilyMemberScheduleEntity {
   });
 }
 
+class FamilySummaryAvailabilityEntity {
+  final String? status;
+  final int coveredRestaurantCount;
+  final int eligibleRestaurantCount;
+  final String? checkedAtUtc;
+  final String? effectiveStartDate;
+  final String? messageCode;
+  final Map<String, dynamic> failureReasons;
+
+  const FamilySummaryAvailabilityEntity({
+    this.status,
+    this.coveredRestaurantCount = 0,
+    this.eligibleRestaurantCount = 0,
+    this.checkedAtUtc,
+    this.effectiveStartDate,
+    this.messageCode,
+    this.failureReasons = const {},
+  });
+}
+
 class FamilySummaryEntity {
   final String? familyGroupId;
   final String? familyName;
@@ -207,6 +227,20 @@ class FamilySummaryEntity {
   final int eligibleExistingSubscriberCount;
   final int unsubscribedCount;
   final bool lockedQuote;
+  final String? selectedFamilyPackageId;
+  final String? effectiveFamilyPackageId;
+  final int? effectiveFamilyPackageMinMembers;
+  final int? effectiveFamilyPackageMaxMembers;
+  final String? packageSelectionMode;
+  final int? occupiedSeatCount;
+  final int? availableSeatCount;
+  final int? maxSeats;
+  final int? deferredMemberCount;
+  final int? currentPurchaseCount;
+  final bool managerSeatExempt;
+  final bool managerIndividualIsLive;
+  final bool isInitialPurchaseOrReactivation;
+  final FamilySummaryAvailabilityEntity? availability;
 
   const FamilySummaryEntity({
     this.familyGroupId,
@@ -236,6 +270,20 @@ class FamilySummaryEntity {
     this.eligibleExistingSubscriberCount = 0,
     this.unsubscribedCount = 0,
     this.lockedQuote = false,
+    this.selectedFamilyPackageId,
+    this.effectiveFamilyPackageId,
+    this.effectiveFamilyPackageMinMembers,
+    this.effectiveFamilyPackageMaxMembers,
+    this.packageSelectionMode,
+    this.occupiedSeatCount,
+    this.availableSeatCount,
+    this.maxSeats,
+    this.deferredMemberCount,
+    this.currentPurchaseCount,
+    this.managerSeatExempt = false,
+    this.managerIndividualIsLive = false,
+    this.isInitialPurchaseOrReactivation = true,
+    this.availability,
   });
 
   /// The scope of new subscriptions on this checkout invoice.

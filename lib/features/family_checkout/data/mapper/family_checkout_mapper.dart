@@ -78,6 +78,20 @@ extension FamilyMemberScheduleDtoMapper on FamilyMemberScheduleDto {
   }
 }
 
+extension FamilySummaryAvailabilityDtoMapper on FamilySummaryAvailabilityDto {
+  FamilySummaryAvailabilityEntity toEntity() {
+    return FamilySummaryAvailabilityEntity(
+      status: status,
+      coveredRestaurantCount: coveredRestaurantCount ?? 0,
+      eligibleRestaurantCount: eligibleRestaurantCount ?? 0,
+      checkedAtUtc: checkedAtUtc,
+      effectiveStartDate: effectiveStartDate,
+      messageCode: messageCode,
+      failureReasons: failureReasons ?? const {},
+    );
+  }
+}
+
 extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
   FamilySummaryEntity toEntity() {
     return FamilySummaryEntity(
@@ -116,6 +130,21 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       eligibleExistingSubscriberCount: eligibleExistingSubscriberCount ?? 0,
       unsubscribedCount: unsubscribedCount ?? 0,
       lockedQuote: lockedQuote ?? false,
+      selectedFamilyPackageId: selectedFamilyPackageId,
+      effectiveFamilyPackageId: effectiveFamilyPackageId,
+      effectiveFamilyPackageMinMembers: effectiveFamilyPackageMinMembers,
+      effectiveFamilyPackageMaxMembers: effectiveFamilyPackageMaxMembers,
+      packageSelectionMode: packageSelectionMode,
+      occupiedSeatCount: occupiedSeatCount,
+      availableSeatCount: availableSeatCount,
+      maxSeats: maxSeats,
+      deferredMemberCount: deferredMemberCount,
+      currentPurchaseCount: currentPurchaseCount,
+      managerSeatExempt: managerSeatExempt ?? false,
+      managerIndividualIsLive: managerIndividualIsLive ?? false,
+      isInitialPurchaseOrReactivation:
+          isInitialPurchaseOrReactivation ?? true,
+      availability: availability?.toEntity(),
     );
   }
 }

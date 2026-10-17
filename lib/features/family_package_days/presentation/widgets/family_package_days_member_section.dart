@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -29,6 +30,7 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
     }
     return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
       buildWhen: (previous, current) =>
+          previous.isMemberChanging != current.isMemberChanging ||
           previous.members != current.members ||
           previous.selectedMemberIndex != current.selectedMemberIndex ||
           previous.isPlanSaving != current.isPlanSaving ||
@@ -89,12 +91,14 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
                 )
               : null);
 
+    final isSelectingDisabled = isLoading || state.isMemberChanging;
+
     return Column(
       children: [
         if (displayedMembers.isNotEmpty) ...[
           FamilyProgramMemberStrip(
             members: displayedMembers,
-            onSelectMember: isLoading
+            onSelectMember: isSelectingDisabled
                 ? null
                 : (index) {
                     context.read<FamilyPackageDaysViewModel>().doIntent(
@@ -111,7 +115,20 @@ class FamilyPackageDaysMemberSection extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
         ],
         if (showSummary && activeMemberDetails != null) ...[
-          FamilyProgramSummaryCard(member: activeMemberDetails),
+          if (context.areAnimationsDisabled)
+            FamilyProgramSummaryCard(member: activeMemberDetails)
+          else
+            FamilyProgramSummaryCard(member: activeMemberDetails)
+                .animate(
+                  key: ValueKey(selectedMember?.memberId ?? 'member-summary'),
+                )
+                .fadeIn(duration: 250.ms, curve: Curves.easeOut)
+                .slideX(
+                  begin: 0.02,
+                  end: 0,
+                  duration: 250.ms,
+                  curve: Curves.easeOut,
+                ),
         ],
       ],
     );

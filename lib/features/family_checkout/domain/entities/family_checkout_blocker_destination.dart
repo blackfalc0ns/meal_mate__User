@@ -14,5 +14,13 @@ String? familyCheckoutBlockerRoute(String? reason) => switch (reason) {
   'family.duplicate_member' => AppRoutes.familySubscriptionSetup,
   'family.cannot_remove_manager' => AppRoutes.familySubscriptionSetup,
   'restaurant.not_eligible' => AppRoutes.familyProgramSetup,
+  'subscription_flow.no_restaurants_for_selection' =>
+    AppRoutes.familyPackageDaysSetup,
+  'no_restaurants_for_selection' => AppRoutes.familyPackageDaysSetup,
+  'subscription_flow.no_prepared_restaurants' =>
+    AppRoutes.familyPackageDaysSetup,
+  'no_prepared_restaurants' => AppRoutes.familyPackageDaysSetup,
+  'subscription_flow.no_restaurants_for_address' => AppRoutes.familyAddresses,
+  'no_restaurants_for_address' => AppRoutes.familyAddresses,
   _ => null,
 };

@@ -119,7 +119,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
               : const {},
           rejectedCodes: currentMember != null
               ? _savedRejectedSelectionFor(currentMember)
-              : const {},
+              : const {FoodPreferenceItemEntity.noneCode},
           completed: members.isEmpty,
         ),
       );
@@ -399,9 +399,12 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   Set<String> _savedRejectedSelectionFor(FamilyMemberEntity member) {
     final codes = member.dislikedFoods
         .map((ingredient) => ingredient.code)
-        .where((code) => code.isNotEmpty)
+        .where(
+          (code) =>
+              code.isNotEmpty && code != FoodPreferenceItemEntity.noneCode,
+        )
         .toSet();
-    if (codes.contains(FoodPreferenceItemEntity.noneCode)) {
+    if (codes.isEmpty) {
       return const {FoodPreferenceItemEntity.noneCode};
     }
     return codes;

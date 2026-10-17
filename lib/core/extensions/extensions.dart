@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/app_date_range_picker.dart';
@@ -154,5 +156,18 @@ extension DateRangePickerExtension on BuildContext {
       showDragHandle: showDragHandle,
       useSafeArea: useSafeArea,
     );
+  }
+}
+
+extension AnimationExtension on BuildContext {
+  /// Returns true if animations are disabled by system accessibility or during automated tests
+  bool get areAnimationsDisabled {
+    if (MediaQuery.disableAnimationsOf(this)) return true;
+    if (!kIsWeb) {
+      try {
+        if (Platform.environment.containsKey('FLUTTER_TEST')) return true;
+      } catch (_) {}
+    }
+    return false;
   }
 }

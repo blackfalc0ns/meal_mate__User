@@ -17,6 +17,7 @@ import 'package:meal_meat_user/features/family_programs/domain/usecase/get_famil
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
 
 @injectable
@@ -28,8 +29,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     this._getFamilyPlanDurationsUseCase,
     this._getFamilyPlanTiersUseCase,
     this._getSubscriptionTierRestaurantsUseCase,
-    this._saveFamilyMemberPlanUseCase,
-  ) : super(const FamilyPackageDaysState());
+    this._saveFamilyMemberPlanUseCase, [
+    FamilyFlowSnapshotStore? snapshotStore,
+  ]) : _snapshotStore = snapshotStore ?? FamilyFlowSnapshotStore(),
+       super(const FamilyPackageDaysState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
   final GetFamilyProgramsUseCase _getFamilyProgramsUseCase;
@@ -39,6 +42,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   final GetSubscriptionTierRestaurantsUseCase
   _getSubscriptionTierRestaurantsUseCase;
   final SaveFamilyMemberPlanUseCase _saveFamilyMemberPlanUseCase;
+  final FamilyFlowSnapshotStore _snapshotStore;
 
   int _tiersRequestToken = 0;
   int _flowRequestToken = 0;
@@ -518,6 +522,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         return m;
       }).toList();
       final updatedFlow = state.currentFlow?.copyWith(members: updatedMembers);
+      if (updatedFlow != null) _snapshotStore.update(updatedFlow);
       _emit(state.copyWith(currentFlow: updatedFlow));
     }
 
@@ -585,12 +590,14 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
 
   void _selectMemberInPackageDays(int index) {
     if (index < 0 || index >= state.members.length) return;
+    if (index == state.selectedMemberIndex && !state.isMemberChanging) return;
     final member = state.members[index];
     final memberToken = ++_memberSelectionToken;
 
     _emit(
       state.copyWith(
         selectedMemberIndex: index,
+        isMemberChanging: true,
         clearSelectedBundle:
             member.bundleId == null || member.bundleId!.isEmpty,
         clearSelectedDuration: member.durationDays == null,
@@ -605,7 +612,24 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         clearTiersFailure: true,
       ),
     );
-    unawaited(_loadMemberData(member, memberToken: memberToken));
+    unawaited(_loadMemberDataWithShimmer(member, memberToken: memberToken));
+  }
+
+  Future<void> _loadMemberDataWithShimmer(
+    FamilyMemberEntity member, {
+    int? memberToken,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    await _loadMemberData(member, memberToken: memberToken);
+    final elapsed = stopwatch.elapsedMilliseconds;
+    if (elapsed < 350) {
+      await Future<void>.delayed(Duration(milliseconds: 350 - elapsed));
+    }
+    if (isClosed ||
+        (memberToken != null && memberToken != _memberSelectionToken)) {
+      return;
+    }
+    _emit(state.copyWith(isMemberChanging: false));
   }
 
   void _selectBundle(int index) {
@@ -799,7 +823,8 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     final idx = state.selectedMemberIndex;
     if (idx < 0 || idx >= flow.members.length) return null;
     final member = flow.members[idx];
-    final programId = member.programId ??
+    final programId =
+        member.programId ??
         state.selectedProgram?.programId ??
         (state.programs.isNotEmpty ? state.programs.first.programId : null);
     final updatedMember = member.copyWith(
@@ -811,7 +836,9 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     );
     final updatedMembers = List<FamilyMemberEntity>.from(flow.members);
     updatedMembers[idx] = updatedMember;
-    return flow.copyWith(members: updatedMembers);
+    final updatedFlow = flow.copyWith(members: updatedMembers);
+    _snapshotStore.update(updatedFlow);
+    return updatedFlow;
   }
 
   Future<void> _browseTierRestaurants(int tierIndex) async {
@@ -898,6 +925,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     switch (result) {
       case ApiSuccessResult():
         _syncConvertedDraftFlag(result.data);
+        _snapshotStore.update(result.data);
         _emit(
           state.copyWith(
             currentFlow: result.data,
@@ -933,6 +961,35 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     includeFriday: includeFriday,
     startDate: startDate,
   );
+
+  Future<bool> saveAllMemberPlansAndWait() async {
+    final members = state.currentFlow?.members ?? state.members;
+    for (final member in members.where((m) => m.subscribeNow)) {
+      final programId = member.programId;
+      final bundleId = member.bundleId;
+      final durationDays = member.durationDays;
+      final tier = member.selectedTier;
+      if (programId == null ||
+          programId.isEmpty ||
+          bundleId == null ||
+          bundleId.isEmpty ||
+          durationDays == null ||
+          durationDays <= 0 ||
+          tier == null) {
+        continue;
+      }
+      final saved = await _saveMemberPlan(
+        memberId: member.memberId,
+        programId: programId,
+        bundleId: bundleId,
+        tier: tier,
+        durationDays: durationDays,
+        includeFriday: member.includeFriday,
+      );
+      if (!saved) return false;
+    }
+    return true;
+  }
 
   void _syncConvertedDraftFlag(FamilyFlowCurrentEntity flow) {
     if (flow.status == 3) {

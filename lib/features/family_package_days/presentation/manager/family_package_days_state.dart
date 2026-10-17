@@ -37,6 +37,7 @@ class FamilyPackageDaysState {
     this.browseRestaurantsFailure,
     this.selectedMemberIndex = 0,
     this.isPlanSaving = false,
+    this.isMemberChanging = false,
     this.failure,
   });
 
@@ -73,6 +74,7 @@ class FamilyPackageDaysState {
 
   final int selectedMemberIndex;
   final bool isPlanSaving;
+  final bool isMemberChanging;
   final Failure? failure;
 
   bool get programsLoading => isProgramsLoading;
@@ -86,7 +88,8 @@ class FamilyPackageDaysState {
       isBundlesLoading ||
       isDurationsLoading ||
       isTiersLoading ||
-      isPlanSaving;
+      isPlanSaving ||
+      isMemberChanging;
 
   List<FamilyMemberEntity> get members => currentFlow?.members ?? const [];
 
@@ -202,6 +205,7 @@ class FamilyPackageDaysState {
     Failure? browseRestaurantsFailure,
     int? selectedMemberIndex,
     bool? isPlanSaving,
+    bool? isMemberChanging,
     Failure? failure,
     bool clearFailure = false,
     bool clearBrowseRestaurants = false,
@@ -261,6 +265,7 @@ class FamilyPackageDaysState {
           : (browseRestaurantsFailure ?? this.browseRestaurantsFailure),
       selectedMemberIndex: selectedMemberIndex ?? this.selectedMemberIndex,
       isPlanSaving: isPlanSaving ?? this.isPlanSaving,
+      isMemberChanging: isMemberChanging ?? this.isMemberChanging,
       failure: clearFailure ? null : (failure ?? this.failure),
     );
   }

@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/entities/family_member_allergy_selection.dart';
 import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/repo/family_allergies_repository.dart';
+import 'package:meal_meat_user/features/food_preferences/data/models/request/food_preferences_disliked_ingredients_request_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_allergies_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/domain/usecase/save_family_member_disliked_ingredients_usecase.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/manager/family_allergies_view_model.dart';
@@ -275,6 +276,84 @@ void main() {
     expect(allergiesRepository.saveCount, 0);
     expect(viewModel.state.completed, isTrue);
     expect(viewModel.state.isSaving, isFalse);
+  });
+
+  test('restores disliked ingredients or defaults to NONE on load', () async {
+    final viewModel = FamilyAllergiesViewModel(
+      GetFamilyFlowCurrentUseCase(
+        _FamilySubscriptionSetupRepository(
+          members: const [
+            FamilyMemberEntity(
+              memberId: 'member-1',
+              role: 1,
+              displayName: 'With Disliked',
+              relationshipCode: 'SELF',
+              gender: 1,
+              ageYears: 30,
+              setupStatus: 0,
+              includeFriday: false,
+              isCurrentUser: true,
+              dislikedFoods: [
+                FoodPreferenceItemEntity(
+                  code: 'INGREDIENT:avocado',
+                  nameAr: 'أفوكادو',
+                  nameEn: 'Avocado',
+                ),
+              ],
+            ),
+            FamilyMemberEntity(
+              memberId: 'member-2',
+              role: 2,
+              displayName: 'Eats All',
+              relationshipCode: 'CHILD',
+              gender: 2,
+              ageYears: 10,
+              setupStatus: 0,
+              includeFriday: false,
+              isCurrentUser: false,
+              dislikedFoods: [],
+            ),
+          ],
+        ),
+      ),
+      GetFoodPreferencesCatalogUseCase(const _FoodPreferencesRepository()),
+      SaveFamilyMemberAllergiesUseCase(_FamilyAllergiesRepository()),
+      SaveFamilyMemberDislikedIngredientsUseCase(_FamilyAllergiesRepository()),
+    );
+    addTearDown(viewModel.close);
+
+    await viewModel.load();
+    expect(viewModel.state.rejectedCodes, {'INGREDIENT:avocado'});
+
+    viewModel.selectMember(1);
+    expect(viewModel.state.rejectedCodes, {FoodPreferenceItemEntity.noneCode});
+
+    viewModel.selectMember(0);
+    expect(viewModel.state.rejectedCodes, {'INGREDIENT:avocado'});
+  });
+
+  test('serializes disliked ingredients DTO with clean codes and eatsEverything flag', () {
+    const noneRequest = FoodPreferencesDislikedIngredientsRequestDto(
+      ingredientCodes: ['NONE'],
+    );
+    expect(noneRequest.toJson(), {
+      'ingredientCodes': <String>[],
+      'selectedCodes': <String>[],
+      'dislikedIngredients': <String>[],
+      'dislikedFoods': <String>[],
+      'eatsEverything': true,
+    });
+
+    const specificRequest = FoodPreferencesDislikedIngredientsRequestDto(
+      ingredientCodes: ['INGREDIENT:avocado', 'INGREDIENT:broccoli'],
+    );
+    expect(specificRequest.toJson(), {
+      'ingredientCodes': ['INGREDIENT:avocado', 'INGREDIENT:broccoli'],
+      'selectedCodes': ['INGREDIENT:avocado', 'INGREDIENT:broccoli'],
+      'dislikedIngredients': ['INGREDIENT:avocado', 'INGREDIENT:broccoli'],
+      'dislikedFoods': ['INGREDIENT:avocado', 'INGREDIENT:broccoli'],
+      'eatsEverything': false,
+    });
   });
 }
 

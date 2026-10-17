@@ -16,9 +16,11 @@ class FamilySummaryMemberDto {
   @JsonKey(readValue: _readMemberId)
   final String? memberId;
   final String? displayName;
+  @JsonKey(readValue: _readIsManager)
   final bool? isManager;
   @JsonKey(fromJson: _setupStatusFromJson)
   final int? setupStatus;
+  @JsonKey(readValue: _readIsReady)
   final bool? isReady;
   final String? roleAr;
 
@@ -58,21 +60,27 @@ class FamilySelectedMemberSummaryDto {
   @JsonKey(readValue: _readMemberId)
   final String? memberId;
   final String? displayName;
+  @JsonKey(readValue: _readIsManager)
   final bool? isManager;
   final String? roleAr;
   @JsonKey(fromJson: _setupStatusFromJson)
   final int? setupStatus;
+  @JsonKey(readValue: _readIsReady)
   final bool? isReady;
+  @JsonKey(readValue: _readProgramNameAr)
   final String? programNameAr;
   final String? programNameEn;
+  @JsonKey(readValue: _readBundleNameAr)
   final String? bundleNameAr;
   final String? bundleNameEn;
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? durationDays;
+  @JsonKey(readValue: _readDurationLabelAr)
   final String? durationLabelAr;
   final String? durationLabelEn;
-  @JsonKey(readValue: _readSelectedTier, fromJson: _nullableIntFromJson)
+  @JsonKey(readValue: _readSelectedTier, fromJson: _tierFromJson)
   final int? selectedTier;
+  @JsonKey(readValue: _readTierNameAr)
   final String? tierNameAr;
   final String? tierNameEn;
   final bool? includeFriday;
@@ -113,7 +121,9 @@ class FamilyMealOverviewDto {
   final bool? dinner;
   @JsonKey(fromJson: _mealCountFromJson)
   final int? mealsPerDay;
+  @JsonKey(readValue: _readIsReady)
   final bool? isReady;
+  @JsonKey(readValue: _readIsManager)
   final bool? isManager;
 
   factory FamilyMealOverviewDto.fromJson(Map<String, dynamic> json) =>
@@ -151,6 +161,32 @@ class FamilyMemberScheduleDto {
 }
 
 @JsonSerializable(createToJson: false)
+class FamilySummaryAvailabilityDto {
+  const FamilySummaryAvailabilityDto({
+    this.status,
+    this.coveredRestaurantCount,
+    this.eligibleRestaurantCount,
+    this.checkedAtUtc,
+    this.effectiveStartDate,
+    this.messageCode,
+    this.failureReasons,
+  });
+
+  final String? status;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? coveredRestaurantCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? eligibleRestaurantCount;
+  final String? checkedAtUtc;
+  final String? effectiveStartDate;
+  final String? messageCode;
+  final Map<String, dynamic>? failureReasons;
+
+  factory FamilySummaryAvailabilityDto.fromJson(Map<String, dynamic> json) =>
+      _$FamilySummaryAvailabilityDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class FamilySummaryResponseDto {
   const FamilySummaryResponseDto({
     this.familyGroupId,
@@ -180,6 +216,20 @@ class FamilySummaryResponseDto {
     this.eligibleExistingSubscriberCount,
     this.unsubscribedCount,
     this.lockedQuote,
+    this.selectedFamilyPackageId,
+    this.effectiveFamilyPackageId,
+    this.effectiveFamilyPackageMinMembers,
+    this.effectiveFamilyPackageMaxMembers,
+    this.packageSelectionMode,
+    this.occupiedSeatCount,
+    this.availableSeatCount,
+    this.maxSeats,
+    this.deferredMemberCount,
+    this.currentPurchaseCount,
+    this.managerSeatExempt,
+    this.managerIndividualIsLive,
+    this.isInitialPurchaseOrReactivation,
+    this.availability,
   });
 
   final String? familyGroupId;
@@ -222,6 +272,27 @@ class FamilySummaryResponseDto {
   @JsonKey(fromJson: _nullableIntFromJson)
   final int? unsubscribedCount;
   final bool? lockedQuote;
+  final String? selectedFamilyPackageId;
+  final String? effectiveFamilyPackageId;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? effectiveFamilyPackageMinMembers;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? effectiveFamilyPackageMaxMembers;
+  final String? packageSelectionMode;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? occupiedSeatCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? availableSeatCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? maxSeats;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? deferredMemberCount;
+  @JsonKey(fromJson: _nullableIntFromJson)
+  final int? currentPurchaseCount;
+  final bool? managerSeatExempt;
+  final bool? managerIndividualIsLive;
+  final bool? isInitialPurchaseOrReactivation;
+  final FamilySummaryAvailabilityDto? availability;
 
   factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilySummaryResponseDtoFromJson(json);
@@ -239,10 +310,68 @@ Object? _readMemberPrice(Map<dynamic, dynamic> json, String key) {
   return json[key] ?? json['price'];
 }
 
+Object? _readProgramNameAr(Map<dynamic, dynamic> json, String key) {
+  return json['programNameAr'] ?? json['programName'];
+}
+
+Object? _readBundleNameAr(Map<dynamic, dynamic> json, String key) {
+  return json['bundleNameAr'] ?? json['bundleName'];
+}
+
+Object? _readTierNameAr(Map<dynamic, dynamic> json, String key) {
+  return json['tierNameAr'] ?? json['tierName'];
+}
+
+Object? _readDurationLabelAr(Map<dynamic, dynamic> json, String key) {
+  return json['durationLabelAr'] ?? json['durationLabel'];
+}
+
+Object? _readIsManager(Map<dynamic, dynamic> json, String key) {
+  if (json.containsKey('isManager') && json['isManager'] != null) {
+    return json['isManager'];
+  }
+  final role = json['role'];
+  if (role is String && role.toLowerCase() == 'manager') return true;
+  if (role == 1) return true;
+  if (json['isCurrentUser'] == true) return true;
+  return false;
+}
+
+Object? _readIsReady(Map<dynamic, dynamic> json, String key) {
+  if (json.containsKey('isReady') && json['isReady'] != null) {
+    return json['isReady'];
+  }
+  final status = json['setupStatus'];
+  if (status is String &&
+      (status.toLowerCase() == 'ready' || status.toLowerCase() == 'completed')) {
+    return true;
+  }
+  if (status == 2) return true;
+  return false;
+}
+
 int? _nullableIntFromJson(dynamic value) {
   if (value == null) return null;
   if (value is num) return value.toInt();
   if (value is String) return int.tryParse(value);
+  return null;
+}
+
+int? _tierFromJson(dynamic value) {
+  if (value == null) return null;
+  if (value is num) return value.toInt();
+  if (value is String) {
+    final lower = value.toLowerCase().trim();
+    if (lower == 'basic' || lower == 'select' || lower == '1') return 1;
+    if (lower == 'platinum' ||
+        lower == 'plat' ||
+        lower == 'plus' ||
+        lower == '2') {
+      return 2;
+    }
+    if (lower == 'elite' || lower == 'max' || lower == '3') return 3;
+    return int.tryParse(value);
+  }
   return null;
 }
 
