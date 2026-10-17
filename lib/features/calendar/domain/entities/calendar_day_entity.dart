@@ -103,9 +103,14 @@ class CalendarDayEntity {
 
   bool get isAwaitingRestaurantConfirmation {
     if (isConfirmed) return false;
-    if (isCustomerSelected && !isSentToRestaurant) return false;
     final s = '${status}_$uiStatus'.toLowerCase();
+    if (isCustomerSelected &&
+        !isSentToRestaurant &&
+        !s.contains('awaiting_restaurant')) {
+      return false;
+    }
     return s.contains('senttorestaurant') ||
+        s.contains('awaiting_restaurant') ||
         (s.contains('awaiting') && !s.contains('customerselected'));
   }
 

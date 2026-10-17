@@ -41,111 +41,78 @@ class CalendarDeliveryDetailsInfoCard extends StatelessWidget {
       padding: const EdgeInsets.all(Spacing.cardPadding),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        borderRadius: BorderRadius.circular(Spacing.base),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
         border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.5),
+          color: color.outlineVariant.withValues(alpha: 0.25),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            locale.calendar_delivery_info_section_title,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
-              color: color.onSurface,
-            ),
+          Row(
+            children: [
+              Icon(
+                Icons.article_rounded,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Text(
+                locale.calendar_delivery_info_section_title,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: Spacing.md),
           _buildInfoRow(
+            icon: Icons.person_rounded,
             label: locale.calendar_delivery_driver_label,
-            valueWidget: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircleAvatar(
-                  radius: Spacing.avatarSm / 2,
-                  backgroundColor: color.surfaceContainerHighest,
-                  backgroundImage: (driver?.avatarUrl != null &&
-                          driver!.avatarUrl!.isNotEmpty)
-                      ? NetworkImage(driver.avatarUrl!)
-                      : null,
-                  child: (driver?.avatarUrl == null ||
-                          driver!.avatarUrl!.isEmpty)
-                      ? Icon(
-                          Icons.person_rounded,
-                          size: Spacing.iconSm,
-                          color: color.onSurfaceVariant,
-                        )
-                      : null,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  effectiveDriverName,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
-                    color: color.onSurface,
-                  ),
-                ),
-                if (driver?.rating != null && driver!.rating! > 0) ...[
-                  const SizedBox(width: Spacing.xs),
-                  Icon(
-                    Icons.star_rounded,
-                    size: Spacing.iconSm,
-                    color: color.primary,
-                  ),
-                  Text(
-                    driver.rating!.toStringAsFixed(1),
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+            value: effectiveDriverName,
             colorScheme: color,
           ),
-          const Divider(height: Spacing.xl),
+          Divider(
+            height: Spacing.lg,
+            thickness: 0.5,
+            color: color.outlineVariant.withValues(alpha: 0.35),
+          ),
           _buildInfoRow(
+            icon: Icons.door_front_door_rounded,
             label: locale.calendar_delivery_method_label,
-            valueWidget: Text(
-              effectiveMethod,
-              style: getMediumStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
-                color: color.onSurface,
-              ),
-            ),
+            value: effectiveMethod,
             colorScheme: color,
           ),
-          const Divider(height: Spacing.xl),
+          Divider(
+            height: Spacing.lg,
+            thickness: 0.5,
+            color: color.outlineVariant.withValues(alpha: 0.35),
+          ),
           _buildInfoRow(
+            icon: Icons.tag_rounded,
             label: locale.calendar_delivery_order_code_label,
-            valueWidget: Text(
-              orderCode,
-              style: getMediumStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
-                color: color.onSurface,
-              ),
-            ),
+            value: orderCode,
             colorScheme: color,
           ),
-          const Divider(height: Spacing.xl),
+          Divider(
+            height: Spacing.lg,
+            thickness: 0.5,
+            color: color.outlineVariant.withValues(alpha: 0.35),
+          ),
           _buildInfoRow(
+            icon: Icons.calendar_month_rounded,
             label: locale.calendar_delivery_date_label,
-            valueWidget: Text(
-              dateStr,
-              style: getMediumStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size12,
-                color: color.onSurface,
-              ),
-            ),
+            value: dateStr,
             colorScheme: color,
           ),
         ],
@@ -154,22 +121,41 @@ class CalendarDeliveryDetailsInfoCard extends StatelessWidget {
   }
 
   Widget _buildInfoRow({
+    required IconData icon,
     required String label,
-    required Widget valueWidget,
+    required String value,
     required ColorScheme colorScheme,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: Spacing.iconSm,
+              color: colorScheme.primary,
+            ),
+            const SizedBox(width: Spacing.xs),
+            Text(
+              label,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size12,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
         Text(
-          label,
-          style: getRegularStyle(
+          value,
+          style: getMediumStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size12,
-            color: colorScheme.onSurfaceVariant,
+            color: colorScheme.onSurface,
           ),
         ),
-        valueWidget,
       ],
     );
   }

@@ -203,11 +203,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
         currentSelected < validTiers.length &&
         validTiers[currentSelected].effectiveCanSelect) {
       targetSelected = currentSelected;
-    } else {
-      final firstSelectable = validTiers.indexWhere(
-        (t) => t.effectiveCanSelect,
-      );
-      targetSelected = firstSelectable != -1 ? firstSelectable : null;
     }
     emit(
       state.copyWith(
@@ -860,11 +855,6 @@ class SubscriptionPlanViewModel extends Cubit<SubscriptionPlanState> {
             currentSelected < validTiers.length &&
             validTiers[currentSelected].effectiveCanSelect) {
           targetSelected = currentSelected;
-        } else {
-          final firstSelectable = validTiers.indexWhere(
-            (t) => t.effectiveCanSelect,
-          );
-          targetSelected = firstSelectable != -1 ? firstSelectable : null;
         }
         emit(
           state.copyWith(

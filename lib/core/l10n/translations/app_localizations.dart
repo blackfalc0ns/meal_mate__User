@@ -6944,6 +6944,12 @@ abstract class AppLocalizations {
   /// **'Back to Calendar'**
   String get calendar_delivery_back_to_calendar;
 
+  /// No description provided for @calendar_delivery_back_to_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get calendar_delivery_back_to_home;
+
   /// No description provided for @calendar_delivery_rate_experience.
   ///
   /// In en, this message translates to:
@@ -6961,6 +6967,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Direct Delivery'**
   String get calendar_delivery_direct_delivery;
+
+  /// No description provided for @calendar_delivery_method_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get calendar_delivery_method_manual;
 
   /// No description provided for @calendar_delivery_default_driver_name.
   ///

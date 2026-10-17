@@ -18,28 +18,28 @@ class CalendarDeliveryDetailsSupportCard extends StatelessWidget {
       onTap: () {
         unawaited(Navigator.of(context).pushNamed(AppRoutes.profileHelpCenter));
       },
-      borderRadius: BorderRadius.circular(Spacing.cardRadius),
+      borderRadius: BorderRadius.circular(Spacing.base),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(Spacing.cardPadding),
         decoration: BoxDecoration(
-          color: color.surface,
-          borderRadius: BorderRadius.circular(Spacing.cardRadius),
+          color: color.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(Spacing.base),
           border: Border.all(
-            color: color.outlineVariant.withValues(alpha: 0.5),
+            color: color.primary.withValues(alpha: 0.12),
           ),
         ),
         child: Row(
           children: [
             Container(
-              width: Spacing.avatarSm + Spacing.sm,
-              height: Spacing.avatarSm + Spacing.sm,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: color.primaryContainer.withValues(alpha: 0.4),
+                color: color.primary.withValues(alpha: 0.12),
               ),
               child: Icon(
-                Icons.support_agent_rounded,
+                Icons.headset_mic_rounded,
                 color: color.primary,
                 size: Spacing.iconMd,
               ),
@@ -52,7 +52,7 @@ class CalendarDeliveryDetailsSupportCard extends StatelessWidget {
                 children: [
                   Text(
                     locale.calendar_delivery_need_help,
-                    style: getSemiBoldStyle(
+                    style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
                       color: color.onSurface,
@@ -70,8 +70,11 @@ class CalendarDeliveryDetailsSupportCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(width: Spacing.xs),
             Icon(
-              Icons.arrow_forward_ios_rounded,
+              Directionality.of(context) == TextDirection.rtl
+                  ? Icons.chevron_left_rounded
+                  : Icons.chevron_right_rounded,
               size: Spacing.iconSm,
               color: color.onSurfaceVariant,
             ),

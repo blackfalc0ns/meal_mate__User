@@ -25,7 +25,9 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
         : deliveryItem.localizedStatus(locale.localeName);
 
     final deliveredAt = deliveryItem.deliveredAtUtc;
-    final timeStr = deliveredAt != null ? _formatTime(deliveredAt) : null;
+    final timeStr = deliveredAt != null
+        ? _formatTime(deliveredAt, locale.localeName)
+        : null;
     final addressStr = deliveryItem.destinationAddress ?? '';
 
     final subtitle = isDelivered
@@ -37,33 +39,56 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: Spacing.avatarLg + Spacing.base,
-          height: Spacing.avatarLg + Spacing.base,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color.primary.withValues(alpha: 0.12),
-            border: Border.all(
-              color: color.primary.withValues(alpha: 0.25),
-              width: 2,
-            ),
-          ),
-          child: Center(
-            child: Container(
-              width: Spacing.avatarMd + Spacing.md,
-              height: Spacing.avatarMd + Spacing.md,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.primary,
+        SizedBox(
+          width: 76,
+          height: 76,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              for (final angle in const [0.0, 45.0, 90.0, 135.0])
+                Transform.rotate(
+                  angle: angle * (3.141592653589793 / 180.0),
+                  child: SizedBox(
+                    height: 76,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 3.5,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: color.primary.withValues(alpha: 0.35),
+                            borderRadius: BorderRadius.circular(Spacing.xxs),
+                          ),
+                        ),
+                        Container(
+                          width: 3.5,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: color.primary.withValues(alpha: 0.35),
+                            borderRadius: BorderRadius.circular(Spacing.xxs),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color.primary,
+                ),
+                child: Icon(
+                  isDelivered
+                      ? Icons.check_rounded
+                      : Icons.local_shipping_rounded,
+                  color: color.onPrimary,
+                  size: 28,
+                ),
               ),
-              child: Icon(
-                isDelivered
-                    ? Icons.check_rounded
-                    : Icons.local_shipping_rounded,
-                color: color.onPrimary,
-                size: Spacing.iconLg,
-              ),
-            ),
+            ],
           ),
         ),
         const SizedBox(height: Spacing.base),
@@ -72,7 +97,7 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
           textAlign: TextAlign.center,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size18,
+            fontSize: FontSize.size20,
             color: color.onSurface,
           ),
         ),
@@ -92,9 +117,9 @@ class CalendarDeliveryDetailsStatusHero extends StatelessWidget {
     );
   }
 
-  String _formatTime(DateTime date) {
+  String _formatTime(DateTime date, String localeCode) {
     try {
-      return DateFormat('h:mm a').format(date.toLocal());
+      return DateFormat('h:mm a', localeCode).format(date.toLocal());
     } catch (_) {
       return '';
     }

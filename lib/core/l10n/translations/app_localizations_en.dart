@@ -3718,6 +3718,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendar_delivery_back_to_calendar => 'Back to Calendar';
 
   @override
+  String get calendar_delivery_back_to_home => 'Back to Home';
+
+  @override
   String get calendar_delivery_rate_experience => 'Rate Experience';
 
   @override
@@ -3725,6 +3728,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendar_delivery_direct_delivery => 'Direct Delivery';
+
+  @override
+  String get calendar_delivery_method_manual => 'Manual';
 
   @override
   String get calendar_delivery_default_driver_name => 'Driver';

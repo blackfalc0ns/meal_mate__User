@@ -20,195 +20,209 @@ class CalendarDeliveryDetailsTimeline extends StatelessWidget {
     final locale = context.localization;
 
     final isDelivered = deliveryItem.isDelivered;
-    final isArrived = isDelivered ||
+    final isOut = isDelivered ||
         deliveryItem.deliveryStatus == CustomerDeliveryStatus.arrived ||
-        deliveryItem.hasArrived;
-    final isOut = isArrived ||
-        deliveryItem.isOutForDelivery ||
+        deliveryItem.deliveryStatus == CustomerDeliveryStatus.outForDelivery ||
+        deliveryItem.hasArrived ||
         deliveryItem.hasPickedUp;
     final isPrepared = isOut ||
         deliveryItem.deliveryStatus == CustomerDeliveryStatus.ready ||
+        deliveryItem.deliveryStatus == CustomerDeliveryStatus.preparing ||
         deliveryItem.hasReady;
 
-    final steps = [
-      _TimelineStepData(
-        title: locale.calendar_delivery_step_prepared,
-        time: deliveryItem.readyAtUtc,
-        isCompleted: isPrepared,
-        isActive: deliveryItem.deliveryStatus == CustomerDeliveryStatus.preparing ||
-            deliveryItem.deliveryStatus == CustomerDeliveryStatus.ready,
-      ),
-      _TimelineStepData(
-        title: locale.calendar_delivery_step_out,
-        time: deliveryItem.pickedUpAtUtc,
-        isCompleted: isOut,
-        isActive: deliveryItem.isOutForDelivery,
-      ),
-      _TimelineStepData(
-        title: locale.calendar_delivery_step_arrived,
-        time: deliveryItem.arrivedAtUtc,
-        isCompleted: isArrived,
-        isActive: deliveryItem.deliveryStatus == CustomerDeliveryStatus.arrived,
-      ),
-      _TimelineStepData(
-        title: locale.calendar_delivery_step_delivered,
-        time: deliveryItem.deliveredAtUtc,
-        isCompleted: isDelivered,
-        isActive: isDelivered,
-      ),
-    ];
+    final time1 = deliveryItem.readyAtUtc != null
+        ? _formatTime(deliveryItem.readyAtUtc!, locale.localeName)
+        : '';
+    final time2 = deliveryItem.pickedUpAtUtc != null
+        ? _formatTime(deliveryItem.pickedUpAtUtc!, locale.localeName)
+        : '';
+    final time3 = deliveryItem.deliveredAtUtc != null
+        ? _formatTime(deliveryItem.deliveredAtUtc!, locale.localeName)
+        : '';
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(Spacing.cardPadding),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        borderRadius: BorderRadius.circular(Spacing.base),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
         border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.5),
+          color: color.outlineVariant.withValues(alpha: 0.25),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            locale.calendar_delivery_timeline_title,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
-              color: color.onSurface,
-            ),
-          ),
-          const SizedBox(height: Spacing.md),
-          for (int i = 0; i < steps.length; i++)
-            _buildTimelineItem(
-              step: steps[i],
-              isLast: i == steps.length - 1,
-              colorScheme: color,
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimelineItem({
-    required _TimelineStepData step,
-    required bool isLast,
-    required ColorScheme colorScheme,
-  }) {
-    final activeColor = colorScheme.primary;
-    final inactiveColor = colorScheme.outlineVariant;
-    final timeStr = step.time != null ? _formatTime(step.time!) : null;
-
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
+          Row(
             children: [
-              Container(
-                width: Spacing.lg,
-                height: Spacing.lg,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: step.isCompleted
-                      ? activeColor
-                      : (step.isActive
-                          ? colorScheme.primaryContainer
-                          : colorScheme.surfaceContainerHighest),
-                  border: Border.all(
-                    color: step.isCompleted || step.isActive
-                        ? activeColor
-                        : inactiveColor,
-                    width: 1.5,
-                  ),
-                ),
-                child: Icon(
-                  step.isCompleted
-                      ? Icons.check_rounded
-                      : (step.isActive
-                          ? Icons.circle_rounded
-                          : Icons.circle_outlined),
-                  size: step.isCompleted ? Spacing.iconSm : Spacing.iconXs,
-                  color: step.isCompleted
-                      ? colorScheme.onPrimary
-                      : (step.isActive
-                          ? activeColor
-                          : colorScheme.onSurfaceVariant),
+              Icon(
+                Icons.access_time_rounded,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Text(
+                locale.calendar_delivery_timeline_title,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size14,
+                  color: color.onSurface,
                 ),
               ),
-              if (!isLast)
-                Expanded(
-                  child: Container(
-                    width: 2.0,
-                    margin: const EdgeInsets.symmetric(vertical: Spacing.xxs),
-                    color: step.isCompleted ? activeColor : inactiveColor,
-                  ),
-                ),
             ],
           ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: isLast ? Spacing.zero : Spacing.lg,
+          const SizedBox(height: Spacing.lg),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildStepItem(
+                  title: locale.calendar_delivery_step_prepared,
+                  time: time1,
+                  isCompleted: isPrepared,
+                  hasLineStart: false,
+                  hasLineEnd: true,
+                  isLineStartCompleted: false,
+                  isLineEndCompleted: isOut,
+                  colorScheme: color,
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    step.title,
-                    style: step.isCompleted || step.isActive
-                        ? getSemiBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: colorScheme.onSurface,
-                          )
-                        : getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size12,
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                  ),
-                  if (timeStr != null)
-                    Text(
-                      timeStr,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size11,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                ],
+              Expanded(
+                child: _buildStepItem(
+                  title: locale.calendar_delivery_step_out,
+                  time: time2,
+                  isCompleted: isOut,
+                  hasLineStart: true,
+                  hasLineEnd: true,
+                  isLineStartCompleted: isOut,
+                  isLineEndCompleted: isDelivered,
+                  colorScheme: color,
+                ),
               ),
-            ),
+              Expanded(
+                child: _buildStepItem(
+                  title: locale.calendar_delivery_step_delivered,
+                  time: time3,
+                  isCompleted: isDelivered,
+                  hasLineStart: true,
+                  hasLineEnd: false,
+                  isLineStartCompleted: isDelivered,
+                  isLineEndCompleted: false,
+                  colorScheme: color,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  String _formatTime(DateTime date) {
+  Widget _buildStepItem({
+    required String title,
+    required String time,
+    required bool isCompleted,
+    required bool hasLineStart,
+    required bool hasLineEnd,
+    required bool isLineStartCompleted,
+    required bool isLineEndCompleted,
+    required ColorScheme colorScheme,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: hasLineStart
+                  ? Container(
+                      height: 2.5,
+                      color: isLineStartCompleted
+                          ? colorScheme.primary
+                          : colorScheme.outlineVariant.withValues(alpha: 0.4),
+                    )
+                  : const SizedBox(),
+            ),
+            Container(
+              width: 24.0,
+              height: 24.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isCompleted
+                    ? colorScheme.primary
+                    : colorScheme.surfaceContainerHighest,
+                border: Border.all(
+                  color: isCompleted
+                      ? colorScheme.primary
+                      : colorScheme.outlineVariant,
+                  width: 1.5,
+                ),
+              ),
+              child: isCompleted
+                  ? Icon(
+                      Icons.check_rounded,
+                      size: 15.0,
+                      color: colorScheme.onPrimary,
+                    )
+                  : null,
+            ),
+            Expanded(
+              child: hasLineEnd
+                  ? Container(
+                      height: 2.5,
+                      color: isLineEndCompleted
+                          ? colorScheme.primary
+                          : colorScheme.outlineVariant.withValues(alpha: 0.4),
+                    )
+                  : const SizedBox(),
+            ),
+          ],
+        ),
+        const SizedBox(height: Spacing.sm),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: isCompleted
+              ? getSemiBoldStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: colorScheme.primary,
+                )
+              : getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size12,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+        ),
+        if (time.isNotEmpty) ...[
+          const SizedBox(height: Spacing.xxs),
+          Text(
+            time,
+            textAlign: TextAlign.center,
+            style: getRegularStyle(
+              fontFamily: FontConstant.alexandria,
+              fontSize: FontSize.size11,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  String _formatTime(DateTime date, String localeCode) {
     try {
-      return DateFormat('h:mm a').format(date.toLocal());
+      return DateFormat('h:mm a', localeCode).format(date.toLocal());
     } catch (_) {
       return '';
     }
   }
-}
-
-class _TimelineStepData {
-  const _TimelineStepData({
-    required this.title,
-    this.time,
-    required this.isCompleted,
-    required this.isActive,
-  });
-
-  final String title;
-  final DateTime? time;
-  final bool isCompleted;
-  final bool isActive;
 }

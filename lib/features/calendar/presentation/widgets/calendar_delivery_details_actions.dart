@@ -10,55 +10,76 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 class CalendarDeliveryDetailsActions extends StatelessWidget {
   const CalendarDeliveryDetailsActions({
     super.key,
-    required this.onBackToCalendar,
+    this.onBackToHome,
+    this.onBackToCalendar,
+    this.onRateExperience,
+    this.onReportIssue,
   });
 
-  final VoidCallback onBackToCalendar;
+  final VoidCallback? onBackToHome;
+  final VoidCallback? onBackToCalendar;
+  final VoidCallback? onRateExperience;
+  final VoidCallback? onReportIssue;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final backCallback = onBackToHome ?? onBackToCalendar;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         AppButton(
-          text: locale.calendar_delivery_back_to_calendar,
-          onPressed: onBackToCalendar,
+          text: locale.calendar_delivery_back_to_home,
+          onPressed: backCallback,
+          icon: Icons.home_rounded,
+          iconBeforeText: true,
           height: Spacing.buttonHeight,
-          borderRadius: Spacing.buttonRadius,
+          borderRadius: 28.0,
           color: color.primary,
           textColor: color.onPrimary,
-          fontSize: FontSize.size14,
+          fontSize: FontSize.size15,
         ),
-        const SizedBox(height: Spacing.sm),
-        AppButton(
+        const SizedBox(height: Spacing.md),
+        AppButton.outlined(
           text: locale.calendar_delivery_rate_experience,
-          onPressed: () {
-            unawaited(
-              Navigator.of(context).pushNamed(AppRoutes.profileComplaints),
-            );
-          },
+          onPressed:
+              onRateExperience ??
+              () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.profileComplaints),
+                );
+              },
+          icon: Icons.star_rounded,
+          iconBeforeText: true,
           height: Spacing.buttonHeight,
-          borderRadius: Spacing.buttonRadius,
-          color: color.surfaceContainerHighest,
-          textColor: color.onSurface,
-          fontSize: FontSize.size14,
+          borderRadius: 28.0,
+          color: color.primary,
+          textColor: color.primary,
+          fontSize: FontSize.size15,
         ),
         const SizedBox(height: Spacing.xs),
-        TextButton(
-          onPressed: () {
-            unawaited(
-              Navigator.of(context).pushNamed(AppRoutes.profileComplaints),
-            );
-          },
-          child: Text(
+        TextButton.icon(
+          onPressed:
+              onReportIssue ??
+              () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.profileComplaints),
+                );
+              },
+          icon: Icon(
+            Icons.info_outline_rounded,
+            size: Spacing.iconSm,
+            color: color.primary,
+          ),
+          label: Text(
             locale.calendar_delivery_report_issue,
             style: getMediumStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
-              color: color.error,
+              fontSize: FontSize.size13,
+              color: color.primary,
             ),
           ),
         ),

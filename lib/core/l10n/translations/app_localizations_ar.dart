@@ -3637,13 +3637,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calendar_delivery_info_section_title => 'تفاصيل التسليم';
 
   @override
-  String get calendar_delivery_driver_label => 'مندوب التوصيل';
+  String get calendar_delivery_driver_label => 'المندوب';
 
   @override
-  String get calendar_delivery_method_label => 'طريقة التوصيل';
+  String get calendar_delivery_method_label => 'طريقة التسليم';
 
   @override
-  String get calendar_delivery_date_label => 'تاريخ التوصيل';
+  String get calendar_delivery_date_label => 'التاريخ';
 
   @override
   String get calendar_delivery_timeline_title => 'مراحل الطلب';
@@ -3653,19 +3653,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get calendar_delivery_support_subtitle =>
-      'تواصل مع الدعم الفني لحل أي مشكلة';
+      'لو واجهتك أي مشكلة في التسليم أو محتوى البوكس، تواصل مع فريق الدعم.';
 
   @override
   String get calendar_delivery_back_to_calendar => 'العودة للتقويم';
 
   @override
+  String get calendar_delivery_back_to_home => 'العودة للرئيسية';
+
+  @override
   String get calendar_delivery_rate_experience => 'تقييم التجربة';
 
   @override
-  String get calendar_delivery_report_issue => 'إبلاغ عن مشكلة';
+  String get calendar_delivery_report_issue => 'الإبلاغ عن مشكلة';
 
   @override
   String get calendar_delivery_direct_delivery => 'توصيل مباشر';
+
+  @override
+  String get calendar_delivery_method_manual => 'يدوي';
 
   @override
   String get calendar_delivery_default_driver_name => 'المندوب';

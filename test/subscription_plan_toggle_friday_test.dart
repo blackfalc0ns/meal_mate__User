@@ -280,6 +280,8 @@ void main() {
 
       expect(viewModel.state.durations.length, 2);
       expect(viewModel.state.tiers.length, 2);
+      expect(viewModel.state.selectedDurationIndex, isNull);
+      expect(viewModel.state.selectedTierIndex, isNull);
 
       // 2. User selects duration (30 days, index 1)
       viewModel.doIntent(
