@@ -29,47 +29,39 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              locale.calendar_delivery_arrives_in_prefix,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
-                color: color.onPrimary.withValues(alpha: 0.8),
-              ),
-            ),
-            const SizedBox(height: Spacing.xxs),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.access_time_filled_rounded,
-                  color: color.secondary,
-                  size: Spacing.iconSm,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  locale.calendar_delivery_minutes_suffix(
-                    etaMinutes.toString(),
-                  ),
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size15,
-                    color: color.secondary,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Container(
+              width: Spacing.avatarSm,
+              height: Spacing.avatarSm,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: color.onPrimary.withValues(alpha: 0.8),
+                  width: Spacing.border,
+                ),
+                color: color.surfaceContainerHighest,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child:
+                  (driver?.avatarUrl != null && driver!.avatarUrl!.isNotEmpty)
+                  ? Image.network(
+                      driver.avatarUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Image.asset(
+                        AssetsFake.callingDriverAvatar,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      AssetsFake.callingDriverAvatar,
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            const SizedBox(width: Spacing.xs),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
@@ -111,33 +103,41 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(width: Spacing.xs),
-            Container(
-              width: Spacing.avatarSm,
-              height: Spacing.avatarSm,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: color.onPrimary.withValues(alpha: 0.8),
-                  width: Spacing.border,
-                ),
-                color: color.surfaceContainerHighest,
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              locale.calendar_delivery_arrives_in_prefix,
+              style: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onPrimary.withValues(alpha: 0.8),
               ),
-              clipBehavior: Clip.antiAlias,
-              child:
-                  (driver?.avatarUrl != null && driver!.avatarUrl!.isNotEmpty)
-                  ? Image.network(
-                      driver.avatarUrl!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Image.asset(
-                        AssetsFake.callingDriverAvatar,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Image.asset(
-                      AssetsFake.callingDriverAvatar,
-                      fit: BoxFit.cover,
-                    ),
+            ),
+            const SizedBox(height: Spacing.xxs),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.access_time_filled_rounded,
+                  color: color.secondary,
+                  size: Spacing.iconSm,
+                ),
+                const SizedBox(width: Spacing.xs),
+                Text(
+                  locale.calendar_delivery_minutes_suffix(
+                    etaMinutes.toString(),
+                  ),
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size15,
+                    color: color.secondary,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
