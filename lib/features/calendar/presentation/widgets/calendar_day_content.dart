@@ -6,7 +6,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
@@ -89,22 +88,24 @@ class CalendarDayContent extends StatelessWidget {
                   for (final item in (deliveryItems.isNotEmpty
                       ? deliveryItems
                       : (deliveryItem != null ? [deliveryItem!] : const <CustomerDeliveryItemEntity>[]))) ...[
-                    CalendarDeliveryCard(
-                      key: ValueKey(
-                        'delivery_${item.orderCode ?? item.subscriptionDayId ?? selectedDay?.date?.toIso8601String()}',
-                      ),
-                      deliveryItem: item,
-                      onTrackOrDetails: () => onTrackDelivery?.call(item),
-                    )
-                        .animate()
-                        .fadeIn(duration: 250.ms)
-                        .slideX(
-                          begin: slideBegin,
-                          end: 0,
-                          duration: 250.ms,
-                          curve: Curves.easeOutCubic,
+                    if (item.shouldShowDeliveryCard) ...[
+                      CalendarDeliveryCard(
+                        key: ValueKey(
+                          'delivery_${item.orderCode ?? item.subscriptionDayId ?? selectedDay?.date?.toIso8601String()}',
                         ),
-                    const SizedBox(height: Spacing.md),
+                        deliveryItem: item,
+                        onTrackOrDetails: () => onTrackDelivery?.call(item),
+                      )
+                          .animate()
+                          .fadeIn(duration: 250.ms)
+                          .slideX(
+                            begin: slideBegin,
+                            end: 0,
+                            duration: 250.ms,
+                            curve: Curves.easeOutCubic,
+                          ),
+                      const SizedBox(height: Spacing.md),
+                    ],
                   ],
                   if (selectedDay?.isFrozen == true)
                     const CalendarFrozenDayState()
@@ -216,19 +217,6 @@ class CalendarDayContent extends StatelessWidget {
                             curve: Curves.easeOutCubic,
                           ),
                       const SizedBox(height: Spacing.md),
-                    ],
-                    if (!readOnly && canConfirm) ...[
-                      const SizedBox(height: Spacing.lg),
-                      AppButton(
-                        text: locale.calendar_confirm_selections,
-                        isLoading: isConfirming,
-                        onPressed: isConfirming ? null : onConfirmSelections,
-                        height: Spacing.buttonHeight,
-                        borderRadius: Spacing.buttonRadius,
-                        color: color.primary,
-                        textColor: color.onPrimary,
-                        fontSize: FontSize.size16,
-                      ),
                     ],
                   ],
                 ],

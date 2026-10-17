@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/calendar/data/mapper/customer_delivery_mapper.dart';
+import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/services/customer_delivery_realtime_service.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/manager/overview/calendar_overview_state.dart';
@@ -122,7 +124,7 @@ void main() {
       expect(state.currentDeliveryItem?.subscriptionDayId, equals('day-1'));
     });
 
-    test('CustomerDeliveryRealtimeService broadcasts onDeliveryChanged', () async {
+    test('CustomerDeliveryRealtimeService broadcasts onDeliveryChanged and disconnects cleanly', () async {
       final service = CustomerDeliveryRealtimeServiceImpl(_FakeTokenService());
       final received = <String>[];
       final subscription = service.onDeliveryChanged.listen(received.add);
@@ -132,6 +134,7 @@ void main() {
 
       expect(received, equals(['sub-day-123']));
       await subscription.cancel();
+      await service.disconnect();
       service.dispose();
     });
 
@@ -194,6 +197,121 @@ void main() {
       expect(find.text('العودة للرئيسية'), findsOneWidget);
       expect(find.text('تقييم التجربة'), findsOneWidget);
       expect(find.text('الإبلاغ عن مشكلة'), findsOneWidget);
+    });
+
+    test('shouldShowDeliveryCard returns false for scheduled and true from preparing onwards', () {
+      const scheduledItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.scheduled,
+        isTerminal: false,
+        isTrackable: false,
+      );
+      expect(scheduledItem.shouldShowDeliveryCard, isFalse);
+
+      const notStartedItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.notStarted,
+        isTerminal: false,
+        isTrackable: false,
+      );
+      expect(notStartedItem.shouldShowDeliveryCard, isFalse);
+
+      const preparingItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.preparing,
+        isTerminal: false,
+        isTrackable: true,
+      );
+      expect(preparingItem.shouldShowDeliveryCard, isTrue);
+
+      const readyItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.ready,
+        isTerminal: false,
+        isTrackable: true,
+      );
+      expect(readyItem.shouldShowDeliveryCard, isTrue);
+
+      const outItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.outForDelivery,
+        isTerminal: false,
+        isTrackable: true,
+      );
+      expect(outItem.shouldShowDeliveryCard, isTrue);
+
+      const deliveredItem = CustomerDeliveryItemEntity(
+        deliveryStatus: CustomerDeliveryStatus.delivered,
+        isTerminal: true,
+        isTrackable: false,
+      );
+      expect(deliveredItem.shouldShowDeliveryCard, isTrue);
+    });
+
+    test('CustomerDeliveryWidgetResponseDto successfully parses backend payload with Object destinationAddress and int plateNumber', () {
+      final json = {
+        'serviceDate': '2026-10-17',
+        'serverTimeUtc': '2026-10-17T09:22:44.1869433Z',
+        'refreshAfterSeconds': 30,
+        'items': [
+          {
+            'subscriptionId': '042d669d-782d-4df6-a9ee-83d640bbb549',
+            'subscriptionDayId': 'aba37004-58ac-4099-aca4-439058985f65',
+            'orderId': '0ff6aded-efd5-4f42-b217-33ab3592d0ef',
+            'tripStopId': '3a6c6a75-3627-4a79-8a8d-38cc59f62d7f',
+            'orderCode': '#BX-4917',
+            'deliveryStatus': 'OutForDelivery',
+            'deliveryStatusTextAr': 'خرج للتوصيل',
+            'deliveryStatusTextEn': 'Out for delivery',
+            'isTerminal': false,
+            'isTrackable': true,
+            'unavailableReasonCode': null,
+            'readyAtUtc': '2026-10-17T08:54:09.310765Z',
+            'pickedUpAtUtc': '2026-10-17T09:21:23.117085Z',
+            'arrivedAtUtc': null,
+            'deliveredAtUtc': null,
+            'driver': {
+              'id': '52a408f2-94d4-4c7d-bfaf-3e9017eb0d49',
+              'nameAr': 'يحيي سواق',
+              'nameEn': 'yahya driver',
+              'maskedPhone': '123***54',
+              'avatarUrl':
+                  '/api/v1/uploads/content?key=uploads%2Fdrivers%2Fdriver-registration%2Ff53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg',
+              'rating': null,
+            },
+            'vehicle': {
+              'typeCode': 'Car',
+              'typeLabelAr': 'سيارة',
+              'typeLabelEn': 'Car',
+              'plateNumber': 1275765,
+            },
+            'location': null,
+            'etaMinutes': null,
+            'etaSource': null,
+            'destinationAddress': {
+              'addressLine': 'حولي, السالمية, قطعة 3, شارع 2, جادة 2, 2',
+              'latitude': 29.340749,
+              'longitude': 48.083898,
+            },
+            'detailsUrl':
+                '/api/v1/customer/orders/3a6c6a75-3627-4a79-8a8d-38cc59f62d7f/live-tracking',
+            'deliveryDetailsUrl':
+                '/api/v1/customer/subscription-days/aba37004-58ac-4099-aca4-439058985f65/delivery-details',
+          },
+        ],
+      };
+
+      final dto = CustomerDeliveryWidgetResponseDto.fromJson(json);
+      final entity = dto.toEntity();
+
+      expect(entity.items.length, 1);
+      final item = entity.items.first;
+      expect(item.deliveryStatus, CustomerDeliveryStatus.outForDelivery);
+      expect(item.orderCode, '#BX-4917');
+      expect(
+        item.destinationAddress,
+        'حولي, السالمية, قطعة 3, شارع 2, جادة 2, 2',
+      );
+      expect(item.destinationLatitude, 29.340749);
+      expect(item.destinationLongitude, 48.083898);
+      expect(item.vehicle?.plateNumber, '1275765');
+      expect(item.driver?.avatarUrl, startsWith('https://api.trymealmate.com'));
+      expect(item.shouldShowDeliveryCard, isTrue);
     });
   });
 }

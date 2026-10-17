@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
@@ -42,32 +43,52 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
   final CustomerDeliveryRealtimeService? _realtimeService;
 
   StreamSubscription<String>? _realtimeSubscription;
-  Timer? _deliveryReconciliationTimer;
+  bool _isRealtimePaused = false;
   int _calendarRequestGeneration = 0;
   int _dayRequestGeneration = 0;
   int _deliveryRequestGeneration = 0;
 
   void _listenToRealtimeDelivery() {
     unawaited(_realtimeService?.connect());
-    _realtimeSubscription = _realtimeService?.onDeliveryChanged.listen((_) {
+    _realtimeSubscription = _realtimeService?.onDeliveryChanged.listen((dayId) {
       if (isClosed) return;
-      unawaited(loadDeliveryWidget());
+      final matchingDay = state.days
+          .where((day) => day.id == dayId)
+          .firstOrNull;
+      debugPrint('[DeliveryRealtime] event received dayId=$dayId');
+      unawaited(
+        _loadDeliveryWidgetForDate(
+          matchingDay?.date,
+          fetchAll: matchingDay == null,
+        ),
+      );
     });
   }
 
-  void _scheduleDeliveryReconciliation(int seconds) {
-    _deliveryReconciliationTimer?.cancel();
-    if (isClosed || seconds <= 0) return;
-    _deliveryReconciliationTimer = Timer(Duration(seconds: seconds), () {
-      if (isClosed) return;
-      unawaited(loadDeliveryWidget());
-    });
+  void pauseDeliveryRealtime() {
+    _isRealtimePaused = true;
+    unawaited(_realtimeSubscription?.cancel());
+    _realtimeSubscription = null;
+    unawaited(_realtimeService?.disconnect());
+  }
+
+  void resumeDeliveryRealtime() {
+    _isRealtimePaused = false;
+    final isAllDelivered =
+        state.deliveryWidget != null &&
+        state.deliveryWidget!.items.isNotEmpty &&
+        state.deliveryWidget!.items.every((item) => item.isTerminalStatus);
+    if (!isAllDelivered && _realtimeSubscription == null) {
+      _listenToRealtimeDelivery();
+    }
+    unawaited(loadDeliveryWidget());
   }
 
   @override
   Future<void> close() async {
-    _deliveryReconciliationTimer?.cancel();
     await _realtimeSubscription?.cancel();
+    _realtimeSubscription = null;
+    await _realtimeService?.disconnect();
     return super.close();
   }
 
@@ -257,20 +278,35 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
     await _loadDeliveryWidgetForDate(targetDate);
   }
 
-  Future<void> _loadDeliveryWidgetForDate(DateTime targetDate) async {
+  Future<void> _loadDeliveryWidgetForDate(
+    DateTime? targetDate, {
+    bool fetchAll = false,
+  }) async {
     final useCase = _getCustomerDeliveryWidgetUseCase;
     if (useCase == null) return;
-    final dateStr = DateFormat('yyyy-MM-dd').format(targetDate);
+    if (!fetchAll && targetDate == null) return;
+    final dateStr = targetDate == null
+        ? null
+        : DateFormat('yyyy-MM-dd').format(targetDate);
     final generation = ++_deliveryRequestGeneration;
+    debugPrint(
+      '[DeliveryRealtime] REST fetching delivery-widget date=${dateStr ?? 'all'} subId=${state.subscriptionId.isNotEmpty ? state.subscriptionId : 'current'} gen=$generation',
+    );
     emit(state.copyWith(isDeliveryLoading: true, clearDeliveryFailure: true));
 
     final result = await useCase(
       serviceDate: dateStr,
-      subscriptionId:
-          state.subscriptionId.isNotEmpty ? state.subscriptionId : null,
+      subscriptionId: state.subscriptionId.isNotEmpty
+          ? state.subscriptionId
+          : null,
     );
 
-    if (isClosed || generation != _deliveryRequestGeneration) return;
+    if (isClosed || generation != _deliveryRequestGeneration) {
+      debugPrint(
+        '[DeliveryRealtime] Ignored stale response gen=$generation current=$_deliveryRequestGeneration',
+      );
+      return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -281,10 +317,26 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
             clearDeliveryFailure: true,
           ),
         );
-        _scheduleDeliveryReconciliation(
-          result.data.refreshAfterSeconds ?? 30,
+        debugPrint(
+          '[DeliveryRealtime] widget state updated items=${result.data.items.length} gen=$generation',
         );
+        final isAllDelivered =
+            result.data.items.isNotEmpty &&
+            result.data.items.every((item) => item.isTerminalStatus);
+        if (isAllDelivered) {
+          unawaited(_realtimeSubscription?.cancel());
+          _realtimeSubscription = null;
+          unawaited(_realtimeService?.disconnect());
+          debugPrint(
+            '[DeliveryRealtime] All deliveries completed -> socket disconnected',
+          );
+        } else if (_realtimeSubscription == null && !_isRealtimePaused) {
+          _listenToRealtimeDelivery();
+        }
       case ApiErrorResult():
+        debugPrint(
+          '[DeliveryRealtime] widget fetch failed: ${result.failure.errorMessage} gen=$generation',
+        );
         emit(
           state.copyWith(
             deliveryFailure: result.failure,

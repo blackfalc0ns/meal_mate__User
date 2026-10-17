@@ -7,6 +7,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/domain/entities/logout_request_entity.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/logout_usecase.dart';
+import 'package:meal_meat_user/features/calendar/data/services/customer_delivery_realtime_service.dart';
 import 'logout_event.dart';
 import 'logout_state.dart';
 
@@ -15,8 +16,9 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
   LogoutViewModel(
     this._logoutUseCase,
     this._tokenService,
-    this._biometricService,
-  ) : super(const LogoutState()) {
+    this._biometricService, [
+    this._deliveryRealtimeService,
+  ]) : super(const LogoutState()) {
     on<RequestLogoutEvent>(_onRequestLogout);
     on<ClearLogoutFeedbackEvent>(_onClearFeedback);
   }
@@ -24,6 +26,7 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
   final LogoutUseCase _logoutUseCase;
   final TokenService _tokenService;
   final BiometricService _biometricService;
+  final CustomerDeliveryRealtimeService? _deliveryRealtimeService;
 
   bool _inFlight = false;
 
@@ -51,6 +54,8 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
       if (event.invalidateBiometrics) {
         await _biometricService.disableBiometric();
       }
+
+      await _deliveryRealtimeService?.disconnect();
 
       // Guarantee local session clear even if network/remote fails
       await _tokenService.clearSession();
@@ -80,6 +85,7 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
       }
     } catch (_) {
       // Always guarantee local cleanup on exceptions
+      await _deliveryRealtimeService?.disconnect();
       await _tokenService.clearSession();
       if (!isClosed) {
         emit(

@@ -97,6 +97,8 @@ class CustomerDeliveryItemEntity {
     this.etaMinutes,
     this.etaSource,
     this.destinationAddress,
+    this.destinationLatitude,
+    this.destinationLongitude,
     this.deliveryDetailsUrl,
     this.detailsUrl,
     this.deliveryPhotoUrl,
@@ -125,6 +127,8 @@ class CustomerDeliveryItemEntity {
   final int? etaMinutes;
   final String? etaSource;
   final String? destinationAddress;
+  final double? destinationLatitude;
+  final double? destinationLongitude;
   final String? deliveryDetailsUrl;
   final String? detailsUrl;
   final String? deliveryPhotoUrl;
@@ -146,6 +150,17 @@ class CustomerDeliveryItemEntity {
       deliveryStatus == CustomerDeliveryStatus.returnedToKitchen;
 
   bool get canTrack => isOutForDelivery && isTrackable && !isTerminalStatus;
+
+  bool get shouldShowDeliveryCard =>
+      deliveryStatus == CustomerDeliveryStatus.preparing ||
+      deliveryStatus == CustomerDeliveryStatus.ready ||
+      deliveryStatus == CustomerDeliveryStatus.outForDelivery ||
+      deliveryStatus == CustomerDeliveryStatus.arrived ||
+      deliveryStatus == CustomerDeliveryStatus.delivered ||
+      hasReady ||
+      hasPickedUp ||
+      hasArrived ||
+      hasDelivered;
 
   DateTime? get actualDeliveryTimeUtc => deliveredAtUtc;
 

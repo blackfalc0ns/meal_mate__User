@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 
@@ -48,7 +49,9 @@ extension CustomerDeliveryItemDtoMapper on CustomerDeliveryItemDto {
       location: location?.toEntity(),
       etaMinutes: etaMinutes,
       etaSource: etaSource,
-      destinationAddress: destinationAddress,
+      destinationAddress: destinationAddress?.addressLine,
+      destinationLatitude: destinationAddress?.latitude,
+      destinationLongitude: destinationAddress?.longitude,
       deliveryDetailsUrl: deliveryDetailsUrl,
       detailsUrl: detailsUrl,
     );
@@ -63,9 +66,16 @@ extension CustomerDeliveryDriverDtoMapper on CustomerDeliveryDriverDto {
       nameEn: nameEn,
       name: name,
       maskedPhone: maskedPhone,
-      avatarUrl: avatarUrl,
+      avatarUrl: _resolveAvatarUrl(avatarUrl),
       rating: rating,
     );
+  }
+
+  static String? _resolveAvatarUrl(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+    if (raw.startsWith('/')) return '${NetworkConstants.baseUrl}$raw';
+    return '${NetworkConstants.baseUrl}/$raw';
   }
 }
 

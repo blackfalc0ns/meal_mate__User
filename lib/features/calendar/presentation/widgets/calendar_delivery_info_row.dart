@@ -24,7 +24,11 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
     final orderCode =
         (deliveryItem.orderCode != null && deliveryItem.orderCode!.isNotEmpty)
         ? deliveryItem.orderCode!
-        : 'MM-25090025';
+        : (deliveryItem.subscriptionDayId ?? '-');
+    final vehicleLabel = deliveryItem.vehicle?.displayLabel(locale.localeName);
+    final effectiveMethod = (vehicleLabel != null && vehicleLabel.isNotEmpty)
+        ? vehicleLabel
+        : locale.calendar_delivery_direct_delivery;
 
     final labelColor = isDarkVariant
         ? color.onPrimary.withValues(alpha: 0.75)
@@ -50,8 +54,8 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
                 children: [
                   Image.asset(
                     Assets.homeDeliveryBox,
-                    width: Spacing.iconSm,
-                    height: Spacing.iconSm,
+                    width: Spacing.iconMd,
+                    height: Spacing.iconMd,
                   ),
                   const SizedBox(width: Spacing.xs),
                   Expanded(
@@ -63,12 +67,13 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
                           locale.calendar_delivery_order_code_label,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: getRegularStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
+                            fontSize: FontSize.size10,
                             color: labelColor,
                           ),
                         ),
+                        const SizedBox(height: Spacing.xs),
                         Text(
                           orderCode,
                           maxLines: 1,
@@ -96,6 +101,7 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
+                  const SizedBox(width: Spacing.xs),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -105,14 +111,15 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
                           locale.calendar_delivery_method_label,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: getRegularStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size9,
+                            fontSize: FontSize.size10,
                             color: labelColor,
                           ),
                         ),
+                        const SizedBox(height: Spacing.xs),
                         Text(
-                          locale.calendar_delivery_direct_delivery,
+                          effectiveMethod,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
@@ -128,7 +135,7 @@ class CalendarDeliveryInfoRow extends StatelessWidget {
                   Icon(
                     Icons.local_shipping_outlined,
                     color: isDarkVariant ? color.onPrimary : color.primary,
-                    size: Spacing.iconSm,
+                    size: Spacing.iconMd,
                   ),
                 ],
               ),

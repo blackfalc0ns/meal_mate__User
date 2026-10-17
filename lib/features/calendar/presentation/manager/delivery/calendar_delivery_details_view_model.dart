@@ -20,7 +20,6 @@ class CalendarDeliveryDetailsViewModel
   final CustomerDeliveryRealtimeService? _realtimeService;
 
   StreamSubscription<String>? _realtimeSubscription;
-  Timer? _reconciliationTimer;
 
   void _listenToRealtimeDelivery() {
     unawaited(_realtimeService?.connect());
@@ -31,18 +30,6 @@ class CalendarDeliveryDetailsViewModel
         if (currentDayId.isNotEmpty) {
           unawaited(loadDetails(currentDayId));
         }
-      }
-    });
-  }
-
-  void _scheduleReconciliation(int seconds) {
-    _reconciliationTimer?.cancel();
-    if (isClosed || seconds <= 0) return;
-    _reconciliationTimer = Timer(Duration(seconds: seconds), () {
-      if (isClosed) return;
-      final currentDayId = state.subscriptionDayId;
-      if (currentDayId.isNotEmpty) {
-        unawaited(loadDetails(currentDayId));
       }
     });
   }
@@ -72,7 +59,11 @@ class CalendarDeliveryDetailsViewModel
             clearFailure: true,
           ),
         );
-        _scheduleReconciliation(result.data.refreshAfterSeconds ?? 30);
+        if (result.data.delivery?.isTerminalStatus == true) {
+          unawaited(_realtimeSubscription?.cancel());
+          _realtimeSubscription = null;
+          unawaited(_realtimeService?.disconnect());
+        }
       case ApiErrorResult():
         emit(
           state.copyWith(
@@ -85,8 +76,8 @@ class CalendarDeliveryDetailsViewModel
 
   @override
   Future<void> close() async {
-    _reconciliationTimer?.cancel();
     await _realtimeSubscription?.cancel();
+    _realtimeSubscription = null;
     return super.close();
   }
 }

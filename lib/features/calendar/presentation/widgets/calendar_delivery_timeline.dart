@@ -30,12 +30,12 @@ class CalendarDeliveryTimeline extends StatelessWidget {
     final preparedTime = _formatTime(
       deliveryItem.readyAtUtc,
       locale.localeName,
-      locale.localeName.startsWith('ar') ? '10:15 ص' : '10:15 AM',
+      '',
     );
     final outTime = _formatTime(
       deliveryItem.pickedUpAtUtc,
       locale.localeName,
-      locale.localeName.startsWith('ar') ? '10:40 ص' : '10:40 AM',
+      '',
     );
 
     final lineColor = color.onPrimary.withValues(alpha: 0.6);
@@ -97,18 +97,20 @@ class CalendarDeliveryTimeline extends StatelessWidget {
                   color: color.onPrimary,
                 ),
               ),
-              const SizedBox(height: Spacing.xs),
-              Text(
-                preparedTime,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getMediumStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size9,
-                  color: color.onPrimary.withValues(alpha: 0.75),
+              if (preparedTime.isNotEmpty) ...[
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  preparedTime,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getMediumStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size9,
+                    color: color.onPrimary.withValues(alpha: 0.75),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
@@ -166,18 +168,20 @@ class CalendarDeliveryTimeline extends StatelessWidget {
                   color: color.onPrimary,
                 ),
               ),
-              const SizedBox(height: Spacing.xxs),
-              Text(
-                outTime,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getRegularStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size8,
-                  color: color.onPrimary.withValues(alpha: 0.75),
+              if (outTime.isNotEmpty) ...[
+                const SizedBox(height: Spacing.xxs),
+                Text(
+                  outTime,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size8,
+                    color: color.onPrimary.withValues(alpha: 0.75),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),

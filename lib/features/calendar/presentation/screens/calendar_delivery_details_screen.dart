@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -85,7 +84,6 @@ class _CalendarDeliveryDetailsScreenState
               return Scaffold(
                 appBar: CustomAppBar(
                   title: appBarTitle,
-
                   titleFontSize: FontSize.size16,
                 ),
                 body: Builder(

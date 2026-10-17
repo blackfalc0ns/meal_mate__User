@@ -10,6 +10,8 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_navigation_coordinator.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen_body.dart';
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_screen_effects.dart';
+import 'package:meal_meat_user/features/home/presentation/cubit/home_cubit.dart';
+import 'package:meal_meat_user/features/home/presentation/cubit/home_state.dart';
 import 'package:meal_meat_user/features/notifications/presentation/manager/notification_badge_view_model.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -54,6 +56,7 @@ class _CalendarScreenState extends State<CalendarScreen>
   late final CalendarFlowViewModel _flowViewModel;
   late final CalendarNavigationCoordinator _coordinator;
 
+  StreamSubscription<HomeState>? _homeSubscription;
   bool _didLoad = false;
 
   @override
@@ -91,12 +94,28 @@ class _CalendarScreenState extends State<CalendarScreen>
     super.didChangeDependencies();
     if (_didLoad) return;
     _didLoad = true;
+    _listenToTabChanges();
     unawaited(
       _overviewViewModel.loadCalendar(
         subscriptionId: widget.subscriptionId,
         localeName: context.localization.localeName,
       ),
     );
+  }
+
+  void _listenToTabChanges() {
+    try {
+      final homeCubit = context.read<HomeCubit>();
+      unawaited(_homeSubscription?.cancel());
+      _homeSubscription = homeCubit.stream.listen((homeState) {
+        if (!mounted) return;
+        if (homeState.selectedTabIndex == 1) {
+          _overviewViewModel.resumeDeliveryRealtime();
+        } else {
+          _overviewViewModel.pauseDeliveryRealtime();
+        }
+      });
+    } catch (_) {}
   }
 
   @override
@@ -119,6 +138,7 @@ class _CalendarScreenState extends State<CalendarScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    unawaited(_homeSubscription?.cancel());
     unawaited(_flowViewModel.close());
     unawaited(_mealSelectionViewModel.close());
     unawaited(_restaurantPickerViewModel.close());

@@ -232,6 +232,9 @@ Future<void> configureDependencies() async {
         getIt<LogoutUseCase>(),
         getIt<TokenService>(),
         getIt<BiometricService>(),
+        getIt.isRegistered<CustomerDeliveryRealtimeService>()
+            ? getIt<CustomerDeliveryRealtimeService>()
+            : null,
       ),
     );
   }

@@ -42,7 +42,15 @@ class CalendarOverviewState {
       deliveryWidget?.items.firstOrNull;
 
   List<CustomerDeliveryItemEntity> get deliveryItems =>
-      deliveryWidget?.items ?? const [];
+      deliveryWidget?.items
+          .where((item) {
+            final dayId = selectedDay?.id;
+            return dayId == null ||
+                dayId.isEmpty ||
+                item.subscriptionDayId == dayId;
+          })
+          .toList(growable: false) ??
+      const [];
 
   bool get hasDeliveryWidget =>
       deliveryWidget != null && deliveryWidget!.isNotEmpty;

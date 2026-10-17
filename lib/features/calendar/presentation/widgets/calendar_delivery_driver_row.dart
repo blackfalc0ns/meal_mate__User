@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/customer_delivery_entity.dart';
 
@@ -21,10 +20,9 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
     final effectiveDriverName = (driverName != null && driverName.isNotEmpty)
         ? driverName
         : locale.calendar_delivery_default_driver_name;
-    final rating = (driver?.rating != null && driver!.rating! > 0)
-        ? driver.rating!.toStringAsFixed(1)
-        : '4.9';
-    final etaMinutes = deliveryItem.etaMinutes ?? 18;
+    final hasRating = driver?.rating != null && driver!.rating! > 0;
+    final etaMinutes = deliveryItem.etaMinutes;
+    final hasEta = etaMinutes != null && etaMinutes > 0;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,22 +39,25 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
                   color: color.onPrimary.withValues(alpha: 0.8),
                   width: Spacing.border,
                 ),
-                color: color.surfaceContainerHighest,
+                color: color.onPrimary.withValues(alpha: 0.15),
               ),
               clipBehavior: Clip.antiAlias,
+              alignment: Alignment.center,
               child:
                   (driver?.avatarUrl != null && driver!.avatarUrl!.isNotEmpty)
                   ? Image.network(
                       driver.avatarUrl!,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Image.asset(
-                        AssetsFake.callingDriverAvatar,
-                        fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Icon(
+                        Icons.person_rounded,
+                        color: color.onPrimary,
+                        size: Spacing.iconSm,
                       ),
                     )
-                  : Image.asset(
-                      AssetsFake.callingDriverAvatar,
-                      fit: BoxFit.cover,
+                  : Icon(
+                      Icons.person_rounded,
+                      color: color.onPrimary,
+                      size: Spacing.iconSm,
                     ),
             ),
             const SizedBox(width: Spacing.xs),
@@ -66,9 +67,9 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
               children: [
                 Text(
                   locale.calendar_delivery_driver_role,
-                  style: getRegularStyle(
+                  style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
+                    fontSize: FontSize.size10,
                     color: color.onPrimary.withValues(alpha: 0.75),
                   ),
                 ),
@@ -82,65 +83,69 @@ class CalendarDeliveryDriverRow extends StatelessWidget {
                     color: color.onPrimary,
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.star_rounded,
-                      size: Spacing.iconXs,
+                if (hasRating)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.star_rounded,
+                        size: Spacing.iconXs,
+                        color: color.secondary,
+                      ),
+                      const SizedBox(width: Spacing.xxs),
+                      Text(
+                        driver.rating!.toStringAsFixed(1),
+                        style: getSemiBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size10,
+                          color: color.onPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ],
+        ),
+        if (hasEta)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                locale.calendar_delivery_arrives_in_prefix,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size10,
+                  color: color.onPrimary.withValues(alpha: 0.8),
+                ),
+              ),
+              const SizedBox(height: Spacing.xxs),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.access_time_filled_rounded,
+                    color: color.secondary,
+                    size: Spacing.iconSm,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.calendar_delivery_minutes_suffix(
+                      etaMinutes.toString(),
+                    ),
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size15,
                       color: color.secondary,
                     ),
-                    const SizedBox(width: Spacing.xxs),
-                    Text(
-                      rating,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.onPrimary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              locale.calendar_delivery_arrives_in_prefix,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size10,
-                color: color.onPrimary.withValues(alpha: 0.8),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: Spacing.xxs),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.access_time_filled_rounded,
-                  color: color.secondary,
-                  size: Spacing.iconSm,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  locale.calendar_delivery_minutes_suffix(
-                    etaMinutes.toString(),
-                  ),
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size15,
-                    color: color.secondary,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          )
+        else
+          const SizedBox.shrink(),
       ],
     );
   }

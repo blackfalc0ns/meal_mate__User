@@ -61,25 +61,26 @@ class CalendarDeliveryDeliveredHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Spacing.xxs),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.access_time_rounded,
-                    color: color.onSurfaceVariant,
-                    size: Spacing.iconXs,
-                  ),
-                  const SizedBox(width: Spacing.xxs),
-                  Text(
-                    locale.calendar_delivery_delivered_today_format(deliveredTime),
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
+              if (deliveredTime.isNotEmpty)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
                       color: color.onSurfaceVariant,
+                      size: Spacing.iconXs,
                     ),
-                  ),
-                ],
-              ),
+                    const SizedBox(width: Spacing.xxs),
+                    Text(
+                      locale.calendar_delivery_delivered_today_format(deliveredTime),
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -91,12 +92,12 @@ class CalendarDeliveryDeliveredHeader extends StatelessWidget {
 
   String _formatDeliveredTime(DateTime? date, String localeCode) {
     if (date == null) {
-      return localeCode.startsWith('ar') ? '10:40 ص' : '10:40 AM';
+      return '';
     }
     try {
       return DateFormat('h:mm a', localeCode).format(date.toLocal());
     } catch (_) {
-      return localeCode.startsWith('ar') ? '10:40 ص' : '10:40 AM';
+      return '';
     }
   }
 }

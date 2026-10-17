@@ -13,8 +13,7 @@ class CustomerDeliveryWidgetResponseDto {
 
   factory CustomerDeliveryWidgetResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$CustomerDeliveryWidgetResponseDtoFromJson(json);
+  ) => _$CustomerDeliveryWidgetResponseDtoFromJson(json);
 
   final String? serviceDate;
   final DateTime? serverTimeUtc;
@@ -36,8 +35,7 @@ class CustomerDeliveryDetailsResponseDto {
 
   factory CustomerDeliveryDetailsResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$CustomerDeliveryDetailsResponseDtoFromJson(json);
+  ) => _$CustomerDeliveryDetailsResponseDtoFromJson(json);
 
   final String? serviceDate;
   final DateTime? serverTimeUtc;
@@ -46,6 +44,50 @@ class CustomerDeliveryDetailsResponseDto {
 
   Map<String, dynamic> toJson() =>
       _$CustomerDeliveryDetailsResponseDtoToJson(this);
+}
+
+String? _stringFromDynamic(dynamic value) => value?.toString();
+
+CustomerDeliveryDestinationAddressDto? _destinationAddressFromJson(
+  dynamic value,
+) {
+  if (value == null) return null;
+  if (value is String) {
+    return CustomerDeliveryDestinationAddressDto(addressLine: value);
+  }
+  if (value is Map<String, dynamic>) {
+    return CustomerDeliveryDestinationAddressDto.fromJson(value);
+  }
+  if (value is Map) {
+    return CustomerDeliveryDestinationAddressDto.fromJson(
+      Map<String, dynamic>.from(value),
+    );
+  }
+  return CustomerDeliveryDestinationAddressDto(addressLine: value.toString());
+}
+
+dynamic _destinationAddressToJson(
+  CustomerDeliveryDestinationAddressDto? instance,
+) => instance?.toJson();
+
+@JsonSerializable()
+class CustomerDeliveryDestinationAddressDto {
+  const CustomerDeliveryDestinationAddressDto({
+    this.addressLine,
+    this.latitude,
+    this.longitude,
+  });
+
+  factory CustomerDeliveryDestinationAddressDto.fromJson(
+    Map<String, dynamic> json,
+  ) => _$CustomerDeliveryDestinationAddressDtoFromJson(json);
+
+  final String? addressLine;
+  final double? latitude;
+  final double? longitude;
+
+  Map<String, dynamic> toJson() =>
+      _$CustomerDeliveryDestinationAddressDtoToJson(this);
 }
 
 @JsonSerializable()
@@ -84,6 +126,7 @@ class CustomerDeliveryItemDto {
   final String? subscriptionDayId;
   final String? orderId;
   final String? tripStopId;
+  @JsonKey(fromJson: _stringFromDynamic)
   final String? orderCode;
   final String? deliveryStatus;
   final String? deliveryStatusTextAr;
@@ -101,7 +144,11 @@ class CustomerDeliveryItemDto {
   final CustomerDeliveryLocationDto? location;
   final int? etaMinutes;
   final String? etaSource;
-  final String? destinationAddress;
+  @JsonKey(
+    fromJson: _destinationAddressFromJson,
+    toJson: _destinationAddressToJson,
+  )
+  final CustomerDeliveryDestinationAddressDto? destinationAddress;
   final String? deliveryDetailsUrl;
   final String? detailsUrl;
 
@@ -123,10 +170,12 @@ class CustomerDeliveryDriverDto {
   factory CustomerDeliveryDriverDto.fromJson(Map<String, dynamic> json) =>
       _$CustomerDeliveryDriverDtoFromJson(json);
 
+  @JsonKey(fromJson: _stringFromDynamic)
   final String? id;
   final String? nameAr;
   final String? nameEn;
   final String? name;
+  @JsonKey(fromJson: _stringFromDynamic)
   final String? maskedPhone;
   final String? avatarUrl;
   final double? rating;
@@ -151,6 +200,7 @@ class CustomerDeliveryVehicleDto {
   final String? typeLabelAr;
   final String? typeLabelEn;
   final String? typeLabel;
+  @JsonKey(fromJson: _stringFromDynamic)
   final String? plateNumber;
 
   Map<String, dynamic> toJson() => _$CustomerDeliveryVehicleDtoToJson(this);
