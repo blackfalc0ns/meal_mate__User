@@ -7563,4 +7563,18 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get package_unavailable_badge => 'Unavailable';
+
+  @override
+  String get family_browse_restaurants_empty =>
+      'No restaurants available for this package at the moment';
+
+  @override
+  String get family_address_required_error =>
+      'Delivery address is required for this member to view available restaurants';
+
+  @override
+  String get family_go_to_addresses => 'Set Delivery Address';
 }

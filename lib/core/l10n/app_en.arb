@@ -2944,5 +2944,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "package_unavailable_badge": "Unavailable",
+  "family_browse_restaurants_empty": "No restaurants available for this package at the moment",
+  "family_address_required_error": "Delivery address is required for this member to view available restaurants",
+  "family_go_to_addresses": "Set Delivery Address"
 }

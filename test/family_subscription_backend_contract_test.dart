@@ -6,6 +6,8 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_lookup_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_response_dto.dart';
 import 'package:meal_meat_user/features/family_package_days/data/models/request/family_member_plan_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
+import 'package:meal_meat_user/features/family_programs/data/mapper/subscription_bundle_mapper.dart';
 
 void main() {
   group('family subscription backend contract', () {
@@ -201,5 +203,111 @@ void main() {
       });
       expect(dto.setupStatus, entry.value);
     }
+  });
+
+  test('parses family program bundle with availability and badge correctly', () {
+    final availableJson = {
+      'bundleId': 'ae827912-199d-49e8-b1fc-3390fc96b2e6',
+      'programId': 'dd12dfbc-3987-4e38-83af-664b6963c04c',
+      'code': 'PKG-BL1S',
+      'nameAr': 'ريوق + غداء + سناك',
+      'description': 'ريوق + غداء + سناك',
+      'imageUrl': null,
+      'mealsPerDay': 3,
+      'breakfastCount': 1,
+      'lunchCount': 1,
+      'dinnerCount': 0,
+      'snackCount': 1,
+      'slotRequirements': [
+        {'slot': 'breakfast', 'count': 1},
+        {'slot': 'lunch', 'count': 1},
+        {'slot': 'snack', 'count': 1},
+      ],
+      'sortOrder': 1,
+      'descriptionAr': 'ريوق + غداء + سناك',
+      'slots': [
+        {'code': 'breakfast', 'nameAr': 'الإفطار', 'quantity': 1, 'name': 'الإفطار'},
+        {'code': 'lunch', 'nameAr': 'الغداء', 'quantity': 1, 'name': 'الغداء'},
+        {'code': 'snack', 'nameAr': 'سناك', 'quantity': 1, 'name': 'سناك'},
+      ],
+      'restaurantCount': 4,
+      'restaurants': [
+        {
+          'restaurantId': 'f8575d1f-943e-455b-bd45-12b5af4eb097',
+          'logoUrl': 'https://ik.imagekit.io/f7h9cj23x/catalog/restaurants/logo-diet-care.png',
+        },
+      ],
+      'selectionCount': 53,
+      'isMostSelected': true,
+      'badge': {
+        'code': 'MOST_SELECTED',
+        'nameAr': 'الأكثر اختيارًا',
+        'name': 'الأكثر اختيارًا',
+      },
+      'availability': {
+        'scope': 'coverage',
+        'status': 'selection_required',
+        'canSelect': true,
+        'coveredRestaurantCount': 4,
+        'eligibleRestaurantCount': null,
+        'messageCode': null,
+      },
+      'name': 'ريوق + غداء + سناك',
+    };
+
+    final unavailableJson = {
+      'bundleId': 'f3c1c948-d6eb-470c-93eb-42b71113c64f',
+      'programId': 'dd12dfbc-3987-4e38-83af-664b6963c04c',
+      'code': 'PKG-LD2S',
+      'nameAr': 'غداء + عشاء + ٢ سناك',
+      'description': 'غداء + عشاء + ٢ سناك',
+      'imageUrl': null,
+      'mealsPerDay': 4,
+      'breakfastCount': 0,
+      'lunchCount': 1,
+      'dinnerCount': 1,
+      'snackCount': 2,
+      'slotRequirements': [
+        {'slot': 'lunch', 'count': 1},
+        {'slot': 'dinner', 'count': 1},
+        {'slot': 'snack', 'count': 2},
+      ],
+      'sortOrder': 2,
+      'descriptionAr': 'غداء + عشاء + ٢ سناك',
+      'slots': [
+        {'code': 'lunch', 'nameAr': 'الغداء', 'quantity': 1, 'name': 'الغداء'},
+        {'code': 'dinner', 'nameAr': 'العشاء', 'quantity': 1, 'name': 'العشاء'},
+        {'code': 'snack', 'nameAr': 'سناك', 'quantity': 2, 'name': 'سناك'},
+      ],
+      'restaurantCount': 0,
+      'restaurants': <Map<String, dynamic>>[],
+      'selectionCount': 0,
+      'isMostSelected': false,
+      'badge': null,
+      'availability': {
+        'scope': 'coverage',
+        'status': 'no_restaurants_for_selection',
+        'canSelect': false,
+        'coveredRestaurantCount': 4,
+        'eligibleRestaurantCount': null,
+        'messageCode': 'subscription_flow.no_prepared_restaurants',
+      },
+      'name': 'غداء + عشاء + ٢ سناك',
+    };
+
+    final availableDto = FamilyBundleResponseDto.fromJson(availableJson);
+    final availableEntity = availableDto.toEntity();
+    expect(availableEntity.canSelect, isTrue);
+    expect(availableEntity.badge?.name('ar'), 'الأكثر اختيارًا');
+    expect(availableEntity.badge?.name('en'), 'الأكثر اختيارًا');
+    expect(availableEntity.restaurantCount, 4);
+
+    final unavailableDto = FamilyBundleResponseDto.fromJson(unavailableJson);
+    final unavailableEntity = unavailableDto.toEntity();
+    expect(unavailableEntity.canSelect, isFalse);
+    expect(
+      unavailableEntity.disabledReason,
+      'subscription_flow.no_prepared_restaurants',
+    );
   });
 }

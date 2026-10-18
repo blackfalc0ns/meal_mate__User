@@ -12,6 +12,7 @@ class FamilyAddressesState {
     this.failure,
     this.completed = false,
     this.addressSaveRevision = 0,
+    this.isApplyingManagerAddress = false,
   });
 
   final String? familyName;
@@ -23,6 +24,7 @@ class FamilyAddressesState {
   final Failure? failure;
   final bool completed;
   final int addressSaveRevision;
+  final bool isApplyingManagerAddress;
 
   FamilyMemberEntity? get currentMember =>
       members.isEmpty || currentIndex < 0 || currentIndex >= members.length
@@ -74,6 +76,7 @@ class FamilyAddressesState {
     bool clearFailure = false,
     bool? completed,
     int? addressSaveRevision,
+    bool? isApplyingManagerAddress,
   }) => FamilyAddressesState(
     familyName: familyName ?? this.familyName,
     isLoading: isLoading ?? this.isLoading,
@@ -84,5 +87,7 @@ class FamilyAddressesState {
     failure: clearFailure ? null : (failure ?? this.failure),
     completed: completed ?? this.completed,
     addressSaveRevision: addressSaveRevision ?? this.addressSaveRevision,
+    isApplyingManagerAddress:
+        isApplyingManagerAddress ?? this.isApplyingManagerAddress,
   );
 }

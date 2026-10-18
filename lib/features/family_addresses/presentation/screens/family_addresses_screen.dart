@@ -7,9 +7,11 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/widgets/family_addresses_body.dart';
@@ -36,10 +38,20 @@ class FamilyAddressesScreen extends StatelessWidget {
                 current.familyName != null) ||
             (current.completed &&
                 (previous.addressSaveRevision != current.addressSaveRevision ||
-                    !previous.completed)),
+                    !previous.completed)) ||
+            (previous.failure != current.failure && current.failure != null),
         listener: (context, state) {
           if (isInFamilyFlow && state.familyName != null) {
             FamilyFlowScope.updateFamilyName(context, state.familyName);
+          }
+          if (state.failure != null && state.members.isNotEmpty) {
+            CustomSnackbar.showError(
+              context: context,
+              message: ErrorMessagePresenter.fromFailure(
+                context,
+                state.failure!,
+              ),
+            );
           }
           if (state.completed) {
             unawaited(context.pushNamed(AppRoutes.familyAllergies));

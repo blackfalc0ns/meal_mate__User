@@ -46,6 +46,8 @@ class FamilyPackageDaysPackageSection extends StatelessWidget {
             title: bundle.name(locale.localeName),
             description: bundle.description(locale.localeName),
             imageUrl: bundle.imageUrl,
+            canSelect: bundle.canSelect,
+            disabledReason: bundle.disabledReason,
           ),
         )
         .toList();
@@ -60,6 +62,8 @@ class FamilyPackageDaysPackageSection extends StatelessWidget {
         isSelected:
             state.selectedBundleIndex != null &&
             index == state.selectedBundleIndex,
+        canSelect: displayedPackages[index].canSelect,
+        disabledReason: displayedPackages[index].disabledReason,
       ),
     );
 

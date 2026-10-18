@@ -7444,4 +7444,18 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get package_unavailable_badge => 'غير متوفر';
+
+  @override
+  String get family_browse_restaurants_empty =>
+      'لا توجد مطاعم متاحة لهذه الباقة حالياً';
+
+  @override
+  String get family_address_required_error =>
+      'عنوان التوصيل مطلوب لهذا الفرد لعرض المطاعم المتاحة';
+
+  @override
+  String get family_go_to_addresses => 'تحديد عنوان التوصيل';
 }

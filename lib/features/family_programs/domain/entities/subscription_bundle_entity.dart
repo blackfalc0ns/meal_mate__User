@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_availability_entity.dart';
+
 class SubscriptionBundleEntity {
   const SubscriptionBundleEntity({
     required this.bundleId,
@@ -19,6 +21,7 @@ class SubscriptionBundleEntity {
     required this.selectionCount,
     required this.isMostSelected,
     required this.badge,
+    this.availability,
   });
 
   final String bundleId;
@@ -40,6 +43,17 @@ class SubscriptionBundleEntity {
   final int selectionCount;
   final bool isMostSelected;
   final SubscriptionBundleBadgeEntity? badge;
+  final SubscriptionAvailabilityEntity? availability;
+
+  bool get canSelect =>
+      availability?.effectiveCanSelect ?? (availability?.canSelect ?? true);
+
+  String? get disabledReason =>
+      availability?.messageCode.isNotEmpty == true
+          ? availability!.messageCode
+          : (availability?.failureReasons.isNotEmpty == true
+              ? availability!.failureReasons.first
+              : null);
 
   String name(String localeName) => localeName == 'ar' ? nameAr : nameEn;
 

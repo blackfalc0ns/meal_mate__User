@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_availability_response_dto.dart';
 
 part 'subscription_bundle_response_dto.g.dart';
 
@@ -28,6 +29,7 @@ class FamilyBundleResponseDto {
     this.selectionCount,
     this.isMostSelected,
     this.badge,
+    this.availability,
   });
 
   final String? bundleId;
@@ -53,6 +55,7 @@ class FamilyBundleResponseDto {
   final int? selectionCount;
   final bool? isMostSelected;
   final FamilyBundleBadgeResponseDto? badge;
+  final SubscriptionAvailabilityResponseDto? availability;
 
   factory FamilyBundleResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyBundleResponseDtoFromJson(json);
@@ -124,11 +127,17 @@ class FamilyBundleRestaurantResponseDto {
 
 @JsonSerializable(createToJson: false)
 class FamilyBundleBadgeResponseDto {
-  const FamilyBundleBadgeResponseDto({this.code, this.nameAr, this.nameEn});
+  const FamilyBundleBadgeResponseDto({
+    this.code,
+    this.nameAr,
+    this.nameEn,
+    this.name,
+  });
 
   final String? code;
   final String? nameAr;
   final String? nameEn;
+  final String? name;
 
   factory FamilyBundleBadgeResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyBundleBadgeResponseDtoFromJson(json);

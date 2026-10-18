@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/features/family_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/family_programs/domain/entities/subscription_bundle_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_availability_mapper.dart';
 
 extension FamilyBundleResponseDtoMapper on FamilyBundleResponseDto {
   SubscriptionBundleEntity toEntity() {
@@ -25,6 +26,7 @@ extension FamilyBundleResponseDtoMapper on FamilyBundleResponseDto {
       selectionCount: selectionCount ?? 0,
       isMostSelected: isMostSelected ?? false,
       badge: badge?.toEntity(),
+      availability: availability?.toEntity(),
     );
   }
 }
@@ -67,8 +69,8 @@ extension FamilyBundleBadgeResponseDtoMapper on FamilyBundleBadgeResponseDto {
   SubscriptionBundleBadgeEntity toEntity() {
     return SubscriptionBundleBadgeEntity(
       code: code ?? '',
-      nameAr: nameAr ?? '',
-      nameEn: nameEn ?? '',
+      nameAr: nameAr ?? name ?? '',
+      nameEn: nameEn ?? name ?? '',
     );
   }
 }

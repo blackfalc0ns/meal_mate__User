@@ -109,6 +109,8 @@ class FamilyPackageOptionUiModel {
     this.imageUrl,
     this.imageAsset = '',
     this.isSelected = false,
+    this.canSelect = true,
+    this.disabledReason,
   });
 
   final String title;
@@ -117,6 +119,8 @@ class FamilyPackageOptionUiModel {
   final String? imageUrl;
   final String imageAsset;
   final bool isSelected;
+  final bool canSelect;
+  final String? disabledReason;
 }
 
 class FamilyDayOptionUiModel {

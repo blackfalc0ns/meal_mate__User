@@ -13771,6 +13771,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 restaurant} other{{count} restaurants}}'**
   String family_member_restaurants_count(int count);
+
+  /// No description provided for @package_unavailable_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get package_unavailable_badge;
+
+  /// No description provided for @family_browse_restaurants_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants available for this package at the moment'**
+  String get family_browse_restaurants_empty;
+
+  /// No description provided for @family_address_required_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address is required for this member to view available restaurants'**
+  String get family_address_required_error;
+
+  /// No description provided for @family_go_to_addresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Delivery Address'**
+  String get family_go_to_addresses;
 }
 
 class _AppLocalizationsDelegate

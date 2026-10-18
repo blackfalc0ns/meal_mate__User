@@ -5,6 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_event.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
@@ -16,15 +18,22 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
   FamilyAddressesViewModel(
     this._getFlow, [
     FamilyFlowSnapshotStore? snapshotStore,
+    AddFamilyMemberAddressUseCase? addFamilyMemberAddressUseCase,
   ]) : _snapshotStore =
            snapshotStore ??
            (getIt.isRegistered<FamilyFlowSnapshotStore>()
                ? getIt<FamilyFlowSnapshotStore>()
                : FamilyFlowSnapshotStore()),
+       _addFamilyMemberAddress =
+           addFamilyMemberAddressUseCase ??
+           (getIt.isRegistered<AddFamilyMemberAddressUseCase>()
+               ? getIt<AddFamilyMemberAddressUseCase>()
+               : null),
        super(const FamilyAddressesState());
 
   final GetFamilyFlowCurrentUseCase _getFlow;
   final FamilyFlowSnapshotStore _snapshotStore;
+  final AddFamilyMemberAddressUseCase? _addFamilyMemberAddress;
   int _activeLoadId = 0;
 
   void doIntent(FamilyAddressesEvent event) {
@@ -41,7 +50,7 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
       case ProceedToNextAddressStepEvent():
         proceedToNextStep();
       case ToggleApplyManagerAddressEvent():
-        toggleApplyManagerAddress();
+        unawaited(toggleApplyManagerAddress());
     }
   }
 
@@ -152,8 +161,10 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     );
   }
 
-  void toggleApplyManagerAddress() {
+  Future<void> toggleApplyManagerAddress() async {
     if (state.members.isEmpty) return;
+    if (state.isApplyingManagerAddress) return;
+
     final manager = state.manager;
     final managerAddress = manager?.deliveryAddress;
     final managerAddressId =
@@ -183,6 +194,8 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
           completed: false,
           addressSaveRevision: state.addressSaveRevision + 1,
           clearError: true,
+          clearFailure: true,
+          isApplyingManagerAddress: false,
         ),
       );
     } else {
@@ -191,19 +204,69 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         return;
       }
       final addressId = managerAddressId ?? managerAddress?.addressId ?? '';
+      final addUseCase = _addFamilyMemberAddress;
 
-      final updatedMembers = state.members.map((m) {
-        if (managerAddress != null) {
+      emit(
+        state.copyWith(
+          isApplyingManagerAddress: true,
+          clearError: true,
+          clearFailure: true,
+        ),
+      );
+
+      final updatedMembers = <FamilyMemberEntity>[];
+      Failure? failure;
+
+      for (final m in state.members) {
+        if (m.isManager) {
+          updatedMembers.add(m);
+          continue;
+        }
+
+        CustomerAddressEntity? targetAddress = managerAddress;
+        String finalAddressId = addressId;
+
+        if (addUseCase != null && managerAddress != null) {
+          final request = managerAddress.toRequest(isDefault: true);
+          final result = await addUseCase(m.memberId, request);
+          switch (result) {
+            case ApiSuccessResult():
+              targetAddress = result.data;
+              finalAddressId = result.data.addressId;
+            case ApiErrorResult():
+              failure = result.failure;
+          }
+        }
+
+        if (failure != null) {
+          break;
+        }
+
+        if (targetAddress != null) {
           _snapshotStore.updateMemberDeliveryAddress(
             m.memberId,
-            managerAddress,
+            targetAddress,
           );
         }
-        return m.copyWith(
-          deliveryAddressId: addressId,
-          deliveryAddress: managerAddress,
+
+        updatedMembers.add(
+          m.copyWith(
+            deliveryAddressId: finalAddressId,
+            deliveryAddress: targetAddress,
+          ),
         );
-      }).toList();
+      }
+
+      if (failure != null) {
+        emit(
+          state.copyWith(
+            isApplyingManagerAddress: false,
+            failure: failure,
+            errorMessage: failure.errorMessage,
+          ),
+        );
+        return;
+      }
 
       final allMemberIds = updatedMembers.map((m) => m.memberId).toSet();
       emit(
@@ -211,8 +274,10 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
           members: updatedMembers,
           completedMemberIds: allMemberIds,
           completed: true,
+          isApplyingManagerAddress: false,
           addressSaveRevision: state.addressSaveRevision + 1,
           clearError: true,
+          clearFailure: true,
         ),
       );
     }

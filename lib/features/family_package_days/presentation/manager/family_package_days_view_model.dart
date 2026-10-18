@@ -225,7 +225,9 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
       int? bundleIdx;
       final targetBundleId = member?.bundleId ?? state.selectedBundle?.bundleId;
       if (targetBundleId != null && targetBundleId.isNotEmpty) {
-        final found = cached.indexWhere((b) => b.bundleId == targetBundleId);
+        final found = cached.indexWhere(
+          (b) => b.bundleId == targetBundleId && b.canSelect,
+        );
         if (found != -1) bundleIdx = found;
       }
       _emit(
@@ -265,7 +267,9 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         final targetBundleId =
             member?.bundleId ?? state.selectedBundle?.bundleId;
         if (targetBundleId != null && targetBundleId.isNotEmpty) {
-          final found = bundles.indexWhere((b) => b.bundleId == targetBundleId);
+          final found = bundles.indexWhere(
+            (b) => b.bundleId == targetBundleId && b.canSelect,
+          );
           if (found != -1) bundleIdx = found;
         }
         _emit(
@@ -635,7 +639,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   void _selectBundle(int index) {
     if (state.isSelectedManagerPlanLocked) return;
     final bundle = state.bundles.length > index ? state.bundles[index] : null;
-    if (bundle == null) return;
+    if (bundle == null || !bundle.canSelect) return;
     final updatedFlow = _updateLocalMemberInCurrentFlow(
       bundleId: bundle.bundleId,
     );
@@ -858,7 +862,8 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         if (b.bundleId == member!.bundleId) bundle = b;
       }
     }
-    bundle ??= state.bundles.isNotEmpty ? state.bundles.first : null;
+    bundle ??= state.bundles.where((b) => b.canSelect).firstOrNull ??
+        (state.bundles.isNotEmpty ? state.bundles.first : null);
     if (programId.isEmpty || bundle == null || member == null) return;
     _emit(
       state.copyWith(

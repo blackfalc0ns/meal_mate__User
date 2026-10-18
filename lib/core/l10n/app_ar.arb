@@ -2895,5 +2895,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "package_unavailable_badge": "غير متوفر",
+  "family_browse_restaurants_empty": "لا توجد مطاعم متاحة لهذه الباقة حالياً",
+  "family_address_required_error": "عنوان التوصيل مطلوب لهذا الفرد لعرض المطاعم المتاحة",
+  "family_go_to_addresses": "تحديد عنوان التوصيل"
 }

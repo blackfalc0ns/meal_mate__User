@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/address/domain/entities/customer_address_entity.dart';
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/repo/family_addresses_repository.dart';
+import 'package:meal_meat_user/features/family_addresses/domain/usecase/family_addresses_usecases.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_event.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
@@ -565,6 +569,216 @@ void main() {
       await viewModel.close();
     },
   );
+
+  test('CustomerAddressEntity.toRequest maps all fields faithfully', () {
+    const entity = CustomerAddressEntity(
+      addressId: 'a1',
+      label: 'Home',
+      addressLine: 'Block 2, Street 5',
+      regionId: 'reg-1',
+      governorate: 'Capital',
+      area: 'Shuwaikh',
+      block: '2',
+      blockRegionId: 'br-1',
+      street: '5',
+      avenue: '1',
+      building: '10',
+      unit: '3B',
+      floor: '3',
+      latitude: 29.35,
+      longitude: 47.95,
+      notes: 'Ring bell',
+      isDefault: true,
+      notifyOnDelivery: true,
+    );
+
+    final req = entity.toRequest(isDefault: true);
+    expect(req.label, 'Home');
+    expect(req.addressLine, 'Block 2, Street 5');
+    expect(req.regionId, 'reg-1');
+    expect(req.governorate, 'Capital');
+    expect(req.area, 'Shuwaikh');
+    expect(req.block, '2');
+    expect(req.street, '5');
+    expect(req.building, '10');
+    expect(req.unit, '3B');
+    expect(req.floor, '3');
+    expect(req.latitude, 29.35);
+    expect(req.longitude, 47.95);
+    expect(req.notes, 'Ring bell');
+    expect(req.isDefault, isTrue);
+    expect(req.notifyOnDelivery, isTrue);
+  });
+
+  test(
+    'toggleApplyManagerAddress calls AddFamilyMemberAddressUseCase and persists address to server',
+    () async {
+      const mgrAddress = CustomerAddressEntity(
+        addressId: 'addr-mgr',
+        label: 'Home',
+        addressLine: 'Street 1',
+        latitude: 29.3,
+        longitude: 47.9,
+        isDefault: true,
+        notifyOnDelivery: false,
+      );
+      const manager = FamilyMemberEntity(
+        memberId: 'mgr',
+        role: 1,
+        displayName: 'Manager',
+        relationshipCode: 'SELF',
+        gender: 1,
+        ageYears: 35,
+        deliveryAddressId: 'addr-mgr',
+        deliveryAddress: mgrAddress,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: true,
+      );
+      const child = FamilyMemberEntity(
+        memberId: 'child-1',
+        role: 2,
+        displayName: 'Child',
+        relationshipCode: 'CHILD',
+        gender: 1,
+        ageYears: 10,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: false,
+      );
+
+      final snapshotStore = FamilyFlowSnapshotStore();
+      final mockRepo = _MockFamilyAddressesRepository();
+      final addUseCase = AddFamilyMemberAddressUseCase(mockRepo);
+
+      final viewModel = FamilyAddressesViewModel(
+        GetFamilyFlowCurrentUseCase(
+          _FamilyFlowRepository(
+            const FamilyFlowCurrentEntity(members: [manager, child]),
+          ),
+        ),
+        snapshotStore,
+        addUseCase,
+      );
+
+      await viewModel.load();
+      expect(viewModel.state.isManagerAddressAppliedToAll, isFalse);
+
+      await viewModel.toggleApplyManagerAddress();
+
+      expect(mockRepo.addCalls.length, 1);
+      expect(mockRepo.addCalls.first.memberId, 'child-1');
+      expect(mockRepo.addCalls.first.request.label, 'Home');
+      expect(viewModel.state.isManagerAddressAppliedToAll, isTrue);
+      expect(
+        viewModel.state.members[1].deliveryAddressId,
+        'new-server-addr-child-1',
+      );
+      expect(viewModel.state.completed, isTrue);
+      expect(viewModel.state.isApplyingManagerAddress, isFalse);
+
+      await viewModel.close();
+    },
+  );
+
+  test(
+    'toggleApplyManagerAddress handles failure from AddFamilyMemberAddressUseCase gracefully',
+    () async {
+      const mgrAddress = CustomerAddressEntity(
+        addressId: 'addr-mgr',
+        label: 'Home',
+        addressLine: 'Street 1',
+        latitude: 29.3,
+        longitude: 47.9,
+        isDefault: true,
+        notifyOnDelivery: false,
+      );
+      const manager = FamilyMemberEntity(
+        memberId: 'mgr',
+        role: 1,
+        displayName: 'Manager',
+        relationshipCode: 'SELF',
+        gender: 1,
+        ageYears: 35,
+        deliveryAddressId: 'addr-mgr',
+        deliveryAddress: mgrAddress,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: true,
+      );
+      const child = FamilyMemberEntity(
+        memberId: 'child-1',
+        role: 2,
+        displayName: 'Child',
+        relationshipCode: 'CHILD',
+        gender: 1,
+        ageYears: 10,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: false,
+      );
+
+      final snapshotStore = FamilyFlowSnapshotStore();
+      final mockRepo = _MockFamilyAddressesRepository(
+        addResult: ApiErrorResult(
+          failure: Failure(errorMessage: 'Server unavailable'),
+        ),
+      );
+      final addUseCase = AddFamilyMemberAddressUseCase(mockRepo);
+
+      final viewModel = FamilyAddressesViewModel(
+        GetFamilyFlowCurrentUseCase(
+          _FamilyFlowRepository(
+            const FamilyFlowCurrentEntity(members: [manager, child]),
+          ),
+        ),
+        snapshotStore,
+        addUseCase,
+      );
+
+      await viewModel.load();
+      await viewModel.toggleApplyManagerAddress();
+
+      expect(viewModel.state.failure, isNotNull);
+      expect(viewModel.state.failure!.errorMessage, 'Server unavailable');
+      expect(viewModel.state.completed, isFalse);
+      expect(viewModel.state.isApplyingManagerAddress, isFalse);
+      expect(viewModel.state.isManagerAddressAppliedToAll, isFalse);
+
+      await viewModel.close();
+    },
+  );
+}
+
+class _MockFamilyAddressesRepository implements FamilyAddressesRepository {
+  _MockFamilyAddressesRepository({this.addResult});
+
+  ApiResult<CustomerAddressEntity>? addResult;
+  final List<({String memberId, CustomerAddressRequestEntity request})>
+  addCalls = [];
+
+  @override
+  Future<ApiResult<CustomerAddressEntity>> addAddress(
+    String memberId,
+    CustomerAddressRequestEntity request,
+  ) async {
+    addCalls.add((memberId: memberId, request: request));
+    return addResult ??
+        ApiSuccessResult(
+          data: CustomerAddressEntity(
+            addressId: 'new-server-addr-$memberId',
+            label: request.label,
+            addressLine: request.addressLine,
+            latitude: request.latitude,
+            longitude: request.longitude,
+            isDefault: request.isDefault,
+            notifyOnDelivery: request.notifyOnDelivery,
+          ),
+        );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _FamilyFlowRepository implements FamilySubscriptionSetupRepository {

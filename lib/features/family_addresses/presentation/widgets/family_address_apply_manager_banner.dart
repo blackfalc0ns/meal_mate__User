@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -13,6 +15,7 @@ typedef _ApplyManagerBannerData = ({
   bool isChecked,
   String? managerName,
   bool hasManagerAddress,
+  bool isApplyingManagerAddress,
 });
 
 class FamilyAddressApplyManagerBanner extends StatelessWidget {
@@ -35,6 +38,7 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
           isChecked: state.isManagerAddressAppliedToAll,
           managerName: manager?.displayName,
           hasManagerAddress: state.isManagerAddressAvailable,
+          isApplyingManagerAddress: state.isApplyingManagerAddress,
         );
       },
       builder: (context, data) {
@@ -48,6 +52,7 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(Spacing.radiusMd),
             onTap: () {
+              if (data.isApplyingManagerAddress) return;
               if (!data.hasManagerAddress) {
                 CustomSnackbar.showWarning(
                   context: context,
@@ -56,9 +61,11 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                 );
                 return;
               }
-              context
-                  .read<FamilyAddressesViewModel>()
-                  .toggleApplyManagerAddress();
+              unawaited(
+                context
+                    .read<FamilyAddressesViewModel>()
+                    .toggleApplyManagerAddress(),
+              );
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -90,13 +97,25 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    child: data.isChecked
-                        ? Icon(
-                            Icons.check_rounded,
-                            size: Spacing.iconSm,
-                            color: color.onPrimary,
+                    child: data.isApplyingManagerAddress
+                        ? Padding(
+                            padding: const EdgeInsets.all(Spacing.xxs),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                data.isChecked
+                                    ? color.onPrimary
+                                    : color.primary,
+                              ),
+                            ),
                           )
-                        : null,
+                        : (data.isChecked
+                            ? Icon(
+                                Icons.check_rounded,
+                                size: Spacing.iconSm,
+                                color: color.onPrimary,
+                              )
+                            : null),
                   ),
                   const SizedBox(width: Spacing.sm),
                   Expanded(

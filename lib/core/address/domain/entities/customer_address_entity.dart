@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/core/address/domain/entities/customer_address_request_entity.dart';
+
 class CustomerAddressEntity {
   const CustomerAddressEntity({
     required this.addressId,
@@ -50,6 +52,28 @@ class CustomerAddressEntity {
   final List<ServingRestaurantEntity> servingRestaurants;
 
   bool get canDelete => !isDeliveryActive;
+
+  CustomerAddressRequestEntity toRequest({bool isDefault = true}) {
+    return CustomerAddressRequestEntity(
+      label: label,
+      addressLine: addressLine,
+      regionId: regionId,
+      governorate: governorate,
+      area: area,
+      block: block,
+      blockRegionId: blockRegionId,
+      street: street,
+      avenue: avenue,
+      building: building,
+      unit: unit,
+      floor: floor,
+      latitude: latitude,
+      longitude: longitude,
+      notes: notes,
+      isDefault: isDefault,
+      notifyOnDelivery: notifyOnDelivery,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
