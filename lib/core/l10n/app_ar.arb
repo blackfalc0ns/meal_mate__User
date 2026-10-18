@@ -1037,6 +1037,7 @@
   "family_info": "معلومة",
   "family_info_message": "يمكنك تعديل البيانات في أي وقت من إعدادات الفرد",
   "family_add_member_button": "إضافة فرد",
+  "family_confirm_member_button": "تأكيد الفرد",
   "family_cancel": "إلغاء",
   "family_delete_member_confirmation_title": "حذف الفرد؟",
   "family_delete_member_confirmation_message": "هل أنت متأكد من حذف هذا الفرد؟",

@@ -34,6 +34,7 @@ class FamilySetupMemberFormSection extends StatefulWidget {
     required this.onLookupPhone,
     required this.onSubmitMember,
     this.onFormReset,
+    this.onInputChanged,
   });
 
   final List<FamilyRelationshipEntity> relationships;
@@ -46,6 +47,7 @@ class FamilySetupMemberFormSection extends StatefulWidget {
   final ValueChanged<String> onLookupPhone;
   final OnSubmitMemberCallback onSubmitMember;
   final VoidCallback? onFormReset;
+  final ValueChanged<bool>? onInputChanged;
 
   @override
   State<FamilySetupMemberFormSection> createState() =>
@@ -64,6 +66,24 @@ class FamilySetupMemberFormSectionState
   Timer? _phoneDebounce;
   String? _lastLookedUpPhone;
   String? _phoneError;
+  bool _lastHasInput = false;
+
+  bool _computeHasInput() {
+    return _nameController.text.trim().isNotEmpty ||
+        _phoneController.text.trim().isNotEmpty ||
+        _ageController.text.trim().isNotEmpty ||
+        _relationshipController.text.trim().isNotEmpty ||
+        _selectedRelationshipCode != null ||
+        _gender != null;
+  }
+
+  void _checkInputChanged() {
+    final current = _computeHasInput();
+    if (_lastHasInput != current) {
+      _lastHasInput = current;
+      widget.onInputChanged?.call(current);
+    }
+  }
 
   @override
   void initState() {
@@ -73,6 +93,10 @@ class FamilySetupMemberFormSectionState
     _ageController = TextEditingController();
     _relationshipController = TextEditingController();
     _populateFromMember(widget.selectedMember);
+    _nameController.addListener(_checkInputChanged);
+    _phoneController.addListener(_checkInputChanged);
+    _ageController.addListener(_checkInputChanged);
+    _relationshipController.addListener(_checkInputChanged);
   }
 
   @override
@@ -110,6 +134,10 @@ class FamilySetupMemberFormSectionState
       _syncRelationshipText();
     }
 
+    if (oldWidget.onInputChanged != widget.onInputChanged) {
+      widget.onInputChanged?.call(_computeHasInput());
+    }
+
     if (!oldWidget.memberSaveSuccess && widget.memberSaveSuccess) {
       resetForm();
     }
@@ -137,6 +165,7 @@ class FamilySetupMemberFormSectionState
         _gender = null;
         setState(() {});
       }
+      _checkInputChanged();
     }
 
     if (oldWidget.memberLookupFailure != widget.memberLookupFailure &&
@@ -150,6 +179,7 @@ class FamilySetupMemberFormSectionState
           widget.memberLookupFailure!,
         );
       });
+      _checkInputChanged();
     }
   }
 
@@ -175,11 +205,16 @@ class FamilySetupMemberFormSectionState
       _selectedRelationshipCode = null;
     }
     setState(() {});
+    _checkInputChanged();
   }
 
   @override
   void dispose() {
     _phoneDebounce?.cancel();
+    _nameController.removeListener(_checkInputChanged);
+    _phoneController.removeListener(_checkInputChanged);
+    _ageController.removeListener(_checkInputChanged);
+    _relationshipController.removeListener(_checkInputChanged);
     _nameController.dispose();
     _phoneController.dispose();
     _ageController.dispose();
@@ -199,6 +234,7 @@ class FamilySetupMemberFormSectionState
       _gender = null;
       _phoneError = null;
     });
+    _checkInputChanged();
     widget.onFormReset?.call();
   }
 
@@ -244,6 +280,7 @@ class FamilySetupMemberFormSectionState
           context.localization.localeName,
         );
       });
+      _checkInputChanged();
     }
   }
 
@@ -314,7 +351,10 @@ class FamilySetupMemberFormSectionState
       relationshipController: _relationshipController,
       onRelationshipTap: () => _onPickRelationship(context),
       gender: _gender,
-      onGenderChanged: (value) => setState(() => _gender = value),
+      onGenderChanged: (value) {
+        setState(() => _gender = value);
+        _checkInputChanged();
+      },
       isPhoneLoading: widget.isMemberLookupLoading,
       phoneError: _phoneError,
       onPhoneChanged: _onPhoneChanged,

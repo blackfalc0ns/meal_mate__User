@@ -2845,6 +2845,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get family_add_member_button => 'إضافة فرد';
 
   @override
+  String get family_confirm_member_button => 'تأكيد الفرد';
+
+  @override
   String get family_cancel => 'إلغاء';
 
   @override

@@ -55,7 +55,14 @@ class _FamilySubscriptionSetupContentState
     extends State<FamilySubscriptionSetupContent> {
   final GlobalKey<FamilySetupMemberFormSectionState> _formKey =
       GlobalKey<FamilySetupMemberFormSectionState>();
+  final ValueNotifier<bool> _hasMemberInput = ValueNotifier<bool>(false);
   String? _selectedMemberId;
+
+  @override
+  void dispose() {
+    _hasMemberInput.dispose();
+    super.dispose();
+  }
 
   @override
   void didUpdateWidget(covariant FamilySubscriptionSetupContent oldWidget) {
@@ -64,6 +71,7 @@ class _FamilySubscriptionSetupContentState
       if (_selectedMemberId != null) {
         setState(() => _selectedMemberId = null);
       }
+      _hasMemberInput.value = false;
     }
   }
 
@@ -72,6 +80,7 @@ class _FamilySubscriptionSetupContentState
       if (_selectedMemberId == member.memberId) {
         _selectedMemberId = null;
         _formKey.currentState?.resetForm();
+        _hasMemberInput.value = false;
       } else {
         _selectedMemberId = member.memberId;
       }
@@ -83,6 +92,7 @@ class _FamilySubscriptionSetupContentState
       setState(() => _selectedMemberId = null);
     }
     _formKey.currentState?.resetForm();
+    _hasMemberInput.value = false;
   }
 
   void _handleSubmitMember({
@@ -191,16 +201,24 @@ class _FamilySubscriptionSetupContentState
               if (_selectedMemberId != null) {
                 setState(() => _selectedMemberId = null);
               }
+              _hasMemberInput.value = false;
             },
+            onInputChanged: (hasInput) => _hasMemberInput.value = hasInput,
           ),
           const SizedBox(height: Spacing.familySetupSectionGap),
-          FamilySetupActionsSection(
-            isEditing: _selectedMemberId != null,
-            isLimitReached: widget.members.length >= widget.maxMembers,
-            canProceed: widget.members.length >= widget.minMembers,
-            isMemberSaving: widget.isMemberSaving,
-            onAddOrUpdateMember: () => _formKey.currentState?.submit(),
-            onNext: _onNext,
+          ValueListenableBuilder<bool>(
+            valueListenable: _hasMemberInput,
+            builder: (context, hasInput, _) {
+              return FamilySetupActionsSection(
+                isEditing: _selectedMemberId != null,
+                hasMemberInput: hasInput,
+                isLimitReached: widget.members.length >= widget.maxMembers,
+                canProceed: widget.members.length >= widget.minMembers,
+                isMemberSaving: widget.isMemberSaving,
+                onAddOrUpdateMember: () => _formKey.currentState?.submit(),
+                onNext: _onNext,
+              );
+            },
           ),
           const SizedBox(height: Spacing.xl),
         ],

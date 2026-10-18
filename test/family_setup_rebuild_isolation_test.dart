@@ -443,5 +443,115 @@ void main() {
         expect(find.text('محمد علي'), findsOneWidget);
       },
     );
+
+    testWidgets(
+      'FamilySetupActionsSection dynamically switches between إضافة فرد, تأكيد الفرد, and حفظ',
+      (tester) async {
+        bool hasInput = false;
+        bool isEditing = false;
+
+        await tester.pumpWidget(
+          testWrapper(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return FamilySetupActionsSection(
+                  isEditing: isEditing,
+                  hasMemberInput: hasInput,
+                  isMemberSaving: false,
+                  onAddOrUpdateMember: () {},
+                  onNext: () {},
+                );
+              },
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // 1. Initial state: Form empty -> shows "إضافة فرد"
+        expect(find.text('إضافة فرد'), findsOneWidget);
+        expect(find.text('تأكيد الفرد'), findsNothing);
+        expect(find.text('حفظ'), findsNothing);
+
+        // 2. User starts typing -> hasInput = true -> shows "تأكيد الفرد"
+        await tester.pumpWidget(
+          testWrapper(
+            child: FamilySetupActionsSection(
+              isEditing: false,
+              hasMemberInput: true,
+              isMemberSaving: false,
+              onAddOrUpdateMember: () {},
+              onNext: () {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('تأكيد الفرد'), findsOneWidget);
+        expect(find.text('إضافة فرد'), findsNothing);
+        expect(find.text('حفظ'), findsNothing);
+
+        // 3. User is editing existing member -> shows "حفظ التغييرات"
+        await tester.pumpWidget(
+          testWrapper(
+            child: FamilySetupActionsSection(
+              isEditing: true,
+              hasMemberInput: true,
+              isMemberSaving: false,
+              onAddOrUpdateMember: () {},
+              onNext: () {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('حفظ التغييرات'), findsOneWidget);
+        expect(find.text('تأكيد الفرد'), findsNothing);
+        expect(find.text('إضافة فرد'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'FamilySetupMemberFormSection triggers onInputChanged when user types',
+      (tester) async {
+        bool? latestHasInput;
+
+        await tester.pumpWidget(
+          testWrapper(
+            child: FamilySetupMemberFormSection(
+              relationships: relationships,
+              isMemberSaving: false,
+              isMemberLookupLoading: false,
+              onLookupPhone: (_) {},
+              onSubmitMember:
+                  ({
+                    required phone,
+                    required displayName,
+                    required relationshipCode,
+                    required gender,
+                    required ageYears,
+                  }) {},
+              onInputChanged: (hasInput) => latestHasInput = hasInput,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Initial state
+        expect(latestHasInput, isNull);
+
+        // Type in name field
+        final nameField = find.byType(TextField).at(1);
+        await tester.enterText(nameField, 'سارة');
+        await tester.pumpAndSettle();
+
+        expect(latestHasInput, isTrue);
+
+        // Clear name field
+        await tester.enterText(nameField, '');
+        await tester.pumpAndSettle();
+
+        expect(latestHasInput, isFalse);
+      },
+    );
   });
 }

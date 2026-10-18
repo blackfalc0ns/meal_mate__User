@@ -119,7 +119,7 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
               : const {},
           rejectedCodes: currentMember != null
               ? _savedRejectedSelectionFor(currentMember)
-              : const {FoodPreferenceItemEntity.noneCode},
+              : const {},
           completed: members.isEmpty,
         ),
       );
@@ -142,9 +142,13 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     _isModified = true;
     final next = <String>{...state.selectedCodes};
     if (code == 'NONE') {
-      next
-        ..clear()
-        ..add('NONE');
+      if (next.contains('NONE')) {
+        next.remove('NONE');
+      } else {
+        next
+          ..clear()
+          ..add('NONE');
+      }
     } else {
       next.remove('NONE');
       next.contains(code) ? next.remove(code) : next.add(code);
@@ -232,7 +236,11 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     _isModified = true;
     Set<String> next;
     if (code == FoodPreferenceItemEntity.noneCode) {
-      next = const {FoodPreferenceItemEntity.noneCode};
+      if (state.rejectedCodes.contains(FoodPreferenceItemEntity.noneCode)) {
+        next = const <String>{};
+      } else {
+        next = const {FoodPreferenceItemEntity.noneCode};
+      }
     } else {
       next = Set<String>.of(state.rejectedCodes)
         ..remove(FoodPreferenceItemEntity.noneCode);
@@ -241,14 +249,14 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
       } else {
         next.add(code);
       }
-      if (next.isEmpty) {
-        next = const {FoodPreferenceItemEntity.noneCode};
-      }
     }
     final member = state.currentMember;
     List<FamilyMemberEntity>? updatedMembers;
     if (member != null) {
       final updated = member.copyWith(
+        hasNoDietaryRestriction:
+            next.contains(FoodPreferenceItemEntity.noneCode),
+        dietaryCompleted: next.isNotEmpty,
         dislikedFoods: next.map((c) {
           final match = state.ingredients
               .where((item) => item.code == c)
@@ -289,7 +297,8 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
     final member = state.currentMember;
     if (member == null) return;
 
-    final allCompleted = state.members.isNotEmpty &&
+    final allCompleted =
+        state.members.isNotEmpty &&
         state.members.every(
           (m) =>
               m.allergiesCompleted ||
@@ -344,7 +353,8 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
         return;
       }
       final rejectedCodes = _savedRejectedSelectionFor(m);
-      if (rejectedCodes.isNotEmpty) {
+      final initialRejected = _initialDisliked[m.memberId] ?? const <String>{};
+      if (rejectedCodes.isNotEmpty || initialRejected.isNotEmpty) {
         final dislikedResult = await _saveDisliked(
           memberId: m.memberId,
           ingredientCodes: rejectedCodes.toList(),
@@ -397,6 +407,11 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
   }
 
   Set<String> _savedRejectedSelectionFor(FamilyMemberEntity member) {
+    if (member.hasNoDietaryRestriction ||
+        member.dislikedFoods
+            .any((f) => f.code == FoodPreferenceItemEntity.noneCode)) {
+      return const {FoodPreferenceItemEntity.noneCode};
+    }
     final codes = member.dislikedFoods
         .map((ingredient) => ingredient.code)
         .where(
@@ -404,9 +419,6 @@ class FamilyAllergiesViewModel extends Cubit<FamilyAllergiesState> {
               code.isNotEmpty && code != FoodPreferenceItemEntity.noneCode,
         )
         .toSet();
-    if (codes.isEmpty) {
-      return const {FoodPreferenceItemEntity.noneCode};
-    }
     return codes;
   }
 }

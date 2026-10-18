@@ -88,6 +88,17 @@ class FamilyFlowSnapshotStore {
     _revision++;
   }
 
+  void clearMemberDeliveryAddress(String memberId) {
+    final snapshot = current;
+    if (snapshot == null) return;
+    final updatedMembers = snapshot.members.map((member) {
+      if (member.memberId != memberId) return member;
+      return member.copyWith(clearDeliveryAddress: true);
+    }).toList();
+    current = snapshot.copyWith(members: updatedMembers);
+    _revision++;
+  }
+
   void updateMemberAllergies(
     String memberId,
     List<FamilyMemberAllergySelection> allergies,

@@ -146,6 +146,7 @@ class FamilyMemberEntity {
     bool clearBundleId = false,
     bool clearSelectedTier = false,
     bool clearDurationDays = false,
+    bool clearDeliveryAddress = false,
   }) {
     return FamilyMemberEntity(
       memberId: memberId ?? this.memberId,
@@ -163,7 +164,9 @@ class FamilyMemberEntity {
       relationshipCode: relationshipCode ?? this.relationshipCode,
       gender: gender ?? this.gender,
       ageYears: ageYears ?? this.ageYears,
-      deliveryAddressId: deliveryAddressId ?? this.deliveryAddressId,
+      deliveryAddressId: clearDeliveryAddress
+          ? null
+          : (deliveryAddressId ?? this.deliveryAddressId),
       setupStatus: setupStatus ?? this.setupStatus,
       readinessBlocker: readinessBlocker ?? this.readinessBlocker,
       programId: clearProgramId ? null : (programId ?? this.programId),
@@ -176,7 +179,9 @@ class FamilyMemberEntity {
           : (durationDays ?? this.durationDays),
       includeFriday: includeFriday ?? this.includeFriday,
       isCurrentUser: isCurrentUser ?? this.isCurrentUser,
-      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      deliveryAddress: clearDeliveryAddress
+          ? null
+          : (deliveryAddress ?? this.deliveryAddress),
       allergies: allergies ?? this.allergies,
       allergiesCompleted: allergiesCompleted ?? this.allergiesCompleted,
       dislikedFoods: dislikedFoods ?? this.dislikedFoods,

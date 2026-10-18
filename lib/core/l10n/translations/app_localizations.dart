@@ -5408,6 +5408,12 @@ abstract class AppLocalizations {
   /// **'Add member'**
   String get family_add_member_button;
 
+  /// No description provided for @family_confirm_member_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm member'**
+  String get family_confirm_member_button;
+
   /// No description provided for @family_cancel.
   ///
   /// In en, this message translates to:

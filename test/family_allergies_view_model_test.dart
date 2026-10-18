@@ -278,7 +278,7 @@ void main() {
     expect(viewModel.state.isSaving, isFalse);
   });
 
-  test('restores disliked ingredients or defaults to NONE on load', () async {
+  test('restores disliked ingredients or leaves empty when unselected on load', () async {
     final viewModel = FamilyAllergiesViewModel(
       GetFamilyFlowCurrentUseCase(
         _FamilySubscriptionSetupRepository(
@@ -304,13 +304,26 @@ void main() {
             FamilyMemberEntity(
               memberId: 'member-2',
               role: 2,
-              displayName: 'Eats All',
+              displayName: 'Unselected',
               relationshipCode: 'CHILD',
               gender: 2,
               ageYears: 10,
               setupStatus: 0,
               includeFriday: false,
               isCurrentUser: false,
+              dislikedFoods: [],
+            ),
+            FamilyMemberEntity(
+              memberId: 'member-3',
+              role: 2,
+              displayName: 'Eats All',
+              relationshipCode: 'CHILD',
+              gender: 2,
+              ageYears: 12,
+              setupStatus: 0,
+              includeFriday: false,
+              isCurrentUser: false,
+              hasNoDietaryRestriction: true,
               dislikedFoods: [],
             ),
           ],
@@ -326,6 +339,9 @@ void main() {
     expect(viewModel.state.rejectedCodes, {'INGREDIENT:avocado'});
 
     viewModel.selectMember(1);
+    expect(viewModel.state.rejectedCodes, isEmpty);
+
+    viewModel.selectMember(2);
     expect(viewModel.state.rejectedCodes, {FoodPreferenceItemEntity.noneCode});
 
     viewModel.selectMember(0);

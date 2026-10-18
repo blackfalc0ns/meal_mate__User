@@ -2896,6 +2896,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get family_add_member_button => 'Add member';
 
   @override
+  String get family_confirm_member_button => 'Confirm member';
+
+  @override
   String get family_cancel => 'Cancel';
 
   @override

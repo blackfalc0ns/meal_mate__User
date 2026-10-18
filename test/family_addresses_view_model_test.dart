@@ -6,6 +6,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_event.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_view_model.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
+import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_snapshot_store.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/repo/family_subscription_setup_repository.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart';
@@ -494,6 +495,76 @@ void main() {
 
     await viewModel.close();
   });
+
+  test(
+    'toggleApplyManagerAddress applies manager address to all and unapplies cleanly',
+    () async {
+      const mgrAddress = CustomerAddressEntity(
+        addressId: 'addr-mgr',
+        label: 'Home',
+        addressLine: 'Street 1',
+        latitude: 29.3,
+        longitude: 47.9,
+        isDefault: true,
+        notifyOnDelivery: false,
+      );
+      const manager = FamilyMemberEntity(
+        memberId: 'mgr',
+        role: 1,
+        displayName: 'Manager',
+        relationshipCode: 'SELF',
+        gender: 1,
+        ageYears: 35,
+        deliveryAddressId: 'addr-mgr',
+        deliveryAddress: mgrAddress,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: true,
+      );
+      const member = FamilyMemberEntity(
+        memberId: 'mem',
+        role: 2,
+        displayName: 'Child',
+        relationshipCode: 'CHILD',
+        gender: 1,
+        ageYears: 10,
+        setupStatus: 1,
+        includeFriday: false,
+        isCurrentUser: false,
+      );
+      final snapshotStore = FamilyFlowSnapshotStore();
+      snapshotStore.update(
+        const FamilyFlowCurrentEntity(members: [manager, member]),
+      );
+      final viewModel = FamilyAddressesViewModel(
+        GetFamilyFlowCurrentUseCase(
+          _FamilyFlowRepository(
+            const FamilyFlowCurrentEntity(members: [manager, member]),
+          ),
+        ),
+        snapshotStore,
+      );
+
+      await viewModel.load();
+      expect(viewModel.state.isManagerAddressAppliedToAll, isFalse);
+
+      // 1. Apply manager address (check)
+      viewModel.toggleApplyManagerAddress();
+      expect(viewModel.state.isManagerAddressAppliedToAll, isTrue);
+      expect(viewModel.state.members[1].deliveryAddressId, 'addr-mgr');
+      expect(viewModel.state.completed, isTrue);
+
+      // 2. Unapply manager address (uncheck)
+      viewModel.toggleApplyManagerAddress();
+      expect(viewModel.state.isManagerAddressAppliedToAll, isFalse);
+      expect(viewModel.state.members[1].deliveryAddressId, isNull);
+      expect(viewModel.state.members[1].deliveryAddress, isNull);
+      expect(viewModel.state.completed, isFalse);
+      expect(viewModel.state.completedMemberIds, {'mgr'});
+
+      await viewModel.close();
+    },
+  );
 }
 
 class _FamilyFlowRepository implements FamilySubscriptionSetupRepository {

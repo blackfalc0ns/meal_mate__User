@@ -112,6 +112,13 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     );
     if (targetMember == null) return;
 
+    if (savedAddress != null &&
+        targetMember.deliveryAddressId == savedAddress.addressId &&
+        targetMember.deliveryAddress == savedAddress &&
+        state.completedMemberIds.contains(targetMemberId)) {
+      return;
+    }
+
     if (savedAddress != null) {
       _snapshotStore.updateMemberDeliveryAddress(targetMemberId, savedAddress);
     }
@@ -149,12 +156,14 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
     if (state.members.isEmpty) return;
     final manager = state.manager;
     final managerAddress = manager?.deliveryAddress;
-    if (managerAddress == null) return;
+    final managerAddressId =
+        manager?.deliveryAddressId ?? managerAddress?.addressId;
 
     if (state.isManagerAddressAppliedToAll) {
       final updatedMembers = state.members.map((m) {
         if (m.isManager) return m;
-        return m.copyWith(deliveryAddressId: null, deliveryAddress: null);
+        _snapshotStore.clearMemberDeliveryAddress(m.memberId);
+        return m.copyWith(clearDeliveryAddress: true);
       }).toList();
 
       final completedMemberIds = state.members
@@ -177,12 +186,19 @@ class FamilyAddressesViewModel extends Cubit<FamilyAddressesState> {
         ),
       );
     } else {
-      final addressId = managerAddress.addressId.isNotEmpty
-          ? managerAddress.addressId
-          : (manager?.deliveryAddressId ?? '');
+      if (managerAddress == null &&
+          (managerAddressId == null || managerAddressId.isEmpty)) {
+        return;
+      }
+      final addressId = managerAddressId ?? managerAddress?.addressId ?? '';
 
       final updatedMembers = state.members.map((m) {
-        _snapshotStore.updateMemberDeliveryAddress(m.memberId, managerAddress);
+        if (managerAddress != null) {
+          _snapshotStore.updateMemberDeliveryAddress(
+            m.memberId,
+            managerAddress,
+          );
+        }
         return m.copyWith(
           deliveryAddressId: addressId,
           deliveryAddress: managerAddress,

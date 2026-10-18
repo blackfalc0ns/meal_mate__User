@@ -6,6 +6,7 @@ class FamilySetupActionsSection extends StatelessWidget {
   const FamilySetupActionsSection({
     super.key,
     required this.isEditing,
+    this.hasMemberInput = false,
     this.isLimitReached = false,
     this.canProceed = true,
     required this.isMemberSaving,
@@ -14,6 +15,7 @@ class FamilySetupActionsSection extends StatelessWidget {
   });
 
   final bool isEditing;
+  final bool hasMemberInput;
   final bool isLimitReached;
   final bool canProceed;
   final bool isMemberSaving;
@@ -25,12 +27,20 @@ class FamilySetupActionsSection extends StatelessWidget {
     final locale = context.localization;
     final isSecondaryEnabled = isEditing || !isLimitReached;
 
+    final secondaryText = isEditing
+        ? locale.profile_personal_info_save
+        : (hasMemberInput
+            ? locale.family_confirm_member_button
+            : locale.family_add_member_button);
+
+    final secondaryIcon = (isEditing || hasMemberInput)
+        ? Icons.check_rounded
+        : Icons.add_rounded;
+
     return FamilyFlowActions(
       showSecondary: true,
-      secondaryText: isEditing
-          ? locale.profile_personal_info_save
-          : locale.family_add_member_button,
-      secondaryIcon: isEditing ? Icons.check_rounded : Icons.add_rounded,
+      secondaryText: secondaryText,
+      secondaryIcon: secondaryIcon,
       onSecondaryPressed: isSecondaryEnabled ? onAddOrUpdateMember : null,
       isSecondaryLoading: isMemberSaving,
       primaryText: locale.family_next_program,
