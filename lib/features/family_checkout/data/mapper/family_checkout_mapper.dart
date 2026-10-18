@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
 import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_coupon_mapper.dart';
 
 extension FamilySummaryMemberDtoMapper on FamilySummaryMemberDto {
   FamilySummaryMemberEntity toEntity() {
@@ -169,6 +170,15 @@ extension FamilySummaryResponseDtoMapper on FamilySummaryResponseDto {
       isInitialPurchaseOrReactivation: isInitialPurchaseOrReactivation ?? true,
       availability: availability?.toEntity(),
       restaurantRepetition: restaurantRepetition?.toEntity(),
+      discount: discount ?? familyDiscountAmount ?? 0.0,
+      walletCredit: walletCredit ?? 0.0,
+      gatewayFee: gatewayFee ?? 0.0,
+      blockingReasons: blockingReasons ??
+          (checkoutBlockReason != null ? [checkoutBlockReason!] : const []),
+      summaryExpiresAtUtc: summaryExpiresAtUtc ?? expiry,
+      serverNowUtc: serverNowUtc ?? serverNow,
+      coupon: coupon?.toEntity(),
+      promoCode: promoCode ?? coupon?.code,
     );
   }
 }

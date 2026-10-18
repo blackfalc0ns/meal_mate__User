@@ -7,6 +7,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
@@ -82,6 +83,14 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
               );
             }
 
+            if (state.offer == null) {
+              return EmptyStateWidget(
+                title: locale.offer_details_title,
+                description: locale.offer_browse_empty,
+                icon: Icons.local_offer_outlined,
+              );
+            }
+
             final offer = state.offer;
             final isExpired = _isOfferExpired || (offer?.isExpired ?? false);
             final isSoldOut = offer?.isSoldOut ?? false;
@@ -138,9 +147,9 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     details: _detailsFromOffer(offer!, locale),
                   ),
                   const SizedBox(height: Spacing.md),
-                  if (_detailsFromOffer(offer!, locale).benefits.isNotEmpty)
+                  if (_detailsFromOffer(offer, locale).benefits.isNotEmpty)
                     OfferDetailsBenefitsSection(
-                      details: _detailsFromOffer(offer!, locale),
+                      details: _detailsFromOffer(offer, locale),
                     ),
                   const SizedBox(height: Spacing.xl),
                   AppButton(

@@ -13,11 +13,13 @@ import 'package:meal_meat_user/features/offers/data/models/response/evaluate_off
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/repo/offers_repository_impl.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/usecase/get_campaign_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/offers/domain/usecase/start_campaign_payment_usecase.dart';
 
 class FakeOffersRemoteDataSource implements OffersRemoteDataSource {
+  GetCustomerAvailableOffersRequestDto? availableOffersRequest;
   CampaignPaymentResponseDto? startPaymentResult;
   CampaignPaymentResponseDto? getStatusResult;
   Exception? exceptionToThrow;
@@ -52,7 +54,10 @@ class FakeOffersRemoteDataSource implements OffersRemoteDataSource {
   @override
   Future<List<OfferResponseDto>> getAvailableOffers(
     GetCustomerAvailableOffersRequestDto request,
-  ) => throw UnimplementedError();
+  ) async {
+    availableOffersRequest = request;
+    return const [];
+  }
 
   @override
   Future<OfferResponseDto> getOfferDetails(String offerId) =>
@@ -62,6 +67,14 @@ class FakeOffersRemoteDataSource implements OffersRemoteDataSource {
 class FakeTokenService implements TokenService {
   @override
   Future<String?> getCurrentUserId() async => 'user-123';
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class MissingCustomerTokenService implements TokenService {
+  @override
+  Future<String?> getCurrentUserId() async => null;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -79,6 +92,21 @@ void main() {
   });
 
   group('OffersRepositoryImpl Campaign Payment Tests', () {
+    test(
+      'does not send a fabricated customer id when authentication is missing',
+      () async {
+        final missingTokenRepository = OffersRepositoryImpl(
+          fakeRemoteDataSource,
+          MissingCustomerTokenService(),
+        );
+
+        final result = await missingTokenRepository.getAvailableOffers();
+
+        expect(result, isA<ApiErrorResult<List<OfferEntity>>>());
+        expect(fakeRemoteDataSource.availableOffersRequest, isNull);
+      },
+    );
+
     test('startCampaignPayment returns success mapped entity', () async {
       fakeRemoteDataSource.startPaymentResult =
           const CampaignPaymentResponseDto(

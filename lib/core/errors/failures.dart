@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:meal_meat_user/core/errors/api_error_advice.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/api_exception_mapper.dart';
@@ -7,23 +8,59 @@ class Failure {
   Failure({
     required this.errorMessage,
     this.code = 'unknown',
+    this.statusCode,
+    this.field,
+    this.messageAr,
+    this.messageEn,
+    this.advice = const ApiErrorAdvice(),
     ApiException? exception,
   }) : exception =
            exception ??
-           ApiException(errorType: ApiErrorType.unknown, message: errorMessage);
+           ApiException(
+             errorType: ApiErrorType.unknown,
+             message: errorMessage,
+             statusCode: statusCode,
+             backendErrorCode: code,
+             field: field,
+             messageAr: messageAr,
+             messageEn: messageEn,
+             advice: advice,
+           );
 
   Failure.fromException(ApiException exception)
-    : this(errorMessage: exception.message, exception: exception);
+    : this(
+        errorMessage: exception.message,
+        code: exception.backendErrorCode ?? exception.errorType.translationKey,
+        statusCode: exception.statusCode,
+        field: exception.field,
+        messageAr: exception.messageAr,
+        messageEn: exception.messageEn,
+        advice: exception.advice,
+        exception: exception,
+      );
 
   final String errorMessage;
   final String code;
+  final int? statusCode;
+  final String? field;
+  final String? messageAr;
+  final String? messageEn;
+  final ApiErrorAdvice advice;
   final ApiException exception;
+
+  String? get missingStep => exception.missingStep;
+  String? get actionEndpoint => exception.actionEndpoint;
 }
 
 class ServerFailure extends Failure {
   ServerFailure({
     required super.errorMessage,
     super.code,
+    super.statusCode,
+    super.field,
+    super.messageAr,
+    super.messageEn,
+    super.advice,
     required super.exception,
   });
 
@@ -43,6 +80,11 @@ class ServerFailure extends Failure {
     return ServerFailure(
       errorMessage: exception.message,
       code: exception.backendErrorCode ?? exception.errorType.translationKey,
+      statusCode: exception.statusCode,
+      field: exception.field,
+      messageAr: exception.messageAr,
+      messageEn: exception.messageEn,
+      advice: exception.advice,
       exception: exception,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_coupon_response_dto.dart';
 
 part 'family_summary_response_dto.g.dart';
 
@@ -276,6 +277,16 @@ class FamilySummaryResponseDto {
     this.isInitialPurchaseOrReactivation,
     this.availability,
     this.restaurantRepetition,
+    this.discount,
+    this.walletCredit,
+    this.gatewayFee,
+    this.blockingReasons,
+    this.expiry,
+    this.summaryExpiresAtUtc,
+    this.serverNow,
+    this.serverNowUtc,
+    this.coupon,
+    this.promoCode,
   });
 
   final String? familyGroupId;
@@ -340,9 +351,93 @@ class FamilySummaryResponseDto {
   final bool? isInitialPurchaseOrReactivation;
   final FamilySummaryAvailabilityDto? availability;
   final FamilyMemberRestaurantRepetitionDto? restaurantRepetition;
+  final double? discount;
+  final double? walletCredit;
+  final double? gatewayFee;
+  final List<String>? blockingReasons;
+  final String? expiry;
+  final String? summaryExpiresAtUtc;
+  final String? serverNow;
+  final String? serverNowUtc;
+  final SubscriptionCouponResponseDto? coupon;
+  final String? promoCode;
 
-  factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$FamilySummaryResponseDtoFromJson(json);
+  factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) {
+    final dto = _$FamilySummaryResponseDtoFromJson(json);
+    final rawBlocking = json['blockingReasons'];
+    List<String>? blocking;
+    if (rawBlocking is List) {
+      blocking = rawBlocking.map((e) => e.toString()).toList();
+    } else if (dto.checkoutBlockReason != null) {
+      blocking = [dto.checkoutBlockReason!];
+    }
+
+    SubscriptionCouponResponseDto? couponDto;
+    if (json['coupon'] is Map<String, dynamic>) {
+      couponDto = SubscriptionCouponResponseDto.fromJson(
+        json['coupon'] as Map<String, dynamic>,
+      );
+    } else if (json['coupon'] is Map) {
+      couponDto = SubscriptionCouponResponseDto.fromJson(
+        Map<String, dynamic>.from(json['coupon'] as Map),
+      );
+    }
+
+    return FamilySummaryResponseDto(
+      familyGroupId: dto.familyGroupId,
+      familyName: dto.familyName,
+      selectedMemberId: dto.selectedMemberId,
+      subtotal: dto.subtotal,
+      familyDiscountPercent: dto.familyDiscountPercent,
+      familyDiscountAmount: dto.familyDiscountAmount,
+      finalPrice: dto.finalPrice,
+      currencyCode: dto.currencyCode,
+      canCheckout: dto.canCheckout,
+      checkoutBlockReason: dto.checkoutBlockReason,
+      managerPrepaid: dto.managerPrepaid,
+      managerSubscriptionId: dto.managerSubscriptionId,
+      newMembersCount: dto.newMembersCount,
+      newMembersSubtotal: dto.newMembersSubtotal,
+      members: dto.members,
+      selectedMember: dto.selectedMember,
+      mealOverview: dto.mealOverview,
+      memberSchedules: dto.memberSchedules,
+      participantCount: dto.participantCount,
+      checkoutEndpoint: dto.checkoutEndpoint,
+      batchId: dto.batchId,
+      batchVersion: dto.batchVersion,
+      rosterCount: dto.rosterCount,
+      selectedNewSubscriberCount: dto.selectedNewSubscriberCount,
+      eligibleExistingSubscriberCount: dto.eligibleExistingSubscriberCount,
+      unsubscribedCount: dto.unsubscribedCount,
+      lockedQuote: dto.lockedQuote,
+      selectedFamilyPackageId: dto.selectedFamilyPackageId,
+      effectiveFamilyPackageId: dto.effectiveFamilyPackageId,
+      effectiveFamilyPackageMinMembers: dto.effectiveFamilyPackageMinMembers,
+      effectiveFamilyPackageMaxMembers: dto.effectiveFamilyPackageMaxMembers,
+      packageSelectionMode: dto.packageSelectionMode,
+      occupiedSeatCount: dto.occupiedSeatCount,
+      availableSeatCount: dto.availableSeatCount,
+      maxSeats: dto.maxSeats,
+      deferredMemberCount: dto.deferredMemberCount,
+      currentPurchaseCount: dto.currentPurchaseCount,
+      managerSeatExempt: dto.managerSeatExempt,
+      managerIndividualIsLive: dto.managerIndividualIsLive,
+      isInitialPurchaseOrReactivation: dto.isInitialPurchaseOrReactivation,
+      availability: dto.availability,
+      restaurantRepetition: dto.restaurantRepetition,
+      discount: _nullableDoubleFromJson(json['discount']) ?? dto.familyDiscountAmount,
+      walletCredit: _nullableDoubleFromJson(json['walletCredit']) ?? 0.0,
+      gatewayFee: _nullableDoubleFromJson(json['gatewayFee']) ?? 0.0,
+      blockingReasons: blocking,
+      expiry: json['expiry']?.toString(),
+      summaryExpiresAtUtc: (json['summaryExpiresAtUtc'] ?? json['expiry'])?.toString(),
+      serverNow: json['serverNow']?.toString(),
+      serverNowUtc: (json['serverNowUtc'] ?? json['serverNow'])?.toString(),
+      coupon: couponDto,
+      promoCode: json['promoCode']?.toString(),
+    );
+  }
 }
 
 Object? _readRestaurantId(Map<dynamic, dynamic> json, String key) {

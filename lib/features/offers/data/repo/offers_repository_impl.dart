@@ -31,9 +31,10 @@ class OffersRepositoryImpl implements OffersRepository {
     String? restaurantId,
   }) {
     return safeApiCall(() async {
-      final customerId =
-          await _tokenService.getCurrentUserId() ??
-          '00000000-0000-0000-0000-000000000000';
+      final customerId = await _tokenService.getCurrentUserId();
+      if (customerId == null || customerId.isEmpty) {
+        throw StateError('Authenticated customer id is required');
+      }
       final request = GetCustomerAvailableOffersRequestDto(
         customerId: customerId,
         cartAmount: cartAmount,
@@ -68,9 +69,10 @@ class OffersRepositoryImpl implements OffersRepository {
     String? restaurantId,
   }) {
     return safeApiCall(() async {
-      final customerId =
-          await _tokenService.getCurrentUserId() ??
-          '00000000-0000-0000-0000-000000000000';
+      final customerId = await _tokenService.getCurrentUserId();
+      if (customerId == null || customerId.isEmpty) {
+        throw StateError('Authenticated customer id is required');
+      }
       final hasPromo = promoCode != null && promoCode.trim().isNotEmpty;
       final request = EvaluateOfferDiscountRequestDto(
         offerId: offerId,
@@ -98,9 +100,10 @@ class OffersRepositoryImpl implements OffersRepository {
     String? deliveryGovernorate,
   }) {
     return safeApiCall(() async {
-      final customerId =
-          await _tokenService.getCurrentUserId() ??
-          '00000000-0000-0000-0000-000000000000';
+      final customerId = await _tokenService.getCurrentUserId();
+      if (customerId == null || customerId.isEmpty) {
+        throw StateError('Authenticated customer id is required');
+      }
       final request = CreateCampaignCheckoutSessionRequestDto(
         campaignId: campaignId,
         bundleId: bundleId,

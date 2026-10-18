@@ -144,6 +144,11 @@ extension SubscriptionSummaryResponseDtoMapper
       coupon: coupon?.toEntity(),
       restaurantsPagination: restaurantsPagination?.toEntity(),
       availability: availability?.toEntity(),
+      moneyScale: moneyScale ?? 3,
+      summaryExpiresAtUtc: summaryExpiresAtUtc,
+      serverNowUtc: serverNowUtc,
+      blockingReasons: blockingReasons ??
+          (checkoutBlockReason != null ? [checkoutBlockReason!] : const []),
     );
   }
 }

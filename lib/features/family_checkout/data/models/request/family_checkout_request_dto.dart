@@ -8,21 +8,23 @@ class FamilyCheckoutRequestDto {
     required this.callbackUrl,
     required this.errorUrl,
     this.correlationId,
-    required this.paymentMethodId,
+    this.paymentMethodId,
     this.idempotencyKey,
     this.batchId,
     this.batchVersion,
     this.clientContractVersion = 1,
+    this.promoCode,
   });
 
   final String callbackUrl;
   final String errorUrl;
   final String? correlationId;
-  final int paymentMethodId;
+  final int? paymentMethodId;
   final String? idempotencyKey;
   final String? batchId;
   final int? batchVersion;
   final int? clientContractVersion;
+  final String? promoCode;
 
   Map<String, dynamic> toJson() => _$FamilyCheckoutRequestDtoToJson(this);
 }

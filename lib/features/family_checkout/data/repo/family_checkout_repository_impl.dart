@@ -46,10 +46,14 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
   }
 
   @override
-  Future<ApiResult<FamilySummaryEntity>> getFamilySummary({String? memberId}) {
+  Future<ApiResult<FamilySummaryEntity>> getFamilySummary({
+    String? memberId,
+    String? promoCode,
+  }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getFamilySummary(
         memberId: memberId,
+        promoCode: promoCode,
       );
       return response.toEntity();
     });
@@ -70,11 +74,12 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
     required String callbackUrl,
     required String errorUrl,
     required String correlationId,
-    required int paymentMethodId,
+    int? paymentMethodId,
     String? batchId,
     int? batchVersion,
     String? idempotencyKey,
     int? clientContractVersion,
+    String? promoCode,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.checkoutFamilySubscription(
@@ -87,6 +92,7 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
           batchVersion: batchVersion,
           idempotencyKey: idempotencyKey,
           clientContractVersion: clientContractVersion ?? 1,
+          promoCode: promoCode,
         ),
       );
       return response.toEntity();
@@ -98,11 +104,12 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
     required String callbackUrl,
     required String errorUrl,
     required String correlationId,
-    required int paymentMethodId,
+    int? paymentMethodId,
     required String batchId,
     required int batchVersion,
     required String idempotencyKey,
     int clientContractVersion = 1,
+    String? promoCode,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.retryFamilySubscriptionPayment(
@@ -115,6 +122,7 @@ class FamilyCheckoutRepositoryImpl implements FamilyCheckoutRepository {
           batchVersion: batchVersion,
           idempotencyKey: idempotencyKey,
           clientContractVersion: clientContractVersion,
+          promoCode: promoCode,
         ),
       );
       return response.toEntity();

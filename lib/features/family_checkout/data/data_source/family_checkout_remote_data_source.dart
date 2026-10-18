@@ -14,7 +14,10 @@ abstract class FamilyCheckoutRemoteDataSource {
     required String memberId,
     required String startDate,
   });
-  Future<FamilySummaryResponseDto> getFamilySummary({String? memberId});
+  Future<FamilySummaryResponseDto> getFamilySummary({
+    String? memberId,
+    String? promoCode,
+  });
   Future<List<PaymentMethodResponseDto>> getFamilyPaymentMethods(double amount);
   Future<PaymentCheckoutResponseDto> checkoutFamilySubscription(
     FamilyCheckoutRequestDto request,

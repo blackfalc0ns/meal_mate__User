@@ -72,9 +72,9 @@ class FamilyPaymentActions extends StatelessWidget {
         ],
         Row(
           children: [
-            SizedBox(
-              width: Spacing.familyProgramPreviousButtonWidth,
+            Expanded(
               child: AppButton.outlined(
+                iconBeforeText: true,
                 text: locale.family_previous_program,
                 onPressed: () => Navigator.maybePop(context),
                 height: Spacing.familySetupBottomButtonHeight,
@@ -89,9 +89,8 @@ class FamilyPaymentActions extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(),
-            SizedBox(
-              width: Spacing.familyProgramNextButtonWidth,
+            const SizedBox(width: Spacing.xs),
+            Expanded(
               child: AppButton.filled(
                 text: locale.family_confirm_payment,
                 onPressed: canCheckout && !isLoading ? onConfirmPayment : null,

@@ -12,10 +12,12 @@ class RetryFamilySubscriptionPaymentUseCase {
     required String callbackUrl,
     required String errorUrl,
     required String correlationId,
-    required int paymentMethodId,
+    int? paymentMethodId,
     required String batchId,
     required int batchVersion,
     required String idempotencyKey,
+    int clientContractVersion = 1,
+    String? promoCode,
   }) => _repository.retryFamilySubscriptionPayment(
     callbackUrl: callbackUrl,
     errorUrl: errorUrl,
@@ -24,5 +26,7 @@ class RetryFamilySubscriptionPaymentUseCase {
     batchId: batchId,
     batchVersion: batchVersion,
     idempotencyKey: idempotencyKey,
+    clientContractVersion: clientContractVersion,
+    promoCode: promoCode,
   );
 }

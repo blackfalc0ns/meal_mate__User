@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:meal_meat_user/core/errors/api_error_advice.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/location_exception.dart';
@@ -81,14 +82,27 @@ class ApiExceptionMapper {
 
     final errorType = _mapStatusCode(response.statusCode);
     final backendMessage = _extractBackendMessage(response.data);
+    final backendCode = _extractBackendErrorCode(response.data);
+    final field = _extractField(response.data);
+    final messageAr = _extractMessageAr(response.data);
+    final messageEn = _extractMessageEn(response.data);
+    final advice = ApiErrorAdvice.fromData(
+      response.data,
+      statusCode: response.statusCode,
+      code: backendCode,
+    );
 
     return ApiException(
       errorType: errorType,
       message: backendMessage ?? errorType.translationKey,
       statusCode: response.statusCode,
       response: response.data,
-      backendErrorCode: _extractBackendErrorCode(response.data),
+      backendErrorCode: backendCode,
       isTranslationKey: backendMessage == null,
+      field: field,
+      messageAr: messageAr,
+      messageEn: messageEn,
+      advice: advice,
     );
   }
 
@@ -129,11 +143,28 @@ class ApiExceptionMapper {
     return unknown(unwrapped);
   }
 
-  static ApiException _translationKeyException(ApiErrorType errorType) {
+  static ApiException _translationKeyException(
+    ApiErrorType errorType, {
+    ApiErrorAdvice? advice,
+  }) {
+    final defaultAdvice = advice ??
+        switch (errorType) {
+          ApiErrorType.connectionTimeout ||
+          ApiErrorType.sendTimeout ||
+          ApiErrorType.receiveTimeout ||
+          ApiErrorType.noInternetConnection ||
+          ApiErrorType.badGateway ||
+          ApiErrorType.serviceUnavailable ||
+          ApiErrorType.gatewayTimeout =>
+            const ApiErrorAdvice(retryable: true),
+          _ => const ApiErrorAdvice(),
+        };
+
     return ApiException(
       errorType: errorType,
       message: errorType.translationKey,
       isTranslationKey: true,
+      advice: defaultAdvice,
     );
   }
 
@@ -292,6 +323,91 @@ class ApiExceptionMapper {
       }
     }
 
+    return null;
+  }
+
+  static String? _extractField(dynamic data) {
+    if (data is Map) {
+      for (final key in const ['field', 'targetField', 'propertyName']) {
+        final val = data[key];
+        if (val is String && val.trim().isNotEmpty) {
+          return val.trim();
+        }
+      }
+      final errors = data['errors'];
+      if (errors is Map && errors.isNotEmpty) {
+        final firstKey = errors.keys.first;
+        if (firstKey != null) {
+          return firstKey.toString();
+        }
+      }
+    }
+    return null;
+  }
+
+  static String? _extractMessageAr(dynamic data) {
+    if (data is Map) {
+      for (final key in const [
+        'messageAr',
+        'message_ar',
+        'detailAr',
+        'detail_ar',
+        'errorAr',
+        'error_ar',
+      ]) {
+        final val = data[key];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+      if (data['fridayAvailability'] is Map) {
+        final fa = data['fridayAvailability'] as Map;
+        final val = fa['messageAr'] ?? fa['message_ar'];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+      if (data['coupon'] is Map) {
+        final c = data['coupon'] as Map;
+        final val = c['messageAr'] ?? c['message_ar'];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+    }
+    return null;
+  }
+
+  static String? _extractMessageEn(dynamic data) {
+    if (data is Map) {
+      for (final key in const [
+        'messageEn',
+        'message_en',
+        'detailEn',
+        'detail_en',
+        'errorEn',
+        'error_en',
+      ]) {
+        final val = data[key];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+      if (data['fridayAvailability'] is Map) {
+        final fa = data['fridayAvailability'] as Map;
+        final val = fa['messageEn'] ?? fa['message_en'];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+      if (data['coupon'] is Map) {
+        final c = data['coupon'] as Map;
+        final val = c['messageEn'] ?? c['message_en'];
+        if (val is String && val.trim().isNotEmpty && !_isHtml(val.trim())) {
+          return val.trim();
+        }
+      }
+    }
     return null;
   }
 }

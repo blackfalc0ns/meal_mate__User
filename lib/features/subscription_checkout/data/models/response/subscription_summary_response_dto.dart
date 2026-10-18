@@ -53,6 +53,12 @@ class SubscriptionSummaryResponseDto {
     this.programName,
     this.bundleName,
     this.tierName,
+    this.subtotal,
+    this.discount,
+    this.moneyScale,
+    this.summaryExpiresAtUtc,
+    this.serverNowUtc,
+    this.blockingReasons,
   });
 
   final String? programId;
@@ -102,6 +108,13 @@ class SubscriptionSummaryResponseDto {
   final SubscriptionCouponResponseDto? coupon;
   final PaginationResponseDto? restaurantsPagination;
   final SubscriptionAvailabilityResponseDto? availability;
+  final double? subtotal;
+  final double? discount;
+  final int? moneyScale;
+  final String? summaryExpiresAtUtc;
+  final String? serverNowUtc;
+  @JsonKey(fromJson: _parseStringList)
+  final List<String>? blockingReasons;
 
   static List<String>? _parseStringList(dynamic value) {
     if (value is List) {
@@ -110,8 +123,63 @@ class SubscriptionSummaryResponseDto {
     return null;
   }
 
-  factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionSummaryResponseDtoFromJson(json);
+  factory SubscriptionSummaryResponseDto.fromJson(Map<String, dynamic> json) {
+    final dto = _$SubscriptionSummaryResponseDtoFromJson(json);
+    return SubscriptionSummaryResponseDto(
+      programId: dto.programId,
+      programNameAr: dto.programNameAr,
+      programNameEn: dto.programNameEn,
+      programName: dto.programName,
+      programImageUrl: dto.programImageUrl,
+      bundleId: dto.bundleId,
+      bundleNameAr: dto.bundleNameAr,
+      bundleNameEn: dto.bundleNameEn,
+      bundleName: dto.bundleName,
+      imageUrl: dto.imageUrl,
+      restaurantId: dto.restaurantId,
+      restaurantNameAr: dto.restaurantNameAr,
+      restaurantNameEn: dto.restaurantNameEn,
+      restaurantCount: dto.restaurantCount,
+      tier: dto.tier,
+      tierNameAr: dto.tierNameAr,
+      tierNameEn: dto.tierNameEn,
+      tierName: dto.tierName,
+      durationDays: dto.durationDays,
+      chosenStartDate: dto.chosenStartDate,
+      startDate: dto.startDate,
+      endDate: dto.endDate,
+      serviceDates: dto.serviceDates,
+      restaurantRepetition: dto.restaurantRepetition,
+      slotRequirements: dto.slotRequirements,
+      basePrice: dto.basePrice,
+      campaignDiscount: dto.campaignDiscount,
+      promoDiscount: dto.promoDiscount,
+      walletCredit: dto.walletCredit,
+      gatewayFee: dto.gatewayFee,
+      finalPrice: dto.finalPrice,
+      currencyCode: dto.currencyCode,
+      canCheckout: dto.canCheckout,
+      checkoutBlockReason: dto.checkoutBlockReason,
+      address: dto.address,
+      restaurants: dto.restaurants,
+      termsAcceptanceRequired: dto.termsAcceptanceRequired,
+      checkoutEndpoint: dto.checkoutEndpoint,
+      includeFriday: dto.includeFriday,
+      fridayDays: dto.fridayDays,
+      totalServiceDays: dto.totalServiceDays,
+      includes: dto.includes,
+      coupon: dto.coupon,
+      restaurantsPagination: dto.restaurantsPagination,
+      availability: dto.availability,
+      subtotal: (json['subtotal'] as num?)?.toDouble() ?? dto.basePrice,
+      discount: (json['discount'] as num?)?.toDouble(),
+      moneyScale: (json['moneyScale'] as num?)?.toInt() ?? 3,
+      summaryExpiresAtUtc: json['summaryExpiresAtUtc'] as String?,
+      serverNowUtc: json['serverNowUtc'] as String?,
+      blockingReasons: _parseStringList(json['blockingReasons']) ??
+          (dto.checkoutBlockReason != null ? [dto.checkoutBlockReason!] : null),
+    );
+  }
 }
 
 @JsonSerializable(createToJson: false)

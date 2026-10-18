@@ -39,8 +39,15 @@ class FamilyCheckoutRemoteDataSourceImpl
   }
 
   @override
-  Future<FamilySummaryResponseDto> getFamilySummary({String? memberId}) {
-    return _apiServices.getFamilySummary(memberId: memberId);
+  Future<FamilySummaryResponseDto> getFamilySummary({
+    String? memberId,
+    String? promoCode,
+  }) {
+    return _apiServices.getFamilySummary(
+      memberId: memberId,
+      promoCode:
+          promoCode?.trim().isNotEmpty == true ? promoCode!.trim() : null,
+    );
   }
 
   @override

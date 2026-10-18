@@ -1,20 +1,3 @@
-class OfferDetailsPlanData {
-  const OfferDetailsPlanData({
-    required this.title,
-    required this.duration,
-    required this.meals,
-    required this.originalPrice,
-    required this.discountedPrice,
-    required this.imageAsset,
-  });
-
-  final String title;
-  final String duration;
-  final String meals;
-  final String originalPrice;
-  final String discountedPrice;
-  final String imageAsset;
-}
 
 class OfferDetailsData {
   const OfferDetailsData({

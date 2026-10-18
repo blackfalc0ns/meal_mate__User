@@ -73,12 +73,24 @@ class _PromoAppliedCheckoutScreenState
         }
       }
 
+      final programId = widget.args.programId;
+      final bundleId = widget.args.bundleId;
+
+      if (programId == null ||
+          programId.isEmpty ||
+          bundleId == null ||
+          bundleId.isEmpty) {
+        if (!mounted) return;
+        Navigator.of(
+          context,
+        ).pushReplacementNamed(AppRoutes.subscriptionProgramSelection);
+        return;
+      }
+
       final checkoutUseCase = getIt<CheckoutSubscriptionUseCase>();
       final request = PaymentCheckoutRequestEntity(
-        programId:
-            widget.args.programId ?? 'c4d15678-e123-4567-8901-123456789abc',
-        bundleId:
-            widget.args.bundleId ?? 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
+        programId: programId,
+        bundleId: bundleId,
         tier: widget.args.tier ?? '0',
         durationDays: widget.args.durationDays,
         startDate: DateTime.now()

@@ -20,6 +20,7 @@ class OfferEntity {
     this.programIds = const [],
     this.bundleIds = const [],
     this.restaurantIds = const [],
+    this.allowedDurationDays = const [],
   });
 
   final String id;
@@ -42,6 +43,7 @@ class OfferEntity {
   final List<String> programIds;
   final List<String> bundleIds;
   final List<String> restaurantIds;
+  final List<int> allowedDurationDays;
 
   String title(String languageCode) =>
       languageCode == 'ar' ? nameAr : (nameEn.isNotEmpty ? nameEn : nameAr);

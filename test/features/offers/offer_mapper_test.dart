@@ -42,6 +42,17 @@ void main() {
       expect(entity.isExpired, false);
     });
 
+    test('maps server allowed durations without inventing package options', () {
+      final dto = OfferResponseDto(
+        id: 'offer-durations',
+        allowedDurationDays: [30, 60, 90],
+      );
+
+      final entity = dto.toEntity();
+
+      expect(entity.allowedDurationDays, [30, 60, 90]);
+    });
+
     test('OfferResponseDto toEntity mapping with null/fallback values', () {
       final dto = OfferResponseDto(id: 'offer-2');
       final entity = dto.toEntity();

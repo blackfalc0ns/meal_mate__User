@@ -28,6 +28,7 @@ extension OfferResponseDtoMapper on OfferResponseDto {
       programIds: programIds ?? const [],
       bundleIds: bundleIds ?? const [],
       restaurantIds: restaurantIds ?? const [],
+      allowedDurationDays: allowedDurationDays ?? const [],
     );
   }
 }

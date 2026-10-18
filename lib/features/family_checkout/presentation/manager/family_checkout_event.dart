@@ -66,3 +66,13 @@ class UpdateMemberStartDateEvent extends FamilyCheckoutEvent {
   final String memberId;
   final String startDate;
 }
+
+class ApplyFamilyCouponEvent extends FamilyCheckoutEvent {
+  const ApplyFamilyCouponEvent(this.promoCode);
+
+  final String promoCode;
+}
+
+class RemoveFamilyCouponEvent extends FamilyCheckoutEvent {
+  const RemoveFamilyCouponEvent();
+}

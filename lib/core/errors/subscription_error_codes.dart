@@ -19,12 +19,28 @@ class SubscriptionErrorCodes {
   /// Error code when address is required.
   static const String addressRequired = 'checkout.address_required';
 
+  /// Error code when family address is required.
+  static const String familyAddressRequired = 'family.address_required';
+
   /// Error code when allergies are required.
   static const String allergiesRequired = 'checkout.allergies_required';
+  static const String allergiesRequiredBare = 'allergies_required';
 
   /// Error code when dietary preferences are required.
   static const String dietaryPreferencesRequired =
       'checkout.dietary_preferences_required';
+  static const String dietaryPreferencesRequiredBare =
+      'dietary_preferences_required';
+
+  /// Error code when capacity reservation hold has expired.
+  static const String capacityHoldExpired = 'checkout.capacity_hold_expired';
+
+  /// Error code when family coupon is rejected.
+  static const String familyCouponRejected = 'family.coupon_rejected';
+
+  /// Error code when family coupon context is unavailable.
+  static const String familyCouponContextUnavailable =
+      'family.coupon_context_unavailable';
 
   /// Error code when an existing active subscription is present.
   static const String existingSubscription = 'checkout.existing_subscription';

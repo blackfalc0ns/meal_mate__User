@@ -470,6 +470,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
           final normalizedStatus = status.paymentStatus.trim().toLowerCase();
 
           if (normalizedStatus == 'suspendedforreview' ||
+              normalizedStatus == 'reviewrequired' ||
               (state.isReviewRequired && !status.isPaid && !status.isFailed)) {
             final customerId = await _tokenService?.getCurrentUserId() ?? '';
             if (customerId.isNotEmpty) {
@@ -495,7 +496,13 @@ class PaymentViewModel extends Cubit<PaymentState> {
             return;
           }
 
-          if (normalizedStatus == 'paymentfailed' || status.isFailed) {
+          if (normalizedStatus == 'paymentfailed' ||
+              normalizedStatus == 'failed' ||
+              normalizedStatus == 'expired' ||
+              normalizedStatus == 'cancelled' ||
+              normalizedStatus == 'refunded' ||
+              normalizedStatus == 'partiallyrefunded' ||
+              status.isFailed) {
             final customerId = await _tokenService?.getCurrentUserId() ?? '';
             if (customerId.isNotEmpty) {
               final attempt = await _paymentAttemptStore?.readForCustomer(
@@ -505,7 +512,9 @@ class PaymentViewModel extends Cubit<PaymentState> {
                 await _paymentAttemptStore?.save(
                   attempt.copyWith(
                     reviewRequired: false,
-                    lastPresentedFinalStatus: 'failed',
+                    lastPresentedFinalStatus: normalizedStatus == 'expired'
+                        ? 'expired'
+                        : 'failed',
                   ),
                 );
               }

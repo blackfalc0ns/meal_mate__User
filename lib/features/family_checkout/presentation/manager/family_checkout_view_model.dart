@@ -51,9 +51,11 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
     required String? batchId,
     required int? batchVersion,
     required double amount,
-    required int paymentMethodId,
+    required int? paymentMethodId,
+    String? promoCode,
   }) {
-    final intentSignature = '$batchId-$batchVersion-$amount-$paymentMethodId';
+    final intentSignature =
+        '$batchId-$batchVersion-$amount-$paymentMethodId-$promoCode';
     if (_lastIdempotencyKey != null &&
         _lastIntentSignature == intentSignature) {
       return _lastIdempotencyKey!;
@@ -86,7 +88,46 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
         unawaited(_retryFamilyPayment(event));
       case UpdateMemberStartDateEvent():
         unawaited(_updateMemberStartDate(event.memberId, event.startDate));
+      case ApplyFamilyCouponEvent():
+        unawaited(_applyCoupon(event.promoCode));
+      case RemoveFamilyCouponEvent():
+        unawaited(_removeCoupon());
     }
+  }
+
+  Future<void> _applyCoupon(String promoCode) async {
+    final trimmed = promoCode.trim().toUpperCase();
+    if (trimmed.isEmpty) return;
+    _invalidateQuoteAndIdempotency();
+    emit(
+      state.copyWith(
+        isCouponLoading: true,
+        appliedPromoCode: trimmed,
+        clearFailure: true,
+      ),
+    );
+    await _getFamilySummary(
+      memberId: state.selectedSummaryMemberId,
+      promoCode: trimmed,
+    );
+    emit(state.copyWith(isCouponLoading: false));
+  }
+
+  Future<void> _removeCoupon() async {
+    _invalidateQuoteAndIdempotency();
+    emit(
+      state.copyWith(
+        isCouponLoading: true,
+        clearAppliedPromoCode: true,
+        clearFailure: true,
+      ),
+    );
+    await _getFamilySummary(
+      memberId: state.selectedSummaryMemberId,
+      promoCode: null,
+      explicitClearCoupon: true,
+    );
+    emit(state.copyWith(isCouponLoading: false));
   }
 
   Future<void> _retryFamilyPayment(
@@ -104,6 +145,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
       batchVersion: batchVersion,
       amount: summary?.finalPrice ?? 0,
       paymentMethodId: event.paymentMethodId,
+      promoCode: state.appliedPromoCode,
     );
     emit(state.copyWith(isRetryLoading: true, clearFailure: true));
     final result = await retryUseCase(
@@ -114,6 +156,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
       batchId: batchId,
       batchVersion: batchVersion,
       idempotencyKey: key,
+      promoCode: state.appliedPromoCode,
     );
     switch (result) {
       case ApiSuccessResult():
@@ -207,8 +250,14 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
     }
   }
 
-  Future<void> _getFamilySummary({String? memberId}) async {
+  Future<void> _getFamilySummary({
+    String? memberId,
+    String? promoCode,
+    bool explicitClearCoupon = false,
+  }) async {
     final reqId = ++_summaryRequestId;
+    final effectivePromo =
+        explicitClearCoupon ? null : (promoCode ?? state.appliedPromoCode);
     emit(
       state.copyWith(
         isSummaryLoading: true,
@@ -216,7 +265,10 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
         clearFailure: true,
       ),
     );
-    final result = await _getFamilySummaryUseCase(memberId: memberId);
+    final result = await _getFamilySummaryUseCase(
+      memberId: memberId,
+      promoCode: effectivePromo,
+    );
     if (isClosed || reqId != _summaryRequestId) return;
     switch (result) {
       case ApiSuccessResult():
@@ -296,6 +348,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
       batchVersion: summary?.batchVersion,
       amount: summary?.finalPrice ?? 0.0,
       paymentMethodId: paymentMethodId,
+      promoCode: state.appliedPromoCode,
     );
     emit(state.copyWith(isCheckoutLoading: true, clearFailure: true));
     final result = await _checkoutFamilySubscriptionUseCase(
@@ -306,6 +359,7 @@ class FamilyCheckoutViewModel extends Cubit<FamilyCheckoutState> {
       batchId: summary?.batchId,
       batchVersion: summary?.batchVersion,
       idempotencyKey: key,
+      promoCode: state.appliedPromoCode,
       clientContractVersion: 1,
     );
     switch (result) {

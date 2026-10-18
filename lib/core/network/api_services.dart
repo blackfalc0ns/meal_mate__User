@@ -831,6 +831,7 @@ abstract class ApiServices {
   @GET(EndPoints.familySubscriptionFlowSummary)
   Future<FamilySummaryResponseDto> getFamilySummary({
     @Query('memberId') String? memberId,
+    @Query('promoCode') String? promoCode,
   });
 
   @GET(EndPoints.familySubscriptionFlowPaymentMethods)

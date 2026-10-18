@@ -40,6 +40,7 @@ class OfferResponseDto {
     this.programIds,
     this.bundleIds,
     this.restaurantIds,
+    this.allowedDurationDays,
   });
 
   final String? id;
@@ -77,6 +78,7 @@ class OfferResponseDto {
   final List<String>? programIds;
   final List<String>? bundleIds;
   final List<String>? restaurantIds;
+  final List<int>? allowedDurationDays;
 
   factory OfferResponseDto.fromJson(Map<String, dynamic> json) =>
       _$OfferResponseDtoFromJson(json);

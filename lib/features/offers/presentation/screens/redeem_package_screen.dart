@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -9,72 +11,17 @@ import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_countdown_timer_widget.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
-import 'package:meal_meat_user/features/offers/presentation/widgets/package_tier_radio_card.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
 
-class RedeemPackageScreen extends StatefulWidget {
+class RedeemPackageScreen extends StatelessWidget {
   const RedeemPackageScreen({super.key, required this.offer});
 
   final OfferEntity offer;
-
-  @override
-  State<RedeemPackageScreen> createState() => _RedeemPackageScreenState();
-}
-
-class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
-  int _selectedDurationDays = 26;
-
-  @override
-  void initState() {
-    super.initState();
-    // Default to minSubscriptionDays if specified, else 26
-    if (widget.offer.minSubscriptionDays != null &&
-        widget.offer.minSubscriptionDays! > 0) {
-      _selectedDurationDays = widget.offer.minSubscriptionDays!;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
     final lang = Localizations.localeOf(context).languageCode;
-    final offer = widget.offer;
-
-    final packages = [
-      _PackageConfig(
-        durationDays: 26,
-        title: locale.offer_package_month_title,
-        basePrice: 52.000,
-        mealsPerDay: 4,
-      ),
-      _PackageConfig(
-        durationDays: 13,
-        title: locale.offer_package_half_month_title,
-        basePrice: 26.000,
-        mealsPerDay: 4,
-      ),
-      _PackageConfig(
-        durationDays: 6,
-        title: locale.offer_package_week_title,
-        basePrice: 14.500,
-        mealsPerDay: 4,
-      ),
-    ];
-
-    final selectedConfig = packages.firstWhere(
-      (p) => p.durationDays == _selectedDurationDays,
-      orElse: () => packages.first,
-    );
-
-    final discountValue = _calculateDiscount(
-      selectedConfig.basePrice,
-      selectedConfig.durationDays,
-    );
-    final finalPrice = (selectedConfig.basePrice - discountValue).clamp(
-      0.0,
-      double.infinity,
-    );
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -178,29 +125,21 @@ class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
                                 color: color.onSurfaceVariant,
                               ),
                             ),
-                            Text(
-                              offer.promoCode!,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size14,
-                                color: color.primary,
+                            Expanded(
+                              child: Text(
+                                offer.promoCode!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size14,
+                                  color: color.primary,
+                                ),
                               ),
                             ),
-                            const Spacer(),
+                            const SizedBox(width: Spacing.sm),
                             InkWell(
-                              onTap: () {
-                                Clipboard.setData(
-                                  ClipboardData(text: offer.promoCode!),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      locale.offer_details_copy_code,
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                );
-                              },
+                              onTap: () => _copyCode(context),
                               child: Padding(
                                 padding: const EdgeInsets.all(Spacing.xs),
                                 child: Icon(
@@ -216,52 +155,82 @@ class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
                     ],
 
                     const SizedBox(height: Spacing.lg),
-                    Text(
-                      locale.offer_redeem_select_package_title,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size15,
-                        color: color.onSurface,
+                    // Instructions Card
+                    Container(
+                      padding: const EdgeInsets.all(Spacing.md),
+                      decoration: BoxDecoration(
+                        color: color.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(Spacing.md),
+                        border: Border.all(color: color.outlineVariant),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline_rounded,
+                                color: color.primary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: Spacing.sm),
+                              Text(
+                                locale.offer_details_title,
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size14,
+                                  color: color.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: Spacing.sm),
+                          Text(
+                            locale.offer_details_info_terms_description,
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size13,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: Spacing.md),
 
-                    // Package Tier Selection Cards
-                    ...packages.map((pkg) {
-                      final isEligible = _checkEligibility(pkg.durationDays);
-                      final discount = _calculateDiscount(
-                        pkg.basePrice,
-                        pkg.durationDays,
-                      );
-                      final discPrice = isEligible
-                          ? (pkg.basePrice - discount).clamp(
-                              0.0,
-                              double.infinity,
-                            )
-                          : pkg.basePrice;
-                      final percent = (isEligible && pkg.basePrice > 0)
-                          ? ((discount / pkg.basePrice) * 100).round()
-                          : 0;
-
-                      return PackageTierRadioCard(
-                        title: pkg.title,
-                        originalPrice: pkg.basePrice,
-                        discountedPrice: discPrice,
-                        discountPercent: percent,
-                        isSelected: _selectedDurationDays == pkg.durationDays,
-                        isEligible: isEligible,
-                        ineligibilityReason: !isEligible
-                            ? locale.offer_redeem_min_days_notice(
-                                offer.minSubscriptionDays.toString(),
-                              )
-                            : null,
-                        onTap: () {
-                          setState(() {
-                            _selectedDurationDays = pkg.durationDays;
-                          });
-                        },
-                      );
-                    }),
+                    if (offer.terms(lang) != null &&
+                        offer.terms(lang)!.isNotEmpty) ...[
+                      const SizedBox(height: Spacing.md),
+                      Container(
+                        padding: const EdgeInsets.all(Spacing.md),
+                        decoration: BoxDecoration(
+                          color: color.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(Spacing.md),
+                          border: Border.all(color: color.outlineVariant),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              locale.offer_details_info_terms_label,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size14,
+                                color: color.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: Spacing.xs),
+                            Text(
+                              offer.terms(lang)!,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size12,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -280,57 +249,15 @@ class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        locale.offer_redeem_total_after_discount,
-                        style: getMediumStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size14,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                      Text(
-                        '${finalPrice.toStringAsFixed(3)} ${locale.currency_kwd}',
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size18,
-                          color: color.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: Spacing.md),
-                  AppButton(
-                    text: locale.offer_redeem_proceed_button,
-                    onPressed: () => _proceedToCheckout(
-                      context,
-                      selectedConfig,
-                      discountValue,
-                      finalPrice,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.xs),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.lock_outline, size: 14, color: color.outline),
-                      const SizedBox(width: 4),
-                      Text(
-                        locale.offer_redeem_safe_payment_notice,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.outline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              child: AppButton(
+                text: _buttonTitle(locale),
+                onPressed: () => _navigateToSubscriptionCatalog(context),
+                height: Spacing.buttonHeight,
+                borderRadius: Spacing.radiusMd,
+                gradient: LinearGradient(
+                  colors: [color.primary, color.tertiary],
+                ),
+                textColor: color.onPrimary,
               ),
             ),
           ],
@@ -339,64 +266,41 @@ class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
     );
   }
 
-  bool _checkEligibility(int durationDays) {
-    if (widget.offer.minSubscriptionDays != null) {
-      return durationDays >= widget.offer.minSubscriptionDays!;
+  String _buttonTitle(dynamic locale) {
+    if (offer.bundleIds.isNotEmpty && offer.programIds.isEmpty) {
+      return locale.family_packages_header_title;
     }
-    return true;
+    if (offer.programIds.isNotEmpty && offer.bundleIds.isEmpty) {
+      return locale.offer_details_open_plans_button;
+    }
+    return locale.subscription_type_title;
   }
 
-  double _calculateDiscount(double basePrice, int durationDays) {
-    if (!_checkEligibility(durationDays)) return 0.0;
-
-    if (widget.offer.discountRate != null && widget.offer.discountRate! > 0) {
-      return basePrice * widget.offer.discountRate!;
-    }
-    if (widget.offer.discountAmount != null &&
-        widget.offer.discountAmount! > 0) {
-      return widget.offer.discountAmount!;
-    }
-    return 0.0;
-  }
-
-  void _proceedToCheckout(
-    BuildContext context,
-    _PackageConfig config,
-    double discountAmount,
-    double finalPrice,
-  ) {
-    final checkoutArgs = OfferCheckoutArgs(
-      offer: widget.offer,
-      durationDays: config.durationDays,
-      packageName: config.title,
-      mealsPerDay: config.mealsPerDay,
-      originalPriceKwd: config.basePrice,
-      discountAmountKwd: discountAmount,
-      finalPriceKwd: finalPrice,
-      programId: widget.offer.programIds.isNotEmpty
-          ? widget.offer.programIds.first
-          : null,
-      bundleId: widget.offer.bundleIds.isNotEmpty
-          ? widget.offer.bundleIds.first
-          : null,
+  void _copyCode(BuildContext context) {
+    if (offer.promoCode == null || offer.promoCode!.isEmpty) return;
+    unawaited(Clipboard.setData(ClipboardData(text: offer.promoCode!)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.localization.offer_details_copy_code),
+        duration: const Duration(seconds: 2),
+      ),
     );
-
-    Navigator.of(
-      context,
-    ).pushNamed(AppRoutes.promoCheckout, arguments: checkoutArgs);
   }
-}
 
-class _PackageConfig {
-  const _PackageConfig({
-    required this.durationDays,
-    required this.title,
-    required this.basePrice,
-    required this.mealsPerDay,
-  });
-
-  final int durationDays;
-  final String title;
-  final double basePrice;
-  final int mealsPerDay;
+  void _navigateToSubscriptionCatalog(BuildContext context) {
+    _copyCode(context);
+    if (offer.bundleIds.isNotEmpty && offer.programIds.isEmpty) {
+      unawaited(
+        Navigator.of(context).pushNamed(AppRoutes.familyPackageSelection),
+      );
+      return;
+    }
+    if (offer.programIds.isNotEmpty && offer.bundleIds.isEmpty) {
+      unawaited(
+        Navigator.of(context).pushNamed(AppRoutes.subscriptionProgramSelection),
+      );
+      return;
+    }
+    unawaited(Navigator.of(context).pushNamed(AppRoutes.subscriptions));
+  }
 }

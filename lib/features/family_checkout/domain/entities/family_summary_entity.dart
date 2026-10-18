@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_coupon_entity.dart';
+
 class FamilySummaryMemberEntity {
   final String memberId;
   final String displayName;
@@ -274,12 +276,16 @@ class FamilySummaryEntity {
   final String? familyName;
   final String? selectedMemberId;
   final double subtotal;
+  final double discount;
   final double familyDiscountPercent;
   final double familyDiscountAmount;
+  final double walletCredit;
+  final double gatewayFee;
   final double finalPrice;
   final String currencyCode;
   final bool canCheckout;
   final String? checkoutBlockReason;
+  final List<String> blockingReasons;
   final bool managerPrepaid;
   final String? managerSubscriptionId;
   final int newMembersCount;
@@ -312,18 +318,26 @@ class FamilySummaryEntity {
   final bool isInitialPurchaseOrReactivation;
   final FamilySummaryAvailabilityEntity? availability;
   final FamilyMemberRestaurantRepetitionEntity? restaurantRepetition;
+  final String? summaryExpiresAtUtc;
+  final String? serverNowUtc;
+  final SubscriptionCouponEntity? coupon;
+  final String? promoCode;
 
   const FamilySummaryEntity({
     this.familyGroupId,
     this.familyName,
     this.selectedMemberId,
     required this.subtotal,
+    this.discount = 0.0,
     required this.familyDiscountPercent,
     required this.familyDiscountAmount,
+    this.walletCredit = 0.0,
+    this.gatewayFee = 0.0,
     required this.finalPrice,
     this.currencyCode = 'KWD',
     required this.canCheckout,
     this.checkoutBlockReason,
+    this.blockingReasons = const [],
     this.managerPrepaid = false,
     this.managerSubscriptionId,
     this.newMembersCount = 0,
@@ -356,6 +370,10 @@ class FamilySummaryEntity {
     this.isInitialPurchaseOrReactivation = true,
     this.availability,
     this.restaurantRepetition,
+    this.summaryExpiresAtUtc,
+    this.serverNowUtc,
+    this.coupon,
+    this.promoCode,
   });
 
   /// The scope of new subscriptions on this checkout invoice.

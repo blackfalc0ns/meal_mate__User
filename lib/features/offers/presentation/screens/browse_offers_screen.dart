@@ -40,9 +40,9 @@ class _BrowseOffersContent extends StatelessWidget {
 
     final tabLabels = [
       locale.offer_browse_tab_all,
-      locale.offer_browse_tab_offers,
-      locale.offer_browse_tab_restaurants,
       locale.offer_browse_tab_subscriptions,
+      locale.offer_browse_tab_restaurants,
+      locale.offer_browse_tab_offers,
     ];
 
     return Scaffold(

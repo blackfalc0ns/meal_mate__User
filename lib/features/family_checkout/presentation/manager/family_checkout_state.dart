@@ -20,6 +20,8 @@ class FamilyCheckoutState {
     this.isRetryLoading = false,
     this.checkoutResult,
     this.failure,
+    this.appliedPromoCode,
+    this.isCouponLoading = false,
   });
 
   final bool isCurrentFlowLoading;
@@ -39,6 +41,8 @@ class FamilyCheckoutState {
   final PaymentCheckoutEntity? checkoutResult;
 
   final Failure? failure;
+  final String? appliedPromoCode;
+  final bool isCouponLoading;
 
   bool get isLoading =>
       isCurrentFlowLoading ||
@@ -100,6 +104,9 @@ class FamilyCheckoutState {
     bool clearCheckoutResult = false,
     Failure? failure,
     bool clearFailure = false,
+    String? appliedPromoCode,
+    bool clearAppliedPromoCode = false,
+    bool? isCouponLoading,
   }) {
     return FamilyCheckoutState(
       isCurrentFlowLoading: isCurrentFlowLoading ?? this.isCurrentFlowLoading,
@@ -121,6 +128,10 @@ class FamilyCheckoutState {
           ? null
           : (checkoutResult ?? this.checkoutResult),
       failure: clearFailure ? null : (failure ?? this.failure),
+      appliedPromoCode: clearAppliedPromoCode
+          ? null
+          : (appliedPromoCode ?? this.appliedPromoCode),
+      isCouponLoading: isCouponLoading ?? this.isCouponLoading,
     );
   }
 }

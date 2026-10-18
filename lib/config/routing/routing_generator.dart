@@ -501,14 +501,10 @@ class RouteGenerator {
       case AppRoutes.redeemPackage:
         final offer = settings.arguments is OfferEntity
             ? settings.arguments! as OfferEntity
-            : const OfferEntity(
-                id: 'default-offer',
-                nameAr: 'عرض خاص',
-                nameEn: 'Special Offer',
-                descriptionAr: 'خصم مميز على باقات الوجبات',
-                descriptionEn: 'Special meal package discount',
-                discountRate: 0.20,
-              );
+            : null;
+        if (offer == null) {
+          return _buildRoute(settings: settings, page: const OffersScreen());
+        }
         return _buildRoute(
           settings: settings,
           page: RedeemPackageScreen(offer: offer),

@@ -12,10 +12,10 @@ class OfferDetailsViewModel extends Cubit<OfferDetailsState> {
 
   final GetCustomerOfferDetailsUseCase _getOfferDetailsUseCase;
 
-  void doIntent(OfferDetailsEvent event) {
+  Future<void> doIntent(OfferDetailsEvent event) async {
     switch (event) {
       case LoadOfferDetailsEvent(:final offerId):
-        _loadOfferDetails(offerId);
+        await _loadOfferDetails(offerId);
     }
   }
 

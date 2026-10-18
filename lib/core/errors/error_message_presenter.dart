@@ -18,6 +18,15 @@ class ErrorMessagePresenter {
       return couponMessage;
     }
 
+    final bilingualMessage = _tryExtractBilingualMessage(
+      context,
+      messageAr: failure.messageAr ?? failure.exception.messageAr,
+      messageEn: failure.messageEn ?? failure.exception.messageEn,
+    );
+    if (bilingualMessage != null) {
+      return bilingualMessage;
+    }
+
     for (final candidate in [
       failure.code,
       failure.exception.backendErrorCode,
@@ -64,6 +73,15 @@ class ErrorMessagePresenter {
       return context.localization.error_forbidden;
     }
 
+    final bilingualMessage = _tryExtractBilingualMessage(
+      context,
+      messageAr: exception.messageAr,
+      messageEn: exception.messageEn,
+    );
+    if (bilingualMessage != null) {
+      return bilingualMessage;
+    }
+
     final backendCodeMessage = localizedBackendCodeMessage(context, exception);
     if (backendCodeMessage != null) {
       return backendCodeMessage;
@@ -75,6 +93,28 @@ class ErrorMessagePresenter {
     }
 
     return mapFailureMessage(context, exception.errorType.translationKey);
+  }
+
+  static String? _tryExtractBilingualMessage(
+    BuildContext context, {
+    String? messageAr,
+    String? messageEn,
+  }) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final preferred = isArabic ? messageAr : messageEn;
+    final fallback = isArabic ? messageEn : messageAr;
+
+    final candidate = (preferred != null && preferred.trim().isNotEmpty)
+        ? preferred
+        : (fallback != null && fallback.trim().isNotEmpty)
+            ? fallback
+            : null;
+
+    if (candidate != null) {
+      final sanitized = sanitizeBackendMessage(candidate);
+      if (sanitized != null) return sanitized;
+    }
+    return null;
   }
 
   static String? _tryExtractCouponMessage(

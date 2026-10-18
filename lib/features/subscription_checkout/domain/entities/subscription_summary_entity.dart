@@ -46,6 +46,10 @@ class SubscriptionSummaryEntity {
     this.coupon,
     this.restaurantsPagination,
     this.availability,
+    this.moneyScale = 3,
+    this.summaryExpiresAtUtc,
+    this.serverNowUtc,
+    this.blockingReasons = const [],
   });
 
   final String programId;
@@ -90,6 +94,16 @@ class SubscriptionSummaryEntity {
   final SubscriptionCouponEntity? coupon;
   final PaginationEntity? restaurantsPagination;
   final SubscriptionAvailabilityEntity? availability;
+  final int moneyScale;
+  final String? summaryExpiresAtUtc;
+  final String? serverNowUtc;
+  final List<String> blockingReasons;
+
+  /// Enforce subtotal = basePrice
+  double get subtotal => basePrice;
+
+  /// Enforce discount = campaignDiscount + promoDiscount (never add coupon discount twice)
+  double get discount => campaignDiscount + promoDiscount;
 
   String programName(String localeName) =>
       localeName == 'ar' ? programNameAr : programNameEn;
@@ -163,6 +177,10 @@ class SubscriptionSummaryEntity {
       restaurantsPagination:
           restaurantsPagination ?? this.restaurantsPagination,
       availability: availability,
+      moneyScale: moneyScale,
+      summaryExpiresAtUtc: summaryExpiresAtUtc,
+      serverNowUtc: serverNowUtc,
+      blockingReasons: blockingReasons,
     );
   }
 }

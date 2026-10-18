@@ -469,7 +469,11 @@ import '../../features/offers/data/data_source/offers_remote_data_source.dart'
 import '../../features/offers/data/data_source/offers_remote_data_source_impl.dart'
     as _i642;
 import '../../features/offers/data/repo/offers_repository_impl.dart' as _i59;
+import '../../features/offers/data/services/advertising_event_tracker_impl.dart'
+    as _i624;
 import '../../features/offers/domain/repo/offers_repository.dart' as _i1067;
+import '../../features/offers/domain/services/advertising_event_tracker.dart'
+    as _i912;
 import '../../features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart'
     as _i885;
 import '../../features/offers/domain/usecase/evaluate_offer_usecase.dart'
@@ -713,6 +717,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i912.AdvertisingEventTracker>(
+      () => _i624.AdvertisingEventTrackerImpl(),
     );
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
@@ -1812,6 +1819,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i656.GetSubscriptionRestaurantAvailabilityUseCase>(),
       ),
     );
+    gh.factory<_i603.FamilyAddressesViewModel>(
+      () => _i603.FamilyAddressesViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i41.FamilyFlowSnapshotStore>(),
+        gh<_i643.AddFamilyMemberAddressUseCase>(),
+      ),
+    );
     gh.factory<_i502.GetInfluencerAnalyticsUseCase>(
       () => _i502.GetInfluencerAnalyticsUseCase(
         gh<_i588.InfluencerAnalyticsRepository>(),
@@ -1822,12 +1836,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i356.GetFamilyMembersUseCase>(
       () => _i356.GetFamilyMembersUseCase(gh<_i800.FamilyOverviewRepository>()),
-    );
-    gh.factory<_i603.FamilyAddressesViewModel>(
-      () => _i603.FamilyAddressesViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i41.FamilyFlowSnapshotStore>(),
-      ),
     );
     gh.factory<_i760.InfluencerDashboardViewModel>(
       () => _i760.InfluencerDashboardViewModel(
@@ -2040,6 +2048,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i757.LogoutUseCase>(),
         gh<_i227.TokenService>(),
         gh<_i43.BiometricService>(),
+        gh<_i378.CustomerDeliveryRealtimeService>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

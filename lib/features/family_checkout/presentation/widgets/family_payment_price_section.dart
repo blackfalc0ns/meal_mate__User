@@ -69,6 +69,14 @@ class FamilyPaymentPriceSection extends StatelessWidget {
             value: '-${formatFamilyPrice(data.familyDiscountAmount)}',
             isDiscount: true,
           ),
+        if (data.coupon != null &&
+            data.coupon!.isValid &&
+            data.coupon!.discountAmount > 0)
+          FamilyPaymentPriceRowUiModel(
+            label: '${locale.offer_details_code_label} (${data.coupon!.code})',
+            value: '-${formatFamilyPrice(data.coupon!.discountAmount)}',
+            isDiscount: true,
+          ),
         FamilyPaymentPriceRowUiModel(
           label: locale.family_total,
           value: formatFamilyPrice(data.finalPrice),

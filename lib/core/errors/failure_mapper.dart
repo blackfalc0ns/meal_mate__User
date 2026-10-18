@@ -171,15 +171,23 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.calendar_quota_exhausted;
     case 'checkout.allergies_required':
     case 'family.allergies_required':
+    case 'allergies_required':
       return locale.checkout_allergies_required;
     case 'checkout.dietary_preferences_required':
+    case 'family.dietary_preferences_required':
+    case 'dietary_preferences_required':
       return locale.checkout_dietary_preferences_required;
     case 'checkout.existing_subscription':
       return locale.checkout_existing_subscription;
     case 'checkout.coupon_rejected':
+    case 'family.coupon_rejected':
       return locale.coupon_error_rejected;
     case 'checkout.coupon_no_longer_valid':
+    case 'family.coupon_context_unavailable':
       return locale.coupon_error_no_longer_valid;
+    case 'checkout.capacity_hold_expired':
+    case 'capacity_hold_expired':
+      return locale.billing_uncompleted_hold_expired;
     case 'checkout.coupon_full_discount_unsupported':
       return locale.coupon_error_full_discount_unsupported;
     case 'valid':

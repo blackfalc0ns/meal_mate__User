@@ -11,6 +11,7 @@ import 'package:meal_meat_user/features/family_checkout/presentation/widgets/fam
 import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_schedule_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_program_stepper.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_setup_header_badge.dart';
+import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_coupon_card.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_member_content_loading_skeleton.dart';
 
@@ -71,6 +72,8 @@ class FamilyPaymentContent extends StatelessWidget {
                       const FamilyMemberRestaurantsCard(),
                       const SizedBox(height: Spacing.lg),
                       FamilyPaymentScheduleSection(state: state),
+                      const SizedBox(height: Spacing.lg),
+                      const FamilyCouponCard(),
                       FamilyPaymentPriceSection(summary: state.summary),
                       FamilyPaymentMealOverviewSection(
                         summary: state.summary,
