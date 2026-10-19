@@ -99,6 +99,70 @@ void main() {
   );
 
   test(
+    'changing start date keeps content and skips payment methods reload',
+    () async {
+      final repository = _CheckoutRepository();
+      final saveCompleter = Completer<ApiResult<void>>();
+      repository.saveStartDateCompleter = saveCompleter;
+      repository.summaryResultBuilder = (memberId, promoCode) =>
+          const ApiSuccessResult(
+            data: FamilySummaryEntity(
+              subtotal: 100,
+              familyDiscountPercent: 0,
+              familyDiscountAmount: 0,
+              finalPrice: 100,
+              canCheckout: true,
+            ),
+          );
+      final viewModel = FamilyCheckoutViewModel(
+        GetFamilyFlowCurrentUseCase(_FlowRepository()),
+        GetFamilySummaryUseCase(repository),
+        GetFamilyPaymentMethodsUseCase(repository),
+        CheckoutFamilySubscriptionUseCase(repository),
+        SelectFamilyMemberCheckoutUseCase(repository),
+        SaveFamilyMemberStartDateUseCase(repository),
+      );
+      addTearDown(viewModel.close);
+      viewModel.emit(
+        const FamilyCheckoutState(
+          summary: FamilySummaryEntity(
+            subtotal: 100,
+            familyDiscountPercent: 0,
+            familyDiscountAmount: 0,
+            finalPrice: 100,
+            canCheckout: true,
+          ),
+          selectedSummaryMemberId: 'mem-1',
+          selectedPaymentMethod: PaymentMethodEntity(
+            id: 3,
+          type: PaymentMethodType.payzah,
+            title: 'Payzah',
+            subtitle: '',
+            isAvailable: true,
+          ),
+        ),
+      );
+      viewModel.doIntent(
+        const UpdateMemberStartDateEvent(
+          memberId: 'mem-1',
+          startDate: '2026-10-27',
+        ),
+      );
+      expect(viewModel.state.isStartDateSaving, isTrue);
+      expect(viewModel.state.isSummaryLoading, isFalse);
+      expect(viewModel.state.summary, isNotNull);
+      expect(viewModel.state.selectedPaymentMethod, isNull);
+
+      saveCompleter.complete(const ApiSuccessResult(data: null));
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+      expect(repository.summaryCalls, ['mem-1']);
+      expect(repository.paymentMethodsCallsCount, 0);
+      expect(viewModel.state.isStartDateSaving, isFalse);
+      expect(viewModel.state.isSummaryLoading, isFalse);
+    },
+  );
+
+  test(
     'coupon application failure does not retain appliedPromoCode as confirmed',
     () async {
       final repository = _CheckoutRepository();
@@ -271,8 +335,10 @@ class _CheckoutRepository implements FamilyCheckoutRepository {
   final List<String?> summaryCalls = [];
   int retryCallsCount = 0;
   int checkoutCallsCount = 0;
+  int paymentMethodsCallsCount = 0;
 
   ApiResult<void>? saveStartDateResult;
+  Completer<ApiResult<void>>? saveStartDateCompleter;
   ApiResult<FamilySummaryEntity> Function(String? memberId, String? promoCode)?
   summaryResultBuilder;
   final Map<String, Completer<ApiResult<FamilyCheckoutSelectionEntity>>>
@@ -311,6 +377,7 @@ class _CheckoutRepository implements FamilyCheckoutRepository {
     required String memberId,
     required String startDate,
   }) async {
+    if (saveStartDateCompleter != null) return saveStartDateCompleter!.future;
     return saveStartDateResult ?? const ApiSuccessResult(data: null);
   }
 
@@ -395,6 +462,7 @@ class _CheckoutRepository implements FamilyCheckoutRepository {
   Future<ApiResult<List<PaymentMethodEntity>>> getFamilyPaymentMethods(
     double amount,
   ) async {
+    paymentMethodsCallsCount++;
     return const ApiSuccessResult(data: []);
   }
 

@@ -7510,4 +7510,25 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get offers_error_customer_unavailable =>
       'العرض المطلوب غير متاح أو تم إيقافه';
+
+  @override
+  String get family_member_total_selections_title => 'إجمالي الاختيارات';
+
+  @override
+  String get family_member_completed_days_label => 'أيام مكتملة';
+
+  @override
+  String get family_member_edit_package => 'تعديل الباقة';
+
+  @override
+  String get family_member_package_card_title => 'الباقة';
+
+  @override
+  String get family_member_primary_member_label => 'عضو أساسي';
+
+  @override
+  String get family_member_program_default_subtitle => 'وجبات متكاملة ومتنوعة';
+
+  @override
+  String get family_member_package_default_subtitle => '4 وجبات + سناك';
 }

@@ -7629,4 +7629,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offers_error_customer_unavailable =>
       'Requested offer is unavailable';
+
+  @override
+  String get family_member_total_selections_title => 'Total selections';
+
+  @override
+  String get family_member_completed_days_label => 'Completed days';
+
+  @override
+  String get family_member_edit_package => 'Edit package';
+
+  @override
+  String get family_member_package_card_title => 'Package';
+
+  @override
+  String get family_member_primary_member_label => 'Primary member';
+
+  @override
+  String get family_member_program_default_subtitle =>
+      'Complete & varied meals';
+
+  @override
+  String get family_member_package_default_subtitle => '4 meals + snack';
 }

@@ -13885,6 +13885,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Requested offer is unavailable'**
   String get offers_error_customer_unavailable;
+
+  /// No description provided for @family_member_total_selections_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Total selections'**
+  String get family_member_total_selections_title;
+
+  /// No description provided for @family_member_completed_days_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed days'**
+  String get family_member_completed_days_label;
+
+  /// No description provided for @family_member_edit_package.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit package'**
+  String get family_member_edit_package;
+
+  /// No description provided for @family_member_package_card_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get family_member_package_card_title;
+
+  /// No description provided for @family_member_primary_member_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary member'**
+  String get family_member_primary_member_label;
+
+  /// No description provided for @family_member_program_default_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete & varied meals'**
+  String get family_member_program_default_subtitle;
+
+  /// No description provided for @family_member_package_default_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'4 meals + snack'**
+  String get family_member_package_default_subtitle;
 }
 
 class _AppLocalizationsDelegate

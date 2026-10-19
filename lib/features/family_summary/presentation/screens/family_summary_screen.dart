@@ -27,8 +27,7 @@ class FamilySummaryScreen extends StatefulWidget {
   const FamilySummaryScreen({super.key});
 
   @override
-  State<FamilySummaryScreen> createState() =>
-      _FamilySummaryScreenState();
+  State<FamilySummaryScreen> createState() => _FamilySummaryScreenState();
 }
 
 class _FamilySummaryScreenState extends State<FamilySummaryScreen> {
@@ -123,13 +122,12 @@ class _FamilySummaryScreenState extends State<FamilySummaryScreen> {
                 actions: const [FamilyFlowHomeAction()],
               ),
               body: SafeArea(
-                child:
-                    BlocConsumer<FamilySummaryViewModel, FamilySummaryState>(
-                      listenWhen: _listenWhen,
-                      buildWhen: _buildWhen,
-                      listener: _onStateChanged,
-                      builder: _buildContent,
-                    ),
+                child: BlocConsumer<FamilySummaryViewModel, FamilySummaryState>(
+                  listenWhen: _listenWhen,
+                  buildWhen: _buildWhen,
+                  listener: _onStateChanged,
+                  builder: _buildContent,
+                ),
               ),
             ),
     );
@@ -200,6 +198,20 @@ class _FamilySummaryScreenState extends State<FamilySummaryScreen> {
         FamilySummaryContent(state: state)
             .animate(key: const ValueKey('family-payment-content'))
             .fadeIn(duration: 250.ms),
+        Positioned.fill(
+          child: BlocBuilder<FamilySummaryViewModel, FamilySummaryState>(
+            buildWhen: (previous, current) =>
+                previous.isStartDateSaving != current.isStartDateSaving,
+            builder: (context, current) => current.isStartDateSaving
+                ? AbsorbPointer(
+                    child: ColoredBox(
+                      color: context.colorScheme.scrim.withValues(alpha: 0.32),
+                      child: const Center(child: CustomProgressIndicator()),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ),
         if (state.isCheckoutLoading || state.isRetryLoading)
           Positioned.fill(
             child: AbsorbPointer(

@@ -2914,5 +2914,12 @@
   "referral_error_self_referral": "لا يمكنك استخدام كود الإحالة الخاص بك",
   "referral_error_already_attributed": "لقد استخدمت كود إحالة من قبل",
   "checkout_error_capacity_unavailable": "لا توجد سعة يومية متاحة لدى المطاعم المحددة",
-  "offers_error_customer_unavailable": "العرض المطلوب غير متاح أو تم إيقافه"
+  "offers_error_customer_unavailable": "العرض المطلوب غير متاح أو تم إيقافه",
+  "family_member_total_selections_title": "إجمالي الاختيارات",
+  "family_member_completed_days_label": "أيام مكتملة",
+  "family_member_edit_package": "تعديل الباقة",
+  "family_member_package_card_title": "الباقة",
+  "family_member_primary_member_label": "عضو أساسي",
+  "family_member_program_default_subtitle": "وجبات متكاملة ومتنوعة",
+  "family_member_package_default_subtitle": "4 وجبات + سناك"
 }

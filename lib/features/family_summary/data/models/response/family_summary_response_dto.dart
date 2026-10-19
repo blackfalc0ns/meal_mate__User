@@ -358,6 +358,7 @@ class FamilySummaryResponseDto {
   final double? discount;
   final double? walletCredit;
   final double? gatewayFee;
+  @JsonKey(fromJson: _blockingReasonCodesFromJson)
   final List<String>? blockingReasons;
   final String? expiry;
   final String? summaryExpiresAtUtc;
@@ -368,13 +369,9 @@ class FamilySummaryResponseDto {
 
   factory FamilySummaryResponseDto.fromJson(Map<String, dynamic> json) {
     final dto = _$FamilySummaryResponseDtoFromJson(json);
-    final rawBlocking = json['blockingReasons'];
-    List<String>? blocking;
-    if (rawBlocking is List) {
-      blocking = rawBlocking.map((e) => e.toString()).toList();
-    } else if (dto.checkoutBlockReason != null) {
-      blocking = [dto.checkoutBlockReason!];
-    }
+    final blocking =
+        dto.blockingReasons ??
+        (dto.checkoutBlockReason == null ? null : [dto.checkoutBlockReason!]);
 
     SubscriptionCouponResponseDto? couponDto;
     if (json['coupon'] is Map<String, dynamic>) {
@@ -534,6 +531,21 @@ int? _nullableIntFromJson(dynamic value) {
   if (value is num) return value.toInt();
   if (value is String) return int.tryParse(value);
   return null;
+}
+
+List<String>? _blockingReasonCodesFromJson(dynamic value) {
+  if (value is! List) return null;
+  return value
+      .map((item) {
+        if (item is String) return item;
+        if (item is Map) {
+          final code = item['code'];
+          if (code is String) return code;
+        }
+        return null;
+      })
+      .whereType<String>()
+      .toList();
 }
 
 int? _tierFromJson(dynamic value) {

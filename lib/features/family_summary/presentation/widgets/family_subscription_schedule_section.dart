@@ -34,28 +34,21 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
         final locale = context.localization;
 
         final summary = activeState.summary;
-        final selectedMemberSummary = summary?.selectedMember;
         final activeMemberId =
-            selectedMemberSummary?.memberId ??
             activeState.selectedSummaryMemberId ??
             summary?.selectedMemberId ??
+            summary?.selectedMember?.memberId ??
             activeState.members.firstOrNull?.memberId;
 
-        final matchingFlowMember = activeState.flowMember(activeMemberId);
         final matchingSchedule = activeState.scheduleForMember(activeMemberId);
 
         final rawPaymentDate = matchingSchedule?.paymentDate;
-        final paymentDate =
-            (rawPaymentDate != null
-                ? (AppDatePicker.parseDate(rawPaymentDate) ??
-                      DateTime.tryParse(rawPaymentDate))
-                : null) ??
-            DateTime.now();
+        final paymentDate = rawPaymentDate == null
+            ? null
+            : (AppDatePicker.parseDate(rawPaymentDate) ??
+                  DateTime.tryParse(rawPaymentDate));
 
-        final rawFirstDelivery =
-            matchingSchedule?.firstDeliveryDate ??
-            selectedMemberSummary?.startDate ??
-            matchingFlowMember?.startDate;
+        final rawFirstDelivery = matchingSchedule?.firstDeliveryDate;
         final parsedStart =
             AppDatePicker.parseDate(rawFirstDelivery) ??
             (rawFirstDelivery != null
@@ -68,30 +61,15 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
                   DateTime.tryParse(rawEndDate))
             : null;
 
-        final durationDays =
-            matchingSchedule?.deliveryDaysCount != null &&
-                matchingSchedule!.deliveryDaysCount > 0
-            ? matchingSchedule.deliveryDaysCount
-            : (selectedMemberSummary?.durationDays ??
-                  matchingFlowMember?.durationDays);
-        final includeFriday =
-            selectedMemberSummary?.includeFriday ??
-            matchingFlowMember?.includeFriday ??
-            false;
-
-        final DateTime? calculatedEnd =
-            (parsedStart != null && durationDays != null && durationDays > 0)
-            ? _calculateEndDate(parsedStart, durationDays, includeFriday)
-            : null;
-        final DateTime? effectiveEnd = parsedBackendEnd ?? calculatedEnd;
-
         final dateFormatter = DateFormat('d MMMM yyyy', locale.localeName);
-        final formattedPaymentDate = dateFormatter.format(paymentDate);
+        final formattedPaymentDate = paymentDate != null
+            ? dateFormatter.format(paymentDate)
+            : '--';
         final formattedStartDate = parsedStart != null
             ? dateFormatter.format(parsedStart)
             : '--';
-        final formattedEndDate = effectiveEnd != null
-            ? dateFormatter.format(effectiveEnd)
+        final formattedEndDate = parsedBackendEnd != null
+            ? dateFormatter.format(parsedBackendEnd)
             : '--';
 
         return Column(
@@ -127,7 +105,12 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
                             DateTime.now().add(const Duration(days: 2)),
                           );
                       unawaited(
-                        _pickStartDate(context, activeMemberId, initial),
+                        _pickStartDate(
+                          context,
+                          activeMemberId,
+                          initial,
+                          parsedStart,
+                        ),
                       );
                     },
                   ),
@@ -147,32 +130,15 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
     );
   }
 
-  DateTime _calculateEndDate(
-    DateTime start,
-    int durationDays,
-    bool includeFriday,
-  ) {
-    if (durationDays <= 1) return start;
-    DateTime current = start;
-    int remainingDeliveryDays = durationDays - 1;
-    while (remainingDeliveryDays > 0) {
-      current = current.add(const Duration(days: 1));
-      if (!includeFriday && current.weekday == DateTime.friday) {
-        continue;
-      }
-      remainingDeliveryDays--;
-    }
-    return current;
-  }
-
   Future<void> _pickStartDate(
     BuildContext context,
     String? activeMemberId,
     DateTime currentStartDate,
+    DateTime? backendStartDate,
   ) async {
     final locale = context.localization;
     final today = DateUtils.dateOnly(DateTime.now());
-    final earliestDate = today.add(const Duration(days: 1));
+    final earliestDate = backendStartDate ?? today.add(const Duration(days: 1));
 
     final picked = await AppDatePicker.showFormatted(
       context: context,

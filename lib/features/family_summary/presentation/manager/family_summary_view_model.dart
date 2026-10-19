@@ -187,6 +187,7 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
   }
 
   Future<void> _updateMemberStartDate(String memberId, String startDate) async {
+    if (state.isStartDateSaving) return;
     _invalidateQuoteAndIdempotency();
     final reqId = ++_startDateRequestId;
     final previousFlow = state.currentFlow;
@@ -201,7 +202,8 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
     emit(
       state.copyWith(
         currentFlow: updatedFlow,
-        isSummaryLoading: true,
+        isStartDateSaving: true,
+        clearSelectedPaymentMethod: true,
         clearFailure: true,
       ),
     );
@@ -213,12 +215,38 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
     if (isClosed || reqId != _startDateRequestId) return;
     switch (result) {
       case ApiSuccessResult():
-        await _getFamilySummary(memberId: memberId);
+        final summaryReqId = ++_summaryRequestId;
+        final summaryResult = await _getFamilySummaryUseCase(
+          memberId: memberId,
+          promoCode: state.appliedPromoCode,
+        );
+        if (isClosed ||
+            reqId != _startDateRequestId ||
+            summaryReqId != _summaryRequestId) {
+          return;
+        }
+        switch (summaryResult) {
+          case ApiSuccessResult():
+            emit(
+              state.copyWith(
+                isStartDateSaving: false,
+                summary: summaryResult.data,
+                selectedSummaryMemberId: memberId,
+              ),
+            );
+          case ApiErrorResult():
+            emit(
+              state.copyWith(
+                isStartDateSaving: false,
+                failure: summaryResult.failure,
+              ),
+            );
+        }
       case ApiErrorResult():
         emit(
           state.copyWith(
             currentFlow: previousFlow,
-            isSummaryLoading: false,
+            isStartDateSaving: false,
             failure: result.failure,
           ),
         );

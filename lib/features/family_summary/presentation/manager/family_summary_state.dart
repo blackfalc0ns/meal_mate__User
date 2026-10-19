@@ -10,6 +10,7 @@ class FamilySummaryState {
     this.isCurrentFlowLoading = false,
     this.currentFlow,
     this.isSummaryLoading = false,
+    this.isStartDateSaving = false,
     this.summary,
     this.selectedSummaryMemberId,
     this.selectedMemberIndex = 0,
@@ -28,6 +29,7 @@ class FamilySummaryState {
   final FamilyFlowCurrentEntity? currentFlow;
 
   final bool isSummaryLoading;
+  final bool isStartDateSaving;
   final FamilySummaryEntity? summary;
   final String? selectedSummaryMemberId;
   final int selectedMemberIndex;
@@ -47,6 +49,7 @@ class FamilySummaryState {
   bool get isLoading =>
       isCurrentFlowLoading ||
       isSummaryLoading ||
+      isStartDateSaving ||
       isPaymentMethodsLoading ||
       isCheckoutLoading ||
       isRetryLoading;
@@ -100,6 +103,7 @@ class FamilySummaryState {
     bool? isCurrentFlowLoading,
     FamilyFlowCurrentEntity? currentFlow,
     bool? isSummaryLoading,
+    bool? isStartDateSaving,
     FamilySummaryEntity? summary,
     bool clearSummary = false,
     String? selectedSummaryMemberId,
@@ -122,6 +126,7 @@ class FamilySummaryState {
       isCurrentFlowLoading: isCurrentFlowLoading ?? this.isCurrentFlowLoading,
       currentFlow: currentFlow ?? this.currentFlow,
       isSummaryLoading: isSummaryLoading ?? this.isSummaryLoading,
+      isStartDateSaving: isStartDateSaving ?? this.isStartDateSaving,
       summary: clearSummary ? null : (summary ?? this.summary),
       selectedSummaryMemberId:
           selectedSummaryMemberId ?? this.selectedSummaryMemberId,

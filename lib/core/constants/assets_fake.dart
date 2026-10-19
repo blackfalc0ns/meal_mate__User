@@ -158,6 +158,8 @@ class AssetsFake {
       'assets/images/fake/subscriptions/monthly_package_box.png';
   static const String subscriptionProgramBalanced =
       'assets/images/fake/subscriptions/program_balanced.png';
+  static const String familyMemberProgramBalanced =
+      'assets/images/fake/subscriptions/family_member_program_balanced.png';
   static const String subscriptionProgramCutting =
       'assets/images/fake/subscriptions/program_cutting-567695.png';
   static const String subscriptionProgramMuscleGain =

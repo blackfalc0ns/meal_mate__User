@@ -443,6 +443,31 @@ void main() {
       },
     );
 
+    test(
+      'family summary parses structured blocking reasons from 200 response',
+      () {
+        final dto = FamilySummaryResponseDto.fromJson({
+          'subtotal': 0,
+          'finalPrice': 0,
+          'canCheckout': false,
+          'checkoutBlockReason': 'family.checkout_no_selection',
+          'blockingReasons': [
+            {
+              'code': 'family.checkout_no_selection',
+              'messageAr': 'لا يمكن متابعة الدفع قبل استكمال المتطلبات.',
+              'field': null,
+            },
+          ],
+        });
+
+        expect(dto.blockingReasons, ['family.checkout_no_selection']);
+        expect(
+          dto.toEntity().checkoutBlockReason,
+          'family.checkout_no_selection',
+        );
+      },
+    );
+
     testWidgets(
       'FamilyPaymentScheduleSection renders placeholder when dates and duration are missing',
       (tester) async {
@@ -474,9 +499,65 @@ void main() {
         );
 
         // Start date and end date should display '--' when missing from response, rather than fabricated today + 2 or 20 days
-        expect(find.text('--'), findsNWidgets(2));
+        expect(find.text('--'), findsNWidgets(3));
       },
     );
+
+    testWidgets('schedule cards use the selected member backend dates', (
+      tester,
+    ) async {
+      final vm = _FakeFamilyCheckoutViewModel(
+        const FamilyCheckoutState(
+          summary: FamilySummaryEntity(
+            subtotal: 50,
+            familyDiscountPercent: 0,
+            familyDiscountAmount: 0,
+            finalPrice: 50,
+            canCheckout: true,
+            memberSchedules: [
+              FamilyMemberScheduleEntity(
+                memberId: 'm-1',
+                paymentDate: '2026-10-19',
+                firstDeliveryDate: '2026-10-27',
+                endDate: '2026-11-09',
+              ),
+              FamilyMemberScheduleEntity(
+                memberId: 'm-2',
+                paymentDate: '2026-10-19',
+                firstDeliveryDate: '2026-10-22',
+                endDate: '2026-11-04',
+              ),
+            ],
+          ),
+          selectedSummaryMemberId: 'm-1',
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: BlocProvider<FamilyCheckoutViewModel>.value(
+              value: vm,
+              child: FamilySubscriptionScheduleSection(state: vm.state),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('19 أكتوبر 2026'), findsOneWidget);
+      expect(find.text('27 أكتوبر 2026'), findsOneWidget);
+      expect(find.text('9 نوفمبر 2026'), findsOneWidget);
+
+      vm.emit(vm.state.copyWith(selectedSummaryMemberId: 'm-2'));
+      await tester.pump();
+
+      expect(find.text('22 أكتوبر 2026'), findsOneWidget);
+      expect(find.text('4 نوفمبر 2026'), findsOneWidget);
+      expect(find.text('27 أكتوبر 2026'), findsNothing);
+    });
 
     testWidgets(
       'FamilyMealsTable respects inherited Directionality in both RTL and LTR',

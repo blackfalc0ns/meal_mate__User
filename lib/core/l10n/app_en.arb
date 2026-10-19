@@ -2963,5 +2963,12 @@
   "referral_error_self_referral": "You cannot use your own referral code",
   "referral_error_already_attributed": "You have already used a referral code",
   "checkout_error_capacity_unavailable": "Capacity unavailable for requested dates",
-  "offers_error_customer_unavailable": "Requested offer is unavailable"
+  "offers_error_customer_unavailable": "Requested offer is unavailable",
+  "family_member_total_selections_title": "Total selections",
+  "family_member_completed_days_label": "Completed days",
+  "family_member_edit_package": "Edit package",
+  "family_member_package_card_title": "Package",
+  "family_member_primary_member_label": "Primary member",
+  "family_member_program_default_subtitle": "Complete & varied meals",
+  "family_member_package_default_subtitle": "4 meals + snack"
 }
