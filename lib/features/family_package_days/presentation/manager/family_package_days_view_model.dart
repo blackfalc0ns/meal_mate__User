@@ -50,7 +50,6 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
 
   final Map<String, List<SubscriptionBundleEntity>> _bundlesCache = {};
   final Map<String, List<SubscriptionDurationEntity>> _durationsCache = {};
-  final Map<String, List<SubscriptionTierEntity>> _tiersCache = {};
 
   final Map<String, Future<ApiResult<List<SubscriptionProgramEntity>>>>
   _inFlightPrograms = {};
@@ -395,33 +394,6 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     );
     final requestToken = ++_tiersRequestToken;
 
-    final cached = _tiersCache[tiersKey];
-    if (cached != null) {
-      if (isClosed) return;
-      if (memberToken != null && memberToken != _memberSelectionToken) return;
-      if (requestToken != _tiersRequestToken) return;
-      int? tierIdx;
-      final targetTier = member?.selectedTier;
-      if (targetTier != null) {
-        final found = cached.indexWhere(
-          (t) =>
-              (_parseTierToInt(t.tier, t.nameEn) ?? (cached.indexOf(t) + 1)) ==
-              targetTier,
-        );
-        if (found != -1) tierIdx = found;
-      }
-      _emit(
-        state.copyWith(
-          isTiersLoading: false,
-          tiers: cached,
-          selectedTierIndex: tierIdx,
-          clearSelectedTier: tierIdx == null,
-          clearTiersFailure: true,
-        ),
-      );
-      return;
-    }
-
     final inFlight = _inFlightTiers[tiersKey];
     final Future<ApiResult<List<SubscriptionTierEntity>>> future;
     if (inFlight != null) {
@@ -453,7 +425,6 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     switch (result) {
       case ApiSuccessResult():
         final tiers = result.data;
-        _tiersCache[tiersKey] = tiers;
         int? tierIdx;
         final targetTier = member?.selectedTier;
         if (targetTier != null) {
@@ -797,14 +768,6 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
     final selectedBundleId = state.selectedBundle?.bundleId ?? member.bundleId;
     final days = state.customDurationDays ?? member.durationDays;
     final friday = state.includeFriday;
-    final cacheKey = _tiersKey(
-      programId: programId,
-      bundleId: selectedBundleId,
-      durationDays: days,
-      includeFriday: friday,
-      familyMemberId: member.memberId,
-    );
-    _tiersCache.remove(cacheKey);
     await _loadTiers(
       programId: programId,
       bundleId: selectedBundleId,
@@ -862,7 +825,8 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
         if (b.bundleId == member!.bundleId) bundle = b;
       }
     }
-    bundle ??= state.bundles.where((b) => b.canSelect).firstOrNull ??
+    bundle ??=
+        state.bundles.where((b) => b.canSelect).firstOrNull ??
         (state.bundles.isNotEmpty ? state.bundles.first : null);
     if (programId.isEmpty || bundle == null || member == null) return;
     _emit(

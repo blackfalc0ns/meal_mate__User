@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/manager/family_addresses_state.dart';
@@ -47,8 +48,9 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
         }
 
         return Material(
-          color: color.primary.withValues(alpha: 0.05),
+          color: color.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(Spacing.radiusMd),
+          clipBehavior: Clip.antiAlias,
           child: InkWell(
             borderRadius: BorderRadius.circular(Spacing.radiusMd),
             onTap: () {
@@ -68,9 +70,10 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
               );
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xss,
+              height: Spacing.familyApplyManagerBannerHeight,
+              padding: const EdgeInsetsDirectional.only(
+                start: Spacing.md,
+                end: Spacing.xs,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Spacing.radiusMd),
@@ -85,17 +88,17 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                 children: [
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    width: Spacing.lg,
-                    height: Spacing.lg,
+                    width: Spacing.xl,
+                    height: Spacing.xl,
                     decoration: BoxDecoration(
                       color: data.isChecked ? color.primary : color.surface,
-                      borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                      border: Border.all(
-                        color: data.isChecked
-                            ? color.primary
-                            : color.outline.withValues(alpha: 0.6),
-                        width: 1.5,
-                      ),
+                      borderRadius: BorderRadius.circular(Spacing.radiusXs + 2),
+                      border: data.isChecked
+                          ? null
+                          : Border.all(
+                              color: color.outline.withValues(alpha: 0.6),
+                              width: 1.5,
+                            ),
                     ),
                     child: data.isApplyingManagerAddress
                         ? Padding(
@@ -127,7 +130,7 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                           locale.family_apply_manager_address_title,
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size11,
+                            fontSize: FontSize.size12,
                             color: color.onSurface,
                           ),
                           maxLines: 1,
@@ -153,35 +156,10 @@ class FamilyAddressApplyManagerBanner extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: Spacing.xs),
-                  Container(
-                    width: Spacing.avatarSm,
-                    height: Spacing.xl,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          color.primary,
-                          color.primary.withValues(alpha: 0.8),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                      boxShadow: [
-                        BoxShadow(
-                          color: color.primary.withValues(alpha: 0.2),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.workspace_premium_rounded,
-                        size: Spacing.iconXs,
-                        color: color.onPrimary,
-                      ),
-                    ),
+                  Image.asset(
+                    Assets.familyApplyManagerCrown,
+                    height: Spacing.familyApplyManagerCrownHeight,
+                    fit: BoxFit.contain,
                   ),
                 ],
               ),

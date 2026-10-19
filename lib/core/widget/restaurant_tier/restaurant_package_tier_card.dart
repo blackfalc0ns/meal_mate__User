@@ -19,6 +19,7 @@ class RestaurantPackageTierCard extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
     required this.onBrowseRestaurants,
+    this.priceBuilder,
   });
 
   final RestaurantPackageTierUiModel package;
@@ -29,6 +30,12 @@ class RestaurantPackageTierCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final VoidCallback onBrowseRestaurants;
+  final Widget Function(
+    Color priceColor,
+    Color subtitleColor,
+    Color dividerColor,
+  )?
+  priceBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -209,15 +216,22 @@ class RestaurantPackageTierCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        RestaurantPackageTierPrice(
-                          price: package.price,
-                          currency: package.currency,
-                          priceSubtitle: package.priceSubtitle,
-                          priceColor: priceColor,
-                          subtitleColor: priceSubtitleColor,
-                          dividerColor: dividerColor,
-                          isLoading: package.isPriceLoading,
-                        ),
+                        if (priceBuilder != null)
+                          priceBuilder!(
+                            priceColor,
+                            priceSubtitleColor,
+                            dividerColor,
+                          )
+                        else
+                          RestaurantPackageTierPrice(
+                            price: package.price,
+                            currency: package.currency,
+                            priceSubtitle: package.priceSubtitle,
+                            priceColor: priceColor,
+                            subtitleColor: priceSubtitleColor,
+                            dividerColor: dividerColor,
+                            isLoading: package.isPriceLoading,
+                          ),
                         const SizedBox(width: Spacing.xs),
                         Expanded(
                           child: Align(

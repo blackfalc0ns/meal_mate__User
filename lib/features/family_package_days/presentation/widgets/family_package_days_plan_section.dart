@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -12,6 +13,7 @@ import 'package:meal_meat_user/features/family_package_days/presentation/manager
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_days_browse_restaurants_section.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_package_tiers_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_payment_note_card.dart';
+import 'package:meal_meat_user/features/family_package_days/presentation/widgets/family_tier_price.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/widgets/family_program_actions.dart';
 
 class FamilyPackageDaysPlanSection extends StatelessWidget {
@@ -36,9 +38,13 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
     return BlocBuilder<FamilyPackageDaysViewModel, FamilyPackageDaysState>(
       buildWhen: (previous, current) =>
           previous.isMemberChanging != current.isMemberChanging ||
-          previous.isTiersLoading != current.isTiersLoading ||
+          (previous.isTiersLoading != current.isTiersLoading &&
+              current.tiers.isEmpty) ||
           previous.tiersFailure != current.tiersFailure ||
-          previous.tiers != current.tiers ||
+          !sameFamilyTierCardsExceptPrice(
+            previous.tiers.map((tier) => tier.toTierUiModel('en')).toList(),
+            current.tiers.map((tier) => tier.toTierUiModel('en')).toList(),
+          ) ||
           previous.selectedTierIndex != current.selectedTierIndex ||
           previous.isRestaurantsView != current.isRestaurantsView ||
           previous.browseRestaurants != current.browseRestaurants ||
@@ -115,6 +121,15 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
         onBrowseRestaurants: (index) => context
             .read<FamilyPackageDaysViewModel>()
             .doIntent(BrowseFamilyTierRestaurantsEvent(index)),
+        priceBuilder: this.state == null
+            ? (index, priceColor, subtitleColor, dividerColor) =>
+                  FamilyTierPrice(
+                    index: index,
+                    priceColor: priceColor,
+                    subtitleColor: subtitleColor,
+                    dividerColor: dividerColor,
+                  )
+            : null,
       ),
     );
 
@@ -126,4 +141,29 @@ class FamilyPackageDaysPlanSection extends StatelessWidget {
         .animate(key: ValueKey('member-${state.selectedMemberIndex}-tiers'))
         .fadeIn(duration: 250.ms, curve: Curves.easeOut);
   }
+}
+
+bool sameFamilyTierCardsExceptPrice(
+  List<RestaurantPackageTierUiModel> previous,
+  List<RestaurantPackageTierUiModel> current,
+) {
+  if (previous.length != current.length) return false;
+  for (var i = 0; i < previous.length; i++) {
+    final a = previous[i];
+    final b = current[i];
+    if (a.id != b.id ||
+        a.title != b.title ||
+        a.subtitle != b.subtitle ||
+        a.iconName != b.iconName ||
+        a.logoUrl != b.logoUrl ||
+        a.restaurantCount != b.restaurantCount ||
+        !listEquals(a.restaurantLogoUrls, b.restaurantLogoUrls) ||
+        a.isPopular != b.isPopular ||
+        a.canSelect != b.canSelect ||
+        a.isAvailable != b.isAvailable ||
+        a.disabledReason != b.disabledReason) {
+      return false;
+    }
+  }
+  return true;
 }

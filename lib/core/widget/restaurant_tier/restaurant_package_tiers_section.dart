@@ -13,12 +13,20 @@ class RestaurantPackageTiersSection extends StatelessWidget {
     required this.selectedIndex,
     required this.onSelected,
     required this.onBrowseRestaurants,
+    this.priceBuilder,
   });
 
   final List<RestaurantPackageTierUiModel> packages;
   final int? selectedIndex;
   final ValueChanged<int> onSelected;
   final ValueChanged<int> onBrowseRestaurants;
+  final Widget Function(
+    int index,
+    Color priceColor,
+    Color subtitleColor,
+    Color dividerColor,
+  )?
+  priceBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +98,15 @@ class RestaurantPackageTiersSection extends StatelessWidget {
                     isSelected: selectedIndex == index,
                     onTap: () => onSelected(index),
                     onBrowseRestaurants: () => onBrowseRestaurants(index),
+                    priceBuilder: priceBuilder == null
+                        ? null
+                        : (priceColor, subtitleColor, dividerColor) =>
+                              priceBuilder!(
+                                index,
+                                priceColor,
+                                subtitleColor,
+                                dividerColor,
+                              ),
                   ),
                 ),
             ],

@@ -254,6 +254,33 @@ void main() {
   });
 
   group('Family Package Days ViewModel Deduplication & Concurrency', () {
+    test('fetches tiers again when returning to a member', () async {
+      final planRepo = _MockPlanRepository();
+      final programsRepo = _MockProgramsRepository();
+      final vm = FamilyPackageDaysViewModel(
+        GetFamilyFlowCurrentUseCase(_MockFlowRepositoryWithTwoMembers()),
+        GetFamilyProgramsUseCase(programsRepo),
+        GetFamilyProgramBundlesUseCase(programsRepo),
+        GetFamilyPlanDurationsUseCase(planRepo),
+        GetFamilyPlanTiersUseCase(planRepo),
+        GetSubscriptionTierRestaurantsUseCase(_MockTierRepository()),
+        SaveFamilyMemberPlanUseCase(planRepo),
+      );
+
+      vm.doIntent(const GetFamilySubscriptionCurrentEvent());
+      await vm.stream.firstWhere((s) => s.currentFlow != null);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      final initialCalls = planRepo.tiersCallCount;
+
+      vm.doIntent(const SelectFamilyMemberPackageDaysEvent(1));
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+      vm.doIntent(const SelectFamilyMemberPackageDaysEvent(0));
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+
+      expect(planRepo.tiersCallCount, initialCalls + 2);
+      await vm.close();
+    });
+
     test(
       'shares in-flight requests rather than triggering duplicate calls',
       () async {
@@ -378,53 +405,58 @@ void main() {
       await vm.close();
     });
 
-    test('local plan completion updates isMemberPlanReady and completedMembersCount reactively', () {
-      const member1 = FamilyMemberEntity(
-        memberId: 'm-1',
-        role: 1,
-        displayName: 'wwss',
-        relationshipCode: 'self',
-        gender: 1,
-        ageYears: 30,
-        setupStatus: 2,
-        programId: 'prog-1',
-        includeFriday: false,
-        isCurrentUser: true,
-      );
-      const member2 = FamilyMemberEntity(
-        memberId: 'm-2',
-        role: 2,
-        displayName: 'wew',
-        relationshipCode: 'child',
-        gender: 1,
-        ageYears: 5,
-        setupStatus: 1,
-        programId: 'prog-1',
-        includeFriday: false,
-        isCurrentUser: false,
-      );
+    test(
+      'local plan completion updates isMemberPlanReady and completedMembersCount reactively',
+      () {
+        const member1 = FamilyMemberEntity(
+          memberId: 'm-1',
+          role: 1,
+          displayName: 'wwss',
+          relationshipCode: 'self',
+          gender: 1,
+          ageYears: 30,
+          setupStatus: 2,
+          programId: 'prog-1',
+          includeFriday: false,
+          isCurrentUser: true,
+        );
+        const member2 = FamilyMemberEntity(
+          memberId: 'm-2',
+          role: 2,
+          displayName: 'wew',
+          relationshipCode: 'child',
+          gender: 1,
+          ageYears: 5,
+          setupStatus: 1,
+          programId: 'prog-1',
+          includeFriday: false,
+          isCurrentUser: false,
+        );
 
-      final stateInitial = FamilyPackageDaysState(
-        currentFlow: const FamilyFlowCurrentEntity(members: [member1, member2]),
-        selectedMemberIndex: 1,
-      );
+        const stateInitial = FamilyPackageDaysState(
+          currentFlow: FamilyFlowCurrentEntity(
+            members: [member1, member2],
+          ),
+          selectedMemberIndex: 1,
+        );
 
-      expect(stateInitial.isMemberPlanReady(member1), isTrue);
-      expect(stateInitial.isMemberPlanReady(member2), isFalse);
-      expect(stateInitial.completedMembersCount, 1);
+        expect(stateInitial.isMemberPlanReady(member1), isTrue);
+        expect(stateInitial.isMemberPlanReady(member2), isFalse);
+        expect(stateInitial.completedMembersCount, 1);
 
-      final stateWithSelections = stateInitial.copyWith(
-        bundles: [_createTestBundle('bundle-1', 'Bundle 1')],
-        selectedBundleIndex: 0,
-        durations: [_createTestDuration(6)],
-        selectedDurationIndex: 0,
-        tiers: [_createTestTier('1')],
-        selectedTierIndex: 0,
-      );
+        final stateWithSelections = stateInitial.copyWith(
+          bundles: [_createTestBundle('bundle-1', 'Bundle 1')],
+          selectedBundleIndex: 0,
+          durations: [_createTestDuration(6)],
+          selectedDurationIndex: 0,
+          tiers: [_createTestTier('1')],
+          selectedTierIndex: 0,
+        );
 
-      expect(stateWithSelections.isMemberPlanReady(member2), isTrue);
-      expect(stateWithSelections.completedMembersCount, 2);
-    });
+        expect(stateWithSelections.isMemberPlanReady(member2), isTrue);
+        expect(stateWithSelections.completedMembersCount, 2);
+      },
+    );
   });
 }
 

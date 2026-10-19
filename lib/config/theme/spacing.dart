@@ -229,6 +229,8 @@ class Spacing {
   static const double familySetupActivityOptionHeight = 40.762;
   static const double familySetupActivityOptionWidth = 85.324;
   static const double familySetupBottomButtonHeight = 45.0;
+  static const double familyApplyManagerBannerHeight = 51.0;
+  static const double familyApplyManagerCrownHeight = 44.0;
   static const double familyProgramHeaderActionWidth = 10.0;
   static const double familyProgramHeaderActionHeight = 40.0;
   static const double familyProgramProgressTopGap = 22.0;

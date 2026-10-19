@@ -196,6 +196,8 @@ class Assets {
   static const String restaurantTierMax =
       '$_images/subscriptions/figma/restaurant_tier_max-f25390.png';
   static const String familyBanner = '$_images/subscriptions/family_banner.png';
+  static const String familyApplyManagerCrown =
+      '$_images/subscriptions/figma/family_apply_manager_crown.png';
   static const String subscriptionFamilyPackagePreview =
       '$_images/subscriptions/figma/family_package_preview.png';
   static const String familyManagePlanCard =
