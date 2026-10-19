@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 
 class FamilyPackageOptionCard extends StatelessWidget {
@@ -23,27 +23,10 @@ class FamilyPackageOptionCard extends StatelessWidget {
     } else {
       final reasonCode =
           option.disabledReason ?? 'subscription_flow.no_prepared_restaurants';
-      final message = mapFailureMessage(context, reasonCode);
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(
-              message,
-              style: getRegularStyle(
-                fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
-                color: context.colorScheme.onError,
-              ),
-            ),
-            backgroundColor: context.colorScheme.error,
-            duration: const Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Spacing.sm),
-            ),
-          ),
-        );
+      CustomSnackbar.showError(
+        context: context,
+        message: reasonCode,
+      );
     }
   }
 
