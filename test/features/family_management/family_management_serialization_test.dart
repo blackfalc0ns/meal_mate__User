@@ -3,8 +3,8 @@ import 'package:meal_meat_user/features/family_management/member/data/models/req
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
 import 'package:meal_meat_user/features/family_management/overview/data/mapper/family_overview_mapper.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_home_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_summary_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/overview/data/models/response/api/family_home_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/overview/data/models/response/api/family_member_summary_response_dto.dart';
 
 void main() {
   group('FamilyManagement serialization & mapping tests', () {

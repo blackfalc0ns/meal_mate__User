@@ -7,8 +7,8 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_restaurants_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_member_selector.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_member_selector_item.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_member_selector.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_member_selector_item.dart';
 
 void main() {
   testWidgets('selecting another member reports its index', (tester) async {

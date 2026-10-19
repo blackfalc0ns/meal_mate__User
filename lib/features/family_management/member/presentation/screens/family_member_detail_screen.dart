@@ -20,15 +20,15 @@ import 'package:meal_meat_user/features/family_management/member/presentation/ma
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart'
+import 'package:meal_meat_user/features/family_management/shared/domain/entities/family_subscription_settings_entity.dart'
     as ui;
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_package_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_profile_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_program_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_progress_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_quick_actions_row.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_shortcut_bar.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_package_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_profile_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_program_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_progress_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_quick_actions_row.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_detail_shortcut_bar.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 
 class FamilyMemberDetailScreen extends StatefulWidget {

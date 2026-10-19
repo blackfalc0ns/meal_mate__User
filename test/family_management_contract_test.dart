@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_access_request_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_permissions_request_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_access_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/mapper/family_management_mapper.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/request/api/family_member_access_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/request/api/family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_access_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_permissions_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/shared/data/mapper/family_management_mapper.dart';
+import 'package:meal_meat_user/features/family_management/shared/domain/entities/family_management_entity.dart';
 
 void main() {
   group('Family Management, Capabilities, and Conflict Safety Tests', () {

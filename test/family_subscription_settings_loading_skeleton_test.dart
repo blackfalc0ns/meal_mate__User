@@ -4,10 +4,10 @@ import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/widget/shimmer_widget.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_meals_status_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_section.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_settings_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/shared/domain/entities/family_subscription_settings_entity.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_meals_status_card.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_quick_access_section.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_settings_loading_skeleton.dart';
 
 void main() {
   testWidgets(

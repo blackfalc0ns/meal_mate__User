@@ -17,14 +17,14 @@ import 'package:meal_meat_user/features/family_management/overview/domain/entiti
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_event.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_state.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart'
+import 'package:meal_meat_user/features/family_management/shared/domain/entities/family_subscription_settings_entity.dart'
     as ui;
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_meals_status_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_members_section.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_plan_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_quick_access_section.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_settings_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_subscription_warning_card.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_meals_status_card.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_members_section.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_plan_card.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_quick_access_section.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_settings_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_subscription_warning_card.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
   const FamilyHomeScreen({super.key});

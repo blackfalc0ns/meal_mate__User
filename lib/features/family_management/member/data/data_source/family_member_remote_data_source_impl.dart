@@ -6,12 +6,12 @@ import 'package:meal_meat_user/features/family_management/member/data/models/req
 import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_member_write_request_dto.dart'
     as setup;
-import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_access_request_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/request/family_member_permissions_request_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_access_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/request/api/family_member_access_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/request/api/family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_access_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_detail_response_dto.dart';
 import 'package:meal_meat_user/features/family_context/data/models/response/family_context_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_permissions_response_dto.dart';
 
 @Injectable(as: FamilyMemberRemoteDataSource)
 class FamilyMemberRemoteDataSourceImpl implements FamilyMemberRemoteDataSource {

@@ -12,14 +12,14 @@ import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_state.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_credentials_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_deactivate_dialog.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_header.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_independent_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_password_dialog.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_permissions_tile.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_status_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_credentials_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_deactivate_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_header.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_independent_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_password_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_permissions_tile.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_status_card.dart';
 
 class FamilyMemberAccessScreen extends StatefulWidget {
   const FamilyMemberAccessScreen({

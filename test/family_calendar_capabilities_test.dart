@@ -17,9 +17,9 @@ import 'package:meal_meat_user/features/family_management/calendar/presentation/
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_current_restaurant_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_review_button.dart';
 
 const _kDefaultRestaurant = CalendarRestaurantEntity(
   id: 'rest-1',

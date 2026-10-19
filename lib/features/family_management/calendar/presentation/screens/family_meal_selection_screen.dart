@@ -14,13 +14,13 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_bottom_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_category_chips.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_macros_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_stepper.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_bottom_bar.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_category_chips.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_macros_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_stepper.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyMealSelectionScreen extends StatefulWidget {
   const FamilyMealSelectionScreen({super.key, this.args});

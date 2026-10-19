@@ -12,14 +12,14 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/models/family_restaurants_view_data.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_assurance_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_grid.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_header.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_search_field.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_restaurants_summary_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_assurance_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_grid.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_header.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_search_field.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_summary_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyRestaurantsScreen extends StatefulWidget {
   const FamilyRestaurantsScreen({super.key, this.args});

@@ -20,14 +20,14 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_day_summary_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_empty_meals.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_meals_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_calendar_primary_action.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_selected_meals_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/staggered_slide_item.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_member_selector.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_day_summary_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_empty_meals.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_meals_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_primary_action.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_selected_meals_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyMemberCalendarScreen extends StatefulWidget {
   const FamilyMemberCalendarScreen({super.key, this.args, this.viewModel});

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 

@@ -17,14 +17,14 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_current_restaurant_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_header.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meals_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_member_selector.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_selected_status.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_header.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meals_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_member_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_member_selector.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_review_button.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_selected_status.dart';
 
 class FamilyDayMealsScreen extends StatefulWidget {
   const FamilyDayMealsScreen({super.key, this.args, this.viewModel});

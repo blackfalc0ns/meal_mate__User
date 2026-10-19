@@ -12,7 +12,7 @@ import 'package:meal_meat_user/features/family_management/member/presentation/ma
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_access_screen.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_failure.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_credentials_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_credentials_card.dart';
 
 class _FakeGetAccess implements GetFamilyMemberAccessUseCase {
   FamilyMemberAccessEntity? access;

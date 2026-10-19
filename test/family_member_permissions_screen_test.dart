@@ -20,7 +20,7 @@ import 'package:meal_meat_user/features/family_management/member/domain/usecase/
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_permissions_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_confirm_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_permissions_confirm_dialog.dart';
 
 class _FakeRepo implements FamilyMemberRepository {
   Completer<ApiResult<FamilyMemberPermissionsEntity>>? updateCompleter;

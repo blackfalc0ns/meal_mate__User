@@ -59,11 +59,11 @@ class FamilyRestaurantCardData {
   });
 
   final String id;
+  final String? imageUrl;
+  final String? logoUrl;
   final String name;
   final String subtitle;
   final String rating;
-  final List<String> tags;
+  final List<FamilyRestaurantsFilterData> tags;
   final String buttonLabel;
-  final String? imageUrl;
-  final String? logoUrl;
 }

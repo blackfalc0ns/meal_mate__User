@@ -14,8 +14,8 @@ import 'package:meal_meat_user/features/family_management/member/presentation/ma
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_state.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_row.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_confirm_dialog.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_permissions_confirm_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_permissions_loading_skeleton.dart';
 
 class FamilyMemberPermissionsScreen extends StatefulWidget {
   const FamilyMemberPermissionsScreen({

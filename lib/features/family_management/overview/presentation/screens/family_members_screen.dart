@@ -14,12 +14,12 @@ import 'package:meal_meat_user/features/family_management/overview/domain/entiti
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_event.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_state.dart';
 import 'package:meal_meat_user/features/family_management/overview/presentation/manager/family_overview_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_management_entity.dart'
+import 'package:meal_meat_user/features/family_management/shared/domain/entities/family_management_entity.dart'
     as ui_mgmt;
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_add_button.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_list_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_members_search_field.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_members_add_button.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_members_list_card.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_members_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/overview/presentation/widgets/family_members_search_field.dart';
 
 class FamilyMembersScreen extends StatefulWidget {
   const FamilyMembersScreen({super.key});

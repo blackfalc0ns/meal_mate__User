@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_day_details_entity.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_current_restaurant_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meal_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_meals_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_review_button.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_day_selected_status.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meals_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_review_button.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_selected_status.dart';
 
 void main() {
   Widget buildTestableWidget({Locale locale = const Locale('ar')}) {

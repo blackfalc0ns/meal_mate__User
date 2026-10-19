@@ -6,7 +6,7 @@ import 'package:meal_meat_user/features/family_management/member/data/mapper/fam
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_info_dialog.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_row.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_permissions_response_dto.dart';
 
 Widget createTestWidget({
   required Widget child,

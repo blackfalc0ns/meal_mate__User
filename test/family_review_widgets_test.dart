@@ -4,13 +4,13 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_review_member_meals_screen.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_actions_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_cutoff_banner.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_header_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_instructions_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_macros_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_review_meal_slot_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_actions_bar.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_cutoff_banner.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_header_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_instructions_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_macros_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_meal_slot_card.dart';
 
 void main() {
   Widget buildTestable(Widget child) {

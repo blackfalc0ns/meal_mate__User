@@ -3,8 +3,8 @@ import 'package:meal_meat_user/features/family_summary/data/models/request/famil
 import 'package:meal_meat_user/features/family_addresses/data/models/request/family_delivery_address_request_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/models/response/family_delivery_address_response_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/mapper/family_delivery_address_mapper.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/mapper/family_management_mapper.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_detail_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/shared/data/mapper/family_management_mapper.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/models/response/subscription_billing_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_settings/data/mapper/subscription_billing_mapper.dart';
 

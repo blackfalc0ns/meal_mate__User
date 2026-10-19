@@ -1,9 +1,9 @@
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_access_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_detail_response_dto.dart';
-import 'package:meal_meat_user/features/subscription_settings/data/models/response/family_member_permissions_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_access_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_detail_response_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/data/models/response/api/family_member_permissions_response_dto.dart';
 
 class FamilyMemberMapper {
   const FamilyMemberMapper._();

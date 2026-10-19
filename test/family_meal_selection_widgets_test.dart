@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_bottom_bar.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_meal_selection_macros_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_bottom_bar.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_card.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_meal_selection_macros_card.dart';
 
 void main() {
   Widget buildTestable(Widget child) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_credentials_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_header.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_independent_card.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_loading_skeleton.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_password_dialog.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_permissions_tile.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_access_status_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_credentials_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_header.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_independent_card.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_password_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_permissions_tile.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_status_card.dart';
 
 void main() {
   Widget buildTestable(Widget child) {

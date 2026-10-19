@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_permissions_confirm_dialog.dart';
+import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_permissions_confirm_dialog.dart';
 
 void main() {
   testWidgets(
