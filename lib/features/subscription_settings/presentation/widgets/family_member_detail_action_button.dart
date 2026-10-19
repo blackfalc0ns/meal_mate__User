@@ -8,10 +8,12 @@ class FamilyMemberDetailActionButton extends StatelessWidget {
   const FamilyMemberDetailActionButton({
     super.key,
     required this.label,
+    this.icon,
     this.onPressed,
   });
 
   final String label;
+  final IconData? icon;
   final VoidCallback? onPressed;
 
   @override
@@ -20,13 +22,13 @@ class FamilyMemberDetailActionButton extends StatelessWidget {
 
     return AppButton.outlined(
       text: label,
+      icon: icon,
       onPressed: onPressed ?? () {},
       height: Spacing.familyMemberDetailButtonHeight,
       borderRadius: Spacing.familyMemberDetailButtonRadius,
       color: color.primary,
       textColor: color.primary,
       fontSize: FontSize.size12,
-
       padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
     );
   }

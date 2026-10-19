@@ -20,7 +20,7 @@ class FamilyMemberDetailProgramCard extends StatelessWidget {
     final locale = context.localization;
 
     return FamilyMemberDetailSectionCard(
-      height: Spacing.familyMemberDetailStandardCardHeight + Spacing.xxl,
+      height: Spacing.familyMemberDetailStandardCardHeight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -31,7 +31,6 @@ class FamilyMemberDetailProgramCard extends StatelessWidget {
                 icon: Icons.restaurant_rounded,
               ),
               const SizedBox(width: Spacing.sm),
-
               Text(
                 member.programTitle,
                 locale: Locale(locale.localeName),
@@ -44,32 +43,60 @@ class FamilyMemberDetailProgramCard extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Center(
-            child: ClipOval(
-              child: Image.asset(
-                member.programImageAsset,
-                width: Spacing.familyMemberDetailProgramImageWidth,
-                height: Spacing.familyMemberDetailProgramImageHeight,
-                fit: BoxFit.cover,
+          Row(
+            children: [
+              ClipOval(
+                child: Image.asset(
+                  member.programImageAsset,
+                  width: Spacing.familyMemberDetailProgramImageWidth,
+                  height: Spacing.familyMemberDetailProgramImageHeight,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            member.programName,
-            locale: Locale(locale.localeName),
-            textAlign: TextAlign.center,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size15,
-              color: color.primary,
-            ),
+              const SizedBox(width: Spacing.base),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      member.programName,
+                      locale: Locale(locale.localeName),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size15,
+                        color: color.primary,
+                      ),
+                    ),
+                    if (member.programSubtitle.isNotEmpty) ...[
+                      const SizedBox(height: Spacing.xxs),
+                      Text(
+                        member.programSubtitle,
+                        locale: Locale(locale.localeName),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
           const Spacer(),
           FamilyMemberDetailActionButton(
             label: member.changeProgramLabel,
-            onPressed: () =>
-                Navigator.of(context).pushNamed(AppRoutes.familyProgramSetup),
+            icon: Icons.sync_alt_rounded,
+            onPressed: () => Navigator.of(context).pushNamed(
+              AppRoutes.familyProgramSetup,
+              arguments: member.memberId,
+            ),
           ),
         ],
       ),

@@ -7,11 +7,15 @@ class FamilyMemberDetailSectionCard extends StatelessWidget {
     super.key,
     required this.height,
     required this.child,
+    this.backgroundColor,
+    this.borderColor,
     this.padding = const EdgeInsets.all(Spacing.familyMemberDetailCardPadding),
   });
 
   final double height;
   final Widget child;
+  final Color? backgroundColor;
+  final Color? borderColor;
   final EdgeInsetsGeometry padding;
 
   @override
@@ -23,12 +27,12 @@ class FamilyMemberDetailSectionCard extends StatelessWidget {
       height: height,
       padding: padding,
       decoration: BoxDecoration(
-        color: color.surface,
+        color: backgroundColor ?? color.surface,
         borderRadius: BorderRadius.circular(
           Spacing.familyMemberDetailCardRadius,
         ),
         border: Border.all(
-          color: color.outlineVariant,
+          color: borderColor ?? color.outlineVariant,
           width: Spacing.familyMemberDetailCardBorder,
         ),
         boxShadow: [

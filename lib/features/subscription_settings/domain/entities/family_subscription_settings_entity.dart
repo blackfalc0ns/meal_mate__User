@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class FamilySubscriptionSettingsEntity {
   const FamilySubscriptionSettingsEntity({
     required this.title,
@@ -51,10 +53,13 @@ class FamilyMemberDetailEntity {
     required this.programTitle,
     required this.programImageAsset,
     required this.programName,
+    this.programSubtitle = '',
     required this.changeProgramLabel,
     required this.packageTitle,
     required this.remainingDaysLabel,
     required this.packageDescription,
+    this.packageSubtitle = '',
+    this.packageImageAsset = '',
     required this.editPackageLabel,
     required this.selectionTitle,
     required this.completedValue,
@@ -62,6 +67,14 @@ class FamilyMemberDetailEntity {
     required this.progress,
     required this.showCalendarLabel,
     required this.shortcuts,
+    this.canUpgradeTier = false,
+    this.canFreeze = false,
+    this.canRenew = false,
+    this.canCancel = false,
+    this.onUpgradeTier,
+    this.onFreeze,
+    this.onRenew,
+    this.onCancel,
   });
 
   final String memberId;
@@ -78,10 +91,13 @@ class FamilyMemberDetailEntity {
   final String programTitle;
   final String programImageAsset;
   final String programName;
+  final String programSubtitle;
   final String changeProgramLabel;
   final String packageTitle;
   final String remainingDaysLabel;
   final String packageDescription;
+  final String packageSubtitle;
+  final String packageImageAsset;
   final String editPackageLabel;
   final String selectionTitle;
   final String completedValue;
@@ -89,6 +105,15 @@ class FamilyMemberDetailEntity {
   final double progress;
   final String showCalendarLabel;
   final List<FamilyMemberDetailShortcutEntity> shortcuts;
+
+  final bool canUpgradeTier;
+  final bool canFreeze;
+  final bool canRenew;
+  final bool canCancel;
+  final VoidCallback? onUpgradeTier;
+  final VoidCallback? onFreeze;
+  final VoidCallback? onRenew;
+  final VoidCallback? onCancel;
 }
 
 class FamilyMemberDetailShortcutEntity {

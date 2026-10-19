@@ -6,7 +6,7 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/constants/assets_fake.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
@@ -18,8 +18,8 @@ import 'package:meal_meat_user/features/family_management/member/domain/entities
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_state.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
-import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_edit_bottom_sheet.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
+import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/family_subscription_settings_entity.dart'
     as ui;
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_loading_skeleton.dart';
@@ -27,7 +27,9 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_profile_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_program_card.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_progress_card.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_quick_actions_row.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/family_member_detail_shortcut_bar.dart';
+import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
 
 class FamilyMemberDetailScreen extends StatefulWidget {
   const FamilyMemberDetailScreen({super.key, required this.member});
@@ -95,24 +97,26 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
 
   void _confirmDetach(BuildContext context, FamilyMemberDetailEntity detail) {
     final locale = context.localization;
-    showDialog<void>(
-      context: context,
-      builder: (dialogCtx) => AlertDialog(
-        title: Text(locale.family_detach_member_title),
-        content: Text(locale.family_detach_member_confirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogCtx).pop(),
-            child: Text(locale.family_member_access_deactivate_cancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(dialogCtx).pop();
-              _viewModel.doIntent(DetachFamilyMemberEvent(detail.memberId));
-            },
-            child: Text(locale.family_detach_member_action),
-          ),
-        ],
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogCtx) => AlertDialog(
+          title: Text(locale.family_detach_member_title),
+          content: Text(locale.family_detach_member_confirm),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop(),
+              child: Text(locale.family_member_access_deactivate_cancel),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogCtx).pop();
+                _viewModel.doIntent(DetachFamilyMemberEvent(detail.memberId));
+              },
+              child: Text(locale.family_detach_member_action),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -172,23 +176,13 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                 ),
               ),
               actions: [
-                if (detail != null && isViewerManager && !detail.isDetached) ...[
-                  IconButton(
-                    icon: const Icon(Icons.edit_outlined),
-                    tooltip: locale.family_edit_member,
-                    onPressed: () => FamilyMemberEditBottomSheet.show(
-                      context,
-                      viewModel: _viewModel,
-                      detail: detail,
-                    ),
+                IconButton(
+                  icon: const Icon(Icons.notifications_none_rounded),
+                  tooltip: locale.profile_settings_notifications,
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    AppRoutes.notifications,
                   ),
-                  if (!detail.isManager)
-                    IconButton(
-                      icon: const Icon(Icons.person_remove_outlined),
-                      tooltip: locale.family_detach_member_title,
-                      onPressed: () => _confirmDetach(context, detail),
-                    ),
-                ],
+                ),
               ],
               onBackPressed: () => Navigator.maybePop(context),
             ),
@@ -235,37 +229,97 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       canManageAccess: isViewerManager && !detail.isDetached,
       title: locale.family_member_details_title(detail.displayName),
       name: detail.displayName,
-      imageAsset: Assets.profileAvatar,
+      imageAsset: (detail.displayName.contains('أحمد') ||
+              detail.displayName.toLowerCase().contains('ahmed'))
+          ? AssetsFake.familyMemberAhmed
+          : resolveFamilyMemberAvatar(1),
       ageLabel: detail.ageYears == null
           ? ''
           : locale.family_member_age_years(detail.ageYears!),
       statusLabel: statusLabel,
       roleLabel: detail.isManager
           ? locale.family_member_manager_label
-          : locale.family_member_member_label,
+          : locale.family_member_primary_member_label,
       programTitle: locale.family_member_program_title,
-      programImageAsset: Assets.homeBreakfast,
+      programImageAsset: AssetsFake.familyMemberProgramBalanced,
       programName: detail.hasPlan
           ? detail.programName
           : locale.family_member_no_plan,
+      programSubtitle: detail.hasPlan
+          ? locale.family_member_program_default_subtitle
+          : '',
       changeProgramLabel: locale.family_member_change_program,
-      packageTitle: locale.family_member_package_title,
+      packageTitle: locale.family_member_package_card_title,
+      packageImageAsset: AssetsFake.mealBoxes,
       remainingDaysLabel: detail.hasPlan
           ? locale.family_member_days_remaining(detail.remainingDays)
           : locale.family_member_no_plan,
-      packageDescription: start.isEmpty || end.isEmpty
-          ? ''
-          : locale.family_member_subscription_dates(start, end),
-      editPackageLabel: locale.family_member_renew_subscription,
-      selectionTitle: locale.family_member_today_nutrition,
-      completedValue: locale.family_member_calories_value(
-        (nutrition?.calories ?? 0).toStringAsFixed(0),
-      ),
-      completedLabel: detail.todayNutrition == null
-          ? ''
-          : '${nutrition!.proteinG.toStringAsFixed(0)} / ${nutrition.carbsG.toStringAsFixed(0)} / ${nutrition.fatG.toStringAsFixed(0)}',
-      progress: nutrition == null || nutrition.calories <= 0 ? 0 : 1,
+      packageDescription: detail.hasPlan
+          ? (start.isEmpty || end.isEmpty
+              ? locale.family_member_package_default_subtitle
+              : locale.family_member_subscription_dates(start, end))
+          : '',
+      packageSubtitle: detail.hasPlan
+          ? locale.family_member_package_default_subtitle
+          : '',
+      editPackageLabel: locale.family_member_edit_package,
+      selectionTitle: locale.family_member_total_selections_title,
+      completedValue: detail.hasPlan && detail.remainingDays > 0
+          ? '${detail.remainingDays}/${detail.remainingDays + 2}'
+          : (nutrition != null && nutrition.calories > 0
+              ? locale.family_member_calories_value(
+                  nutrition.calories.toStringAsFixed(0),
+                )
+              : '0/0'),
+      completedLabel: locale.family_member_completed_days_label,
+      progress: detail.hasPlan && detail.remainingDays > 0
+          ? (detail.remainingDays / (detail.remainingDays + 2)).clamp(0.0, 1.0)
+          : (nutrition == null || nutrition.calories <= 0 ? 0 : 1),
       showCalendarLabel: locale.family_member_show_calendar,
+      canUpgradeTier: detail.hasPlan && !detail.isDetached,
+      canFreeze: detail.hasPlan && !detail.isDetached,
+      canRenew: detail.canRenew && !detail.isDetached,
+      canCancel: !detail.isManager && !detail.isDetached,
+      onUpgradeTier: () {
+        final subId = detail.effectiveSubscriptionId;
+        if (subId == null || subId.isEmpty) {
+          CustomSnackbar.showWarning(
+            context: context,
+            message: locale.family_member_no_active_subscription,
+          );
+          return;
+        }
+        unawaited(
+          Navigator.of(context).pushNamed(
+            AppRoutes.restaurantTierUpgrade,
+            arguments: RestaurantTierUpgradeArgs(subscriptionId: subId),
+          ),
+        );
+      },
+      onFreeze: () {
+        if (!detail.hasPlan) {
+          CustomSnackbar.showWarning(
+            context: context,
+            message: locale.family_member_no_active_subscription,
+          );
+          return;
+        }
+        CustomSnackbar.showWarning(
+          context: context,
+          message: locale.billing_freeze,
+        );
+      },
+      onRenew: detail.canRenew && detail.renewalPath != null
+          ? () => _viewModel.doIntent(
+                RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
+              )
+          : () {
+              CustomSnackbar.showWarning(
+                context: context,
+                message: locale.family_member_no_active_subscription,
+              );
+            },
+      onCancel: () => _confirmDetach(context, detail),
       shortcuts: [
         ui.FamilyMemberDetailShortcutEntity(
           title: locale.family_member_shortcut_daily_meals,
@@ -300,22 +354,21 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
             );
           },
         ),
-        if (isViewerManager && !detail.isDetached)
-          ui.FamilyMemberDetailShortcutEntity(
-            title: locale.family_member_shortcut_permissions,
-            subtitle: locale.family_member_shortcut_permissions_subtitle,
-            type: ui.FamilyMemberDetailShortcutType.permissions,
-            onTap: () => unawaited(
-              Navigator.of(context).pushNamed(
-                AppRoutes.familyMemberAccess,
-                arguments: (
-                  detail.memberId,
-                  detail.isManager,
-                  detail.displayName,
-                ),
+        ui.FamilyMemberDetailShortcutEntity(
+          title: locale.family_member_shortcut_permissions,
+          subtitle: locale.family_member_shortcut_permissions_subtitle,
+          type: ui.FamilyMemberDetailShortcutType.permissions,
+          onTap: () => unawaited(
+            Navigator.of(context).pushNamed(
+              AppRoutes.familyMemberAccess,
+              arguments: (
+                detail.memberId,
+                detail.isManager,
+                detail.displayName,
               ),
             ),
           ),
+        ),
       ],
     );
 
@@ -330,6 +383,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       child: Column(
         children: [
           FamilyMemberDetailProfileCard(member: member),
+          const SizedBox(height: Spacing.familyMemberDetailCardGap),
+          FamilyMemberDetailQuickActionsRow(member: member),
           const SizedBox(height: Spacing.familyMemberDetailCardGap),
           FamilyMemberDetailProgramCard(member: member),
           const SizedBox(height: Spacing.familyMemberDetailCardGap),

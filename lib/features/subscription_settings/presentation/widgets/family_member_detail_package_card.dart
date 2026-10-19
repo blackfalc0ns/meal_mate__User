@@ -50,31 +50,60 @@ class FamilyMemberDetailPackageCard extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Text(
-            member.remainingDaysLabel,
-            locale: Locale(locale.localeName),
-            textAlign: TextAlign.center,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size15,
-              color: color.primary,
-            ),
-          ),
-          const SizedBox(height: Spacing.sm),
-          Text(
-            member.packageDescription,
-            locale: Locale(locale.localeName),
-            textAlign: TextAlign.center,
-            style: getRegularStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size12,
-              color: color.onSurfaceVariant,
-            ),
+          Row(
+            children: [
+              if (member.packageImageAsset.isNotEmpty) ...[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                  child: Image.asset(
+                    member.packageImageAsset,
+                    width: Spacing.familyMemberDetailProgramImageWidth,
+                    height: Spacing.familyMemberDetailProgramImageHeight,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(width: Spacing.base),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      member.remainingDaysLabel,
+                      locale: Locale(locale.localeName),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size15,
+                        color: color.primary,
+                      ),
+                    ),
+                    if (member.packageDescription.isNotEmpty) ...[
+                      const SizedBox(height: Spacing.xxs),
+                      Text(
+                        member.packageDescription,
+                        locale: Locale(locale.localeName),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: getRegularStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
           const Spacer(),
           if (showAction)
             FamilyMemberDetailActionButton(
               label: member.editPackageLabel,
+              icon: Icons.open_in_new_rounded,
               onPressed:
                   onAction ??
                   () => Navigator.of(

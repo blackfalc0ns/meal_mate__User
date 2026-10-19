@@ -255,6 +255,18 @@ class AppColors {
   // Family Allergies tokens from Figma.
   static const Color familyAllergiesSelectedBg = Color(0xFFEAF7EE);
   static const Color familyAllergiesSelectedPrimary = primary400;
+
+  // Subscription billing action tokens from Figma.
+  static const Color billingUpgradeTier = Color(0xFF2563EB);
+  static const Color billingFreeze = Color(0xFFE67E22);
+  static const Color billingCancel = Color(0xFFEF4444);
+}
+
+extension SubscriptionBillingColorScheme on ColorScheme {
+  Color get billingUpgradeTier => AppColors.billingUpgradeTier;
+  Color get billingFreeze => AppColors.billingFreeze;
+  Color get billingRenew => primary;
+  Color get billingCancel => AppColors.billingCancel;
 }
 
 extension CalendarColorScheme on ColorScheme {

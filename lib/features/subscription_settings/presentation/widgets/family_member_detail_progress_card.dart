@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -92,9 +93,8 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 SizedBox(
-                  width: Spacing.familyMemberDetailCalendarButtonWidth,
                   height: Spacing.familyMemberDetailCalendarButtonHeight,
-                  child: OutlinedButton(
+                  child: OutlinedButton.icon(
                     onPressed: () {
                       if (member.subscriptionId == null ||
                           member.subscriptionId!.isEmpty) {
@@ -104,17 +104,35 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                         );
                         return;
                       }
-                      Navigator.of(context).pushNamed(
-                        AppRoutes.familyMemberDailyMeals,
-                        arguments: FamilyMemberCalendarArgs(
-                          memberId: member.memberId,
-                          displayName: member.name,
-                          subscriptionId: member.subscriptionId,
-                          isManager: member.isManager,
+                      unawaited(
+                        Navigator.of(context).pushNamed(
+                          AppRoutes.familyMemberDailyMeals,
+                          arguments: FamilyMemberCalendarArgs(
+                            memberId: member.memberId,
+                            displayName: member.name,
+                            subscriptionId: member.subscriptionId,
+                            isManager: member.isManager,
+                          ),
                         ),
                       );
                     },
+                    icon: Icon(
+                      Icons.calendar_month_rounded,
+                      size: Spacing.iconSm,
+                      color: color.primary,
+                    ),
+                    label: Text(
+                      member.showCalendarLabel,
+                      locale: Locale(locale.localeName),
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.primary,
+                      ),
+                    ),
                     style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       backgroundColor: color.primaryContainer.withValues(
                         alpha: 0.22,
                       ),
@@ -127,15 +145,7 @@ class FamilyMemberDetailProgressCard extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.sm,
-                      ),
-                    ),
-                    child: Text(
-                      member.showCalendarLabel,
-                      locale: Locale(locale.localeName),
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size10,
-                        color: color.primary,
+                        vertical: Spacing.xs,
                       ),
                     ),
                   ),

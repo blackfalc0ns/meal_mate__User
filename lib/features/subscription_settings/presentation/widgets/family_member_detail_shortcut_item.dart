@@ -29,12 +29,23 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
           ).pushNamed(AppRoutes.familyMemberAccess),
         };
 
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(Spacing.familyMemberDetailCardRadius),
+      child: Container(
+        height: Spacing.familyMemberDetailShortcutHeight,
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+        decoration: BoxDecoration(
+          color: color.surface,
+          borderRadius: BorderRadius.circular(
+            Spacing.familyMemberDetailCardRadius,
+          ),
+          border: Border.all(
+            color: color.outlineVariant.withValues(alpha: 0.5),
+            width: Spacing.familyMemberDetailCardBorder,
+          ),
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
@@ -42,7 +53,7 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
               color: color.primary,
             ),
             const SizedBox(width: Spacing.xs),
-            Flexible(
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,13 +69,13 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
                       color: color.onSurface,
                     ),
                   ),
-                  const SizedBox(height: Spacing.xs),
+                  const SizedBox(height: Spacing.xxs),
                   Text(
                     shortcut.subtitle,
                     locale: Locale(locale.localeName),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: getMediumStyle(
+                    style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
                       color: color.onSurfaceVariant,
@@ -72,6 +83,11 @@ class FamilyMemberDetailShortcutItem extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            Icon(
+              Icons.chevron_left_rounded,
+              size: Spacing.iconSm,
+              color: color.onSurfaceVariant,
             ),
           ],
         ),
