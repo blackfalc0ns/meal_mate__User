@@ -52,9 +52,7 @@ class _OfferCountdownTimerWidgetState extends State<OfferCountdownTimerWidget> {
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
-      setState(() {
-        _computeRemaining();
-      });
+      setState(_computeRemaining);
       if (_remaining == Duration.zero) {
         _timer?.cancel();
       }

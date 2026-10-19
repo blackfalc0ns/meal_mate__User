@@ -110,7 +110,6 @@ import 'package:meal_meat_user/features/influencer/bank_account/data/models/infl
 import 'package:meal_meat_user/features/influencer/dashboard/data/models/influencer_dashboard_dto.dart';
 import 'package:meal_meat_user/features/influencer/social_links/data/models/influencer_social_links_dto.dart';
 import 'package:meal_meat_user/features/influencer/wallet/data/models/influencer_wallet_dto.dart';
-import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
@@ -118,6 +117,17 @@ import 'package:meal_meat_user/features/offers/data/models/response/evaluate_off
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/start_campaign_payment_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_payment_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_eligible_restaurant_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_calendar_entry_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/validate_discount_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/subscription_pricing_preview_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_confirmation_response_dto.dart';
+import 'package:meal_meat_user/features/wallet/data/models/customer_wallet_response_dto.dart';
+import 'package:meal_meat_user/features/wallet/data/models/wallet_transactions_response_dto.dart';
+import 'package:meal_meat_user/features/wallet/data/models/customer_referral_summary_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -1027,13 +1037,83 @@ abstract class ApiServices {
     @Query('period') String period,
   );
 
-  @POST(EndPoints.customerOffersAvailable)
-  Future<List<OfferResponseDto>> getCustomerAvailableOffers(
-    @Body() GetCustomerAvailableOffersRequestDto request,
-  );
+  @GET(EndPoints.customerOffersAvailable)
+  Future<List<OfferResponseDto>> getCustomerAvailableOffers({
+    @Query('cartAmount') double? cartAmount,
+    @Query('durationDays') int? durationDays,
+    @Query('deliveryGovernorate') String? deliveryGovernorate,
+    @Query('programId') String? programId,
+    @Query('bundleId') String? bundleId,
+    @Query('restaurantId') String? restaurantId,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('search') String? search,
+    @Query('category') String? category,
+    @Query('eligibleOnly') bool? eligibleOnly,
+  });
+
+  @GET(EndPoints.customerOffersHub)
+  Future<OffersHubResponseDto> getOffersHub();
 
   @GET(EndPoints.customerOfferDetails)
   Future<OfferResponseDto> getCustomerOfferDetails(@Path('id') String id);
+
+  @GET(EndPoints.customerOffersEligibleRestaurants)
+  Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
+    @Path('offerId') String offerId,
+  );
+
+  @GET(EndPoints.customerOffersSaved)
+  Future<List<OfferResponseDto>> getSavedOffers();
+
+  @POST(EndPoints.customerOfferSave)
+  Future<void> saveOffer(@Path('offerId') String offerId);
+
+  @DELETE(EndPoints.customerOfferSave)
+  Future<void> unsaveOffer(@Path('offerId') String offerId);
+
+  @GET(EndPoints.customerOffersCalendar)
+  Future<List<OfferCalendarEntryDto>> getOfferCalendar();
+
+  @POST(EndPoints.customerOfferCalendarAdd)
+  Future<OfferCalendarEntryDto> addOfferToCalendar(
+    @Path('offerId') String offerId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE(EndPoints.customerOfferCalendarDelete)
+  Future<void> removeOfferFromCalendar(
+    @Path('offerId') String offerId,
+    @Path('date') String date,
+  );
+
+  @POST(EndPoints.customerOffersValidateDiscount)
+  Future<ValidateDiscountResponseDto> validateDiscount(
+    @Body() ValidateDiscountRequestDto request,
+  );
+
+  @POST(EndPoints.customerSubscriptionPricingPreview)
+  Future<SubscriptionPricingPreviewResponseDto> getSubscriptionPricingPreview(
+    @Body() SubscriptionPricingPreviewRequestDto request,
+  );
+
+  @GET(EndPoints.customerSubscriptionConfirmation)
+  Future<SubscriptionConfirmationResponseDto> getSubscriptionConfirmation(
+    @Path('subscriptionId') String subscriptionId,
+  );
+
+  @GET(EndPoints.customerWallet)
+  Future<CustomerWalletResponseDto> getCustomerWallet();
+
+  @GET(EndPoints.customerWalletTransactions)
+  Future<WalletTransactionsResponseDto> getCustomerWalletTransactions(
+    @Query('walletType') String? walletType,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  );
+
+  @GET(EndPoints.customerReferralsSummary)
+  Future<CustomerReferralSummaryResponseDto> getCustomerReferralsSummary();
 
   @POST(EndPoints.customerOffersEvaluate)
   Future<EvaluateOfferDiscountResponseDto> evaluateOfferDiscount(

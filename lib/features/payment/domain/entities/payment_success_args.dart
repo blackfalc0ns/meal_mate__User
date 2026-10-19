@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_confirmation_entity.dart';
+
 class PaymentSuccessArgs {
   const PaymentSuccessArgs({
     required this.subscriptionId,
@@ -11,6 +13,7 @@ class PaymentSuccessArgs {
     this.isFamily = false,
     this.familyName,
     this.memberCount,
+    this.confirmation,
   });
 
   final String subscriptionId;
@@ -24,4 +27,5 @@ class PaymentSuccessArgs {
   final bool isFamily;
   final String? familyName;
   final int? memberCount;
+  final SubscriptionConfirmationEntity? confirmation;
 }

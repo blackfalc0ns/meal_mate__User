@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 
@@ -25,14 +27,15 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 620),
-    )..forward();
+    );
+    unawaited(_controller.forward());
   }
 
   @override
   void didUpdateWidget(covariant AnimatedOfferRow oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.itemCount != widget.itemCount) {
-      _controller.forward(from: 0);
+      unawaited(_controller.forward(from: 0));
     }
   }
 
@@ -72,10 +75,7 @@ class _AnimatedOfferRowState extends State<AnimatedOfferRow>
                   offset: Offset((1 - value) * Spacing.xxl, 0),
                   child: Transform.scale(
                     scale: 0.92 + (value * 0.08),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(),
-                      child: child,
-                    ),
+                    child: child,
                   ),
                 ),
               );

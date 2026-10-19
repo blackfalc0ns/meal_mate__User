@@ -363,6 +363,18 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.family_checkout_stale_batch;
     case 'family.duplicate_member':
       return locale.family_error_already_in_family;
+    case 'self_referral':
+      return locale.referral_error_self_referral;
+    case 'already_attributed':
+      return locale.referral_error_already_attributed;
+    case 'coupon_full_discount_unsupported':
+      return locale.coupon_error_full_discount_unsupported;
+    case 'checkout.capacity_unavailable':
+    case 'capacity_unavailable':
+      return locale.checkout_error_capacity_unavailable;
+    case 'offers.customer.unavailable':
+    case 'customer.unavailable':
+      return locale.offers_error_customer_unavailable;
     default:
       if (message.startsWith('subscription_flow.')) {
         final stripped = message.substring('subscription_flow.'.length);

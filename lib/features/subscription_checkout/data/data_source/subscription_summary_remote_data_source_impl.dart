@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/data_source/subscription_summary_remote_data_source.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/subscription_pricing_preview_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_restaurant_availability_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
@@ -56,5 +58,12 @@ class SubscriptionSummaryRemoteDataSourceImpl
       request.bundleId,
       request.programId,
     );
+  }
+
+  @override
+  Future<SubscriptionPricingPreviewResponseDto> getPricingPreview(
+    SubscriptionPricingPreviewRequestDto request,
+  ) {
+    return _apiServices.getSubscriptionPricingPreview(request);
   }
 }

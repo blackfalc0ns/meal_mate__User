@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/payment/presentation/widgets/success/sub
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_action_buttons.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_hero_header.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_summary_card.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_referral_share_banner.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_top_bar.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -126,6 +127,15 @@ class PaymentSuccessScreen extends StatelessWidget {
                       const SubscriptionPaymentConfirmedBanner(),
                       const SizedBox(height: Spacing.xs),
                       const SubscriptionNextStepBanner(),
+                      if (resolvedArgs.confirmation?.referralShareCode != null &&
+                          resolvedArgs.confirmation!.referralShareCode!.isNotEmpty) ...[
+                        const SizedBox(height: Spacing.xs),
+                        SubscriptionReferralShareBanner(
+                          code: resolvedArgs.confirmation!.referralShareCode!,
+                          message: resolvedArgs.confirmation?.referralShareMessage,
+                          shareUrl: resolvedArgs.confirmation?.referralShareUrl,
+                        ),
+                      ],
                       const SizedBox(height: Spacing.sm),
                     ],
                   ).animate().fadeIn(duration: 250.ms),

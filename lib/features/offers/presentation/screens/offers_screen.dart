@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -8,6 +11,7 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/core/widget/notification_button.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_page_entity.dart';
 import 'package:meal_meat_user/features/offers/presentation/manager/offers_event.dart';
@@ -209,20 +213,30 @@ class _OffersContentState extends State<_OffersContent> {
                         ),
                         SliverToBoxAdapter(
                           child: OffersCouponBanner(
-                            onTap: () => Navigator.of(
-                              context,
-                            ).pushNamed(AppRoutes.promoCodeInput),
+                            onTap: () => unawaited(
+                              Navigator.of(
+                                context,
+                              ).pushNamed(AppRoutes.promoCodeInput),
+                            ),
                           ),
                         ),
                         SliverToBoxAdapter(
                           child: OffersInviteBanner(
+                            code: state.referralCode,
+                            rewardRate: state.referralRewardRate,
                             onTap: () {
-                              final message = locale.offer_hub_share_message;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                  duration: const Duration(seconds: 2),
+                              final textToShare = state.referralLink ??
+                                  state.referralCode ??
+                                  locale.offer_hub_share_message;
+                              unawaited(
+                                Clipboard.setData(
+                                  ClipboardData(text: textToShare),
                                 ),
+                              );
+                              CustomSnackbar.showSuccess(
+                                context: context,
+                                message:
+                                    locale.subscription_success_referral_copied,
                               );
                             },
                           ),

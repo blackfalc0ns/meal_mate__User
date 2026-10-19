@@ -35,7 +35,7 @@ class WalletOrderSummaryCard extends StatelessWidget {
       ),
     ];
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: color.surface,
         border: Border.all(color: color.outlineVariant),

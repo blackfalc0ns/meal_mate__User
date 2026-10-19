@@ -265,10 +265,33 @@ abstract class EndPoints {
       '/api/v1/influencer-partner/me/analytics';
   static const String customerOffersAvailable =
       '/api/v1/customer/offers/available';
+  static const String customerOffersHub = '/api/v1/customer/offers/hub';
   static const String customerOfferDetails = '/api/v1/customer/offers/{id}';
+  static const String customerOffersEligibleRestaurants =
+      '/api/v1/customer/offers/{offerId}/eligible-restaurants';
+  static const String customerOffersSaved = '/api/v1/customer/offers/saved';
+  static const String customerOfferSave =
+      '/api/v1/customer/offers/{offerId}/save';
+  static const String customerOffersCalendar =
+      '/api/v1/customer/offers/calendar';
+  static const String customerOfferCalendarAdd =
+      '/api/v1/customer/offers/{offerId}/calendar';
+  static const String customerOfferCalendarDelete =
+      '/api/v1/customer/offers/{offerId}/calendar/{date}';
+  static const String customerOffersValidateDiscount =
+      '/api/v1/customer/offers/validate-discount';
   static const String customerOffersEvaluate =
       '/api/v1/customer/offers/evaluate';
   static const String customerOffersRedeem = '/api/v1/customer/offers/redeem';
+  static const String customerSubscriptionPricingPreview =
+      '/api/v1/customer/subscription-pricing/preview';
+  static const String customerSubscriptionConfirmation =
+      '/api/v1/customer/subscriptions/{subscriptionId}/confirmation';
+  static const String customerWallet = '/api/v1/customer/wallet';
+  static const String customerWalletTransactions =
+      '/api/v1/customer/wallet/transactions';
+  static const String customerReferralsSummary =
+      '/api/v1/customer/referrals/summary';
   static const String customerCampaignPricePreview =
       '/api/v1/customer/campaigns/price-preview';
   static const String customerCampaignCheckoutSession =

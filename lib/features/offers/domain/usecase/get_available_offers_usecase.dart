@@ -10,12 +10,17 @@ class GetAvailableOffersUseCase {
   final OffersRepository _repository;
 
   Future<ApiResult<List<OfferEntity>>> call({
-    double cartAmount = 0.0,
-    int durationDays = 26,
+    double? cartAmount,
+    int? durationDays,
     String? deliveryGovernorate,
     String? programId,
     String? bundleId,
     String? restaurantId,
+    int? page,
+    int? pageSize,
+    String? search,
+    String? category,
+    bool? eligibleOnly,
   }) {
     return _repository.getAvailableOffers(
       cartAmount: cartAmount,
@@ -24,6 +29,11 @@ class GetAvailableOffersUseCase {
       programId: programId,
       bundleId: bundleId,
       restaurantId: restaurantId,
+      page: page,
+      pageSize: pageSize,
+      search: search,
+      category: category,
+      eligibleOnly: eligibleOnly,
     );
   }
 }

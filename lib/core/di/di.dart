@@ -49,6 +49,7 @@ import '../../features/payment/domain/usecase/checkout_subscription_usecase.dart
 import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart';
 import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
+import '../../features/payment/domain/usecase/get_subscription_confirmation_usecase.dart';
 import '../../features/payment/presentation/manager/payment_view_model.dart';
 import '../biometric/biometric_service.dart';
 import '../helpers/shared_pref.dart';
@@ -104,6 +105,15 @@ import '../../features/offers/domain/usecase/create_campaign_checkout_session_us
 import '../../features/offers/domain/usecase/get_campaign_payment_status_usecase.dart';
 import '../../features/offers/domain/usecase/start_campaign_payment_usecase.dart';
 import '../../features/offers/presentation/manager/campaign_payment_view_model.dart';
+import '../../features/offers/presentation/manager/offers_view_model.dart';
+import '../../features/wallet/data/data_source/customer_wallet_remote_data_source.dart';
+import '../../features/wallet/data/data_source/customer_wallet_remote_data_source_impl.dart';
+import '../../features/wallet/data/repo/customer_wallet_repository_impl.dart';
+import '../../features/wallet/domain/repo/customer_wallet_repository.dart';
+import '../../features/wallet/domain/usecase/get_customer_referral_summary_usecase.dart';
+import '../../features/wallet/domain/usecase/get_customer_wallet_transactions_usecase.dart';
+import '../../features/wallet/domain/usecase/get_customer_wallet_usecase.dart';
+import '../../features/wallet/presentation/manager/customer_wallet_view_model.dart';
 import 'di.config.dart';
 
 final getIt = GetIt.instance;
@@ -256,6 +266,10 @@ Future<void> configureDependencies() async {
         getSubscriptionBillingUseCase:
             getIt.isRegistered<GetSubscriptionBillingUseCase>()
             ? getIt<GetSubscriptionBillingUseCase>()
+            : null,
+        getSubscriptionConfirmationUseCase:
+            getIt.isRegistered<GetSubscriptionConfirmationUseCase>()
+            ? getIt<GetSubscriptionConfirmationUseCase>()
             : null,
       ),
     );
@@ -566,6 +580,53 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<CampaignPaymentViewModel>()) {
     getIt.registerFactory<CampaignPaymentViewModel>(
       () => CampaignPaymentViewModel(getIt(), getIt()),
+    );
+  }
+  if (!getIt.isRegistered<OffersViewModel>()) {
+    getIt.registerFactory<OffersViewModel>(
+      () => OffersViewModel(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getCustomerReferralSummaryUseCase:
+            getIt.isRegistered<GetCustomerReferralSummaryUseCase>()
+                ? getIt<GetCustomerReferralSummaryUseCase>()
+                : null,
+      ),
+    );
+  }
+  // Customer Wallet & Referrals
+  if (!getIt.isRegistered<CustomerWalletRemoteDataSource>()) {
+    getIt.registerLazySingleton<CustomerWalletRemoteDataSource>(
+      () => CustomerWalletRemoteDataSourceImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<CustomerWalletRepository>()) {
+    getIt.registerLazySingleton<CustomerWalletRepository>(
+      () => CustomerWalletRepositoryImpl(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetCustomerWalletUseCase>()) {
+    getIt.registerFactory<GetCustomerWalletUseCase>(
+      () => GetCustomerWalletUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetCustomerWalletTransactionsUseCase>()) {
+    getIt.registerFactory<GetCustomerWalletTransactionsUseCase>(
+      () => GetCustomerWalletTransactionsUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<GetCustomerReferralSummaryUseCase>()) {
+    getIt.registerFactory<GetCustomerReferralSummaryUseCase>(
+      () => GetCustomerReferralSummaryUseCase(getIt()),
+    );
+  }
+  if (!getIt.isRegistered<CustomerWalletViewModel>()) {
+    getIt.registerFactory<CustomerWalletViewModel>(
+      () => CustomerWalletViewModel(getIt(), getIt(), getIt()),
     );
   }
 }

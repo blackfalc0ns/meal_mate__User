@@ -8846,6 +8846,36 @@ abstract class AppLocalizations {
   /// **'All'**
   String get wallet_filter_all;
 
+  /// No description provided for @wallet_filter_cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get wallet_filter_cash;
+
+  /// No description provided for @wallet_filter_promotional.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotional'**
+  String get wallet_filter_promotional;
+
+  /// No description provided for @wallet_cash_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Balance'**
+  String get wallet_cash_balance;
+
+  /// No description provided for @wallet_promotional_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotional Balance'**
+  String get wallet_promotional_balance;
+
+  /// No description provided for @wallet_empty_transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found'**
+  String get wallet_empty_transactions;
+
   /// No description provided for @wallet_search_hint.
   ///
   /// In en, this message translates to:
@@ -12554,6 +12584,42 @@ abstract class AppLocalizations {
   /// **'Subscription End Date'**
   String get subscription_success_end_date_label;
 
+  /// No description provided for @subscription_success_applied_discount_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied Discount'**
+  String get subscription_success_applied_discount_label;
+
+  /// No description provided for @subscription_success_paid_amount_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount Paid'**
+  String get subscription_success_paid_amount_label;
+
+  /// No description provided for @subscription_success_referral_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Friends & Earn Rewards'**
+  String get subscription_success_referral_title;
+
+  /// No description provided for @subscription_success_referral_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your code with friends and earn credits in your wallet!'**
+  String get subscription_success_referral_subtitle;
+
+  /// No description provided for @subscription_success_share_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Code'**
+  String get subscription_success_share_button;
+
+  /// No description provided for @subscription_success_referral_copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral link copied to clipboard'**
+  String get subscription_success_referral_copied;
+
   /// No description provided for @subscription_success_payment_confirmed_title.
   ///
   /// In en, this message translates to:
@@ -13795,6 +13861,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set Delivery Address'**
   String get family_go_to_addresses;
+
+  /// No description provided for @referral_error_self_referral.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot use your own referral code'**
+  String get referral_error_self_referral;
+
+  /// No description provided for @referral_error_already_attributed.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already used a referral code'**
+  String get referral_error_already_attributed;
+
+  /// No description provided for @checkout_error_capacity_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity unavailable for requested dates'**
+  String get checkout_error_capacity_unavailable;
+
+  /// No description provided for @offers_error_customer_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested offer is unavailable'**
+  String get offers_error_customer_unavailable;
 }
 
 class _AppLocalizationsDelegate

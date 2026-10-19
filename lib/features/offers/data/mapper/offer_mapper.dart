@@ -1,9 +1,17 @@
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_eligible_restaurant_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_calendar_entry_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_evaluation_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offers_hub_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_eligible_restaurant_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_calendar_entry_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/validate_discount_result_entity.dart';
 
 extension OfferResponseDtoMapper on OfferResponseDto {
   OfferEntity toEntity() {
@@ -25,10 +33,12 @@ extension OfferResponseDtoMapper on OfferResponseDto {
       allowStacking: allowPromoCodeStacking ?? false,
       termsAndConditionsAr: termsAndConditionsAr,
       termsAndConditionsEn: termsAndConditionsEn,
-      programIds: programIds ?? const [],
-      bundleIds: bundleIds ?? const [],
-      restaurantIds: restaurantIds ?? const [],
+      programIds: resolvedProgramIds ?? const [],
+      bundleIds: resolvedBundleIds ?? const [],
+      restaurantIds: resolvedRestaurantIds ?? const [],
       allowedDurationDays: allowedDurationDays ?? const [],
+      isSaved: isSaved ?? false,
+      isAvailable: isAvailable ?? true,
     );
   }
 }
@@ -77,3 +87,62 @@ extension CampaignCheckoutSessionResponseDtoMapper
     );
   }
 }
+
+extension OffersHubResponseDtoMapper on OffersHubResponseDto {
+  OffersHubEntity toEntity() {
+    return OffersHubEntity(
+      heroOffers: heroOffers?.map((e) => e.toEntity()).toList() ?? const [],
+      availableOffers:
+          availableOffers?.map((e) => e.toEntity()).toList() ?? const [],
+      savedOffers: savedOffers?.map((e) => e.toEntity()).toList() ?? const [],
+      serverTimeUtc: serverTimeUtc != null
+          ? DateTime.tryParse(serverTimeUtc!)
+          : null,
+    );
+  }
+}
+
+extension OfferEligibleRestaurantDtoMapper on OfferEligibleRestaurantDto {
+  OfferEligibleRestaurantEntity toEntity() {
+    return OfferEligibleRestaurantEntity(
+      id: id?.toString() ?? '',
+      nameAr: nameAr ?? '',
+      nameEn: nameEn ?? '',
+      logoUrl: logoUrl,
+      rating: rating,
+    );
+  }
+}
+
+extension OfferCalendarEntryDtoMapper on OfferCalendarEntryDto {
+  OfferCalendarEntryEntity toEntity() {
+    return OfferCalendarEntryEntity(
+      id: id,
+      offerId: offerId ?? '',
+      scheduledDate: scheduledDate ?? '',
+      status: status ?? 1,
+      offer: offer?.toEntity(),
+      createdAtUtc: createdAtUtc != null
+          ? DateTime.tryParse(createdAtUtc!)
+          : null,
+    );
+  }
+}
+
+extension ValidateDiscountResponseDtoMapper on ValidateDiscountResponseDto {
+  ValidateDiscountResultEntity toEntity() {
+    return ValidateDiscountResultEntity(
+      isValid: isValid ?? false,
+      code: code ?? '',
+      codeType: codeType ?? 'Unknown',
+      discountAmount: resolvedDiscountAmount,
+      discountPercent: resolvedDiscountPercent,
+      eligibilityCode: eligibilityCode,
+      messageAr: resolvedMessageAr,
+      messageEn: resolvedMessageEn,
+      offerId: offerId,
+      offerName: offerName,
+    );
+  }
+}
+

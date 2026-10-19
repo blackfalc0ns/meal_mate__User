@@ -368,4 +368,20 @@ class SubscriptionErrorCodes {
 
   /// Legacy bare code for no prepared restaurants.
   static const String noPreparedRestaurantsBare = 'no_prepared_restaurants';
+
+  // ── Offers & Promotions v2 Error Codes ──
+  static const String notFound = 'not_found';
+  static const String inactive = 'inactive';
+  static const String notStarted = 'not_started';
+  static const String expired = 'expired';
+  static const String usageExhausted = 'usage_exhausted';
+  static const String ineligible = 'ineligible';
+  static const String selfReferral = 'self_referral';
+  static const String alreadyAttributed = 'already_attributed';
+  static const String checkoutCouponFullDiscountUnsupported =
+      'checkout.coupon_full_discount_unsupported';
+  static const String checkoutCapacityUnavailable =
+      'checkout.capacity_unavailable';
+  static const String offersCustomerUnavailable =
+      'offers.customer.unavailable';
 }

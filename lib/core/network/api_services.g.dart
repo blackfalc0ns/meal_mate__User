@@ -4978,16 +4978,38 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<OfferResponseDto>> getCustomerAvailableOffers(
-    GetCustomerAvailableOffersRequestDto request,
-  ) async {
+  Future<List<OfferResponseDto>> getCustomerAvailableOffers({
+    double? cartAmount,
+    int? durationDays,
+    String? deliveryGovernorate,
+    String? programId,
+    String? bundleId,
+    String? restaurantId,
+    int? page,
+    int? pageSize,
+    String? search,
+    String? category,
+    bool? eligibleOnly,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'cartAmount': cartAmount,
+      r'durationDays': durationDays,
+      r'deliveryGovernorate': deliveryGovernorate,
+      r'programId': programId,
+      r'bundleId': bundleId,
+      r'restaurantId': restaurantId,
+      r'page': page,
+      r'pageSize': pageSize,
+      r'search': search,
+      r'category': category,
+      r'eligibleOnly': eligibleOnly,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<OfferResponseDto>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             '/api/v1/customer/offers/available',
@@ -5004,6 +5026,33 @@ class _ApiServices implements ApiServices {
             (dynamic i) => OfferResponseDto.fromJson(i as Map<String, dynamic>),
           )
           .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<OffersHubResponseDto> getOffersHub() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<OffersHubResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/hub',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OffersHubResponseDto _value;
+    try {
+      _value = OffersHubResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -5031,6 +5080,371 @@ class _ApiServices implements ApiServices {
     late OfferResponseDto _value;
     try {
       _value = OfferResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
+    String offerId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<OfferEligibleRestaurantDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/eligible-restaurants',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<OfferEligibleRestaurantDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                OfferEligibleRestaurantDto.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<OfferResponseDto>> getSavedOffers() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<OfferResponseDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/saved',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<OfferResponseDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) => OfferResponseDto.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<void> saveOffer(String offerId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/save',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<void> unsaveOffer(String offerId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/save',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<List<OfferCalendarEntryDto>> getOfferCalendar() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<OfferCalendarEntryDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/calendar',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<OfferCalendarEntryDto> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                OfferCalendarEntryDto.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<OfferCalendarEntryDto> addOfferToCalendar(
+    String offerId,
+    Map<String, dynamic> body,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<OfferCalendarEntryDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/calendar',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OfferCalendarEntryDto _value;
+    try {
+      _value = OfferCalendarEntryDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<void> removeOfferFromCalendar(String offerId, String date) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/calendar/${date}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<ValidateDiscountResponseDto> validateDiscount(
+    ValidateDiscountRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<ValidateDiscountResponseDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/validate-discount',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ValidateDiscountResponseDto _value;
+    try {
+      _value = ValidateDiscountResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionPricingPreviewResponseDto> getSubscriptionPricingPreview(
+    SubscriptionPricingPreviewRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<SubscriptionPricingPreviewResponseDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscription-pricing/preview',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionPricingPreviewResponseDto _value;
+    try {
+      _value = SubscriptionPricingPreviewResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubscriptionConfirmationResponseDto> getSubscriptionConfirmation(
+    String subscriptionId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubscriptionConfirmationResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/subscriptions/${subscriptionId}/confirmation',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubscriptionConfirmationResponseDto _value;
+    try {
+      _value = SubscriptionConfirmationResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<CustomerWalletResponseDto> getCustomerWallet() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CustomerWalletResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/wallet',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CustomerWalletResponseDto _value;
+    try {
+      _value = CustomerWalletResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<WalletTransactionsResponseDto> getCustomerWalletTransactions(
+    String? walletType,
+    int? page,
+    int? pageSize,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'walletType': walletType,
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<WalletTransactionsResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/wallet/transactions',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late WalletTransactionsResponseDto _value;
+    try {
+      _value = WalletTransactionsResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<CustomerReferralSummaryResponseDto>
+  getCustomerReferralsSummary() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CustomerReferralSummaryResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/referrals/summary',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CustomerReferralSummaryResponseDto _value;
+    try {
+      _value = CustomerReferralSummaryResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

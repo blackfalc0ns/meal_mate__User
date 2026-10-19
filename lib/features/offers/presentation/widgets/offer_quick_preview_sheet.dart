@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -121,8 +123,10 @@ class OfferQuickPreviewSheet extends StatelessWidget {
                     const Spacer(),
                     InkWell(
                       onTap: () {
-                        Clipboard.setData(
-                          ClipboardData(text: offer.promoCode!),
+                        unawaited(
+                          Clipboard.setData(
+                            ClipboardData(text: offer.promoCode!),
+                          ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -162,9 +166,11 @@ class OfferQuickPreviewSheet extends StatelessWidget {
                   ? null
                   : () {
                       Navigator.of(context).pop();
-                      Navigator.of(
-                        context,
-                      ).pushNamed(AppRoutes.redeemPackage, arguments: offer);
+                      unawaited(
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
+                      );
                     },
             ),
           ],

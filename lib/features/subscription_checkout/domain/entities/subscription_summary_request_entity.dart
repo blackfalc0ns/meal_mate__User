@@ -7,6 +7,7 @@ class SubscriptionSummaryRequestEntity {
     required this.programId,
     this.startDate = '',
     this.promoCode,
+    this.offerId,
     this.restaurantsPage,
     this.restaurantsPageSize,
   });
@@ -18,6 +19,7 @@ class SubscriptionSummaryRequestEntity {
   final String programId;
   final String startDate;
   final String? promoCode;
+  final String? offerId;
   final int? restaurantsPage;
   final int? restaurantsPageSize;
 
@@ -30,6 +32,8 @@ class SubscriptionSummaryRequestEntity {
     String? startDate,
     String? promoCode,
     bool clearPromoCode = false,
+    String? offerId,
+    bool clearOfferId = false,
     int? restaurantsPage,
     int? restaurantsPageSize,
   }) {
@@ -41,6 +45,7 @@ class SubscriptionSummaryRequestEntity {
       programId: programId ?? this.programId,
       startDate: startDate ?? this.startDate,
       promoCode: clearPromoCode ? null : (promoCode ?? this.promoCode),
+      offerId: clearOfferId ? null : (offerId ?? this.offerId),
       restaurantsPage: restaurantsPage ?? this.restaurantsPage,
       restaurantsPageSize: restaurantsPageSize ?? this.restaurantsPageSize,
     );

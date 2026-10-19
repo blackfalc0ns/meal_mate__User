@@ -21,6 +21,8 @@ class OfferEntity {
     this.bundleIds = const [],
     this.restaurantIds = const [],
     this.allowedDurationDays = const [],
+    this.isSaved = false,
+    this.isAvailable = true,
   });
 
   final String id;
@@ -44,6 +46,60 @@ class OfferEntity {
   final List<String> bundleIds;
   final List<String> restaurantIds;
   final List<int> allowedDurationDays;
+  final bool isSaved;
+  final bool isAvailable;
+
+  OfferEntity copyWith({
+    String? id,
+    String? nameAr,
+    String? nameEn,
+    String? descriptionAr,
+    String? descriptionEn,
+    String? bannerImageUrl,
+    double? discountRate,
+    double? discountAmount,
+    DateTime? startsAt,
+    DateTime? endsAt,
+    int? remainingSpots,
+    int? minSubscriptionDays,
+    String? campaignId,
+    String? promoCode,
+    bool? allowStacking,
+    String? termsAndConditionsAr,
+    String? termsAndConditionsEn,
+    List<String>? programIds,
+    List<String>? bundleIds,
+    List<String>? restaurantIds,
+    List<int>? allowedDurationDays,
+    bool? isSaved,
+    bool? isAvailable,
+  }) {
+    return OfferEntity(
+      id: id ?? this.id,
+      nameAr: nameAr ?? this.nameAr,
+      nameEn: nameEn ?? this.nameEn,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
+      descriptionEn: descriptionEn ?? this.descriptionEn,
+      bannerImageUrl: bannerImageUrl ?? this.bannerImageUrl,
+      discountRate: discountRate ?? this.discountRate,
+      discountAmount: discountAmount ?? this.discountAmount,
+      startsAt: startsAt ?? this.startsAt,
+      endsAt: endsAt ?? this.endsAt,
+      remainingSpots: remainingSpots ?? this.remainingSpots,
+      minSubscriptionDays: minSubscriptionDays ?? this.minSubscriptionDays,
+      campaignId: campaignId ?? this.campaignId,
+      promoCode: promoCode ?? this.promoCode,
+      allowStacking: allowStacking ?? this.allowStacking,
+      termsAndConditionsAr: termsAndConditionsAr ?? this.termsAndConditionsAr,
+      termsAndConditionsEn: termsAndConditionsEn ?? this.termsAndConditionsEn,
+      programIds: programIds ?? this.programIds,
+      bundleIds: bundleIds ?? this.bundleIds,
+      restaurantIds: restaurantIds ?? this.restaurantIds,
+      allowedDurationDays: allowedDurationDays ?? this.allowedDurationDays,
+      isSaved: isSaved ?? this.isSaved,
+      isAvailable: isAvailable ?? this.isAvailable,
+    );
+  }
 
   String title(String languageCode) =>
       languageCode == 'ar' ? nameAr : (nameEn.isNotEmpty ? nameEn : nameAr);
@@ -71,7 +127,9 @@ class OfferEntity {
 
   String formattedDiscount([String currency = 'KWD']) {
     if (discountRate != null && discountRate! > 0) {
-      final percent = (discountRate! * 100).round();
+      final percent = discountRate! > 1.0
+          ? discountRate!.round()
+          : (discountRate! * 100).round();
       return '$percent%';
     }
     if (discountAmount != null && discountAmount! > 0) {

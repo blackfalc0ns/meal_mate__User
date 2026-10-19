@@ -108,6 +108,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
                   ? checkout.startDate
                   : checkout.chosenStartDate,
               isFamily: isFamily,
+              confirmation: state.confirmation,
             );
             unawaited(
               Navigator.of(context).pushNamedAndRemoveUntil(

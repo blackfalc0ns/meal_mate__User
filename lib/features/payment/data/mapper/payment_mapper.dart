@@ -77,6 +77,8 @@ extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
       paymentMethodId: paymentMethodId,
       correlationId: correlationId,
       promoCode: promoCode,
+      offerId: offerId,
+      idempotencyKey: idempotencyKey,
     );
   }
 }

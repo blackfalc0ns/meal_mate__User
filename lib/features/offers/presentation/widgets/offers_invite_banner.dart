@@ -5,13 +5,38 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
 class OffersInviteBanner extends StatelessWidget {
-  const OffersInviteBanner({super.key, this.onTap});
+  const OffersInviteBanner({
+    super.key,
+    this.onTap,
+    this.code,
+    this.rewardRate,
+  });
 
   final VoidCallback? onTap;
+  final String? code;
+  final double? rewardRate;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
+    final isAr = locale.localeName == 'ar';
+
+    final percent = rewardRate != null && rewardRate! > 0
+        ? (rewardRate! <= 1.0 ? (rewardRate! * 100).toInt() : rewardRate!.toInt())
+        : 30;
+
+    final title = isAr
+        ? 'ادع أصدقائك واحصل على خصم $percent%'
+        : 'Invite friends & get $percent% discount';
+
+    final subtitle = code != null && code!.isNotEmpty
+        ? (isAr
+            ? 'شارك كود الإحالة ($code) مع أصدقائك واكسب رصيداً'
+            : 'Share referral code ($code) with friends and earn rewards')
+        : (isAr
+            ? 'شارك كود الإحالة مع أصدقائك واكسب خصم عند أول اشتراك'
+            : 'Share your referral code with friends and earn rewards');
 
     return InkWell(
       onTap: onTap,
@@ -51,7 +76,7 @@ class OffersInviteBanner extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'ادع أصدقائك واحصل على خصم 30%',
+                    title,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size13,
@@ -62,7 +87,7 @@ class OffersInviteBanner extends StatelessWidget {
                   ),
                   const SizedBox(height: Spacing.xs),
                   Text(
-                    'شارك كود الإحالة مع أصدقائك واكسب خصم عند أول اشتراك',
+                    subtitle,
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
@@ -85,7 +110,7 @@ class OffersInviteBanner extends StatelessWidget {
                 borderRadius: BorderRadius.circular(Spacing.xs),
               ),
               child: Text(
-                'دعوة',
+                isAr ? 'دعوة' : 'Invite',
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size11,

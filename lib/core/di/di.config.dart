@@ -474,6 +474,8 @@ import '../../features/offers/data/services/advertising_event_tracker_impl.dart'
 import '../../features/offers/domain/repo/offers_repository.dart' as _i1067;
 import '../../features/offers/domain/services/advertising_event_tracker.dart'
     as _i912;
+import '../../features/offers/domain/usecase/add_offer_to_calendar_usecase.dart'
+    as _i1066;
 import '../../features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart'
     as _i885;
 import '../../features/offers/domain/usecase/evaluate_offer_usecase.dart'
@@ -484,8 +486,23 @@ import '../../features/offers/domain/usecase/get_campaign_payment_status_usecase
     as _i224;
 import '../../features/offers/domain/usecase/get_customer_offer_details_usecase.dart'
     as _i285;
+import '../../features/offers/domain/usecase/get_offer_calendar_usecase.dart'
+    as _i821;
+import '../../features/offers/domain/usecase/get_offer_eligible_restaurants_usecase.dart'
+    as _i310;
+import '../../features/offers/domain/usecase/get_offers_hub_usecase.dart'
+    as _i707;
+import '../../features/offers/domain/usecase/get_saved_offers_usecase.dart'
+    as _i553;
+import '../../features/offers/domain/usecase/remove_offer_from_calendar_usecase.dart'
+    as _i442;
+import '../../features/offers/domain/usecase/save_offer_usecase.dart' as _i898;
 import '../../features/offers/domain/usecase/start_campaign_payment_usecase.dart'
     as _i530;
+import '../../features/offers/domain/usecase/unsave_offer_usecase.dart'
+    as _i195;
+import '../../features/offers/domain/usecase/validate_discount_usecase.dart'
+    as _i1032;
 import '../../features/offers/presentation/manager/campaign_payment_view_model.dart'
     as _i102;
 import '../../features/offers/presentation/manager/offers_view_model.dart'
@@ -502,6 +519,8 @@ import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart'
     as _i365;
 import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart'
     as _i182;
+import '../../features/payment/domain/usecase/get_subscription_confirmation_usecase.dart'
+    as _i552;
 import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart'
     as _i173;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
@@ -529,6 +548,8 @@ import '../../features/subscription_checkout/data/repo/subscription_summary_repo
     as _i636;
 import '../../features/subscription_checkout/domain/repo/subscription_summary_repository.dart'
     as _i1060;
+import '../../features/subscription_checkout/domain/usecase/get_subscription_pricing_preview_usecase.dart'
+    as _i923;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart'
     as _i462;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_restaurant_availability_usecase.dart'
@@ -633,6 +654,22 @@ import '../../features/subscription_upgrade/domain/usecase/get_subscription_upgr
     as _i822;
 import '../../features/subscription_upgrade/presentation/manager/restaurant_tier_upgrade_view_model.dart'
     as _i111;
+import '../../features/wallet/data/data_source/customer_wallet_remote_data_source.dart'
+    as _i1032;
+import '../../features/wallet/data/data_source/customer_wallet_remote_data_source_impl.dart'
+    as _i400;
+import '../../features/wallet/data/repo/customer_wallet_repository_impl.dart'
+    as _i792;
+import '../../features/wallet/domain/repo/customer_wallet_repository.dart'
+    as _i738;
+import '../../features/wallet/domain/usecase/get_customer_referral_summary_usecase.dart'
+    as _i314;
+import '../../features/wallet/domain/usecase/get_customer_wallet_transactions_usecase.dart'
+    as _i683;
+import '../../features/wallet/domain/usecase/get_customer_wallet_usecase.dart'
+    as _i755;
+import '../../features/wallet/presentation/manager/customer_wallet_view_model.dart'
+    as _i753;
 import '../address/data/data_source/address_location_cache.dart' as _i177;
 import '../address/data/data_source/address_location_remote_data_source.dart'
     as _i74;
@@ -834,6 +871,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.lazySingleton<_i1032.CustomerWalletRemoteDataSource>(
+      () => _i400.CustomerWalletRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i986.FamilyPackagesRemoteDataSource>(
       () => _i854.FamilyPackagesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -881,6 +921,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1038.SubscriptionTierRemoteDataSource>(
       () =>
           _i1039.SubscriptionTierRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i738.CustomerWalletRepository>(
+      () => _i792.CustomerWalletRepositoryImpl(
+        gh<_i1032.CustomerWalletRemoteDataSource>(),
+      ),
     );
     gh.factory<_i1060.SubscriptionSummaryRepository>(
       () => _i636.SubscriptionSummaryRepositoryImpl(
@@ -1059,6 +1104,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i470.OffersRemoteDataSource>(
       () => _i642.OffersRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i314.GetCustomerReferralSummaryUseCase>(
+      () => _i314.GetCustomerReferralSummaryUseCase(
+        gh<_i738.CustomerWalletRepository>(),
+      ),
+    );
+    gh.factory<_i683.GetCustomerWalletTransactionsUseCase>(
+      () => _i683.GetCustomerWalletTransactionsUseCase(
+        gh<_i738.CustomerWalletRepository>(),
+      ),
+    );
+    gh.factory<_i755.GetCustomerWalletUseCase>(
+      () =>
+          _i755.GetCustomerWalletUseCase(gh<_i738.CustomerWalletRepository>()),
+    );
     gh.factory<_i998.ProfileRemoteDataSource>(
       () => _i531.ProfileRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -1072,6 +1131,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i737.AddressesRemoteDataSource>(
       () => _i380.AddressesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i753.CustomerWalletViewModel>(
+      () => _i753.CustomerWalletViewModel(
+        gh<_i755.GetCustomerWalletUseCase>(),
+        gh<_i683.GetCustomerWalletTransactionsUseCase>(),
+        gh<_i314.GetCustomerReferralSummaryUseCase>(),
+      ),
     );
     gh.factory<_i603.FamilyProgramsRemoteDataSource>(
       () => _i567.FamilyProgramsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
@@ -1143,6 +1209,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i308.SubscriptionBillingRemoteDataSource>(),
       ),
     );
+    gh.factory<_i923.GetSubscriptionPricingPreviewUseCase>(
+      () => _i923.GetSubscriptionPricingPreviewUseCase(
+        gh<_i1060.SubscriptionSummaryRepository>(),
+      ),
+    );
     gh.factory<_i462.GetSubscriptionReadinessUseCase>(
       () => _i462.GetSubscriptionReadinessUseCase(
         gh<_i1060.SubscriptionSummaryRepository>(),
@@ -1172,6 +1243,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i182.GetSubscriptionCalendarUseCase>(
       () => _i182.GetSubscriptionCalendarUseCase(gh<_i996.PaymentRepository>()),
+    );
+    gh.factory<_i552.GetSubscriptionConfirmationUseCase>(
+      () => _i552.GetSubscriptionConfirmationUseCase(
+        gh<_i996.PaymentRepository>(),
+      ),
     );
     gh.factory<_i173.GetSubscriptionPaymentStatusUseCase>(
       () => _i173.GetSubscriptionPaymentStatusUseCase(
@@ -1565,6 +1641,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i812.SubscriptionBillingRepository>(),
       ),
     );
+    gh.factory<_i1066.AddOfferToCalendarUseCase>(
+      () => _i1066.AddOfferToCalendarUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i885.CreateCampaignCheckoutSessionUseCase>(
       () => _i885.CreateCampaignCheckoutSessionUseCase(
         gh<_i1067.OffersRepository>(),
@@ -1583,12 +1662,42 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i285.GetCustomerOfferDetailsUseCase>(
       () => _i285.GetCustomerOfferDetailsUseCase(gh<_i1067.OffersRepository>()),
     );
+    gh.factory<_i821.GetOfferCalendarUseCase>(
+      () => _i821.GetOfferCalendarUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i310.GetOfferEligibleRestaurantsUseCase>(
+      () => _i310.GetOfferEligibleRestaurantsUseCase(
+        gh<_i1067.OffersRepository>(),
+      ),
+    );
+    gh.factory<_i707.GetOffersHubUseCase>(
+      () => _i707.GetOffersHubUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i553.GetSavedOffersUseCase>(
+      () => _i553.GetSavedOffersUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i442.RemoveOfferFromCalendarUseCase>(
+      () => _i442.RemoveOfferFromCalendarUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i898.SaveOfferUseCase>(
+      () => _i898.SaveOfferUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i530.StartCampaignPaymentUseCase>(
       () => _i530.StartCampaignPaymentUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i195.UnsaveOfferUseCase>(
+      () => _i195.UnsaveOfferUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i1032.ValidateDiscountUseCase>(
+      () => _i1032.ValidateDiscountUseCase(gh<_i1067.OffersRepository>()),
     );
     gh.factory<_i736.OfferDetailsViewModel>(
       () => _i736.OfferDetailsViewModel(
         gh<_i285.GetCustomerOfferDetailsUseCase>(),
+        gh<_i898.SaveOfferUseCase>(),
+        gh<_i195.UnsaveOfferUseCase>(),
+        gh<_i310.GetOfferEligibleRestaurantsUseCase>(),
+        gh<_i1066.AddOfferToCalendarUseCase>(),
       ),
     );
     gh.factory<_i275.GetSubscriptionDurationsUseCase>(
@@ -1796,9 +1905,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i873.AbandonFamilyDraftUseCase>(),
       ),
     );
-    gh.factory<_i912.OffersViewModel>(
-      () => _i912.OffersViewModel(gh<_i908.GetAvailableOffersUseCase>()),
-    );
     gh.factory<_i527.SubscriptionPlanViewModel>(
       () => _i527.SubscriptionPlanViewModel(
         gh<_i275.GetSubscriptionDurationsUseCase>(),
@@ -1831,6 +1937,17 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i760.InfluencerDashboardViewModel(
         gh<_i493.GetInfluencerHomeUseCase>(),
         gh<_i460.GetInfluencerLinksUseCase>(),
+      ),
+    );
+    gh.factory<_i422.FamilySummaryViewModel>(
+      () => _i422.FamilySummaryViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i1042.GetFamilySummaryUseCase>(),
+        gh<_i475.GetFamilyPaymentMethodsUseCase>(),
+        gh<_i184.CheckoutFamilySubscriptionUseCase>(),
+        gh<_i773.SelectFamilyMemberSummaryUseCase>(),
+        gh<_i696.SaveFamilyMemberStartDateUseCase>(),
+        gh<_i822.RetryFamilySubscriptionPaymentUseCase>(),
       ),
     );
     gh.factory<_i854.SubscriptionPackagesViewModel>(
@@ -1879,6 +1996,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i237.UpdateFamilyMemberUseCase>(),
         gh<_i880.DeleteFamilyMemberUseCase>(),
         gh<_i973.LookupFamilyMemberUseCase>(),
+      ),
+    );
+    gh.factory<_i912.OffersViewModel>(
+      () => _i912.OffersViewModel(
+        gh<_i908.GetAvailableOffersUseCase>(),
+        gh<_i707.GetOffersHubUseCase>(),
+        gh<_i553.GetSavedOffersUseCase>(),
+        gh<_i898.SaveOfferUseCase>(),
+        gh<_i195.UnsaveOfferUseCase>(),
+        gh<_i821.GetOfferCalendarUseCase>(),
+        getCustomerReferralSummaryUseCase:
+            gh<_i314.GetCustomerReferralSummaryUseCase>(),
       ),
     );
     gh.factory<_i422.NotificationsViewModel>(
@@ -1964,17 +2093,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1022.PreviewNewAddressCoverageUseCase>(),
         gh<_i577.PreviewExistingAddressCoverageUseCase>(),
         gh<_i267.ConfirmSetDefaultAddressUseCase>(),
-      ),
-    );
-    gh.factory<_i422.FamilySummaryViewModel>(
-      () => _i422.FamilySummaryViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i1042.GetFamilySummaryUseCase>(),
-        gh<_i475.GetFamilyPaymentMethodsUseCase>(),
-        gh<_i184.CheckoutFamilySubscriptionUseCase>(),
-        gh<_i773.SelectFamilyMemberCheckoutUseCase>(),
-        gh<_i696.SaveFamilyMemberStartDateUseCase>(),
-        gh<_i822.RetryFamilySubscriptionPaymentUseCase>(),
       ),
     );
     gh.factory<_i154.RestaurantPickerViewModel>(

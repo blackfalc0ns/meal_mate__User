@@ -91,6 +91,7 @@ class PaymentScreen extends StatelessWidget {
             ? summary.startDate
             : summary.chosenStartDate,
         endDate: summary.endDate,
+        confirmation: state.confirmation,
       );
       unawaited(
         Navigator.of(context).pushNamedAndRemoveUntil(

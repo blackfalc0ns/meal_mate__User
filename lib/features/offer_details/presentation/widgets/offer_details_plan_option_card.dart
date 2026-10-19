@@ -137,7 +137,7 @@ class OfferDetailsPlanOptionCard extends StatelessWidget {
                 children: [
                   Text(
                     '$originalPrice ${locale.currency}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
                       color: AppColors.textHint,

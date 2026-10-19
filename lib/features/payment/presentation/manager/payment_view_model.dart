@@ -28,6 +28,9 @@ import 'package:meal_meat_user/features/subscription_settings/domain/entities/su
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
 
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_confirmation_entity.dart';
+import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_confirmation_usecase.dart';
+
 class PaymentViewModel extends Cubit<PaymentState> {
   PaymentViewModel(
     this._getPaymentMethodsUseCase,
@@ -39,6 +42,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
     this._paymentAttemptStore,
     this._tokenService,
     this._getSubscriptionBillingUseCase,
+    this._getSubscriptionConfirmationUseCase,
     this.pollingBackoffOverride,
   }) : super(const PaymentState());
 
@@ -55,9 +59,12 @@ class PaymentViewModel extends Cubit<PaymentState> {
   final PaymentAttemptStore? _paymentAttemptStore;
   final TokenService? _tokenService;
   final GetSubscriptionBillingUseCase? _getSubscriptionBillingUseCase;
+  final GetSubscriptionConfirmationUseCase? _getSubscriptionConfirmationUseCase;
 
   int _methodsLoadGeneration = 0;
   int _fulfillmentGeneration = 0;
+  String? _lastPurchaseFingerprint;
+  String? _currentIdempotencyKey;
 
   void doIntent(PaymentEvent event) {
     switch (event) {
@@ -241,6 +248,13 @@ class PaymentViewModel extends Cubit<PaymentState> {
       return;
     }
 
+    final fingerprint =
+        '${args.summaryRequest.programId}|${args.summaryRequest.bundleId}|${args.summaryRequest.tier}|${args.summaryRequest.durationDays}|${args.summaryRequest.startDate}|${args.summaryRequest.includeFriday}|${args.summaryRequest.promoCode ?? ''}|${args.summaryRequest.offerId ?? ''}|${selectedMethod.id}';
+    if (_lastPurchaseFingerprint != fingerprint || _currentIdempotencyKey == null) {
+      _lastPurchaseFingerprint = fingerprint;
+      _currentIdempotencyKey = _generateCorrelationId();
+    }
+
     final request = PaymentCheckoutRequestEntity(
       programId: args.summaryRequest.programId,
       bundleId: args.summaryRequest.bundleId,
@@ -253,6 +267,8 @@ class PaymentViewModel extends Cubit<PaymentState> {
       paymentMethodId: selectedMethod.id!,
       correlationId: _generateCorrelationId(),
       promoCode: args.summaryRequest.promoCode,
+      offerId: args.summaryRequest.offerId,
+      idempotencyKey: _currentIdempotencyKey,
     );
 
     emit(
@@ -535,6 +551,16 @@ class PaymentViewModel extends Cubit<PaymentState> {
 
           if (normalizedStatus == 'paid' || status.isPaid) {
             final isFulfillmentReady = status.isFulfillmentReady ?? false;
+            SubscriptionConfirmationEntity? confirmation;
+            if (_getSubscriptionConfirmationUseCase != null) {
+              final confirmRes = await _getSubscriptionConfirmationUseCase(
+                subscriptionId,
+              );
+              if (confirmRes
+                  is ApiSuccessResult<SubscriptionConfirmationEntity>) {
+                confirmation = confirmRes.data;
+              }
+            }
             if (state.isFamily) {
               if (isFulfillmentReady || status.isPaid) {
                 final customerId =
@@ -566,6 +592,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                     isPaymentFailed: false,
                     isReviewRequired: false,
                     paymentStatus: status,
+                    confirmation: confirmation ?? state.confirmation,
                     clearFulfillmentFailure: true,
                   ),
                 );
@@ -611,6 +638,7 @@ class PaymentViewModel extends Cubit<PaymentState> {
                     isPaymentFailed: false,
                     isReviewRequired: false,
                     paymentStatus: status,
+                    confirmation: confirmation ?? state.confirmation,
                     clearFulfillmentFailure: true,
                   ),
                 );

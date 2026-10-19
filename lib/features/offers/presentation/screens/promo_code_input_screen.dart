@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -11,8 +13,7 @@ import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
-import 'package:meal_meat_user/features/offers/domain/usecase/evaluate_offer_usecase.dart';
+import 'package:meal_meat_user/features/offers/domain/usecase/validate_discount_usecase.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/suggested_promo_code_card.dart';
 
 class PromoCodeInputScreen extends StatefulWidget {
@@ -58,8 +59,8 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
       _errorMessage = null;
     });
 
-    final evaluateUseCase = getIt<EvaluateOfferUseCase>();
-    final result = await evaluateUseCase(promoCode: code);
+    final validateUseCase = getIt<ValidateDiscountUseCase>();
+    final result = await validateUseCase(code: code);
 
     if (!mounted) return;
 
@@ -69,26 +70,24 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        if (data.isEligible) {
-          final offer = OfferEntity(
-            id: data.offerId ?? 'promo-$code',
-            nameAr: data.offerName ?? 'عرض خاص بالكود $code',
-            nameEn: data.offerName ?? 'Special Offer with code $code',
-            descriptionAr: 'خصم معتمد عبر الكوبون الترويجي $code',
-            descriptionEn: 'Verified promo discount with $code',
-            discountAmount: data.calculatedDiscountAmount,
-            promoCode: code,
-            allowStacking: data.allowPromoCodeStacking,
-            startsAt: DateTime.now().toUtc(),
-            endsAt: DateTime.now().toUtc().add(const Duration(days: 7)),
-          );
+        if (data.isValid) {
+          final lang = Localizations.localeOf(context).languageCode;
+          final msg =
+              data.message(lang) ?? context.localization.coupon_applied_label;
+          CustomSnackbar.showSuccess(context: context, message: msg);
 
-          Navigator.of(
-            context,
-          ).pushReplacementNamed(AppRoutes.redeemPackage, arguments: offer);
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop(code);
+          } else {
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.subscriptions,
+              arguments: code,
+            );
+          }
         } else {
+          final lang = Localizations.localeOf(context).languageCode;
           final reason =
-              data.firstReason ??
+              data.message(lang) ??
               context.localization.offer_promo_invalid_error;
           setState(() {
             _errorMessage = reason;
@@ -238,7 +237,7 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
               AppButton(
                 text: locale.offer_promo_apply_button,
                 isLoading: _isLoading,
-                onPressed: _isLoading ? null : () => _applyCode(),
+                onPressed: _isLoading ? null : _applyCode,
               ),
 
               const SizedBox(height: Spacing.xxl),
@@ -265,7 +264,7 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
                       discount: '20%',
                       onSelect: () {
                         _controller.text = 'SAVE20';
-                        _applyCode('SAVE20');
+                        unawaited(_applyCode('SAVE20'));
                       },
                     ),
                     const SizedBox(width: Spacing.md),
@@ -275,7 +274,7 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
                       discount: '10%',
                       onSelect: () {
                         _controller.text = 'FIT10';
-                        _applyCode('FIT10');
+                        unawaited(_applyCode('FIT10'));
                       },
                     ),
                     const SizedBox(width: Spacing.md),
@@ -285,7 +284,7 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
                       discount: '15%',
                       onSelect: () {
                         _controller.text = 'WELCOME';
-                        _applyCode('WELCOME');
+                        unawaited(_applyCode('WELCOME'));
                       },
                     ),
                   ],

@@ -4733,6 +4733,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wallet_filter_all => 'All';
 
   @override
+  String get wallet_filter_cash => 'Cash';
+
+  @override
+  String get wallet_filter_promotional => 'Promotional';
+
+  @override
+  String get wallet_cash_balance => 'Cash Balance';
+
+  @override
+  String get wallet_promotional_balance => 'Promotional Balance';
+
+  @override
+  String get wallet_empty_transactions => 'No transactions found';
+
+  @override
   String get wallet_search_hint => 'Search transactions';
 
   @override
@@ -6828,6 +6843,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_success_end_date_label => 'Subscription End Date';
 
   @override
+  String get subscription_success_applied_discount_label => 'Applied Discount';
+
+  @override
+  String get subscription_success_paid_amount_label => 'Amount Paid';
+
+  @override
+  String get subscription_success_referral_title =>
+      'Invite Friends & Earn Rewards';
+
+  @override
+  String get subscription_success_referral_subtitle =>
+      'Share your code with friends and earn credits in your wallet!';
+
+  @override
+  String get subscription_success_share_button => 'Share Code';
+
+  @override
+  String get subscription_success_referral_copied =>
+      'Referral link copied to clipboard';
+
+  @override
   String get subscription_success_payment_confirmed_title =>
       'Payment confirmed and subscription activated';
 
@@ -7577,4 +7613,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_go_to_addresses => 'Set Delivery Address';
+
+  @override
+  String get referral_error_self_referral =>
+      'You cannot use your own referral code';
+
+  @override
+  String get referral_error_already_attributed =>
+      'You have already used a referral code';
+
+  @override
+  String get checkout_error_capacity_unavailable =>
+      'Capacity unavailable for requested dates';
+
+  @override
+  String get offers_error_customer_unavailable =>
+      'Requested offer is unavailable';
 }

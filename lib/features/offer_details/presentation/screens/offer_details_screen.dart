@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -219,7 +221,7 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
           const Spacer(),
           InkWell(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: promoCode));
+              unawaited(Clipboard.setData(ClipboardData(text: promoCode)));
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(locale.offer_details_copy_code),
@@ -267,6 +269,10 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
 
   void _navigateToRedeemPackage(BuildContext context, OfferEntity? offer) {
     if (offer == null) return;
-    Navigator.of(context).pushNamed(AppRoutes.redeemPackage, arguments: offer);
+    unawaited(
+      Navigator.of(
+        context,
+      ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
+    );
   }
 }

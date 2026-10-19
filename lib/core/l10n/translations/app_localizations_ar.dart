@@ -4662,6 +4662,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wallet_filter_all => 'الكل';
 
   @override
+  String get wallet_filter_cash => 'نقدي';
+
+  @override
+  String get wallet_filter_promotional => 'ترويجي';
+
+  @override
+  String get wallet_cash_balance => 'الرصيد النقدي';
+
+  @override
+  String get wallet_promotional_balance => 'الرصيد الترويجي';
+
+  @override
+  String get wallet_empty_transactions => 'لا توجد حركات في المحفظة';
+
+  @override
   String get wallet_search_hint => 'ابحث في العمليات';
 
   @override
@@ -6715,6 +6730,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_success_end_date_label => 'تاريخ انتهاء الاشتراك';
 
   @override
+  String get subscription_success_applied_discount_label => 'الخصم المطبق';
+
+  @override
+  String get subscription_success_paid_amount_label => 'المبلغ المدفوع';
+
+  @override
+  String get subscription_success_referral_title =>
+      'ادعُ أصدقاءك واكسب المكافآت';
+
+  @override
+  String get subscription_success_referral_subtitle =>
+      'شارك كودك مع أصدقائك واكسب رصيداً في محفظتك!';
+
+  @override
+  String get subscription_success_share_button => 'مشاركة الكود';
+
+  @override
+  String get subscription_success_referral_copied =>
+      'تم نسخ رابط الإحالة إلى الحافظة';
+
+  @override
   String get subscription_success_payment_confirmed_title =>
       'تم تأكيد الدفع وتفعيل الاشتراك';
 
@@ -7458,4 +7494,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_go_to_addresses => 'تحديد عنوان التوصيل';
+
+  @override
+  String get referral_error_self_referral =>
+      'لا يمكنك استخدام كود الإحالة الخاص بك';
+
+  @override
+  String get referral_error_already_attributed =>
+      'لقد استخدمت كود إحالة من قبل';
+
+  @override
+  String get checkout_error_capacity_unavailable =>
+      'لا توجد سعة يومية متاحة لدى المطاعم المحددة';
+
+  @override
+  String get offers_error_customer_unavailable =>
+      'العرض المطلوب غير متاح أو تم إيقافه';
 }

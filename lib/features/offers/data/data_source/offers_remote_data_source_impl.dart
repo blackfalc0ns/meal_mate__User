@@ -5,10 +5,15 @@ import 'package:meal_meat_user/features/offers/data/models/request/create_campai
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/start_campaign_payment_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/validate_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_payment_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_calendar_entry_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_eligible_restaurant_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
 
 @Injectable(as: OffersRemoteDataSource)
 class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
@@ -17,15 +22,91 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
   final ApiServices _apiServices;
 
   @override
-  Future<List<OfferResponseDto>> getAvailableOffers(
-    GetCustomerAvailableOffersRequestDto request,
-  ) {
-    return _apiServices.getCustomerAvailableOffers(request);
+  Future<List<OfferResponseDto>> getAvailableOffers({
+    GetCustomerAvailableOffersRequestDto? legacyRequest,
+    double? cartAmount,
+    int? durationDays,
+    String? deliveryGovernorate,
+    String? programId,
+    String? bundleId,
+    String? restaurantId,
+    int? page,
+    int? pageSize,
+    String? search,
+    String? category,
+    bool? eligibleOnly,
+  }) {
+    return _apiServices.getCustomerAvailableOffers(
+      cartAmount: cartAmount ?? legacyRequest?.cartAmount,
+      durationDays: durationDays ?? legacyRequest?.durationDays,
+      deliveryGovernorate:
+          deliveryGovernorate ?? legacyRequest?.deliveryGovernorate,
+      programId: programId ?? legacyRequest?.programId,
+      bundleId: bundleId ?? legacyRequest?.bundleId,
+      restaurantId: restaurantId ?? legacyRequest?.restaurantId,
+      page: page,
+      pageSize: pageSize,
+      search: search,
+      category: category,
+      eligibleOnly: eligibleOnly,
+    );
+  }
+
+  @override
+  Future<OffersHubResponseDto> getOffersHub() {
+    return _apiServices.getOffersHub();
   }
 
   @override
   Future<OfferResponseDto> getOfferDetails(String offerId) {
     return _apiServices.getCustomerOfferDetails(offerId);
+  }
+
+  @override
+  Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
+    String offerId,
+  ) {
+    return _apiServices.getOfferEligibleRestaurants(offerId);
+  }
+
+  @override
+  Future<List<OfferResponseDto>> getSavedOffers() {
+    return _apiServices.getSavedOffers();
+  }
+
+  @override
+  Future<void> saveOffer(String offerId) {
+    return _apiServices.saveOffer(offerId);
+  }
+
+  @override
+  Future<void> unsaveOffer(String offerId) {
+    return _apiServices.unsaveOffer(offerId);
+  }
+
+  @override
+  Future<List<OfferCalendarEntryDto>> getOfferCalendar() {
+    return _apiServices.getOfferCalendar();
+  }
+
+  @override
+  Future<OfferCalendarEntryDto> addOfferToCalendar(
+    String offerId,
+    String scheduledDate,
+  ) {
+    return _apiServices.addOfferToCalendar(offerId, {'scheduledDate': scheduledDate});
+  }
+
+  @override
+  Future<void> removeOfferFromCalendar(String offerId, String date) {
+    return _apiServices.removeOfferFromCalendar(offerId, date);
+  }
+
+  @override
+  Future<ValidateDiscountResponseDto> validateDiscount(
+    ValidateDiscountRequestDto request,
+  ) {
+    return _apiServices.validateDiscount(request);
   }
 
   @override

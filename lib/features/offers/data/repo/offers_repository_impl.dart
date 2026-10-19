@@ -6,12 +6,16 @@ import 'package:meal_meat_user/features/offers/data/mapper/campaign_payment_mapp
 import 'package:meal_meat_user/features/offers/data/mapper/offer_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
-import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/validate_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_calendar_entry_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_eligible_restaurant_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_evaluation_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offers_hub_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/validate_discount_result_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/repo/offers_repository.dart';
 
 @Injectable(as: OffersRepository)
@@ -23,29 +27,41 @@ class OffersRepositoryImpl implements OffersRepository {
 
   @override
   Future<ApiResult<List<OfferEntity>>> getAvailableOffers({
-    double cartAmount = 0.0,
-    int durationDays = 26,
+    double? cartAmount,
+    int? durationDays,
     String? deliveryGovernorate,
     String? programId,
     String? bundleId,
     String? restaurantId,
+    int? page,
+    int? pageSize,
+    String? search,
+    String? category,
+    bool? eligibleOnly,
   }) {
     return safeApiCall(() async {
-      final customerId = await _tokenService.getCurrentUserId();
-      if (customerId == null || customerId.isEmpty) {
-        throw StateError('Authenticated customer id is required');
-      }
-      final request = GetCustomerAvailableOffersRequestDto(
-        customerId: customerId,
-        cartAmount: cartAmount,
+      final response = await _remoteDataSource.getAvailableOffers(
+        cartAmount: (cartAmount != null && cartAmount > 0) ? cartAmount : null,
         durationDays: durationDays,
         deliveryGovernorate: deliveryGovernorate,
         programId: programId,
         bundleId: bundleId,
         restaurantId: restaurantId,
+        page: page,
+        pageSize: pageSize,
+        search: search,
+        category: category,
+        eligibleOnly: eligibleOnly,
       );
-      final response = await _remoteDataSource.getAvailableOffers(request);
       return response.map((dto) => dto.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<OffersHubEntity>> getOffersHub() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getOffersHub();
+      return response.toEntity();
     });
   }
 
@@ -53,6 +69,85 @@ class OffersRepositoryImpl implements OffersRepository {
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getOfferDetails(offerId);
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<List<OfferEligibleRestaurantEntity>>>
+  getOfferEligibleRestaurants(String offerId) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getOfferEligibleRestaurants(
+        offerId,
+      );
+      return response.map((dto) => dto.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<List<OfferEntity>>> getSavedOffers() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getSavedOffers();
+      return response.map((dto) => dto.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<void>> saveOffer(String offerId) {
+    return safeApiCall(() async {
+      await _remoteDataSource.saveOffer(offerId);
+    });
+  }
+
+  @override
+  Future<ApiResult<void>> unsaveOffer(String offerId) {
+    return safeApiCall(() async {
+      await _remoteDataSource.unsaveOffer(offerId);
+    });
+  }
+
+  @override
+  Future<ApiResult<List<OfferCalendarEntryEntity>>> getOfferCalendar() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getOfferCalendar();
+      return response.map((dto) => dto.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<OfferCalendarEntryEntity>> addOfferToCalendar(
+    String offerId,
+    String scheduledDate,
+  ) {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.addOfferToCalendar(
+        offerId,
+        scheduledDate,
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
+  Future<ApiResult<void>> removeOfferFromCalendar(String offerId, String date) {
+    return safeApiCall(() async {
+      await _remoteDataSource.removeOfferFromCalendar(offerId, date);
+    });
+  }
+
+  @override
+  Future<ApiResult<ValidateDiscountResultEntity>> validateDiscount({
+    required String code,
+    dynamic programId,
+    dynamic bundleId,
+  }) {
+    return safeApiCall(() async {
+      final request = ValidateDiscountRequestDto(
+        code: code,
+        programId: programId,
+        bundleId: bundleId,
+      );
+      final response = await _remoteDataSource.validateDiscount(request);
       return response.toEntity();
     });
   }
@@ -70,13 +165,10 @@ class OffersRepositoryImpl implements OffersRepository {
   }) {
     return safeApiCall(() async {
       final customerId = await _tokenService.getCurrentUserId();
-      if (customerId == null || customerId.isEmpty) {
-        throw StateError('Authenticated customer id is required');
-      }
       final hasPromo = promoCode != null && promoCode.trim().isNotEmpty;
       final request = EvaluateOfferDiscountRequestDto(
         offerId: offerId,
-        customerId: customerId,
+        customerId: customerId ?? '',
         cartAmount: cartAmount,
         durationDays: durationDays,
         deliveryGovernorate: deliveryGovernorate,

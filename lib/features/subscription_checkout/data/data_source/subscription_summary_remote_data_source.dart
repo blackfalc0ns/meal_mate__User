@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/subscription_pricing_preview_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_restaurant_availability_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
@@ -13,5 +15,9 @@ abstract interface class SubscriptionSummaryRemoteDataSource {
 
   Future<SubscriptionReadinessResponseDto> getReadiness(
     SubscriptionSummaryRequestEntity request,
+  );
+
+  Future<SubscriptionPricingPreviewResponseDto> getPricingPreview(
+    SubscriptionPricingPreviewRequestDto request,
   );
 }

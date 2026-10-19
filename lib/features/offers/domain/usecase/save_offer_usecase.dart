@@ -1,0 +1,14 @@
+import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/features/offers/domain/repo/offers_repository.dart';
+
+@injectable
+class SaveOfferUseCase {
+  const SaveOfferUseCase(this._repository);
+
+  final OffersRepository _repository;
+
+  Future<ApiResult<void>> call(String offerId) {
+    return _repository.saveOffer(offerId);
+  }
+}

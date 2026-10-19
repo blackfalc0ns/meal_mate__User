@@ -73,6 +73,8 @@ class PaymentCheckoutRequestEntity {
     required this.paymentMethodId,
     required this.correlationId,
     this.promoCode,
+    this.offerId,
+    this.idempotencyKey,
   });
 
   final String programId;
@@ -86,6 +88,8 @@ class PaymentCheckoutRequestEntity {
   final int paymentMethodId;
   final String correlationId;
   final String? promoCode;
+  final String? offerId;
+  final String? idempotencyKey;
 
   bool get isComplete =>
       programId.isNotEmpty &&

@@ -93,8 +93,23 @@ class SubscriptionSuccessSummaryCard extends StatelessWidget {
             icon: Icons.event_outlined,
             label: locale.subscription_success_end_date_label,
             value: endDate,
-            showDivider: false,
+            showDivider: args.confirmation != null,
           ),
+          if (args.confirmation != null && args.confirmation!.appliedDiscount > 0)
+            SubscriptionSuccessSummaryItemRow(
+              icon: Icons.discount_outlined,
+              label: locale.subscription_success_applied_discount_label,
+              value:
+                  '-${args.confirmation!.appliedDiscount.toStringAsFixed(3)} ${args.confirmation!.currency}',
+            ),
+          if (args.confirmation != null)
+            SubscriptionSuccessSummaryItemRow(
+              icon: Icons.receipt_long_outlined,
+              label: locale.subscription_success_paid_amount_label,
+              value:
+                  '${args.confirmation!.paidAmount.toStringAsFixed(3)} ${args.confirmation!.currency}',
+              showDivider: false,
+            ),
         ],
       ),
     );

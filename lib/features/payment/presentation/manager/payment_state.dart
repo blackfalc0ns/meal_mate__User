@@ -1,6 +1,7 @@
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_confirmation_entity.dart';
 
 class PaymentState {
   const PaymentState({
@@ -24,9 +25,11 @@ class PaymentState {
     this.checkoutFailure,
     this.fulfillmentFailure,
     this.calendarFailure,
+    this.confirmation,
     this.flowType = 'individual',
   });
 
+  final SubscriptionConfirmationEntity? confirmation;
   final bool isMethodsLoading;
   final bool isCheckoutLoading;
   final bool isFulfillmentLoading;
@@ -106,6 +109,7 @@ class PaymentState {
     Failure? checkoutFailure,
     Failure? fulfillmentFailure,
     Failure? calendarFailure,
+    SubscriptionConfirmationEntity? confirmation,
     String? flowType,
     bool clearSelectedMethod = false,
     bool clearCheckout = false,
@@ -116,6 +120,7 @@ class PaymentState {
     bool clearFulfillmentFailure = false,
     bool clearCalendarFailure = false,
     bool clearAttemptHandle = false,
+    bool clearConfirmation = false,
   }) {
     return PaymentState(
       isMethodsLoading: isMethodsLoading ?? this.isMethodsLoading,
@@ -154,6 +159,9 @@ class PaymentState {
       calendarFailure: clearCalendarFailure
           ? null
           : calendarFailure ?? this.calendarFailure,
+      confirmation: clearConfirmation
+          ? null
+          : confirmation ?? this.confirmation,
       flowType: flowType ?? this.flowType,
     );
   }

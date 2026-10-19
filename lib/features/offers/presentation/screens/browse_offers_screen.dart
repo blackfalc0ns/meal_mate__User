@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -178,17 +180,21 @@ class _BrowseOffersContent extends StatelessWidget {
   }
 
   void _openOfferDetails(BuildContext context, OfferEntity offer) {
-    Navigator.of(
-      context,
-    ).pushNamed(AppRoutes.offerDetails, arguments: offer.id);
+    unawaited(
+      Navigator.of(
+        context,
+      ).pushNamed(AppRoutes.offerDetails, arguments: offer.id),
+    );
   }
 
   void _openQuickSheet(BuildContext context, OfferEntity offer) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => OfferQuickPreviewSheet(offer: offer),
+    unawaited(
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => OfferQuickPreviewSheet(offer: offer),
+      ),
     );
   }
 }
