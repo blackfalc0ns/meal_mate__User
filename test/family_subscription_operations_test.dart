@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/request/family_renewal_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/request/family_renewal_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/models/request/family_delivery_address_request_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/models/response/family_delivery_address_response_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/mapper/family_delivery_address_mapper.dart';

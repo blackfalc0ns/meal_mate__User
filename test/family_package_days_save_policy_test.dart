@@ -62,28 +62,96 @@ void main() {
     expect(planRepository.requests, 1);
     await viewModel.close();
   });
+
+  test(
+    'saveAllMemberPlansAndWait does not send save request if member plan has not changed',
+    () async {
+      final planRepository = _CountingPlanRepository();
+      final programsRepository = _ProgramsRepository();
+      const completedMember = FamilyMemberEntity(
+        memberId: 'member-1',
+        role: 2,
+        displayName: 'Member',
+        relationshipCode: 'self',
+        gender: 1,
+        ageYears: 20,
+        setupStatus: 2,
+        includeFriday: false,
+        isCurrentUser: false,
+        programId: 'program-1',
+        bundleId: 'bundle-1',
+        selectedTier: 1,
+        durationDays: 16,
+        subscribeNow: true,
+      );
+
+      final viewModel = FamilyPackageDaysViewModel(
+        GetFamilyFlowCurrentUseCase(
+          _FlowRepository(
+            const FamilyFlowCurrentEntity(members: [completedMember]),
+          ),
+        ),
+        GetFamilyProgramsUseCase(programsRepository),
+        GetFamilyProgramBundlesUseCase(programsRepository),
+        GetFamilyPlanDurationsUseCase(planRepository),
+        GetFamilyPlanTiersUseCase(planRepository),
+        GetSubscriptionTierRestaurantsUseCase(_TierRepository()),
+        SaveFamilyMemberPlanUseCase(planRepository),
+      );
+
+      viewModel.doIntent(const GetFamilySubscriptionCurrentEvent());
+      await viewModel.stream.firstWhere((state) => state.currentFlow != null);
+
+      // Initial state has completed plan from backend; user does not change anything.
+      final saved = await viewModel.saveAllMemberPlansAndWait();
+      expect(saved, isTrue);
+      // Should NOT send any save requests because data hasn't changed!
+      expect(planRepository.requests, 0);
+
+      // If user modifies duration, saveAllMemberPlansAndWait should send 1 save request
+      viewModel.doIntent(const UpdateFamilyCustomDurationEvent(20));
+      await Future<void>.delayed(Duration.zero);
+
+      final savedAfterEdit = await viewModel.saveAllMemberPlansAndWait();
+      expect(savedAfterEdit, isTrue);
+      expect(planRepository.requests, 1);
+
+      // If user calls saveAllMemberPlansAndWait again without further edits, it should skip saving
+      final savedAgain = await viewModel.saveAllMemberPlansAndWait();
+      expect(savedAgain, isTrue);
+      expect(planRepository.requests, 1);
+
+      await viewModel.close();
+    },
+  );
 }
 
 class _FlowRepository implements FamilySubscriptionSetupRepository {
+  _FlowRepository([this._flow]);
+
+  final FamilyFlowCurrentEntity? _flow;
+
   @override
   Future<ApiResult<FamilyFlowCurrentEntity>>
-  getFamilySubscriptionCurrent() async => const ApiSuccessResult(
-    data: FamilyFlowCurrentEntity(
-      members: [
-        FamilyMemberEntity(
-          memberId: 'member-1',
-          role: 2,
-          displayName: 'Member',
-          relationshipCode: 'self',
-          gender: 1,
-          ageYears: 20,
-          setupStatus: 1,
-          includeFriday: false,
-          isCurrentUser: false,
-          programId: 'program-1',
+  getFamilySubscriptionCurrent() async => ApiSuccessResult(
+    data:
+        _flow ??
+        const FamilyFlowCurrentEntity(
+          members: [
+            FamilyMemberEntity(
+              memberId: 'member-1',
+              role: 2,
+              displayName: 'Member',
+              relationshipCode: 'self',
+              gender: 1,
+              ageYears: 20,
+              setupStatus: 1,
+              includeFriday: false,
+              isCurrentUser: false,
+              programId: 'program-1',
+            ),
+          ],
         ),
-      ],
-    ),
   );
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

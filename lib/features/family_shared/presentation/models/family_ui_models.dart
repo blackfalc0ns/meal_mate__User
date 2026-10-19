@@ -162,6 +162,9 @@ class FamilyPaymentPriceDetailsUiModel {
   final List<FamilyPaymentPriceRowUiModel> rows;
 }
 
+typedef FamilyPriceRowUiModel = FamilyPaymentPriceRowUiModel;
+typedef FamilyPriceDetailsUiModel = FamilyPaymentPriceDetailsUiModel;
+
 class FamilyPaymentMethodUiModel {
   const FamilyPaymentMethodUiModel({
     required this.label,

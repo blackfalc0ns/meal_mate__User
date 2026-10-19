@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/family_checkout/data/mapper/family_checkout_mapper.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_view_model.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_member_restaurants.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_member_restaurants_card.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_restaurant_repetition_banner.dart';
+import 'package:meal_meat_user/features/family_summary/data/mapper/family_summary_mapper.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/response/family_summary_response_dto.dart';
+import 'package:meal_meat_user/features/family_summary/domain/entities/family_summary_entity.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_state.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_view_model.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/widgets/family_member_restaurants.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/widgets/family_member_restaurants_card.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/widgets/family_restaurant_repetition_banner.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 
@@ -312,11 +312,11 @@ void main() {
 
   group('FamilyPaymentSetupScreen Loading & Animation Integration Tests', () {
     test(
-      'Uses shimmer FamilyPaymentSetupLoadingSkeleton during initial summary loading',
+      'Uses shimmer FamilySummaryLoadingSkeleton during initial summary loading',
       () {
         final screenSource = File(
-          'lib/features/family_checkout/presentation/screens/'
-          'family_payment_setup_screen.dart',
+          'lib/features/family_summary/presentation/screens/'
+          'family_summary_screen.dart',
         ).readAsStringSync();
 
         expect(
@@ -325,7 +325,7 @@ void main() {
         );
         expect(
           screenSource,
-          contains('return const FamilyPaymentSetupLoadingSkeleton();'),
+          contains('return const FamilySummaryLoadingSkeleton();'),
         );
       },
     );
@@ -334,8 +334,8 @@ void main() {
       'Uses CustomProgressIndicator during request loading (checkout or retry)',
       () {
         final screenSource = File(
-          'lib/features/family_checkout/presentation/screens/'
-          'family_payment_setup_screen.dart',
+          'lib/features/family_summary/presentation/screens/'
+          'family_summary_screen.dart',
         ).readAsStringSync();
 
         expect(
@@ -351,7 +351,7 @@ void main() {
       'Uses flutter_animate on FamilyMemberRestaurantsCard for entrance animation',
       () {
         final cardSource = File(
-          'lib/features/family_checkout/presentation/widgets/'
+          'lib/features/family_summary/presentation/widgets/'
           'family_member_restaurants_card.dart',
         ).readAsStringSync();
 

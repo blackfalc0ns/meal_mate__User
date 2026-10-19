@@ -6,7 +6,7 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/features/family_addresses/presentation/screens/family_addresses_screen.dart';
 import 'package:meal_meat_user/features/family_allergies/presentation/screens/family_allergies_screen.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/screens/family_payment_setup_screen.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/screens/family_summary_screen.dart';
 import 'package:meal_meat_user/features/family_package_days/presentation/screens/family_package_days_setup_screen.dart';
 import 'package:meal_meat_user/features/family_packages/domain/entities/family_size_package_entity.dart';
 import 'package:meal_meat_user/features/family_programs/presentation/screens/family_program_setup_screen.dart';

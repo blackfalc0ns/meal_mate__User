@@ -22,20 +22,20 @@ void main() {
 
   test('family screens select their matching step', () {
     final locationSource = File(
-      'lib/features/addresses/presentation/screens/'
-      'address_choose_location_screen.dart',
+      'lib/features/addresses/presentation/widgets/sections/'
+      'address_choose_location_stepper_section.dart',
     ).readAsStringSync();
     final allergySource = File(
       'lib/features/family_allergies/presentation/widgets/'
-      'family_allergies_content.dart',
+      'family_allergies_header.dart',
     ).readAsStringSync();
     final packageSource = File(
       'lib/features/family_package_days/presentation/widgets/'
       'family_package_days_content.dart',
     ).readAsStringSync();
     final paymentSource = File(
-      'lib/features/family_checkout/presentation/widgets/'
-      'family_payment_content.dart',
+      'lib/features/family_summary/presentation/widgets/'
+      'family_summary_content.dart',
     ).readAsStringSync();
 
     expect(locationSource, contains('currentStep: 2'));

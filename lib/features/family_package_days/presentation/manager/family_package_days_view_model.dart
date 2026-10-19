@@ -60,6 +60,7 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   final Map<String, Future<ApiResult<List<SubscriptionTierEntity>>>>
   _inFlightTiers = {};
   final Map<String, Future<void>> _inFlightMemberLoads = {};
+  final Map<String, _SavedMemberPlan> _savedMemberPlans = {};
 
   Timer? _customDurationDebounce;
 
@@ -127,6 +128,17 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
       case ApiSuccessResult():
         final flow = result.data;
         _syncConvertedDraftFlag(flow);
+        for (final m in flow.members) {
+          if (m.isPlanCompleted) {
+            _savedMemberPlans[m.memberId] = _SavedMemberPlan(
+              programId: m.programId,
+              bundleId: m.bundleId,
+              tier: m.selectedTier,
+              durationDays: m.durationDays,
+              includeFriday: m.includeFriday,
+            );
+          }
+        }
         final firstPlannedIndex = flow.members.indexWhere(
           (member) => member.hasProgram && member.memberSubscriptionId == null,
         );
@@ -895,6 +907,28 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
       case ApiSuccessResult():
         _syncConvertedDraftFlag(result.data);
         _snapshotStore.update(result.data);
+        if (clearPlan) {
+          _savedMemberPlans.remove(memberId);
+        } else {
+          _savedMemberPlans[memberId] = _SavedMemberPlan(
+            programId: programId,
+            bundleId: bundleId,
+            tier: tier,
+            durationDays: durationDays,
+            includeFriday: includeFriday ?? false,
+          );
+        }
+        for (final m in result.data.members) {
+          if (m.isPlanCompleted) {
+            _savedMemberPlans[m.memberId] = _SavedMemberPlan(
+              programId: m.programId,
+              bundleId: m.bundleId,
+              tier: m.selectedTier,
+              durationDays: m.durationDays,
+              includeFriday: m.includeFriday,
+            );
+          }
+        }
         _emit(
           state.copyWith(
             currentFlow: result.data,
@@ -947,6 +981,10 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
           tier == null) {
         continue;
       }
+      final savedPlan = _savedMemberPlans[member.memberId];
+      if (savedPlan != null && savedPlan.matches(member)) {
+        continue;
+      }
       final saved = await _saveMemberPlan(
         memberId: member.memberId,
         programId: programId,
@@ -976,5 +1014,29 @@ class FamilyPackageDaysViewModel extends Cubit<FamilyPackageDaysState> {
   Future<void> close() {
     _customDurationDebounce?.cancel();
     return super.close();
+  }
+}
+
+class _SavedMemberPlan {
+  const _SavedMemberPlan({
+    required this.programId,
+    required this.bundleId,
+    required this.tier,
+    required this.durationDays,
+    required this.includeFriday,
+  });
+
+  final String? programId;
+  final String? bundleId;
+  final int? tier;
+  final int? durationDays;
+  final bool includeFriday;
+
+  bool matches(FamilyMemberEntity member) {
+    return member.programId == programId &&
+        member.bundleId == bundleId &&
+        member.selectedTier == tier &&
+        member.durationDays == durationDays &&
+        member.includeFriday == includeFriday;
   }
 }

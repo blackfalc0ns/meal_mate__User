@@ -70,10 +70,10 @@ import 'package:meal_meat_user/features/subscription_checkout/data/models/respon
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_bundle_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_programs/data/models/response/subscription_programs_page_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_type_response_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_request_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/request/family_checkout_selection_request_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/request/family_renewal_checkout_request_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/response/family_checkout_selection_response_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/request/family_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/request/family_checkout_selection_request_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/request/family_renewal_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/response/family_checkout_selection_response_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/models/request/family_delivery_address_request_dto.dart';
 import 'package:meal_meat_user/features/family_addresses/data/models/response/family_delivery_address_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/request/family_convert_from_individual_request_dto.dart';
@@ -85,7 +85,7 @@ import 'package:meal_meat_user/features/family_subscription_setup/data/models/re
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_relationship_response_dto.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_lookup_response_dto.dart';
 import 'package:meal_meat_user/features/family_packages/data/models/response/family_size_package_response_dto.dart';
-import 'package:meal_meat_user/features/family_checkout/data/models/response/family_summary_response_dto.dart';
+import 'package:meal_meat_user/features/family_summary/data/models/response/family_summary_response_dto.dart';
 import 'package:meal_meat_user/features/family_allergies/data/models/request/family_member_allergies_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_types/data/models/response/subscription_conversion_options_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/data/models/request/subscription_upgrade_request_dto.dart';

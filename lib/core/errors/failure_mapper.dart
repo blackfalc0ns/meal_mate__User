@@ -356,6 +356,13 @@ String mapFailureMessage(BuildContext context, String message) {
       return locale.family_detach_blocked_financial_intent;
     case 'family.detach_requires_active_account':
       return locale.family_detach_requires_active_account;
+    case 'family.checkout_pending':
+      return locale.payment_pending_message;
+    case 'family.batch_review_required':
+    case 'family.batch_closed':
+      return locale.family_checkout_stale_batch;
+    case 'family.duplicate_member':
+      return locale.family_error_already_in_family;
     default:
       if (message.startsWith('subscription_flow.')) {
         final stripped = message.substring('subscription_flow.'.length);
@@ -378,7 +385,8 @@ String mapFailureMessage(BuildContext context, String message) {
           return mapped;
         }
       }
-      if (!message.contains(' ') && (message.contains('.') || message.contains('_'))) {
+      if (!message.contains(' ') &&
+          (message.contains('.') || message.contains('_'))) {
         return locale.error_unknown;
       }
       return message;

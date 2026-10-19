@@ -58,15 +58,15 @@ void main() {
 
   test('payment keeps members visible while selected summary shimmers', () {
     final source = File(
-      'lib/features/family_checkout/presentation/widgets/'
-      'family_payment_content.dart',
+      'lib/features/family_summary/presentation/widgets/'
+      'family_summary_content.dart',
     ).readAsStringSync();
     final membersSource = File(
-      'lib/features/family_checkout/presentation/widgets/'
-      'family_payment_members_section.dart',
+      'lib/features/family_summary/presentation/widgets/'
+      'family_summary_members_section.dart',
     ).readAsStringSync();
 
-    expect(source, contains('FamilyPaymentMembersSection(state: state)'));
+    expect(source, contains('FamilySummaryMembersSection(state: state)'));
     expect(source, contains('if (state.isSummaryLoading)'));
     expect(source, contains('FamilyMemberContentLoadingSkeleton'));
     expect(membersSource, contains('onSelectMember: state.isSummaryLoading'));

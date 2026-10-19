@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
-import 'package:meal_meat_user/features/family_checkout/domain/entities/family_summary_entity.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/manager/family_checkout_state.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_confirmation_section.dart';
-import 'package:meal_meat_user/features/family_checkout/presentation/widgets/family_payment_price_section.dart';
+import 'package:meal_meat_user/features/family_summary/domain/entities/family_summary_entity.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_state.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/widgets/family_plan_summary_section.dart';
+import 'package:meal_meat_user/features/family_summary/presentation/widgets/family_price_summary_section.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/models/family_ui_models.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_flow_current_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
@@ -132,7 +132,7 @@ void main() {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: Scaffold(
-              body: FamilyPaymentConfirmationSection(state: state),
+              body: FamilyPlanSummarySection(state: state),
             ),
           ),
         );
@@ -206,7 +206,7 @@ void main() {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: Scaffold(
-              body: FamilyPaymentConfirmationSection(state: state),
+              body: FamilyPlanSummarySection(state: state),
             ),
           ),
         );
@@ -245,7 +245,7 @@ void main() {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: Scaffold(
-              body: FamilyPaymentPriceSection(summary: summary),
+              body: FamilyPriceSummarySection(summary: summary),
             ),
           ),
         );

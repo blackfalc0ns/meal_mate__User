@@ -70,8 +70,7 @@ class SubscriptionErrorCodes {
       'subscription_flow.no_restaurants_for_selection';
 
   /// Legacy code when no restaurants can serve the entire period.
-  static const String periodUnavailableLegacy =
-      'no_restaurants_for_selection';
+  static const String periodUnavailableLegacy = 'no_restaurants_for_selection';
 
   /// Error code when selection (duration, start date) is required.
   static const String selectionRequired =
@@ -337,4 +336,36 @@ class SubscriptionErrorCodes {
 
   /// Auth forbidden (403).
   static const String authForbidden = 'auth.forbidden';
+
+  /// Error code when family batch review is required.
+  static const String familyBatchReviewRequired =
+      'family.batch_review_required';
+
+  /// Error code when family checkout is pending.
+  static const String familyCheckoutPending = 'family.checkout_pending';
+
+  /// Error code when family batch is closed.
+  static const String familyBatchClosed = 'family.batch_closed';
+
+  /// Block reason when minimum members count not met.
+  static const String familyMinMembers = 'family.min_members';
+
+  /// Block reason when manager subscription is required.
+  static const String familyManagerSubscriptionRequired =
+      'family.manager_subscription_required';
+
+  /// Block reason when start date is required for family member.
+  static const String familyStartDateRequired = 'family.start_date_required';
+
+  /// Block reason when allergies are required for family member.
+  static const String familyAllergiesRequired = 'family.allergies_required';
+
+  /// Block reason when program is required for family member.
+  static const String familyProgramRequired = 'family.program_required';
+
+  /// Block reason when member is duplicate in family.
+  static const String familyDuplicateMember = 'family.duplicate_member';
+
+  /// Legacy bare code for no prepared restaurants.
+  static const String noPreparedRestaurantsBare = 'no_prepared_restaurants';
 }
