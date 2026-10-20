@@ -70,32 +70,6 @@ class Assets {
       '$_images/fake/dietary_preferences_hero.png';
   static const String dietaryPreferencesSelectedCheck =
       '$_images/profile/dietary_preferences_selected_check.svg';
-  static const String healthGoalTarget =
-      '$_images/profile/health_goal_target.png';
-  static const String healthGoalCheck =
-      '$_images/profile/health_goal_check.svg';
-  static const String healthGoalRunning =
-      '$_images/profile/health_goal_running.svg';
-  static const String healthGoalWalking =
-      '$_images/profile/health_goal_walking.svg';
-  static const String healthGoalJogging =
-      '$_images/profile/health_goal_jogging.svg';
-  static const String healthGoalWeightlifting =
-      '$_images/profile/health_goal_weightlifting.svg';
-  static const String healthGoalBody = '$_images/profile/health_goal_body.svg';
-  static const String healthGoalTargetWeight =
-      '$_images/profile/health_goal_target_weight.svg';
-  static const String healthGoalCurrentWeight =
-      '$_images/profile/health_goal_current_weight.svg';
-  static const String healthGoalHeight =
-      '$_images/profile/health_goal_height.svg';
-  static const String healthGoalTrend =
-      '$_images/profile/health_goal_trend.svg';
-  static const String healthGoalArrowDown =
-      '$_images/profile/health_goal_arrow_down.svg';
-  static const String healthGoalFire = '$_images/profile/health_goal_fire.svg';
-  static const String homeFigmaBackgroundDoodle =
-      '$_images/home/figma/home_background_doodle.svg';
   static const String homeFigmaBackgroundDoodleImage =
       '$_images/home/figma/home_background_doodle.png';
   static const String homeFigmaHeaderDoodle =
