@@ -18,6 +18,7 @@ class PaymentCheckoutRequestDto {
     this.promoCode,
     this.offerId,
     this.idempotencyKey,
+    this.quoteId,
   });
 
   final String programId;
@@ -36,6 +37,8 @@ class PaymentCheckoutRequestDto {
   final String? offerId;
   @JsonKey(includeIfNull: false)
   final String? idempotencyKey;
+  @JsonKey(includeIfNull: false)
+  final String? quoteId;
 
   Map<String, dynamic> toJson() => _$PaymentCheckoutRequestDtoToJson(this);
 }

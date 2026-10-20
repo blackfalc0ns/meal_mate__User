@@ -9,10 +9,12 @@ class OfferCountdownTimerWidget extends StatefulWidget {
   const OfferCountdownTimerWidget({
     super.key,
     required this.endsAt,
+    this.serverNowUtc,
     this.onExpired,
   });
 
   final DateTime endsAt;
+  final DateTime? serverNowUtc;
   final VoidCallback? onExpired;
 
   @override
@@ -22,11 +24,13 @@ class OfferCountdownTimerWidget extends StatefulWidget {
 
 class _OfferCountdownTimerWidgetState extends State<OfferCountdownTimerWidget> {
   Timer? _timer;
+  final Stopwatch _elapsed = Stopwatch();
   late Duration _remaining;
 
   @override
   void initState() {
     super.initState();
+    _elapsed.start();
     _computeRemaining();
     _startTimer();
   }
@@ -34,13 +38,17 @@ class _OfferCountdownTimerWidgetState extends State<OfferCountdownTimerWidget> {
   @override
   void didUpdateWidget(covariant OfferCountdownTimerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.endsAt != widget.endsAt) {
+    if (oldWidget.endsAt != widget.endsAt ||
+        oldWidget.serverNowUtc != widget.serverNowUtc) {
+      _elapsed.reset();
       _computeRemaining();
     }
   }
 
   void _computeRemaining() {
-    final diff = widget.endsAt.difference(DateTime.now().toUtc());
+    final now =
+        widget.serverNowUtc?.add(_elapsed.elapsed) ?? DateTime.now().toUtc();
+    final diff = widget.endsAt.difference(now);
     if (diff.isNegative || diff == Duration.zero) {
       _remaining = Duration.zero;
       widget.onExpired?.call();

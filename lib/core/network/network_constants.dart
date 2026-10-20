@@ -267,6 +267,10 @@ abstract class EndPoints {
       '/api/v1/customer/offers/available';
   static const String customerOffersHub = '/api/v1/customer/offers/hub';
   static const String customerOfferDetails = '/api/v1/customer/offers/{id}';
+  static const String customerOfferPurchaseDetails =
+      '/api/v1/customer/offers/{offerId}/details';
+  static const String customerOfferPurchaseOptions =
+      '/api/v1/customer/offers/{offerId}/purchase-options';
   static const String customerOffersEligibleRestaurants =
       '/api/v1/customer/offers/{offerId}/eligible-restaurants';
   static const String customerOffersSaved = '/api/v1/customer/offers/saved';

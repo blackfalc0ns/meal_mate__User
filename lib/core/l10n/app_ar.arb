@@ -2921,5 +2921,12 @@
   "family_member_package_card_title": "الباقة",
   "family_member_primary_member_label": "عضو أساسي",
   "family_member_program_default_subtitle": "وجبات متكاملة ومتنوعة",
-  "family_member_package_default_subtitle": "4 وجبات + سناك"
+  "family_member_package_default_subtitle": "4 وجبات + سناك",
+  "offer_quote_expired": "انتهت صلاحية عرض السعر. حدّث الملخص قبل الدفع.",
+  "offer_quote_changed": "تغيّر العرض أو السعر المختار. راجع الملخص المحدّث.",
+  "offer_checkout_in_progress": "توجد محاولة دفع قيد التنفيذ. تحقق من حالتها قبل إعادة المحاولة.",
+  "offer_checkout_selection_ineligible": "هذه الباقة لم تعد متاحة للتواريخ المختارة.",
+  "offer_checkout_key_invalid": "تعذر تجهيز محاولة الدفع. حاول مرة أخرى.",
+  "offer_checkout_key_conflict": "محاولة الدفع هذه تخص اختيارًا آخر. تحقق من حالة اشتراكك.",
+  "offer_checkout_storage_failed": "تعذر حفظ بيانات استعادة الدفع. تحقق من حالة اشتراكك."
 }

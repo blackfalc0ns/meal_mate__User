@@ -50,6 +50,9 @@ class SubscriptionSummaryEntity {
     this.summaryExpiresAtUtc,
     this.serverNowUtc,
     this.blockingReasons = const [],
+    this.blockingReasonDetails = const [],
+    this.quoteId,
+    this.paymentDate,
   });
 
   final String programId;
@@ -98,6 +101,9 @@ class SubscriptionSummaryEntity {
   final String? summaryExpiresAtUtc;
   final String? serverNowUtc;
   final List<String> blockingReasons;
+  final List<SubscriptionSummaryBlockingReasonEntity> blockingReasonDetails;
+  final String? quoteId;
+  final String? paymentDate;
 
   /// Enforce subtotal = basePrice
   double get subtotal => basePrice;
@@ -181,8 +187,21 @@ class SubscriptionSummaryEntity {
       summaryExpiresAtUtc: summaryExpiresAtUtc,
       serverNowUtc: serverNowUtc,
       blockingReasons: blockingReasons,
+      blockingReasonDetails: blockingReasonDetails,
     );
   }
+}
+
+class SubscriptionSummaryBlockingReasonEntity {
+  const SubscriptionSummaryBlockingReasonEntity({
+    required this.code,
+    this.messageAr,
+    this.messageEn,
+  });
+
+  final String code;
+  final String? messageAr;
+  final String? messageEn;
 }
 
 class SubscriptionSummaryRestaurantRepetitionEntity {

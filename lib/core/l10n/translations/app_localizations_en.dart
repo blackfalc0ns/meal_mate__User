@@ -7651,4 +7651,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get family_member_package_default_subtitle => '4 meals + snack';
+
+  @override
+  String get offer_quote_expired =>
+      'This price quote has expired. Refresh the summary before paying.';
+
+  @override
+  String get offer_quote_changed =>
+      'The selected offer or price changed. Review the updated summary.';
+
+  @override
+  String get offer_checkout_in_progress =>
+      'A payment attempt is already in progress. Check its status before retrying.';
+
+  @override
+  String get offer_checkout_selection_ineligible =>
+      'This package is no longer available for the selected dates.';
+
+  @override
+  String get offer_checkout_key_invalid =>
+      'The payment attempt could not be prepared. Please try again.';
+
+  @override
+  String get offer_checkout_key_conflict =>
+      'This payment attempt belongs to another selection. Check your subscription status.';
+
+  @override
+  String get offer_checkout_storage_failed =>
+      'Could not save payment recovery information. Please check your subscription status.';
 }

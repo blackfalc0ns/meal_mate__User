@@ -17,6 +17,7 @@ import 'package:meal_meat_user/features/subscription_types/presentation/manager/
 import 'package:meal_meat_user/features/subscription_types/presentation/manager/subscription_types_view_model.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_type_card.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_types_action_section.dart';
+import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_types_list_section.dart';
 
 class _FakeSubscriptionTypesRepository implements SubscriptionTypesRepository {
   _FakeSubscriptionTypesRepository({this.typesResult});
@@ -159,6 +160,63 @@ void main() {
       expect(find.text('ميزة 1'), findsOneWidget);
       expect(find.text('ميزة 2'), findsOneWidget);
     });
+  });
+
+  group('SubscriptionTypesListSection Disabled Reason Localization', () {
+    testWidgets(
+      'translates checkout.existing_subscription to localized text in Arabic and English',
+      (tester) async {
+        const disabledType = SubscriptionTypeEntity(
+          code: 'INDIVIDUAL',
+          nameAr: 'اشتراك فردي',
+          nameEn: 'Individual Plan',
+          descriptionAr: 'خطة غذائية لشخص واحد',
+          descriptionEn: 'Daily meal plan',
+          maxMembers: 1,
+          isAvailable: false,
+          disabledReason: 'checkout.existing_subscription',
+          membersConfiguredAfterPayment: false,
+          requiresConversion: false,
+          imageAsset: Assets.subscriptionTypeIndividualProduct,
+        );
+
+        // Arabic
+        await tester.pumpWidget(
+          buildTestWidget(
+            locale: const Locale('ar'),
+            child: SubscriptionTypesListSection(
+              types: const [disabledType],
+              selectedTypeIndex: null,
+              onSelectType: (_) {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('checkout.existing_subscription'), findsNothing);
+        expect(find.text('لديك اشتراك فردي نشط بالفعل.'), findsOneWidget);
+
+        // English
+        await tester.pumpWidget(
+          buildTestWidget(
+            locale: const Locale('en'),
+            textDirection: TextDirection.ltr,
+            child: SubscriptionTypesListSection(
+              types: const [disabledType],
+              selectedTypeIndex: null,
+              onSelectType: (_) {},
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('checkout.existing_subscription'), findsNothing);
+        expect(
+          find.text('You already have an active individual subscription.'),
+          findsOneWidget,
+        );
+      },
+    );
   });
 
   group('SubscriptionTypesActionSection Directional Chevron', () {

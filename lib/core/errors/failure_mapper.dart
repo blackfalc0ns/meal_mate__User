@@ -372,6 +372,22 @@ String mapFailureMessage(BuildContext context, String message) {
     case 'checkout.capacity_unavailable':
     case 'capacity_unavailable':
       return locale.checkout_error_capacity_unavailable;
+    case 'checkout.quote_expired':
+      return locale.offer_quote_expired;
+    case 'checkout.quote_changed':
+      return locale.offer_quote_changed;
+    case 'checkout.in_progress':
+      return locale.offer_checkout_in_progress;
+    case 'checkout.selection_not_eligible':
+      return locale.offer_checkout_selection_ineligible;
+    case 'checkout.idempotency_key_required':
+    case 'checkout.idempotency_key_invalid':
+    case 'checkout.idempotency_storage_failed':
+      return locale.offer_checkout_key_invalid;
+    case 'checkout.idempotency_conflict':
+      return locale.offer_checkout_key_conflict;
+    case 'checkout.attempt_persistence_failed':
+      return locale.offer_checkout_storage_failed;
     case 'offers.customer.unavailable':
     case 'customer.unavailable':
       return locale.offers_error_customer_unavailable;

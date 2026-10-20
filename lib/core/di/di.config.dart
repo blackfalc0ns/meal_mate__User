@@ -490,6 +490,8 @@ import '../../features/offers/domain/usecase/get_offer_calendar_usecase.dart'
     as _i821;
 import '../../features/offers/domain/usecase/get_offer_eligible_restaurants_usecase.dart'
     as _i310;
+import '../../features/offers/domain/usecase/get_offer_purchase_options_usecase.dart'
+    as _i136;
 import '../../features/offers/domain/usecase/get_offers_hub_usecase.dart'
     as _i707;
 import '../../features/offers/domain/usecase/get_saved_offers_usecase.dart'
@@ -505,6 +507,8 @@ import '../../features/offers/domain/usecase/validate_discount_usecase.dart'
     as _i1032;
 import '../../features/offers/presentation/manager/campaign_payment_view_model.dart'
     as _i102;
+import '../../features/offers/presentation/manager/offer_purchase_view_model.dart'
+    as _i170;
 import '../../features/offers/presentation/manager/offers_view_model.dart'
     as _i912;
 import '../../features/payment/data/data_source/payment_remote_data_source.dart'
@@ -1670,6 +1674,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1067.OffersRepository>(),
       ),
     );
+    gh.factory<_i136.GetOfferPurchaseOptionsUseCase>(
+      () => _i136.GetOfferPurchaseOptionsUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i707.GetOffersHubUseCase>(
       () => _i707.GetOffersHubUseCase(gh<_i1067.OffersRepository>()),
     );
@@ -1817,6 +1824,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i999.GetSubscriptionTypesUseCase>(),
         gh<_i377.GetSubscriptionConversionOptionsUseCase>(),
         gh<_i427.ConvertFromIndividualUseCase>(),
+      ),
+    );
+    gh.factory<_i170.OfferPurchaseViewModel>(
+      () => _i170.OfferPurchaseViewModel(
+        gh<_i285.GetCustomerOfferDetailsUseCase>(),
+        gh<_i136.GetOfferPurchaseOptionsUseCase>(),
+        gh<_i926.GetSubscriptionSummaryUseCase>(),
+        gh<_i365.GetPaymentMethodsUseCase>(),
+        gh<_i895.CheckoutSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i1028.PaymentAttemptStore>(),
+        gh<_i227.TokenService>(),
       ),
     );
     gh.factory<_i597.FamilyPackageDaysViewModel>(

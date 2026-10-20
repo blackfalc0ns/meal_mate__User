@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_types/domain/entities/subscription_type_entity.dart';
 import 'package:meal_meat_user/features/subscription_types/presentation/widgets/subscription_type_card.dart';
@@ -59,7 +60,7 @@ class SubscriptionTypesListSection extends StatelessWidget {
     if (!type.isAvailable) {
       final disabledReason = type.disabledReason;
       if (disabledReason != null && disabledReason.isNotEmpty) {
-        return disabledReason;
+        return ErrorMessagePresenter.mapCode(context, disabledReason);
       }
     }
 

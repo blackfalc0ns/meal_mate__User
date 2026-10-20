@@ -113,6 +113,7 @@ import 'package:meal_meat_user/features/influencer/wallet/data/models/influencer
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_purchase_options_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/start_campaign_payment_request_dto.dart';
@@ -472,6 +473,7 @@ abstract class ApiServices {
     @Query('restaurantsPage') int? restaurantsPage,
     @Query('restaurantsPageSize') int? restaurantsPageSize,
     @Query('promoCode') String? promoCode,
+    @Query('offerId') String? offerId,
   });
 
   @GET(EndPoints.subscriptionRestaurantAvailability)
@@ -1057,6 +1059,18 @@ abstract class ApiServices {
 
   @GET(EndPoints.customerOfferDetails)
   Future<OfferResponseDto> getCustomerOfferDetails(@Path('id') String id);
+
+  @GET(EndPoints.customerOfferPurchaseDetails)
+  Future<OfferDetailsResponseDto> getOfferPurchaseDetails(
+    @Path('offerId') String offerId,
+  );
+
+  @GET(EndPoints.customerOfferPurchaseOptions)
+  Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
+    @Path('offerId') String offerId, {
+    @Query('startDate') String? startDate,
+    @Query('includeFriday') bool? includeFriday,
+  });
 
   @GET(EndPoints.customerOffersEligibleRestaurants)
   Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(

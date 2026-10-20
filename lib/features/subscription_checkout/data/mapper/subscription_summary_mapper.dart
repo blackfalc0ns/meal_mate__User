@@ -147,8 +147,20 @@ extension SubscriptionSummaryResponseDtoMapper
       moneyScale: moneyScale ?? 3,
       summaryExpiresAtUtc: summaryExpiresAtUtc,
       serverNowUtc: serverNowUtc,
-      blockingReasons: blockingReasons ??
+      quoteId: quoteId,
+      paymentDate: paymentDate,
+      blockingReasons:
+          blockingReasons ??
           (checkoutBlockReason != null ? [checkoutBlockReason!] : const []),
+      blockingReasonDetails: (blockingReasonDetails ?? const [])
+          .map(
+            (reason) => SubscriptionSummaryBlockingReasonEntity(
+              code: reason.code,
+              messageAr: reason.messageAr,
+              messageEn: reason.messageEn,
+            ),
+          )
+          .toList(),
     );
   }
 }

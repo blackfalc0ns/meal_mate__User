@@ -7531,4 +7531,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get family_member_package_default_subtitle => '4 وجبات + سناك';
+
+  @override
+  String get offer_quote_expired =>
+      'انتهت صلاحية عرض السعر. حدّث الملخص قبل الدفع.';
+
+  @override
+  String get offer_quote_changed =>
+      'تغيّر العرض أو السعر المختار. راجع الملخص المحدّث.';
+
+  @override
+  String get offer_checkout_in_progress =>
+      'توجد محاولة دفع قيد التنفيذ. تحقق من حالتها قبل إعادة المحاولة.';
+
+  @override
+  String get offer_checkout_selection_ineligible =>
+      'هذه الباقة لم تعد متاحة للتواريخ المختارة.';
+
+  @override
+  String get offer_checkout_key_invalid =>
+      'تعذر تجهيز محاولة الدفع. حاول مرة أخرى.';
+
+  @override
+  String get offer_checkout_key_conflict =>
+      'محاولة الدفع هذه تخص اختيارًا آخر. تحقق من حالة اشتراكك.';
+
+  @override
+  String get offer_checkout_storage_failed =>
+      'تعذر حفظ بيانات استعادة الدفع. تحقق من حالة اشتراكك.';
 }

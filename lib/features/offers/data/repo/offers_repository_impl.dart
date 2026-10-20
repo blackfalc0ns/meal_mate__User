@@ -4,6 +4,7 @@ import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/offers/data/data_source/offers_remote_data_source.dart';
 import 'package:meal_meat_user/features/offers/data/mapper/campaign_payment_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/mapper/offer_mapper.dart';
+import 'package:meal_meat_user/features/offers/data/mapper/offer_purchase_options_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/validate_discount_request_dto.dart';
@@ -12,6 +13,7 @@ import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_
 import 'package:meal_meat_user/features/offers/domain/entities/offer_calendar_entry_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_eligible_restaurant_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_purchase_options_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_evaluation_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_hub_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
@@ -68,10 +70,31 @@ class OffersRepositoryImpl implements OffersRepository {
   @override
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId) {
     return safeApiCall(() async {
-      final response = await _remoteDataSource.getOfferDetails(offerId);
-      return response.toEntity();
+      final response = await _remoteDataSource.getOfferPurchaseDetails(offerId);
+      final offer = response.offer;
+      if (offer == null) {
+        throw const FormatException('Offer details missing offer');
+      }
+      return offer.toEntity().copyWith(
+        serverNowUtc: DateTime.tryParse(response.serverNowUtc ?? ''),
+        serverObservedAtUtc: DateTime.now().toUtc(),
+      );
     });
   }
+
+  @override
+  Future<ApiResult<OfferPurchaseOptionsEntity>> getOfferPurchaseOptions(
+    String offerId, {
+    String? startDate,
+    bool? includeFriday,
+  }) => safeApiCall(() async {
+    final response = await _remoteDataSource.getOfferPurchaseOptions(
+      offerId,
+      startDate: startDate,
+      includeFriday: includeFriday,
+    );
+    return response.toEntity(fallbackOfferId: offerId);
+  });
 
   @override
   Future<ApiResult<List<OfferEligibleRestaurantEntity>>>

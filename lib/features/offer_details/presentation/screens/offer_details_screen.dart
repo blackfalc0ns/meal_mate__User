@@ -127,6 +127,7 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                   if (offer?.endsAt != null) ...[
                     OfferCountdownTimerWidget(
                       endsAt: offer!.endsAt!,
+                      serverNowUtc: offer.serverNowUtc,
                       onExpired: () {
                         if (mounted) {
                           setState(() {

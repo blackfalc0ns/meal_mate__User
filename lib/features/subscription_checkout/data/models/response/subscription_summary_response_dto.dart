@@ -59,6 +59,9 @@ class SubscriptionSummaryResponseDto {
     this.summaryExpiresAtUtc,
     this.serverNowUtc,
     this.blockingReasons,
+    this.blockingReasonDetails,
+    this.quoteId,
+    this.paymentDate,
   });
 
   final String? programId;
@@ -113,12 +116,23 @@ class SubscriptionSummaryResponseDto {
   final int? moneyScale;
   final String? summaryExpiresAtUtc;
   final String? serverNowUtc;
+  final String? quoteId;
+  final String? paymentDate;
   @JsonKey(fromJson: _parseStringList)
   final List<String>? blockingReasons;
+  @JsonKey(includeFromJson: false)
+  final List<SubscriptionSummaryBlockingReasonDto>? blockingReasonDetails;
 
   static List<String>? _parseStringList(dynamic value) {
     if (value is List) {
-      return value.map((e) => e.toString()).toList();
+      return value
+          .map((e) {
+            if (e is String) return e;
+            if (e is Map && e['code'] is String) return e['code'] as String;
+            return null;
+          })
+          .whereType<String>()
+          .toList();
     }
     return null;
   }
@@ -176,10 +190,35 @@ class SubscriptionSummaryResponseDto {
       moneyScale: (json['moneyScale'] as num?)?.toInt() ?? 3,
       summaryExpiresAtUtc: json['summaryExpiresAtUtc'] as String?,
       serverNowUtc: json['serverNowUtc'] as String?,
-      blockingReasons: _parseStringList(json['blockingReasons']) ??
+      quoteId: json['quoteId'] as String?,
+      paymentDate: json['paymentDate'] as String?,
+      blockingReasons:
+          _parseStringList(json['blockingReasons']) ??
           (dto.checkoutBlockReason != null ? [dto.checkoutBlockReason!] : null),
+      blockingReasonDetails: (json['blockingReasons'] as List?)
+          ?.whereType<Map>()
+          .map(
+            (value) => SubscriptionSummaryBlockingReasonDto(
+              code: value['code'] as String? ?? '',
+              messageAr: value['messageAr'] as String?,
+              messageEn: value['messageEn'] as String?,
+            ),
+          )
+          .toList(),
     );
   }
+}
+
+class SubscriptionSummaryBlockingReasonDto {
+  const SubscriptionSummaryBlockingReasonDto({
+    required this.code,
+    this.messageAr,
+    this.messageEn,
+  });
+
+  final String code;
+  final String? messageAr;
+  final String? messageEn;
 }
 
 @JsonSerializable(createToJson: false)

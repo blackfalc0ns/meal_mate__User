@@ -1687,6 +1687,7 @@ class _ApiServices implements ApiServices {
     int? restaurantsPage,
     int? restaurantsPageSize,
     String? promoCode,
+    String? offerId,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1699,6 +1700,7 @@ class _ApiServices implements ApiServices {
       r'restaurantsPage': restaurantsPage,
       r'restaurantsPageSize': restaurantsPageSize,
       r'promoCode': promoCode,
+      r'offerId': offerId,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -5080,6 +5082,70 @@ class _ApiServices implements ApiServices {
     late OfferResponseDto _value;
     try {
       _value = OfferResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<OfferDetailsResponseDto> getOfferPurchaseDetails(
+    String offerId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<OfferDetailsResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/details',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OfferDetailsResponseDto _value;
+    try {
+      _value = OfferDetailsResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
+    String offerId, {
+    String? startDate,
+    bool? includeFriday,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startDate': startDate,
+      r'includeFriday': includeFriday,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<OfferPurchaseOptionsResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/customer/offers/${offerId}/purchase-options',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OfferPurchaseOptionsResponseDto _value;
+    try {
+      _value = OfferPurchaseOptionsResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

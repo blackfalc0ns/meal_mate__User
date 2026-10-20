@@ -10,6 +10,8 @@ class OfferEntity {
     this.discountAmount,
     this.startsAt,
     this.endsAt,
+    this.serverNowUtc,
+    this.serverObservedAtUtc,
     this.remainingSpots,
     this.minSubscriptionDays,
     this.campaignId,
@@ -35,6 +37,8 @@ class OfferEntity {
   final double? discountAmount;
   final DateTime? startsAt;
   final DateTime? endsAt;
+  final DateTime? serverNowUtc;
+  final DateTime? serverObservedAtUtc;
   final int? remainingSpots;
   final int? minSubscriptionDays;
   final String? campaignId;
@@ -60,6 +64,8 @@ class OfferEntity {
     double? discountAmount,
     DateTime? startsAt,
     DateTime? endsAt,
+    DateTime? serverNowUtc,
+    DateTime? serverObservedAtUtc,
     int? remainingSpots,
     int? minSubscriptionDays,
     String? campaignId,
@@ -85,6 +91,8 @@ class OfferEntity {
       discountAmount: discountAmount ?? this.discountAmount,
       startsAt: startsAt ?? this.startsAt,
       endsAt: endsAt ?? this.endsAt,
+      serverNowUtc: serverNowUtc ?? this.serverNowUtc,
+      serverObservedAtUtc: serverObservedAtUtc ?? this.serverObservedAtUtc,
       remainingSpots: remainingSpots ?? this.remainingSpots,
       minSubscriptionDays: minSubscriptionDays ?? this.minSubscriptionDays,
       campaignId: campaignId ?? this.campaignId,
@@ -114,15 +122,21 @@ class OfferEntity {
 
   bool get isExpired {
     if (endsAt == null) return false;
-    return DateTime.now().toUtc().isAfter(endsAt!);
+    return _currentServerTime.isAfter(endsAt!);
   }
 
   bool get isSoldOut => remainingSpots != null && remainingSpots! <= 0;
 
   Duration get remainingDuration {
     if (endsAt == null) return Duration.zero;
-    final diff = endsAt!.difference(DateTime.now().toUtc());
+    final diff = endsAt!.difference(_currentServerTime);
     return diff.isNegative ? Duration.zero : diff;
+  }
+
+  DateTime get _currentServerTime {
+    final observed = serverObservedAtUtc;
+    if (serverNowUtc == null || observed == null) return DateTime.now().toUtc();
+    return serverNowUtc!.add(DateTime.now().toUtc().difference(observed));
   }
 
   String formattedDiscount([String currency = 'KWD']) {

@@ -79,6 +79,7 @@ extension PaymentCheckoutRequestEntityMapper on PaymentCheckoutRequestEntity {
       promoCode: promoCode,
       offerId: offerId,
       idempotencyKey: idempotencyKey,
+      quoteId: quoteId,
     );
   }
 }
@@ -95,6 +96,9 @@ extension PaymentCheckoutResponseDtoMapper on PaymentCheckoutResponseDto {
       priceSnapshotId: priceSnapshotId ?? '',
       restaurantPoolSnapshotId: restaurantPoolSnapshotId ?? '',
       paymentStatus: paymentStatus ?? '',
+      fulfillmentStatus: fulfillmentStatus,
+      menuPlanVersionId: menuPlanVersionId,
+      paymentDate: paymentDate,
       paymentId: paymentId,
     );
   }

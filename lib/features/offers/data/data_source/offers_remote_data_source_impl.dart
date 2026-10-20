@@ -12,6 +12,7 @@ import 'package:meal_meat_user/features/offers/data/models/response/evaluate_off
 import 'package:meal_meat_user/features/offers/data/models/response/offer_calendar_entry_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_eligible_restaurant_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_purchase_options_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
 
@@ -61,6 +62,16 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
   Future<OfferResponseDto> getOfferDetails(String offerId) {
     return _apiServices.getCustomerOfferDetails(offerId);
   }
+
+  @override
+  Future<OfferDetailsResponseDto> getOfferPurchaseDetails(String offerId) =>
+      _apiServices.getOfferPurchaseDetails(offerId);
+
+  @override
+  Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
+    String offerId, {String? startDate, bool? includeFriday}) =>
+      _apiServices.getOfferPurchaseOptions(offerId,
+        startDate: startDate, includeFriday: includeFriday);
 
   @override
   Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(

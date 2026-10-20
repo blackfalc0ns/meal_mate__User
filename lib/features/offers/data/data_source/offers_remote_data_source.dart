@@ -9,6 +9,7 @@ import 'package:meal_meat_user/features/offers/data/models/response/evaluate_off
 import 'package:meal_meat_user/features/offers/data/models/response/offer_calendar_entry_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_eligible_restaurant_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/offer_purchase_options_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
 
@@ -31,6 +32,11 @@ abstract interface class OffersRemoteDataSource {
   Future<OffersHubResponseDto> getOffersHub();
 
   Future<OfferResponseDto> getOfferDetails(String offerId);
+
+  Future<OfferDetailsResponseDto> getOfferPurchaseDetails(String offerId);
+
+  Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
+    String offerId, {String? startDate, bool? includeFriday});
 
   Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
     String offerId,

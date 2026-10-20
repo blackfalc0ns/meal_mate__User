@@ -75,6 +75,7 @@ class PaymentCheckoutRequestEntity {
     this.promoCode,
     this.offerId,
     this.idempotencyKey,
+    this.quoteId,
   });
 
   final String programId;
@@ -90,6 +91,7 @@ class PaymentCheckoutRequestEntity {
   final String? promoCode;
   final String? offerId;
   final String? idempotencyKey;
+  final String? quoteId;
 
   bool get isComplete =>
       programId.isNotEmpty &&
@@ -114,6 +116,9 @@ class PaymentCheckoutEntity {
     required this.priceSnapshotId,
     required this.restaurantPoolSnapshotId,
     required this.paymentStatus,
+    this.fulfillmentStatus,
+    this.menuPlanVersionId,
+    this.paymentDate,
     this.paymentId,
   });
 
@@ -126,6 +131,9 @@ class PaymentCheckoutEntity {
   final String priceSnapshotId;
   final String restaurantPoolSnapshotId;
   final String paymentStatus;
+  final String? fulfillmentStatus;
+  final String? menuPlanVersionId;
+  final String? paymentDate;
   final String? paymentId;
 
   factory PaymentCheckoutEntity.recovery({

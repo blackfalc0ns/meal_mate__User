@@ -13927,6 +13927,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'4 meals + snack'**
   String get family_member_package_default_subtitle;
+
+  /// No description provided for @offer_quote_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'This price quote has expired. Refresh the summary before paying.'**
+  String get offer_quote_expired;
+
+  /// No description provided for @offer_quote_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected offer or price changed. Review the updated summary.'**
+  String get offer_quote_changed;
+
+  /// No description provided for @offer_checkout_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'A payment attempt is already in progress. Check its status before retrying.'**
+  String get offer_checkout_in_progress;
+
+  /// No description provided for @offer_checkout_selection_ineligible.
+  ///
+  /// In en, this message translates to:
+  /// **'This package is no longer available for the selected dates.'**
+  String get offer_checkout_selection_ineligible;
+
+  /// No description provided for @offer_checkout_key_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment attempt could not be prepared. Please try again.'**
+  String get offer_checkout_key_invalid;
+
+  /// No description provided for @offer_checkout_key_conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'This payment attempt belongs to another selection. Check your subscription status.'**
+  String get offer_checkout_key_conflict;
+
+  /// No description provided for @offer_checkout_storage_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save payment recovery information. Please check your subscription status.'**
+  String get offer_checkout_storage_failed;
 }
 
 class _AppLocalizationsDelegate

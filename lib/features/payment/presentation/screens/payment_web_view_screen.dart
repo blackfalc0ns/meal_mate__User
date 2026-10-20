@@ -29,6 +29,13 @@ class PaymentWebViewScreen extends StatefulWidget {
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final PaymentViewModel _viewModel;
 
+  bool get _holdExpired {
+    final expiry = DateTime.tryParse(
+      widget.args?.checkout.holdExpiresAtUtc ?? '',
+    );
+    return expiry != null && !expiry.isAfter(DateTime.now().toUtc());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +50,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
           batchVersion: widget.args?.batchVersion,
         ),
       );
-      if (checkout.paymentUrl.isEmpty) {
+      if (checkout.paymentUrl.isEmpty || _holdExpired) {
         if (checkout.subscriptionId.isNotEmpty) {
           _viewModel.doIntent(
             VerifyPaymentFulfillmentEvent(checkout.subscriptionId),
@@ -145,7 +152,8 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
           if (state.isReviewRequired ||
               state.isPaymentPending ||
-              args.checkout.paymentUrl.isEmpty) {
+              args.checkout.paymentUrl.isEmpty ||
+              _holdExpired) {
             final subId = args.checkout.subscriptionId.isNotEmpty
                 ? args.checkout.subscriptionId
                 : (state.checkout?.subscriptionId ?? '');

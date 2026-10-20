@@ -2970,5 +2970,12 @@
   "family_member_package_card_title": "Package",
   "family_member_primary_member_label": "Primary member",
   "family_member_program_default_subtitle": "Complete & varied meals",
-  "family_member_package_default_subtitle": "4 meals + snack"
+  "family_member_package_default_subtitle": "4 meals + snack",
+  "offer_quote_expired": "This price quote has expired. Refresh the summary before paying.",
+  "offer_quote_changed": "The selected offer or price changed. Review the updated summary.",
+  "offer_checkout_in_progress": "A payment attempt is already in progress. Check its status before retrying.",
+  "offer_checkout_selection_ineligible": "This package is no longer available for the selected dates.",
+  "offer_checkout_key_invalid": "The payment attempt could not be prepared. Please try again.",
+  "offer_checkout_key_conflict": "This payment attempt belongs to another selection. Check your subscription status.",
+  "offer_checkout_storage_failed": "Could not save payment recovery information. Please check your subscription status."
 }

@@ -4,6 +4,7 @@ import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_
 import 'package:meal_meat_user/features/offers/domain/entities/offer_calendar_entry_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_eligible_restaurant_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_purchase_options_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_evaluation_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offers_hub_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
@@ -27,6 +28,9 @@ abstract interface class OffersRepository {
   Future<ApiResult<OffersHubEntity>> getOffersHub();
 
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId);
+
+  Future<ApiResult<OfferPurchaseOptionsEntity>> getOfferPurchaseOptions(
+    String offerId, {String? startDate, bool? includeFriday});
 
   Future<ApiResult<List<OfferEligibleRestaurantEntity>>>
   getOfferEligibleRestaurants(String offerId);
