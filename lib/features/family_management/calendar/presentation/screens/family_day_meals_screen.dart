@@ -8,6 +8,7 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
@@ -44,11 +45,7 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel =
-        widget.viewModel ??
-        (getIt.isRegistered<FamilyCalendarViewModel>()
-            ? getIt<FamilyCalendarViewModel>()
-            : FamilyCalendarViewModel());
+    _viewModel = widget.viewModel ?? getIt<FamilyCalendarViewModel>();
     _selectedDate = DateUtils.dateOnly(widget.args?.date ?? DateTime.now());
   }
 
@@ -102,11 +99,25 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
 
   Future<void> _openDatePicker() async {
     final locale = context.localization;
+    final validDates =
+        _viewModel.state.days
+            .map((day) => day.date)
+            .whereType<DateTime>()
+            .map(DateUtils.dateOnly)
+            .toList()
+          ..sort();
+    if (validDates.isEmpty) return;
+    final initialDate =
+        validDates.any((date) => DateUtils.isSameDay(date, _selectedDate))
+        ? _selectedDate
+        : validDates.first;
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2024),
-      lastDate: DateTime(2030, 12, 31),
+      initialDate: initialDate,
+      firstDate: validDates.first,
+      lastDate: validDates.last,
+      selectableDayPredicate: (date) =>
+          validDates.any((valid) => DateUtils.isSameDay(valid, date)),
       locale: Locale(locale.localeName),
     );
 
@@ -334,6 +345,43 @@ class _FamilyDayMealsScreenState extends State<FamilyDayMealsScreen> {
                           : null,
                     ),
                     const SizedBox(height: Spacing.familyDayMemberTopGap),
+                    if (state.capabilitiesFailure != null) ...[
+                      InlineApiErrorWidget(
+                        failure: state.capabilitiesFailure!,
+                        onRetry: () => _viewModel.doIntent(
+                          const RetryFamilyCapabilitiesEvent(),
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.md),
+                    ],
+                    if (state.calendarFailure != null &&
+                        state.hasCalendarData) ...[
+                      InlineApiErrorWidget(
+                        failure: state.calendarFailure!,
+                        onRetry: () => _viewModel.doIntent(
+                          RetryFamilyCalendarEvent(
+                            localeName: locale.localeName,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.md),
+                    ],
+                    if (state.dayFailure != null) ...[
+                      InlineApiErrorWidget(
+                        failure: state.dayFailure!,
+                        onRetry: () => _viewModel.doIntent(
+                          SelectFamilyCalendarDayEvent(
+                            day: CalendarDayEntity(
+                              dayNumber: _selectedDate.day,
+                              weekday: '',
+                              date: _selectedDate,
+                            ),
+                            localeName: locale.localeName,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.md),
+                    ],
                     if (state.isLoadingCalendar && !state.hasCalendarData)
                       const FamilyDayMealsLoadingSkeleton()
                     else if (state.calendarFailure != null &&

@@ -14,98 +14,104 @@ class OffersCouponBanner extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: Spacing.offersHorizontalPadding,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.md,
-          vertical: Spacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: color.primary.withValues(alpha: 0.07),
-          borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
-          border: Border.all(color: color.primary.withValues(alpha: 0.25)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: color.primary.withValues(alpha: 0.14),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.confirmation_number_outlined,
-                color: color.primary,
-                size: 24,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.offersHorizontalPadding,
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.md,
+            vertical: Spacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: color.tertiary.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
+            border: Border.all(
+              color: color.tertiary.withValues(alpha: 0.22),
+              width: Spacing.border,
             ),
-            const SizedBox(width: Spacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    locale.offer_promo_headline,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Promo Text
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    text: locale.offers_coupon_prefix,
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
+                      fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    children: [
+                      TextSpan(
+                        text: locale.offers_coupon_highlight,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size12,
+                          color: color.primary,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '${locale.offers_coupon_suffix}\n${locale.offers_coupon_second_line}',
+                        style: getMediumStyle(
+                          fontFamily: FontConstant.alexandria,
+                          fontSize: FontSize.size11,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  Text(
-                    locale.offer_promo_subtitle,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: Spacing.sm),
+
+              // Button: استفد الآن
+              Container(
+                height: Spacing.offersCouponButtonHeight,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.md,
+                ),
+                decoration: BoxDecoration(
+                  color: color.tertiary,
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.tertiary.withValues(alpha: 0.25),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: Spacing.sm),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: 6,
-              ),
-              decoration: BoxDecoration(
-                color: color.primary,
-                borderRadius: BorderRadius.circular(Spacing.xs),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    locale.offer_promo_apply_code,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
-                      color: color.onPrimary,
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      locale.offers_coupon_button,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size11,
+                        color: color.onTertiary,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                  Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 11,
-                    color: color.onPrimary,
-                  ),
-                ],
+                    const SizedBox(width: Spacing.xxs),
+                    Transform.flip(
+                      flipX: Directionality.of(context) == TextDirection.rtl,
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 10,
+                        color: color.onTertiary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

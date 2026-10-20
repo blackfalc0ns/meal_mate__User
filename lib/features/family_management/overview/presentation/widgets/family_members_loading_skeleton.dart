@@ -44,7 +44,7 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                   width: Spacing.familyMembersCardBorder,
                 ),
               ),
-              child: Row(
+              child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
@@ -52,7 +52,7 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          children: const [
+                          children: [
                             ShimmerPlaceholder.rect(
                               width: 80,
                               height: 14,
@@ -66,15 +66,15 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.xs),
+                        ShimmerPlaceholder.rect(
                           width: 60,
                           height: 12,
                           borderRadius: Spacing.radiusXs,
                         ),
-                        const SizedBox(height: Spacing.xs),
+                        SizedBox(height: Spacing.xs),
                         Row(
-                          children: const [
+                          children: [
                             Expanded(
                               child: ShimmerPlaceholder.rect(
                                 height: 24,
@@ -90,8 +90,8 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        const ShimmerPlaceholder.rect(
+                        SizedBox(height: Spacing.xs),
+                        ShimmerPlaceholder.rect(
                           width: 140,
                           height: Spacing.familyMembersNoteChipHeight,
                           borderRadius: Spacing.radiusPill,
@@ -99,9 +99,9 @@ class FamilyMembersLoadingSkeleton extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: Spacing.md),
+                  SizedBox(width: Spacing.md),
                   Column(
-                    children: const [
+                    children: [
                       ShimmerPlaceholder.circle(
                         size: Spacing.familyMembersAvatarSize,
                       ),

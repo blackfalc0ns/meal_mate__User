@@ -1373,6 +1373,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offers_featured_section_title => 'عروض مميزة';
 
   @override
+  String get offers_ready_section_title => 'عروض الشراء المباشر';
+
+  @override
+  String get offers_coupons_section_title => 'كوبونات الخصم';
+
+  @override
+  String get offers_ready_empty => 'لا توجد عروض شراء مباشر متاحة حالياً';
+
+  @override
+  String get offers_coupons_empty => 'لا توجد كوبونات خصم متاحة حالياً';
+
+  @override
   String get offers_view_all => 'عرض الكل';
 
   @override
@@ -5939,6 +5951,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String family_review_cutoff_time(String time) {
     return 'الوقت المتبقي: $time';
+  }
+
+  @override
+  String family_review_duration_hours_minutes(int hours, int minutes) {
+    return '$hours ساعة و$minutes دقيقة';
   }
 
   @override

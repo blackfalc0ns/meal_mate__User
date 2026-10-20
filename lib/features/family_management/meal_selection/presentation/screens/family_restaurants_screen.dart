@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -9,16 +11,17 @@ import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_assurance_card.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_grid.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_header.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_loading_skeleton.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_search_field.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_summary_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/models/family_restaurants_view_data.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_assurance_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_grid.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_header.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_search_field.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_summary_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyRestaurantsScreen extends StatefulWidget {
@@ -31,16 +34,20 @@ class FamilyRestaurantsScreen extends StatefulWidget {
 }
 
 class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
-  FamilyCalendarViewModel? _viewModel;
+  FamilyMealSelectionViewModel? _viewModel;
   bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = widget.args?.viewModel;
-    if (_viewModel == null && getIt.isRegistered<FamilyCalendarViewModel>()) {
-      _viewModel = getIt<FamilyCalendarViewModel>();
-    }
+    final calendar = widget.args?.viewModel ?? getIt<FamilyCalendarViewModel>();
+    _viewModel = FamilyMealSelectionViewModel(
+      calendar: calendar,
+      subscriptionId: widget.args?.subscriptionId,
+      date: widget.args?.date,
+      memberName: widget.args?.memberName,
+      members: widget.args?.members,
+    );
   }
 
   @override
@@ -52,6 +59,12 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
   }
 
   @override
+  void dispose() {
+    if (_viewModel != null) unawaited(_viewModel!.close());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     if (_viewModel == null) {
@@ -60,20 +73,21 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
         body: const SafeArea(child: FamilyRestaurantsLoadingSkeleton()),
       );
     }
-    return BlocProvider<FamilyCalendarViewModel>.value(
+    return BlocProvider<FamilyMealSelectionViewModel>.value(
       value: _viewModel!,
-      child: BlocConsumer<FamilyCalendarViewModel, FamilyCalendarState>(
-        listenWhen: (previous, current) =>
-            previous.selectedMemberIndex != current.selectedMemberIndex,
-        listener: (context, state) {
-          _loadRestaurants(context.localization.localeName);
-        },
-        builder: _buildContent,
-      ),
+      child:
+          BlocConsumer<FamilyMealSelectionViewModel, FamilyMealSelectionState>(
+            listenWhen: (previous, current) =>
+                previous.selectedMemberIndex != current.selectedMemberIndex,
+            listener: (context, state) {
+              _loadRestaurants(context.localization.localeName);
+            },
+            builder: _buildContent,
+          ),
     );
   }
 
-  Widget _buildContent(BuildContext context, FamilyCalendarState state) {
+  Widget _buildContent(BuildContext context, FamilyMealSelectionState state) {
     final color = context.colorScheme;
     final locale = context.localization;
     final memberName = state.displayName.isNotEmpty
@@ -139,7 +153,7 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
                   members: members,
                   onMemberSelected: (index) {
                     _viewModel!.doIntent(
-                      SelectFamilyMemberEvent(
+                      SelectMealSelectionMemberEvent(
                         index: index,
                         localeName: locale.localeName,
                       ),
@@ -214,7 +228,7 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
 
   void _selectRestaurant(
     BuildContext context,
-    FamilyCalendarState state,
+    FamilyMealSelectionState state,
     FamilyRestaurantCardData card,
     DateTime date,
     String memberName,
@@ -247,7 +261,8 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
         slot: widget.args?.slot ?? '',
         restaurant: restaurant,
         restaurantName: restaurant.name,
-        viewModel: _viewModel,
+        viewModel: _viewModel?.calendar,
+        selectionViewModel: _viewModel,
       ),
     );
   }
@@ -266,7 +281,7 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
 
   List<FamilyRestaurantsFilterData> _resolveRestaurantTags(
     CalendarRestaurantOptionEntity restaurant,
-    FamilyCalendarState state,
+    FamilyMealSelectionState state,
     dynamic locale,
     ColorScheme color,
   ) {
@@ -274,7 +289,9 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
 
     final programName = state.currentMember?.programName.isNotEmpty == true
         ? state.currentMember!.programName
-        : (restaurant.tierName.isNotEmpty ? restaurant.tierName : 'متوازن');
+        : (restaurant.tierName.isNotEmpty
+              ? restaurant.tierName
+              : locale.family_restaurants_filter_balanced);
     tags.add(
       FamilyRestaurantsFilterData(
         label: programName,

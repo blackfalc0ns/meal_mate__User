@@ -80,7 +80,6 @@ import '../../features/family_management/member/domain/usecase/renew_family_memb
 import '../../features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
 import '../../features/family_management/member/domain/usecase/detach_family_member_usecase.dart';
 import '../../features/family_management/member/presentation/manager/family_member_view_model.dart';
-import '../../features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
@@ -476,42 +475,6 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<AutoSelectCalendarDayUseCase>()) {
     getIt.registerFactory<AutoSelectCalendarDayUseCase>(
       () => AutoSelectCalendarDayUseCase(getIt()),
-    );
-  }
-  if (!getIt.isRegistered<FamilyCalendarViewModel>()) {
-    getIt.registerFactory<FamilyCalendarViewModel>(
-      () => FamilyCalendarViewModel(
-        getIt.isRegistered<GetFamilyMembersUseCase>()
-            ? getIt<GetFamilyMembersUseCase>()
-            : null,
-        getIt.isRegistered<GetCalendarUseCase>()
-            ? getIt<GetCalendarUseCase>()
-            : null,
-        getIt.isRegistered<GetCalendarDayUseCase>()
-            ? getIt<GetCalendarDayUseCase>()
-            : null,
-        getIt.isRegistered<GetCalendarRestaurantsUseCase>()
-            ? getIt<GetCalendarRestaurantsUseCase>()
-            : null,
-        getIt.isRegistered<GetCalendarAvailableMealsUseCase>()
-            ? getIt<GetCalendarAvailableMealsUseCase>()
-            : null,
-        getIt.isRegistered<SaveCalendarDayMealsUseCase>()
-            ? getIt<SaveCalendarDayMealsUseCase>()
-            : null,
-        getIt.isRegistered<SetCalendarDayRestaurantUseCase>()
-            ? getIt<SetCalendarDayRestaurantUseCase>()
-            : null,
-        getIt.isRegistered<ConfirmCalendarDayMealsUseCase>()
-            ? getIt<ConfirmCalendarDayMealsUseCase>()
-            : null,
-        getIt.isRegistered<AutoSelectCalendarDayUseCase>()
-            ? getIt<AutoSelectCalendarDayUseCase>()
-            : null,
-        getIt.isRegistered<GetFamilyMemberCapabilitiesUseCase>()
-            ? getIt<GetFamilyMemberCapabilitiesUseCase>()
-            : null,
-      ),
     );
   }
   // Family First Login Auth UseCases

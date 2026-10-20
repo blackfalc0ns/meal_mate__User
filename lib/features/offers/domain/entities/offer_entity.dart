@@ -1,3 +1,5 @@
+enum OfferPurchaseMode { directPurchase, couponOnly, unknown }
+
 class OfferEntity {
   const OfferEntity({
     required this.id,
@@ -15,6 +17,7 @@ class OfferEntity {
     this.remainingSpots,
     this.minSubscriptionDays,
     this.campaignId,
+    this.sourceType,
     this.promoCode,
     this.allowStacking = false,
     this.termsAndConditionsAr,
@@ -25,6 +28,7 @@ class OfferEntity {
     this.allowedDurationDays = const [],
     this.isSaved = false,
     this.isAvailable = true,
+    this.purchaseMode = OfferPurchaseMode.unknown,
   });
 
   final String id;
@@ -42,6 +46,11 @@ class OfferEntity {
   final int? remainingSpots;
   final int? minSubscriptionDays;
   final String? campaignId;
+  final String? sourceType;
+
+  bool get isCampaign =>
+      (campaignId != null && campaignId!.isNotEmpty) ||
+      sourceType == 'Campaign';
   final String? promoCode;
   final bool allowStacking;
   final String? termsAndConditionsAr;
@@ -52,6 +61,10 @@ class OfferEntity {
   final List<int> allowedDurationDays;
   final bool isSaved;
   final bool isAvailable;
+  final OfferPurchaseMode purchaseMode;
+
+  bool get isDirectPurchase => purchaseMode == OfferPurchaseMode.directPurchase;
+  bool get isCouponOnly => purchaseMode == OfferPurchaseMode.couponOnly;
 
   OfferEntity copyWith({
     String? id,
@@ -69,6 +82,7 @@ class OfferEntity {
     int? remainingSpots,
     int? minSubscriptionDays,
     String? campaignId,
+    String? sourceType,
     String? promoCode,
     bool? allowStacking,
     String? termsAndConditionsAr,
@@ -79,6 +93,7 @@ class OfferEntity {
     List<int>? allowedDurationDays,
     bool? isSaved,
     bool? isAvailable,
+    OfferPurchaseMode? purchaseMode,
   }) {
     return OfferEntity(
       id: id ?? this.id,
@@ -96,6 +111,7 @@ class OfferEntity {
       remainingSpots: remainingSpots ?? this.remainingSpots,
       minSubscriptionDays: minSubscriptionDays ?? this.minSubscriptionDays,
       campaignId: campaignId ?? this.campaignId,
+      sourceType: sourceType ?? this.sourceType,
       promoCode: promoCode ?? this.promoCode,
       allowStacking: allowStacking ?? this.allowStacking,
       termsAndConditionsAr: termsAndConditionsAr ?? this.termsAndConditionsAr,
@@ -106,6 +122,7 @@ class OfferEntity {
       allowedDurationDays: allowedDurationDays ?? this.allowedDurationDays,
       isSaved: isSaved ?? this.isSaved,
       isAvailable: isAvailable ?? this.isAvailable,
+      purchaseMode: purchaseMode ?? this.purchaseMode,
     );
   }
 

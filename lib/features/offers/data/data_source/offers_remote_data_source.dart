@@ -27,6 +27,7 @@ abstract interface class OffersRemoteDataSource {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   });
 
   Future<OffersHubResponseDto> getOffersHub();

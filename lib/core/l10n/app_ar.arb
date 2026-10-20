@@ -482,6 +482,10 @@
   "offers_filter_meals": "لفترة محدودة",
   "offers_filter_gifts": "الهدايا",
   "offers_featured_section_title": "عروض مميزة",
+  "offers_ready_section_title": "عروض الشراء المباشر",
+  "offers_coupons_section_title": "كوبونات الخصم",
+  "offers_ready_empty": "لا توجد عروض شراء مباشر متاحة حالياً",
+  "offers_coupons_empty": "لا توجد كوبونات خصم متاحة حالياً",
   "offers_view_all": "عرض الكل",
   "offers_restaurants_section_title": "مطاعم رائجة",
   "offers_invite_title": "ادع أصدقائك واحصل على",
@@ -2284,6 +2288,13 @@
   "family_review_cutoff_title": "يمكنك تعديل وجبات اليوم حتى وقت القفل",
   "family_review_cutoff_desc": "بمجرد وصول وقت القفل، سيتم تجهيز وجباتك رسمياً ولا يمكن إلغاء أو تعديل بعد ذلك.",
   "family_review_cutoff_time": "الوقت المتبقي: {time}",
+  "family_review_duration_hours_minutes": "{hours} ساعة و{minutes} دقيقة",
+  "@family_review_duration_hours_minutes": {
+    "placeholders": {
+      "hours": {"type": "int"},
+      "minutes": {"type": "int"}
+    }
+  },
   "@family_review_cutoff_time": {
     "placeholders": {
       "time": {

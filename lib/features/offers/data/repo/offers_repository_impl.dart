@@ -40,6 +40,7 @@ class OffersRepositoryImpl implements OffersRepository {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   }) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.getAvailableOffers(
@@ -54,6 +55,7 @@ class OffersRepositoryImpl implements OffersRepository {
         search: search,
         category: category,
         eligibleOnly: eligibleOnly,
+        includeCampaigns: includeCampaigns,
       );
       return response.map((dto) => dto.toEntity()).toList();
     });

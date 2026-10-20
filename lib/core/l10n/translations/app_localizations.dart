@@ -2642,6 +2642,30 @@ abstract class AppLocalizations {
   /// **'Featured offers'**
   String get offers_featured_section_title;
 
+  /// No description provided for @offers_ready_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to buy offers'**
+  String get offers_ready_section_title;
+
+  /// No description provided for @offers_coupons_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount coupons'**
+  String get offers_coupons_section_title;
+
+  /// No description provided for @offers_ready_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No ready to buy offers currently available'**
+  String get offers_ready_empty;
+
+  /// No description provided for @offers_coupons_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No discount coupons currently available'**
+  String get offers_coupons_empty;
+
   /// No description provided for @offers_view_all.
   ///
   /// In en, this message translates to:
@@ -11191,6 +11215,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time remaining: {time}'**
   String family_review_cutoff_time(String time);
+
+  /// No description provided for @family_review_duration_hours_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String family_review_duration_hours_minutes(int hours, int minutes);
 
   /// No description provided for @family_review_cutoff_disclaimer.
   ///

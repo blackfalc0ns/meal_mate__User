@@ -46,6 +46,8 @@ class OfferResponseDto {
     this.eligibleProgramIds,
     this.eligibleBundleIds,
     this.eligibleRestaurantIds,
+    this.purchaseMode,
+    this.sourceType,
   });
 
   final String? id;
@@ -89,10 +91,13 @@ class OfferResponseDto {
   final List<String>? eligibleProgramIds;
   final List<String>? eligibleBundleIds;
   final List<String>? eligibleRestaurantIds;
+  final String? purchaseMode;
+  final String? sourceType;
 
   List<String>? get resolvedProgramIds => programIds ?? eligibleProgramIds;
   List<String>? get resolvedBundleIds => bundleIds ?? eligibleBundleIds;
-  List<String>? get resolvedRestaurantIds => restaurantIds ?? eligibleRestaurantIds;
+  List<String>? get resolvedRestaurantIds =>
+      restaurantIds ?? eligibleRestaurantIds;
 
   factory OfferResponseDto.fromJson(Map<String, dynamic> json) =>
       _$OfferResponseDtoFromJson(json);

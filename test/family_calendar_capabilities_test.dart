@@ -13,9 +13,10 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day
 import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_day_meals_usecase.dart';
 import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
@@ -185,7 +186,7 @@ void main() {
       tester,
     ) async {
       final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-      final vm = FamilyCalendarViewModel(null, null, fakeDayUseCase);
+      final vm = FamilyCalendarViewModel.test(null, null, fakeDayUseCase, null);
 
       // Initialize state with canEditMealsAndDays = false
       vm.emit(
@@ -254,7 +255,7 @@ void main() {
       tester,
     ) async {
       final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-      final vm = FamilyCalendarViewModel(null, null, fakeDayUseCase);
+      final vm = FamilyCalendarViewModel.test(null, null, fakeDayUseCase, null);
 
       // Initialize state with filled meal and unitExchange = false
       vm.emit(
@@ -270,7 +271,6 @@ void main() {
             restaurant: _kDefaultRestaurant,
             meals: const [_kDefaultMeal],
           ),
-          selectedMealsForDay: const [_kDefaultMeal],
           memberCapabilities: const [
             FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
@@ -317,7 +317,12 @@ void main() {
       'Locked or closed day (canEdit: false) disables all actions regardless of capabilities',
       (tester) async {
         final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-        final vm = FamilyCalendarViewModel(null, null, fakeDayUseCase);
+        final vm = FamilyCalendarViewModel.test(
+          null,
+          null,
+          fakeDayUseCase,
+          null,
+        );
 
         vm.emit(
           FamilyCalendarState(
@@ -332,7 +337,6 @@ void main() {
               restaurant: _kDefaultRestaurant,
               meals: const [_kDefaultMeal],
             ),
-            selectedMealsForDay: const [_kDefaultMeal],
             memberCapabilities: const [
               FamilyCapabilityEntity(action: 'unitExchange', allowed: true),
               FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
@@ -391,21 +395,28 @@ void main() {
           ),
         );
 
-        final vm = FamilyCalendarViewModel(
+        final calendar = FamilyCalendarViewModel.test(
           null,
           null,
           fakeDayUseCase,
           null,
-          null,
-          fakeSaveUseCase,
         );
-
-        vm.emit(
+        calendar.emit(
           FamilyCalendarState(
             currentSubscriptionId: 'sub-1',
             selectedDate: DateTime(2026, 10, 15),
-            selectedMealsForDay: const [_kDefaultMeal],
+            selectedDay: CalendarDayEntity(
+              dayNumber: 15,
+              weekday: 'Wednesday',
+              date: DateTime(2026, 10, 15),
+              meals: const [_kDefaultMeal],
+            ),
           ),
+        );
+        final vm = FamilyMealSelectionViewModel(
+          calendar: calendar,
+          getCalendarDayUseCase: fakeDayUseCase,
+          saveDayMealsUseCase: fakeSaveUseCase,
         );
 
         expect(fakeDayUseCase.callCount, equals(0));

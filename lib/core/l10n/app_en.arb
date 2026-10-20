@@ -482,6 +482,10 @@
   "offers_filter_meals": "Limited time",
   "offers_filter_gifts": "Gifts",
   "offers_featured_section_title": "Featured offers",
+  "offers_ready_section_title": "Ready to buy offers",
+  "offers_coupons_section_title": "Discount coupons",
+  "offers_ready_empty": "No ready to buy offers currently available",
+  "offers_coupons_empty": "No discount coupons currently available",
   "offers_view_all": "View all",
   "offers_restaurants_section_title": "Popular restaurants",
   "offers_invite_title": "Invite friends and get",
@@ -2310,6 +2314,13 @@
   "family_review_cutoff_title": "You can edit today's meals until cutoff time",
   "family_review_cutoff_desc": "Once cutoff is reached, meals will be prepared and cannot be edited or canceled.",
   "family_review_cutoff_time": "Time remaining: {time}",
+  "family_review_duration_hours_minutes": "{hours}h {minutes}m",
+  "@family_review_duration_hours_minutes": {
+    "placeholders": {
+      "hours": {"type": "int"},
+      "minutes": {"type": "int"}
+    }
+  },
   "@family_review_cutoff_time": {
     "placeholders": {
       "time": {

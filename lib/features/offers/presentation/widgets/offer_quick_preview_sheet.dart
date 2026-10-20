@@ -161,16 +161,32 @@ class OfferQuickPreviewSheet extends StatelessWidget {
             ],
             const SizedBox(height: Spacing.xl),
             AppButton(
-              text: locale.offer_details_plan_section_title,
-              onPressed: offer.isExpired || offer.isSoldOut
+              text: offer.isCouponOnly
+                  ? locale.offers_coupon_button
+                  : locale.offer_details_plan_section_title,
+              onPressed: (offer.isExpired ||
+                      offer.isSoldOut ||
+                      offer.purchaseMode == OfferPurchaseMode.unknown)
                   ? null
                   : () {
                       Navigator.of(context).pop();
-                      unawaited(
-                        Navigator.of(
-                          context,
-                        ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
-                      );
+                      if (offer.isDirectPurchase) {
+                        unawaited(
+                          Navigator.of(
+                            context,
+                          ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
+                        );
+                      } else if (offer.isCouponOnly) {
+                        if (offer.promoCode != null &&
+                            offer.promoCode!.isNotEmpty) {
+                          unawaited(
+                            Navigator.of(context).pushNamed(
+                              AppRoutes.promoCodeInput,
+                              arguments: offer.promoCode,
+                            ),
+                          );
+                        }
+                      }
                     },
             ),
           ],

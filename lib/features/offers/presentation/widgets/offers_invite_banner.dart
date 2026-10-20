@@ -20,105 +20,131 @@ class OffersInviteBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final isAr = locale.localeName == 'ar';
 
     final percent = rewardRate != null && rewardRate! > 0
-        ? (rewardRate! <= 1.0 ? (rewardRate! * 100).toInt() : rewardRate!.toInt())
-        : 30;
+        ? (rewardRate! <= 1.0
+            ? (rewardRate! * 100).toInt()
+            : rewardRate!.toInt())
+        : null;
 
-    final title = isAr
-        ? 'ادع أصدقائك واحصل على خصم $percent%'
-        : 'Invite friends & get $percent% discount';
+    final discountText = percent != null
+        ? '${locale.offers_invite_subtitle.contains('%') ? '' : 'خصم '}$percent%'
+        : locale.offers_invite_subtitle;
 
-    final subtitle = code != null && code!.isNotEmpty
-        ? (isAr
-            ? 'شارك كود الإحالة ($code) مع أصدقائك واكسب رصيداً'
-            : 'Share referral code ($code) with friends and earn rewards')
-        : (isAr
-            ? 'شارك كود الإحالة مع أصدقائك واكسب خصم عند أول اشتراك'
-            : 'Share your referral code with friends and earn rewards');
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Spacing.offersInviteBannerRadius),
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: Spacing.offersHorizontalPadding,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.md,
-          vertical: Spacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: color.secondaryContainer.withValues(alpha: 0.4),
-          borderRadius: BorderRadius.circular(Spacing.offersInviteBannerRadius),
-          border: Border.all(color: color.secondary.withValues(alpha: 0.2)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: color.secondary.withValues(alpha: 0.15),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.group_add_outlined,
-                color: color.secondary,
-                size: 24,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.offersHorizontalPadding,
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Spacing.offersInviteBannerRadius),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: Spacing.md,
+            horizontal: Spacing.lg,
+          ),
+          decoration: BoxDecoration(
+            color: color.primary.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(Spacing.offersInviteBannerRadius),
+            border: Border.all(
+              color: color.primary.withValues(alpha: 0.18),
+              width: Spacing.border,
             ),
-            const SizedBox(width: Spacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              PositionedDirectional(
+                top: 2,
+                start: 4,
+                child: Icon(
+                  Icons.eco_outlined,
+                  size: 20,
+                  color: color.primary.withValues(alpha: 0.15),
+                ),
+              ),
+              PositionedDirectional(
+                bottom: 2,
+                end: 6,
+                child: Icon(
+                  Icons.eco_rounded,
+                  size: 22,
+                  color: color.primary.withValues(alpha: 0.15),
+                ),
+              ),
+              PositionedDirectional(
+                top: 8,
+                end: 18,
+                child: Icon(
+                  Icons.spa_outlined,
+                  size: 14,
+                  color: color.primary.withValues(alpha: 0.12),
+                ),
+              ),
+              PositionedDirectional(
+                bottom: 12,
+                start: 16,
+                child: Icon(
+                  Icons.spa_rounded,
+                  size: 14,
+                  color: color.primary.withValues(alpha: 0.12),
+                ),
+              ),
+              Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    title,
-                    style: getBoldStyle(
+                    locale.offers_invite_title,
+                    textAlign: TextAlign.center,
+                    style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size13,
-                      color: color.onSurface,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: Spacing.xs),
-                  Text(
-                    subtitle,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size12,
                       color: color.onSurfaceVariant,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: Spacing.xxs),
+                  Text(
+                    discountText,
+                    textAlign: TextAlign.center,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size22,
+                      color: color.primary,
+                    ),
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.lg,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: color.primary,
+                      borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.primary.withValues(alpha: 0.25),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      locale.offers_invite_button,
+                      textAlign: TextAlign.center,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size11,
+                        color: color.onPrimary,
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(width: Spacing.sm),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: 6,
-              ),
-              decoration: BoxDecoration(
-                color: color.secondary,
-                borderRadius: BorderRadius.circular(Spacing.xs),
-              ),
-              child: Text(
-                isAr ? 'دعوة' : 'Invite',
-                style: getBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size11,
-                  color: color.onSecondary,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

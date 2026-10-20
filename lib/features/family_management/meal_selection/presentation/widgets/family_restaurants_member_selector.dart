@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurants_member_selector_item.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/models/family_restaurants_view_data.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_member_selector_item.dart';
 
 class FamilyRestaurantsMemberSelector extends StatelessWidget {
   const FamilyRestaurantsMemberSelector({

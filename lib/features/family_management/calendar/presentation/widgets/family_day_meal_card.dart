@@ -11,11 +11,7 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_icon.dart';
 
 class FamilyDayMealCard extends StatelessWidget {
-  const FamilyDayMealCard({
-    super.key,
-    required this.meal,
-    this.onEditPressed,
-  });
+  const FamilyDayMealCard({super.key, required this.meal, this.onEditPressed});
 
   final FamilyDayMealEntity meal;
   final VoidCallback? onEditPressed;
@@ -159,19 +155,23 @@ class FamilyDayMealCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: Spacing.sm),
-                        AppNutritionRow(
-                          calories: meal.calories,
-                          carbs: meal.carbs,
-                          protein: meal.protein,
-                          fat: meal.fat,
-                          caloriesLabel: meal.caloriesLabel,
-                          carbsLabel: meal.carbsLabel,
-                          proteinLabel: meal.proteinLabel,
-                          fatLabel: meal.fatLabel,
-                          order: NutritionOrder.caloriesCarbsProteinFat,
-                          animationSize: 18.0,
-                          height: 44.0,
-                        ),
+                        if (meal.calories.isNotEmpty ||
+                            meal.carbs.isNotEmpty ||
+                            meal.protein.isNotEmpty ||
+                            meal.fat.isNotEmpty)
+                          AppNutritionRow(
+                            calories: meal.calories,
+                            carbs: meal.carbs,
+                            protein: meal.protein,
+                            fat: meal.fat,
+                            caloriesLabel: meal.caloriesLabel,
+                            carbsLabel: meal.carbsLabel,
+                            proteinLabel: meal.proteinLabel,
+                            fatLabel: meal.fatLabel,
+                            order: NutritionOrder.caloriesCarbsProteinFat,
+                            animationSize: 18.0,
+                            height: 44.0,
+                          ),
                       ],
                     ),
                   ),

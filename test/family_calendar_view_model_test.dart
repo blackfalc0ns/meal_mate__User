@@ -127,13 +127,11 @@ void main() {
     final calendarRepo = _FakeCalendarRepository();
     final familyRepo = _FakeFamilyRepository();
 
-    final viewModel = FamilyCalendarViewModel(
+    final viewModel = FamilyCalendarViewModel.test(
       GetFamilyMembersUseCase(familyRepo),
       GetCalendarUseCase(calendarRepo),
       GetCalendarDayUseCase(calendarRepo),
-      GetCalendarRestaurantsUseCase(calendarRepo),
-      GetCalendarAvailableMealsUseCase(calendarRepo),
-      SaveCalendarDayMealsUseCase(calendarRepo),
+      null,
     );
     addTearDown(viewModel.close);
 
@@ -165,13 +163,11 @@ void main() {
     final calendarRepo = _FakeCalendarRepository();
     final familyRepo = _FakeFamilyRepository();
 
-    final viewModel = FamilyCalendarViewModel(
+    final viewModel = FamilyCalendarViewModel.test(
       GetFamilyMembersUseCase(familyRepo),
       GetCalendarUseCase(calendarRepo),
       GetCalendarDayUseCase(calendarRepo),
-      GetCalendarRestaurantsUseCase(calendarRepo),
-      GetCalendarAvailableMealsUseCase(calendarRepo),
-      SaveCalendarDayMealsUseCase(calendarRepo),
+      null,
     );
     addTearDown(viewModel.close);
 
@@ -201,10 +197,11 @@ void main() {
     'does not reuse previous subscription when selected member has none',
     () async {
       final calendarRepo = _FakeCalendarRepository();
-      final viewModel = FamilyCalendarViewModel(
+      final viewModel = FamilyCalendarViewModel.test(
         null,
         GetCalendarUseCase(calendarRepo),
         GetCalendarDayUseCase(calendarRepo),
+        null,
       );
       addTearDown(viewModel.close);
 
@@ -249,7 +246,7 @@ void main() {
       await Future<void>.delayed(Duration.zero);
 
       expect(calendarRepo.lastCalendarSubscriptionId, 'sub-a');
-      expect(viewModel.state.activeSubscriptionId, isEmpty);
+      expect(viewModel.state.activeSubscriptionId, isNull);
     },
   );
 }

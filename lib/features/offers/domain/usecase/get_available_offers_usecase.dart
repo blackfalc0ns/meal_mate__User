@@ -21,6 +21,7 @@ class GetAvailableOffersUseCase {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   }) {
     return _repository.getAvailableOffers(
       cartAmount: cartAmount,
@@ -34,6 +35,7 @@ class GetAvailableOffersUseCase {
       search: search,
       category: category,
       eligibleOnly: eligibleOnly,
+      includeCampaigns: includeCampaigns,
     );
   }
 }

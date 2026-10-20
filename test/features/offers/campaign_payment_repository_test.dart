@@ -10,7 +10,6 @@ import 'package:meal_meat_user/features/offers/data/models/request/start_campaig
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_payment_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/evaluate_offer_discount_response_dto.dart';
-import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/repo/offers_repository_impl.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
@@ -52,16 +51,7 @@ class FakeOffersRemoteDataSource implements OffersRemoteDataSource {
   ) => throw UnimplementedError();
 
   @override
-  Future<List<OfferResponseDto>> getAvailableOffers(
-    GetCustomerAvailableOffersRequestDto request,
-  ) async {
-    availableOffersRequest = request;
-    return const [];
-  }
-
-  @override
-  Future<OfferResponseDto> getOfferDetails(String offerId) =>
-      throw UnimplementedError();
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class FakeTokenService implements TokenService {

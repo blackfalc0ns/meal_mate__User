@@ -128,7 +128,7 @@ class FamilyReviewHeaderCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        locale.localeName == 'ar' ? 'الحالة' : 'Status',
+                        locale.calendar_confirmed_sheet_status_label,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size10,

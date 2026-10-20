@@ -1,5 +1,6 @@
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 
 class FamilyMemberCalendarArgs {
@@ -70,6 +71,7 @@ class FamilyMealSelectionArgs {
     this.slot = '',
     this.members = const [],
     this.viewModel,
+    this.selectionViewModel,
   });
 
   final String subscriptionId;
@@ -82,6 +84,7 @@ class FamilyMealSelectionArgs {
   final String slot;
   final List<FamilyMemberSummaryEntity> members;
   final FamilyCalendarViewModel? viewModel;
+  final FamilyMealSelectionViewModel? selectionViewModel;
 }
 
 class FamilyReviewMemberMealsArgs {
@@ -92,6 +95,7 @@ class FamilyReviewMemberMealsArgs {
     this.memberId,
     this.members = const [],
     this.viewModel,
+    this.selectionViewModel,
   });
 
   final String subscriptionId;
@@ -100,4 +104,5 @@ class FamilyReviewMemberMealsArgs {
   final String? memberId;
   final List<FamilyMemberSummaryEntity> members;
   final FamilyCalendarViewModel? viewModel;
+  final FamilyMealSelectionViewModel? selectionViewModel;
 }

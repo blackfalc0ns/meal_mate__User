@@ -23,6 +23,7 @@ abstract interface class OffersRepository {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   });
 
   Future<ApiResult<OffersHubEntity>> getOffersHub();

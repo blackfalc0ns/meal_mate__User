@@ -38,16 +38,26 @@ class OffersViewModel extends Cubit<OffersState> {
 
   void doIntent(OffersEvent event) {
     switch (event) {
-      case GetOffersEvent():
-        unawaited(_getOffers(isRefresh: false));
-      case RefreshOffersEvent():
-        unawaited(_getOffers(isRefresh: true));
+      case GetOffersEvent(:final includeCampaigns):
+        unawaited(
+          _getOffers(
+            isRefresh: false,
+            includeCampaigns: includeCampaigns ?? false,
+          ),
+        );
+      case RefreshOffersEvent(:final includeCampaigns):
+        unawaited(
+          _getOffers(
+            isRefresh: true,
+            includeCampaigns: includeCampaigns ?? false,
+          ),
+        );
       case SelectOfferCategoryEvent(:final index):
         _selectCategory(index);
       case ToggleSaveOfferEvent(:final offerId):
         unawaited(_toggleSaveOffer(offerId));
       case LoadOffersHubEvent():
-        unawaited(_loadOffersHub());
+        unawaited(_loadOffersHub(isRefresh: false));
       case LoadSavedOffersEvent():
         unawaited(_loadSavedOffers());
       case LoadOfferCalendarEvent():
@@ -55,19 +65,23 @@ class OffersViewModel extends Cubit<OffersState> {
     }
   }
 
-  Future<void> _getOffers({required bool isRefresh}) async {
+  Future<void> _getOffers({
+    required bool isRefresh,
+    bool? includeCampaigns = false,
+  }) async {
     if (isRefresh) {
       emit(state.copyWith(isRefreshing: true, clearFailure: true));
     } else {
       emit(state.copyWith(isLoading: true, clearFailure: true));
     }
 
-    final result = await _getAvailableOffersUseCase();
+    final result = await _getAvailableOffersUseCase(
+      includeCampaigns: includeCampaigns,
+    );
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        final heroOffers =
-            data.where((o) => o.bannerImageUrl != null).toList();
+        final heroOffers = data.where((o) => o.bannerImageUrl != null).toList();
         final heroList = heroOffers.isNotEmpty
             ? heroOffers
             : (data.isNotEmpty ? [data.first] : <OfferEntity>[]);
@@ -94,18 +108,28 @@ class OffersViewModel extends Cubit<OffersState> {
     }
   }
 
-  Future<void> _loadOffersHub() async {
-    emit(state.copyWith(isLoading: true, clearFailure: true));
+  Future<void> _loadOffersHub({bool isRefresh = false}) async {
+    if (isRefresh) {
+      emit(state.copyWith(isRefreshing: true, clearFailure: true));
+    } else {
+      emit(state.copyWith(isLoading: true, clearFailure: true));
+    }
     final result = await _getOffersHubUseCase();
     switch (result) {
       case ApiSuccessResult(:final data):
         final heroList = data.heroOffers.isNotEmpty
             ? data.heroOffers
-            : (data.availableOffers.isNotEmpty ? [data.availableOffers.first] : <OfferEntity>[]);
-        final filtered = _filterOffers(data.availableOffers, state.selectedCategoryIndex);
+            : (data.availableOffers.isNotEmpty
+                  ? [data.availableOffers.first]
+                  : <OfferEntity>[]);
+        final filtered = _filterOffers(
+          data.availableOffers,
+          state.selectedCategoryIndex,
+        );
         emit(
           state.copyWith(
             isLoading: false,
+            isRefreshing: false,
             allOffers: data.availableOffers,
             filteredOffers: filtered,
             heroOffers: heroList,
@@ -128,7 +152,13 @@ class OffersViewModel extends Cubit<OffersState> {
           }
         }
       case ApiErrorResult(:final failure):
-        emit(state.copyWith(isLoading: false, failure: failure));
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isRefreshing: false,
+            failure: failure,
+          ),
+        );
     }
   }
 
@@ -160,8 +190,13 @@ class OffersViewModel extends Cubit<OffersState> {
     final updatedList = List<OfferEntity>.from(state.allOffers);
     updatedList[targetIndex] = targetOffer.copyWith(isSaved: nextSaved);
 
-    final updatedFiltered = _filterOffers(updatedList, state.selectedCategoryIndex);
-    final updatedHero = state.heroOffers.map((o) => o.id == offerId ? o.copyWith(isSaved: nextSaved) : o).toList();
+    final updatedFiltered = _filterOffers(
+      updatedList,
+      state.selectedCategoryIndex,
+    );
+    final updatedHero = state.heroOffers
+        .map((o) => o.id == offerId ? o.copyWith(isSaved: nextSaved) : o)
+        .toList();
 
     emit(
       state.copyWith(
@@ -177,7 +212,8 @@ class OffersViewModel extends Cubit<OffersState> {
         ? await _saveOfferUseCase(offerId)
         : await _unsaveOfferUseCase(offerId);
 
-    final remainingSavingIds = Set<String>.from(state.savingOfferIds)..remove(offerId);
+    final remainingSavingIds = Set<String>.from(state.savingOfferIds)
+      ..remove(offerId);
 
     switch (result) {
       case ApiSuccessResult():
@@ -189,8 +225,13 @@ class OffersViewModel extends Cubit<OffersState> {
         if (rbIndex >= 0) {
           rollbackList[rbIndex] = targetOffer.copyWith(isSaved: wasSaved);
         }
-        final rollbackFiltered = _filterOffers(rollbackList, state.selectedCategoryIndex);
-        final rollbackHero = state.heroOffers.map((o) => o.id == offerId ? o.copyWith(isSaved: wasSaved) : o).toList();
+        final rollbackFiltered = _filterOffers(
+          rollbackList,
+          state.selectedCategoryIndex,
+        );
+        final rollbackHero = state.heroOffers
+            .map((o) => o.id == offerId ? o.copyWith(isSaved: wasSaved) : o)
+            .toList();
 
         emit(
           state.copyWith(
@@ -217,18 +258,23 @@ class OffersViewModel extends Cubit<OffersState> {
         list
             .where(
               (o) =>
-                  (o.discountRate != null && o.discountRate! > 0) ||
-                  (o.discountAmount != null && o.discountAmount! > 0),
+                  (o.minSubscriptionDays != null &&
+                      o.minSubscriptionDays! > 0) ||
+                  o.programIds.isNotEmpty ||
+                  o.bundleIds.isNotEmpty,
             )
             .toList(),
       2 =>
         list
-            .where((o) => o.campaignId != null || o.restaurantIds.isNotEmpty)
+            .where((o) => o.promoCode != null && o.promoCode!.isNotEmpty)
             .toList(),
-      3 =>
+      3 => list.where((o) => o.endsAt != null && !o.isExpired).toList(),
+      4 =>
         list
             .where(
-              (o) => o.minSubscriptionDays != null || o.programIds.isNotEmpty,
+              (o) =>
+                  (o.discountRate != null && o.discountRate! >= 1.0) ||
+                  o.campaignId != null,
             )
             .toList(),
       _ => list,

@@ -13,8 +13,14 @@ import 'package:meal_meat_user/features/offers/domain/entities/offer_eligible_re
 import 'package:meal_meat_user/features/offers/domain/entities/offer_calendar_entry_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/validate_discount_result_entity.dart';
 
+OfferPurchaseMode parseOfferPurchaseMode(String? raw) => switch (raw) {
+  'DirectPurchase' => OfferPurchaseMode.directPurchase,
+  'CouponOnly' => OfferPurchaseMode.couponOnly,
+  _ => OfferPurchaseMode.unknown,
+};
+
 extension OfferResponseDtoMapper on OfferResponseDto {
-  OfferEntity toEntity() {
+  OfferEntity toEntity({DateTime? serverNowUtc}) {
     return OfferEntity(
       id: id ?? '',
       nameAr: nameAr ?? '',
@@ -26,9 +32,12 @@ extension OfferResponseDtoMapper on OfferResponseDto {
       discountAmount: discountAmountKwd ?? discountAmount,
       startsAt: startsAtUtc != null ? DateTime.tryParse(startsAtUtc!) : null,
       endsAt: endsAtUtc != null ? DateTime.tryParse(endsAtUtc!) : null,
+      serverNowUtc: serverNowUtc,
+      serverObservedAtUtc: serverNowUtc != null ? DateTime.now().toUtc() : null,
       remainingSpots: remainingSpots,
       minSubscriptionDays: minSubscriptionDays,
       campaignId: campaignId,
+      sourceType: sourceType,
       promoCode: promoCode,
       allowStacking: allowPromoCodeStacking ?? false,
       termsAndConditionsAr: termsAndConditionsAr,
@@ -39,6 +48,7 @@ extension OfferResponseDtoMapper on OfferResponseDto {
       allowedDurationDays: allowedDurationDays ?? const [],
       isSaved: isSaved ?? false,
       isAvailable: isAvailable ?? true,
+      purchaseMode: parseOfferPurchaseMode(purchaseMode),
     );
   }
 }
@@ -90,14 +100,23 @@ extension CampaignCheckoutSessionResponseDtoMapper
 
 extension OffersHubResponseDtoMapper on OffersHubResponseDto {
   OffersHubEntity toEntity() {
+    final serverTime = resolvedServerTimeUtc != null
+        ? DateTime.tryParse(resolvedServerTimeUtc!)
+        : null;
+
     return OffersHubEntity(
-      heroOffers: heroOffers?.map((e) => e.toEntity()).toList() ?? const [],
-      availableOffers:
-          availableOffers?.map((e) => e.toEntity()).toList() ?? const [],
-      savedOffers: savedOffers?.map((e) => e.toEntity()).toList() ?? const [],
-      serverTimeUtc: serverTimeUtc != null
-          ? DateTime.tryParse(serverTimeUtc!)
-          : null,
+      heroOffers: resolvedHeroOffers
+          .map((e) => e.toEntity(serverNowUtc: serverTime))
+          .toList(),
+      availableOffers: resolvedAvailableOffers
+          .map((e) => e.toEntity(serverNowUtc: serverTime))
+          .toList(),
+      savedOffers:
+          savedOffers
+              ?.map((e) => e.toEntity(serverNowUtc: serverTime))
+              .toList() ??
+          const [],
+      serverTimeUtc: serverTime,
     );
   }
 }
@@ -145,4 +164,3 @@ extension ValidateDiscountResponseDtoMapper on ValidateDiscountResponseDto {
     );
   }
 }
-

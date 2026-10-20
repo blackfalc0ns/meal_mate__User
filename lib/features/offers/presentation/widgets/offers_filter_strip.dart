@@ -22,7 +22,6 @@ class OffersFilterStrip extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.offersHorizontalPadding,
-          //vertical: Spacing.sm,
         ),
         child: Row(
           children: List.generate(filters.length, (index) {
@@ -30,7 +29,7 @@ class OffersFilterStrip extends StatelessWidget {
             final selected = filter.isSelected;
             return Padding(
               padding: EdgeInsetsDirectional.only(
-                end: index == filters.length - 1 ? 0 : Spacing.offersFilterGap,
+                end: index == filters.length - 1 ? 0 : Spacing.sm,
               ),
               child: Material(
                 color: color.surface.withValues(alpha: 0),
@@ -43,38 +42,30 @@ class OffersFilterStrip extends StatelessWidget {
                       horizontal: Spacing.offersFilterHorizontalPadding,
                     ),
                     decoration: BoxDecoration(
-                      color: selected
-                          ? color.onTertiaryContainer
-                          : color.surface,
+                      color: selected ? color.primary : color.surface,
                       borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      border: selected
-                          ? null
-                          : Border.all(
-                              color: color.outlineVariant,
-                              width: Spacing.border,
-                            ),
+                      border: Border.all(
+                        color: selected ? color.primary : color.outlineVariant,
+                        width: Spacing.border,
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           filter.icon,
-                          size: selected
-                              ? Spacing.iconSm + Spacing.xs
-                              : Spacing.offersFilterIconSize,
-                          color: selected ? color.onPrimary : color.onSurface,
+                          size: Spacing.offersFilterIconSize,
+                          color: selected ? color.onPrimary : color.onSurfaceVariant,
                           semanticLabel: filter.label,
                         ),
                         const SizedBox(width: Spacing.xs),
                         Text(
                           filter.label,
                           textAlign: TextAlign.center,
-                          style: getSemiBoldStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
-                            fontSize: selected
-                                ? FontSize.size13
-                                : FontSize.size13,
-                            color: selected ? color.onPrimary : color.onSurface,
+                            fontSize: FontSize.size12,
+                            color: selected ? color.onPrimary : color.onSurfaceVariant,
                           ),
                         ),
                       ],

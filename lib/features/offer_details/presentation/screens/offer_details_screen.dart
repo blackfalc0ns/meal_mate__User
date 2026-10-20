@@ -27,13 +27,20 @@ import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 
 class OfferDetailsScreen extends StatelessWidget {
-  const OfferDetailsScreen({super.key, this.offerId = ''});
+  const OfferDetailsScreen({super.key, this.offerId = '', this.viewModel});
 
   final String offerId;
+  final OfferDetailsViewModel? viewModel;
   static const routeName = '/offer-details';
 
   @override
   Widget build(BuildContext context) {
+    if (viewModel != null) {
+      return BlocProvider.value(
+        value: viewModel!,
+        child: _OfferDetailsContent(offerId: offerId),
+      );
+    }
     return BlocProvider(
       create: (_) =>
           getIt<OfferDetailsViewModel>()
@@ -160,13 +167,19 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                         ? locale.offer_status_expired
                         : (isSoldOut
                               ? locale.offer_status_sold_out
-                              : locale.offer_details_plan_section_title),
-                    onPressed: isExpired || isSoldOut
+                              : (offer.isCouponOnly
+                                    ? locale.offers_coupon_button
+                                    : locale.offer_details_plan_section_title)),
+                    onPressed: isExpired ||
+                            isSoldOut ||
+                            offer.purchaseMode == OfferPurchaseMode.unknown
                         ? null
                         : () => _navigateToRedeemPackage(context, offer),
                     height: Spacing.offerDetailsBottomButtonHeight,
                     borderRadius: Spacing.offerDetailsBottomButtonRadius,
-                    gradient: isExpired || isSoldOut
+                    gradient: isExpired ||
+                            isSoldOut ||
+                            offer.purchaseMode == OfferPurchaseMode.unknown
                         ? null
                         : LinearGradient(
                             begin: Alignment.topCenter,
@@ -270,10 +283,24 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
 
   void _navigateToRedeemPackage(BuildContext context, OfferEntity? offer) {
     if (offer == null) return;
-    unawaited(
-      Navigator.of(
-        context,
-      ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
-    );
+    switch (offer.purchaseMode) {
+      case OfferPurchaseMode.directPurchase:
+        unawaited(
+          Navigator.of(
+            context,
+          ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
+        );
+      case OfferPurchaseMode.couponOnly:
+        if (offer.promoCode != null && offer.promoCode!.isNotEmpty) {
+          unawaited(
+            Navigator.of(
+              context,
+            ).pushNamed(AppRoutes.promoCodeInput, arguments: offer.promoCode),
+          );
+        }
+      case OfferPurchaseMode.unknown:
+        // No action - guarded against entering redeemPackage
+        break;
+    }
   }
 }

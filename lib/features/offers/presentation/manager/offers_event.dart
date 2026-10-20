@@ -3,11 +3,13 @@ sealed class OffersEvent {
 }
 
 class GetOffersEvent extends OffersEvent {
-  const GetOffersEvent();
+  const GetOffersEvent({this.includeCampaigns = false});
+  final bool? includeCampaigns;
 }
 
 class RefreshOffersEvent extends OffersEvent {
-  const RefreshOffersEvent();
+  const RefreshOffersEvent({this.includeCampaigns = false});
+  final bool? includeCampaigns;
 }
 
 class SelectOfferCategoryEvent extends OffersEvent {

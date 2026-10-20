@@ -11,26 +11,34 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/save_calendar_da
 import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day_restaurant_usecase.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 
 void main() {
   test(
     'selecting a meal category requests its slot from the backend',
     () async {
       final repository = _RecordingCalendarRepository();
-      final viewModel = FamilyCalendarViewModel(
-        null,
-        null,
-        null,
-        null,
-        GetCalendarAvailableMealsUseCase(repository),
-        null,
-        SetCalendarDayRestaurantUseCase(repository),
+      final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+      addTearDown(calendar.close);
+      final viewModel = FamilyMealSelectionViewModel(
+        calendar: calendar,
+
+        subscriptionId: 'subscription-1',
+
+        date: DateTime(2026, 9, 15),
+
+        memberName: 'Member',
+
+        getAvailableMealsUseCase: GetCalendarAvailableMealsUseCase(repository),
+
+        setDayRestaurantUseCase: SetCalendarDayRestaurantUseCase(repository),
       );
       addTearDown(viewModel.close);
 
       final date = DateTime(2026, 9, 15);
-      viewModel.doIntent(
+      calendar.doIntent(
         InitFamilyCalendarEvent(
           args: FamilyMemberCalendarArgs(
             subscriptionId: 'subscription-1',
@@ -73,18 +81,26 @@ void main() {
     'selects the required meals in one slot and sends all of them',
     () async {
       final repository = _RecordingCalendarRepository();
-      final viewModel = FamilyCalendarViewModel(
-        null,
-        null,
-        null,
-        null,
-        GetCalendarAvailableMealsUseCase(repository),
-        SaveCalendarDayMealsUseCase(repository),
-        SetCalendarDayRestaurantUseCase(repository),
+      final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+      addTearDown(calendar.close);
+      final viewModel = FamilyMealSelectionViewModel(
+        calendar: calendar,
+
+        subscriptionId: 'subscription-1',
+
+        date: DateTime(2026, 9, 15),
+
+        memberName: 'Member',
+
+        getAvailableMealsUseCase: GetCalendarAvailableMealsUseCase(repository),
+
+        saveDayMealsUseCase: SaveCalendarDayMealsUseCase(repository),
+
+        setDayRestaurantUseCase: SetCalendarDayRestaurantUseCase(repository),
       );
       addTearDown(viewModel.close);
 
-      viewModel.doIntent(
+      calendar.doIntent(
         InitFamilyCalendarEvent(
           args: FamilyMemberCalendarArgs(
             subscriptionId: 'subscription-1',
@@ -131,18 +147,24 @@ void main() {
 
   test('does not load meals when setting the restaurant fails', () async {
     final repository = _RecordingCalendarRepository(failSetRestaurant: true);
-    final viewModel = FamilyCalendarViewModel(
-      null,
-      null,
-      null,
-      null,
-      GetCalendarAvailableMealsUseCase(repository),
-      null,
-      SetCalendarDayRestaurantUseCase(repository),
+    final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+    addTearDown(calendar.close);
+    final viewModel = FamilyMealSelectionViewModel(
+      calendar: calendar,
+
+      subscriptionId: 'subscription-1',
+
+      date: DateTime(2026, 9, 15),
+
+      memberName: 'Member',
+
+      getAvailableMealsUseCase: GetCalendarAvailableMealsUseCase(repository),
+
+      setDayRestaurantUseCase: SetCalendarDayRestaurantUseCase(repository),
     );
     addTearDown(viewModel.close);
 
-    viewModel.doIntent(
+    calendar.doIntent(
       InitFamilyCalendarEvent(
         args: FamilyMemberCalendarArgs(
           subscriptionId: 'subscription-1',
@@ -167,18 +189,24 @@ void main() {
 
   test('hydrates selected meals from backend isSelected values', () async {
     final repository = _RecordingCalendarRepository(returnSelectedMeals: true);
-    final viewModel = FamilyCalendarViewModel(
-      null,
-      null,
-      null,
-      null,
-      GetCalendarAvailableMealsUseCase(repository),
-      null,
-      SetCalendarDayRestaurantUseCase(repository),
+    final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+    addTearDown(calendar.close);
+    final viewModel = FamilyMealSelectionViewModel(
+      calendar: calendar,
+
+      subscriptionId: 'subscription-1',
+
+      date: DateTime(2026, 9, 15),
+
+      memberName: 'Member',
+
+      getAvailableMealsUseCase: GetCalendarAvailableMealsUseCase(repository),
+
+      setDayRestaurantUseCase: SetCalendarDayRestaurantUseCase(repository),
     );
     addTearDown(viewModel.close);
 
-    viewModel.doIntent(
+    calendar.doIntent(
       InitFamilyCalendarEvent(
         args: FamilyMemberCalendarArgs(
           subscriptionId: 'subscription-1',

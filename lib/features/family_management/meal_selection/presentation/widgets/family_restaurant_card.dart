@@ -7,9 +7,9 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/models/family_restaurants_view_data.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurant_logo.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_restaurant_tag.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/models/family_restaurants_view_data.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurant_logo.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurant_tag.dart';
 
 class FamilyRestaurantCard extends StatelessWidget {
   const FamilyRestaurantCard({

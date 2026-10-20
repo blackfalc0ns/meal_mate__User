@@ -39,6 +39,27 @@ class OffersState {
 
   bool get isEmpty => !isLoading && failure == null && allOffers.isEmpty;
 
+  List<OfferEntity> get campaignBanners =>
+      allOffers.where((offer) => offer.isCampaign).toList();
+
+  List<OfferEntity> get readyOffers => filteredOffers
+      .where(
+        (offer) =>
+            !offer.isCampaign &&
+            offer.purchaseMode == OfferPurchaseMode.directPurchase,
+      )
+      .toList();
+  List<OfferEntity> get couponOffers => filteredOffers
+      .where(
+        (offer) =>
+            !offer.isCampaign &&
+            offer.purchaseMode == OfferPurchaseMode.couponOnly,
+      )
+      .toList();
+  List<OfferEntity> get unclassifiedOffers => filteredOffers
+      .where((offer) => offer.purchaseMode == OfferPurchaseMode.unknown)
+      .toList();
+
   OffersState copyWith({
     bool? isLoading,
     bool? isRefreshing,
@@ -74,7 +95,9 @@ class OffersState {
       referralRewardRate: referralRewardRate ?? this.referralRewardRate,
       serverTimeUtc: serverTimeUtc ?? this.serverTimeUtc,
       savingOfferIds: savingOfferIds ?? this.savingOfferIds,
-      actionFailure: clearActionFailure ? null : (actionFailure ?? this.actionFailure),
+      actionFailure: clearActionFailure
+          ? null
+          : (actionFailure ?? this.actionFailure),
     );
   }
 }

@@ -17,7 +17,9 @@ import 'package:meal_meat_user/features/offers/domain/usecase/validate_discount_
 import 'package:meal_meat_user/features/offers/presentation/widgets/suggested_promo_code_card.dart';
 
 class PromoCodeInputScreen extends StatefulWidget {
-  const PromoCodeInputScreen({super.key});
+  const PromoCodeInputScreen({super.key, this.initialCode});
+
+  final String? initialCode;
 
   @override
   State<PromoCodeInputScreen> createState() => _PromoCodeInputScreenState();
@@ -27,6 +29,14 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
   final _controller = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialCode != null && widget.initialCode!.trim().isNotEmpty) {
+      _controller.text = widget.initialCode!.trim().toUpperCase();
+    }
+  }
 
   @override
   void dispose() {

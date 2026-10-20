@@ -36,6 +36,7 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   }) {
     return _apiServices.getCustomerAvailableOffers(
       cartAmount: cartAmount ?? legacyRequest?.cartAmount,
@@ -50,6 +51,7 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
       search: search,
       category: category,
       eligibleOnly: eligibleOnly,
+      includeCampaigns: includeCampaigns,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -12,16 +14,16 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_actions_bar.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_cutoff_banner.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_header_card.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_instructions_card.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_loading_skeleton.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_macros_card.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_review_meal_slot_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_state.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_actions_bar.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_cutoff_banner.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_header_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_instructions_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_loading_skeleton.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_macros_card.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_review_meal_slot_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/staggered_slide_item.dart';
 
 class FamilyReviewMemberMealsScreen extends StatefulWidget {
@@ -36,12 +38,31 @@ class FamilyReviewMemberMealsScreen extends StatefulWidget {
 
 class _FamilyReviewMemberMealsScreenState
     extends State<FamilyReviewMemberMealsScreen> {
-  FamilyCalendarViewModel? _viewModel;
+  FamilyMealSelectionViewModel? _viewModel;
+  bool _ownsViewModel = false;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = widget.args?.viewModel;
+    _viewModel = widget.args?.selectionViewModel;
+    if (_viewModel == null && widget.args?.viewModel != null) {
+      _viewModel = FamilyMealSelectionViewModel(
+        calendar: widget.args!.viewModel!,
+        subscriptionId: widget.args?.subscriptionId,
+        date: widget.args?.date,
+        memberName: widget.args?.memberName,
+        members: widget.args?.members,
+      );
+      _ownsViewModel = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_ownsViewModel && _viewModel != null) {
+      unawaited(_viewModel!.close());
+    }
+    super.dispose();
   }
 
   void _onConfirm(BuildContext context, String localeName) {
@@ -51,39 +72,43 @@ class _FamilyReviewMemberMealsScreenState
   @override
   Widget build(BuildContext context) {
     if (_viewModel != null) {
-      return BlocProvider<FamilyCalendarViewModel>.value(
+      return BlocProvider<FamilyMealSelectionViewModel>.value(
         value: _viewModel!,
-        child: BlocConsumer<FamilyCalendarViewModel, FamilyCalendarState>(
-          listenWhen: (previous, current) =>
-              previous.saveMealsSuccess != current.saveMealsSuccess ||
-              previous.saveMealsFailure != current.saveMealsFailure,
-          listener: (context, state) {
-            final locale = context.localization;
+        child:
+            BlocConsumer<
+              FamilyMealSelectionViewModel,
+              FamilyMealSelectionState
+            >(
+              listenWhen: (previous, current) =>
+                  previous.saveMealsSuccess != current.saveMealsSuccess ||
+                  previous.saveMealsFailure != current.saveMealsFailure,
+              listener: (context, state) {
+                final locale = context.localization;
 
-            if (state.saveMealsSuccess) {
-              CustomSnackbar.showSuccess(
-                context: context,
-                message: locale.family_review_success_message,
-              );
-              Navigator.of(context).popUntil((route) {
-                return route.settings.name ==
-                        AppRoutes.familyMemberDailyMeals ||
-                    route.isFirst;
-              });
-            } else if (state.saveMealsFailure != null) {
-              CustomSnackbar.showError(
-                context: context,
-                message: ErrorMessagePresenter.fromFailure(
-                  context,
-                  state.saveMealsFailure!,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            return _buildContent(context, state: state);
-          },
-        ),
+                if (state.saveMealsSuccess) {
+                  CustomSnackbar.showSuccess(
+                    context: context,
+                    message: locale.family_review_success_message,
+                  );
+                  Navigator.of(context).popUntil((route) {
+                    return route.settings.name ==
+                            AppRoutes.familyMemberDailyMeals ||
+                        route.isFirst;
+                  });
+                } else if (state.saveMealsFailure != null) {
+                  CustomSnackbar.showError(
+                    context: context,
+                    message: ErrorMessagePresenter.fromFailure(
+                      context,
+                      state.saveMealsFailure!,
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                return _buildContent(context, state: state);
+              },
+            ),
       );
     }
 
@@ -101,7 +126,7 @@ class _FamilyReviewMemberMealsScreenState
 
   Widget _buildContent(
     BuildContext context, {
-    required FamilyCalendarState state,
+    required FamilyMealSelectionState state,
   }) {
     final color = context.colorScheme;
     final locale = context.localization;
@@ -149,28 +174,14 @@ class _FamilyReviewMemberMealsScreenState
         ? programFromApi
         : locale.family_review_goal_balanced;
 
-    final defaultInstructions = locale.localeName == 'ar'
-        ? const ['لا طعام حار', 'يفضل الأرز البني', 'بدون مكسرات']
-        : const ['No spicy food', 'Prefers brown rice', 'Nut-free'];
-
     final editDeadlineUtc = state.selectedDay?.editDeadlineUtc;
-    final String remainingTime;
-    if (editDeadlineUtc != null) {
-      final diff = editDeadlineUtc.difference(DateTime.now().toUtc());
-      if (!diff.isNegative) {
-        remainingTime = locale.localeName == 'ar'
-            ? '${diff.inHours} ساعة و ${diff.inMinutes % 60} دقيقة'
-            : '${diff.inHours}h ${diff.inMinutes % 60}m';
-      } else {
-        remainingTime = locale.localeName == 'ar'
-            ? '22 ساعة و 18 دقيقة'
-            : '22 hours and 18 minutes';
-      }
-    } else {
-      remainingTime = locale.localeName == 'ar'
-          ? '22 ساعة و 18 دقيقة'
-          : '22 hours and 18 minutes';
-    }
+    final remaining = editDeadlineUtc?.difference(DateTime.now().toUtc());
+    final remainingTime = remaining != null && remaining > Duration.zero
+        ? locale.family_review_duration_hours_minutes(
+            remaining.inHours,
+            remaining.inMinutes % 60,
+          )
+        : null;
 
     return Stack(
       children: [
@@ -204,10 +215,12 @@ class _FamilyReviewMemberMealsScreenState
           bottomNavigationBar: FamilyReviewActionsBar(
             memberName: memberName,
             isLoading: isSaving,
-            onEdit: (state.selectedDay?.isEditable == true && state.canUnitExchange)
+            onEdit:
+                (state.selectedDay?.isEditable == true && state.canUnitExchange)
                 ? () => Navigator.maybePop(context)
                 : null,
-            onConfirm: (state.selectedDay?.isEditable == true &&
+            onConfirm:
+                (state.selectedDay?.isEditable == true &&
                     state.canConfirmMeals &&
                     meals.isNotEmpty)
                 ? () => _onConfirm(context, locale.localeName)
@@ -275,16 +288,17 @@ class _FamilyReviewMemberMealsScreenState
                         FamilyReviewMacrosCard(nutrition: nutrition),
                         const SizedBox(height: Spacing.md),
                         FamilyReviewInstructionsCard(
-                          instructions: defaultInstructions,
+                          instructions: const [],
                           note: locale.family_review_preferences_note,
                         ),
                         const SizedBox(height: Spacing.md),
-                        FamilyReviewCutoffBanner(
-                          title: locale.family_review_cutoff_title,
-                          description: locale.family_review_cutoff_desc,
-                          remainingTime: remainingTime,
-                          disclaimer: locale.family_review_cutoff_disclaimer,
-                        ),
+                        if (remainingTime != null)
+                          FamilyReviewCutoffBanner(
+                            title: locale.family_review_cutoff_title,
+                            description: locale.family_review_cutoff_desc,
+                            remainingTime: remainingTime,
+                            disclaimer: locale.family_review_cutoff_disclaimer,
+                          ),
                         const SizedBox(height: Spacing.xl),
                       ],
                     ),

@@ -1393,6 +1393,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offers_featured_section_title => 'Featured offers';
 
   @override
+  String get offers_ready_section_title => 'Ready to buy offers';
+
+  @override
+  String get offers_coupons_section_title => 'Discount coupons';
+
+  @override
+  String get offers_ready_empty => 'No ready to buy offers currently available';
+
+  @override
+  String get offers_coupons_empty => 'No discount coupons currently available';
+
+  @override
   String get offers_view_all => 'View all';
 
   @override
@@ -6039,6 +6051,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String family_review_cutoff_time(String time) {
     return 'Time remaining: $time';
+  }
+
+  @override
+  String family_review_duration_hours_minutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
   }
 
   @override

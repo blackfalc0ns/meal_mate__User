@@ -21,12 +21,20 @@ import 'package:meal_meat_user/features/offers/presentation/widgets/offer_browse
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_quick_preview_sheet.dart';
 
 class BrowseOffersScreen extends StatelessWidget {
-  const BrowseOffersScreen({super.key});
+  const BrowseOffersScreen({super.key, this.viewModel});
+
+  final OffersViewModel? viewModel;
 
   @override
   Widget build(BuildContext context) {
+    if (viewModel != null) {
+      return BlocProvider.value(
+        value: viewModel!,
+        child: const _BrowseOffersContent(),
+      );
+    }
     return BlocProvider(
-      create: (_) => getIt<OffersViewModel>()..doIntent(const GetOffersEvent()),
+      create: (_) => getIt<OffersViewModel>()..doIntent(const GetOffersEvent(includeCampaigns: false)),
       child: const _BrowseOffersContent(),
     );
   }
@@ -180,14 +188,29 @@ class _BrowseOffersContent extends StatelessWidget {
   }
 
   void _openOfferDetails(BuildContext context, OfferEntity offer) {
-    unawaited(
-      Navigator.of(
-        context,
-      ).pushNamed(AppRoutes.offerDetails, arguments: offer.id),
-    );
+    switch (offer.purchaseMode) {
+      case OfferPurchaseMode.directPurchase:
+        unawaited(
+          Navigator.of(
+            context,
+          ).pushNamed(AppRoutes.offerDetails, arguments: offer.id),
+        );
+      case OfferPurchaseMode.couponOnly:
+        if (offer.promoCode != null && offer.promoCode!.isNotEmpty) {
+          unawaited(
+            Navigator.of(
+              context,
+            ).pushNamed(AppRoutes.promoCodeInput, arguments: offer.promoCode),
+          );
+        }
+      case OfferPurchaseMode.unknown:
+        // No navigation: neither an offer ID nor a coupon flow is guaranteed.
+        break;
+    }
   }
 
   void _openQuickSheet(BuildContext context, OfferEntity offer) {
+    if (offer.purchaseMode == OfferPurchaseMode.unknown) return;
     unawaited(
       showModalBottomSheet(
         context: context,

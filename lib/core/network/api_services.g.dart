@@ -4992,6 +4992,7 @@ class _ApiServices implements ApiServices {
     String? search,
     String? category,
     bool? eligibleOnly,
+    bool? includeCampaigns,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -5006,6 +5007,7 @@ class _ApiServices implements ApiServices {
       r'search': search,
       r'category': category,
       r'eligibleOnly': eligibleOnly,
+      r'includeCampaigns': includeCampaigns,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

@@ -7,7 +7,7 @@ import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart
 void main() {
   group('OfferMapper and OfferEntity Tests', () {
     test('OfferResponseDto toEntity mapping with full values', () {
-      final dto = OfferResponseDto(
+      const dto = OfferResponseDto(
         id: 'offer-1',
         nameAr: 'عرض رمضان',
         nameEn: 'Ramadan Offer',
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('maps server allowed durations without inventing package options', () {
-      final dto = OfferResponseDto(
+      const dto = OfferResponseDto(
         id: 'offer-durations',
         allowedDurationDays: [30, 60, 90],
       );
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('OfferResponseDto toEntity mapping with null/fallback values', () {
-      final dto = OfferResponseDto(id: 'offer-2');
+      const dto = OfferResponseDto(id: 'offer-2');
       final entity = dto.toEntity();
 
       expect(entity.id, 'offer-2');
@@ -92,7 +92,7 @@ void main() {
     });
 
     test('EvaluateOfferDiscountResponseDto toEntity mapping', () {
-      final dto = EvaluateOfferDiscountResponseDto(
+      const dto = EvaluateOfferDiscountResponseDto(
         isEligible: true,
         isApplicable: true,
         calculatedDiscountAmount: 5.500,
@@ -111,6 +111,80 @@ void main() {
       expect(entity.finalAmount, 30.000);
       expect(entity.offerId, 'off-1');
       expect(entity.firstReason, 'Eligible coupon');
+    });
+
+    test('OfferResponseDto maps purchaseMode correctly', () {
+      expect(
+        OfferResponseDto.fromJson({'purchaseMode': 'DirectPurchase'})
+            .toEntity()
+            .purchaseMode,
+        OfferPurchaseMode.directPurchase,
+      );
+      expect(
+        OfferResponseDto.fromJson({'purchaseMode': 'CouponOnly'})
+            .toEntity()
+            .purchaseMode,
+        OfferPurchaseMode.couponOnly,
+      );
+      expect(
+        OfferResponseDto.fromJson({'purchaseMode': null})
+            .toEntity()
+            .purchaseMode,
+        OfferPurchaseMode.unknown,
+      );
+      expect(
+        OfferResponseDto.fromJson({'purchaseMode': 'FutureMode'})
+            .toEntity()
+            .purchaseMode,
+        OfferPurchaseMode.unknown,
+      );
+      expect(
+        const OfferResponseDto().toEntity().purchaseMode,
+        OfferPurchaseMode.unknown,
+      );
+    });
+
+    test('OfferEntity purchaseMode getters and copyWith', () {
+      const direct = OfferEntity(
+        id: '1',
+        nameAr: 'أ',
+        nameEn: 'A',
+        descriptionAr: 'و',
+        descriptionEn: 'D',
+        purchaseMode: OfferPurchaseMode.directPurchase,
+      );
+      expect(direct.isDirectPurchase, true);
+      expect(direct.isCouponOnly, false);
+
+      const coupon = OfferEntity(
+        id: '2',
+        nameAr: 'ب',
+        nameEn: 'B',
+        descriptionAr: 'و',
+        descriptionEn: 'D',
+        purchaseMode: OfferPurchaseMode.couponOnly,
+      );
+      expect(coupon.isDirectPurchase, false);
+      expect(coupon.isCouponOnly, true);
+
+      const unknown = OfferEntity(
+        id: '3',
+        nameAr: 'ج',
+        nameEn: 'C',
+        descriptionAr: 'و',
+        descriptionEn: 'D',
+        purchaseMode: OfferPurchaseMode.unknown,
+      );
+      expect(unknown.isDirectPurchase, false);
+      expect(unknown.isCouponOnly, false);
+
+      final copied = direct.copyWith(nameEn: 'Updated');
+      expect(copied.purchaseMode, OfferPurchaseMode.directPurchase);
+      expect(copied.isDirectPurchase, true);
+
+      final changedMode = direct.copyWith(purchaseMode: OfferPurchaseMode.couponOnly);
+      expect(changedMode.purchaseMode, OfferPurchaseMode.couponOnly);
+      expect(changedMode.isCouponOnly, true);
     });
   });
 }

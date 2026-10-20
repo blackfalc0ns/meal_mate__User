@@ -1052,6 +1052,7 @@ abstract class ApiServices {
     @Query('search') String? search,
     @Query('category') String? category,
     @Query('eligibleOnly') bool? eligibleOnly,
+    @Query('includeCampaigns') bool? includeCampaigns,
   });
 
   @GET(EndPoints.customerOffersHub)

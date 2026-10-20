@@ -79,10 +79,10 @@ import 'package:meal_meat_user/features/subscription_types/domain/entities/conve
 import 'package:meal_meat_user/features/subscription_types/presentation/screens/conversion_options_page.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_meal_selection_screen.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/screens/family_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_member_calendar_screen.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_restaurants_screen.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_review_member_meals_screen.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/screens/family_restaurants_screen.dart';
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/screens/family_review_member_meals_screen.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_access_screen.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_detail_screen.dart';
@@ -494,15 +494,18 @@ class RouteGenerator {
           page: const BrowseOffersScreen(),
         );
       case AppRoutes.promoCodeInput:
+        final initialCode = settings.arguments is String
+            ? settings.arguments as String
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const PromoCodeInputScreen(),
+          page: PromoCodeInputScreen(initialCode: initialCode),
         );
       case AppRoutes.redeemPackage:
         final offer = settings.arguments is OfferEntity
             ? settings.arguments! as OfferEntity
             : null;
-        if (offer == null) {
+        if (offer == null || !offer.isDirectPurchase) {
           return _buildRoute(settings: settings, page: const OffersScreen());
         }
         return _buildRoute(

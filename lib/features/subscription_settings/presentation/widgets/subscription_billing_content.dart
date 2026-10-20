@@ -11,7 +11,6 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/widge
 import 'package:meal_meat_user/features/subscription_settings/presentation/widgets/subscription_billing_entrance_registry.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/routing/routing_extensions.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 
 class SubscriptionBillingContent extends StatefulWidget {
   const SubscriptionBillingContent({super.key});

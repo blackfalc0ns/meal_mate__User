@@ -23,8 +23,10 @@ class OfferBrowseCard extends StatelessWidget {
     final locale = context.localization;
     final lang = Localizations.localeOf(context).languageCode;
 
+    final isUnknown = offer.purchaseMode == OfferPurchaseMode.unknown;
+
     return InkWell(
-      onTap: onTap,
+      onTap: isUnknown ? null : onTap,
       borderRadius: BorderRadius.circular(Spacing.md),
       child: Container(
         decoration: BoxDecoration(
@@ -130,27 +132,28 @@ class OfferBrowseCard extends StatelessWidget {
                         )
                       else
                         const SizedBox.shrink(),
-                      InkWell(
-                        onTap: onActionTap ?? onTap,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.sm,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: color.primary,
-                            borderRadius: BorderRadius.circular(Spacing.xs),
-                          ),
-                          child: Text(
-                            locale.offer_browse_action_button,
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size11,
-                              color: color.onPrimary,
+                      if (!isUnknown)
+                        InkWell(
+                          onTap: onActionTap ?? onTap,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.sm,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: color.primary,
+                              borderRadius: BorderRadius.circular(Spacing.xs),
+                            ),
+                            child: Text(
+                              locale.offer_browse_action_button,
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size11,
+                                color: color.onPrimary,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ],

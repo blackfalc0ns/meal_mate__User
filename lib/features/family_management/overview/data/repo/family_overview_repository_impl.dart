@@ -29,19 +29,16 @@ class FamilyOverviewRepositoryImpl implements FamilyOverviewRepository {
   @override
   Future<ApiResult<List<FamilyMemberSummaryEntity>>> getFamilyMembers({
     String locale = 'ar',
-  }) async {
-    try {
+  }) {
+    return safeApiCall(() async {
       final dtos = await _remoteDataSource.getFamilyMembers();
-      final entities = dtos
+      return dtos
           .map(
             (d) =>
                 FamilyOverviewMapper.toMemberSummaryEntity(d, locale: locale),
           )
           .toList();
-      return ApiSuccessResult(data: entities);
-    } catch (e) {
-      return ApiErrorResult(failure: mapFamilyManagementError(e));
-    }
+    });
   }
 
   @override

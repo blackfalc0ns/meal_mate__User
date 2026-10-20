@@ -765,20 +765,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
     );
-    gh.factory<_i676.FamilyCalendarViewModel>(
-      () => _i676.FamilyCalendarViewModel(
-        gh<_i356.GetFamilyMembersUseCase>(),
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i389.GetCalendarRestaurantsUseCase>(),
-        gh<_i389.GetCalendarAvailableMealsUseCase>(),
-        gh<_i896.SaveCalendarDayMealsUseCase>(),
-        gh<_i133.SetCalendarDayRestaurantUseCase>(),
-        gh<_i438.ConfirmCalendarDayMealsUseCase>(),
-        gh<_i147.AutoSelectCalendarDayUseCase>(),
-        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
-      ),
-    );
     gh.factory<_i800.FamilyMemberViewModel>(
       () => _i800.FamilyMemberViewModel(
         gh<_i556.GetFamilyMemberDetailUseCase>(),
@@ -2015,6 +2001,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i237.UpdateFamilyMemberUseCase>(),
         gh<_i880.DeleteFamilyMemberUseCase>(),
         gh<_i973.LookupFamilyMemberUseCase>(),
+      ),
+    );
+    gh.factory<_i676.FamilyCalendarViewModel>(
+      () => _i676.FamilyCalendarViewModel(
+        gh<_i356.GetFamilyMembersUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
+        familyContextViewModel: gh<_i960.FamilyContextViewModel>(),
       ),
     );
     gh.factory<_i912.OffersViewModel>(

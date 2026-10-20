@@ -9,9 +9,11 @@ import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/presentation/helpers/calendar_days_builder.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_picker_panel.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
@@ -49,11 +51,7 @@ class _FamilyMemberCalendarScreenState
   @override
   void initState() {
     super.initState();
-    _viewModel =
-        widget.viewModel ??
-        (getIt.isRegistered<FamilyCalendarViewModel>()
-            ? getIt<FamilyCalendarViewModel>()
-            : FamilyCalendarViewModel());
+    _viewModel = widget.viewModel ?? getIt<FamilyCalendarViewModel>();
   }
 
   @override
@@ -135,6 +133,7 @@ class _FamilyMemberCalendarScreenState
             previous.visibleMonth != current.visibleMonth ||
             previous.days != current.days ||
             previous.calendarFailure != current.calendarFailure ||
+            previous.capabilitiesFailure != current.capabilitiesFailure ||
             previous.dayFailure != current.dayFailure,
         builder: (context, state) {
           final selectorMembers = _buildSelectorMembers(context, state);
@@ -225,7 +224,7 @@ class _FamilyMemberCalendarScreenState
       );
     }
 
-    if (state.isLoadingCalendar) {
+    if (state.isLoadingCalendar && !state.hasCalendarData) {
       return const FamilyMemberCalendarLoadingSkeleton(
         includeMemberSelector: false,
       );
@@ -321,6 +320,23 @@ class _FamilyMemberCalendarScreenState
 
     return Column(
       children: [
+        if (state.capabilitiesFailure != null) ...[
+          InlineApiErrorWidget(
+            failure: state.capabilitiesFailure!,
+            onRetry: () =>
+                _viewModel.doIntent(const RetryFamilyCapabilitiesEvent()),
+          ),
+          const SizedBox(height: Spacing.md),
+        ],
+        if (state.calendarFailure != null && state.hasCalendarData) ...[
+          InlineApiErrorWidget(
+            failure: state.calendarFailure!,
+            onRetry: () => _viewModel.doIntent(
+              RetryFamilyCalendarEvent(localeName: locale.localeName),
+            ),
+          ),
+          const SizedBox(height: Spacing.md),
+        ],
         CalendarPickerPanel(
           monthTitle: intl.DateFormat.yMMMM(
             locale.localeName,
@@ -348,6 +364,24 @@ class _FamilyMemberCalendarScreenState
           },
         ),
         const SizedBox(height: Spacing.familyMemberCalendarSelectedMealsTopGap),
+        if (state.dayFailure != null) ...[
+          InlineApiErrorWidget(
+            failure: state.dayFailure!,
+            onRetry: () => _viewModel.doIntent(
+              SelectFamilyCalendarDayEvent(
+                day:
+                    state.selectedDay ??
+                    CalendarDayEntity(
+                      dayNumber: selectedDate.day,
+                      weekday: '',
+                      date: selectedDate,
+                    ),
+                localeName: locale.localeName,
+              ),
+            ),
+          ),
+          const SizedBox(height: Spacing.md),
+        ],
         if (state.isLoadingDay)
           const FamilyMemberCalendarMealsLoadingSkeleton()
         else
@@ -410,7 +444,8 @@ class _FamilyMemberCalendarScreenState
                     index: hasMeals ? 2 : 1,
                     child: FamilyMemberCalendarPrimaryAction(
                       hasMeals: hasMeals,
-                      canEdit: (selectedDay?.isEditable == true) &&
+                      canEdit:
+                          (selectedDay?.isEditable == true) &&
                           (hasMeals
                               ? state.canViewCalendar
                               : state.canEditMealsAndDays),

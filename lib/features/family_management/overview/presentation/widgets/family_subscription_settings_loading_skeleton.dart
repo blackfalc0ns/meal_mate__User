@@ -22,8 +22,8 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
           borderRadius: Spacing.familyManagePlanCardRadius,
         ),
         const SizedBox(height: Spacing.xl),
-        Row(
-          children: const [
+        const Row(
+          children: [
             ShimmerPlaceholder.rect(
               width: 90,
               height: 16,
@@ -50,9 +50,9 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
                     border: Border.all(color: color.outlineVariant),
                     borderRadius: BorderRadiusDirectional.circular(11.5),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       ShimmerPlaceholder.circle(
                         size: Spacing.familyManageMemberAvatarSize,
                       ),
@@ -97,9 +97,9 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
                     ),
                     borderRadius: BorderRadiusDirectional.circular(13.07),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       ShimmerPlaceholder.rect(
                         width: Spacing.familyManageQuickIconSize,
                         height: Spacing.familyManageQuickIconSize,
@@ -129,23 +129,23 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
             border: Border.all(color: color.outlineVariant, width: 1.85),
             borderRadius: BorderRadiusDirectional.circular(14.48),
           ),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ShimmerPlaceholder.rect(
+              ShimmerPlaceholder.rect(
                 width: 100,
                 height: 14,
                 borderRadius: Spacing.radiusXs,
               ),
-              const SizedBox(height: Spacing.xss),
-              const ShimmerPlaceholder.rect(
+              SizedBox(height: Spacing.xss),
+              ShimmerPlaceholder.rect(
                 width: 75,
                 height: 11,
                 borderRadius: Spacing.radiusXs,
               ),
-              const SizedBox(height: Spacing.md),
+              SizedBox(height: Spacing.md),
               Row(
-                children: const [
+                children: [
                   Expanded(
                     child: Row(
                       children: [
@@ -189,8 +189,8 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: Spacing.base),
-              const ShimmerPlaceholder.rect(
+              SizedBox(height: Spacing.base),
+              ShimmerPlaceholder.rect(
                 height: Spacing.xxl,
                 borderRadius: Spacing.radiusPill,
               ),
@@ -206,8 +206,8 @@ class FamilySubscriptionSettingsLoadingSkeleton extends StatelessWidget {
             border: Border.all(color: color.outlineVariant),
             borderRadius: BorderRadiusDirectional.circular(13.31),
           ),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               ShimmerPlaceholder.circle(size: 29.04),
               SizedBox(width: Spacing.md),
               Expanded(
