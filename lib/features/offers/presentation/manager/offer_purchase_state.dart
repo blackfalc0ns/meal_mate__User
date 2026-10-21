@@ -50,7 +50,7 @@ class OfferPurchaseState {
       summary?.canCheckout == true &&
       summary?.quoteId?.isNotEmpty == true &&
       quoteExpiresAtLocal?.isAfter(DateTime.now()) == true &&
-      (!summary!.termsAcceptanceRequired || termsAccepted) &&
+      termsAccepted &&
       selectedMethod?.isAvailable == true &&
       selectedMethod?.id != null &&
       summary!.finalPrice > 0;

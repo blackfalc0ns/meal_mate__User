@@ -21,15 +21,20 @@ extension CampaignPaymentResponseDtoMapper on CampaignPaymentResponseDto {
     final normalized = raw.trim().toLowerCase();
     final CampaignPaymentStatus resolvedStatus;
 
-    if (isPaid == true || normalized == 'paid') {
+    if (isPaid == true) {
       resolvedStatus = CampaignPaymentStatus.paid;
-    } else if (isFailed == true || normalized == 'failed') {
+    } else if (isFailed == true ||
+        (normalized == 'failed' || normalized == 'paymentfailed')) {
       resolvedStatus = CampaignPaymentStatus.failed;
     } else if (normalized == 'expired') {
       resolvedStatus = CampaignPaymentStatus.expired;
     } else if (normalized == 'cancelled' || normalized == 'canceled') {
       resolvedStatus = CampaignPaymentStatus.cancelled;
-    } else if (normalized == 'pending') {
+    } else if (normalized == 'pending' ||
+        normalized == 'paymentpending' ||
+        normalized == 'committing' ||
+        normalized == 'paid' ||
+        normalized == 'completed') {
       resolvedStatus = CampaignPaymentStatus.pending;
     } else {
       resolvedStatus = raw.isEmpty

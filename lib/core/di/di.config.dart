@@ -471,19 +471,31 @@ import '../../features/offers/data/data_source/offers_remote_data_source_impl.da
 import '../../features/offers/data/repo/offers_repository_impl.dart' as _i59;
 import '../../features/offers/data/services/advertising_event_tracker_impl.dart'
     as _i624;
+import '../../features/offers/data/services/campaign_checkout_attempt_store.dart'
+    as _i141;
+import '../../features/offers/data/services/campaign_payment_attempt_store.dart'
+    as _i656;
 import '../../features/offers/domain/repo/offers_repository.dart' as _i1067;
 import '../../features/offers/domain/services/advertising_event_tracker.dart'
     as _i912;
 import '../../features/offers/domain/usecase/add_offer_to_calendar_usecase.dart'
     as _i1066;
+import '../../features/offers/domain/usecase/cancel_campaign_subscription_usecase.dart'
+    as _i949;
 import '../../features/offers/domain/usecase/create_campaign_checkout_session_usecase.dart'
     as _i885;
 import '../../features/offers/domain/usecase/evaluate_offer_usecase.dart'
     as _i70;
 import '../../features/offers/domain/usecase/get_available_offers_usecase.dart'
     as _i908;
+import '../../features/offers/domain/usecase/get_campaign_details_usecase.dart'
+    as _i693;
 import '../../features/offers/domain/usecase/get_campaign_payment_status_usecase.dart'
     as _i224;
+import '../../features/offers/domain/usecase/get_campaign_quote_usecase.dart'
+    as _i473;
+import '../../features/offers/domain/usecase/get_campaigns_usecase.dart'
+    as _i51;
 import '../../features/offers/domain/usecase/get_customer_offer_details_usecase.dart'
     as _i285;
 import '../../features/offers/domain/usecase/get_offer_calendar_usecase.dart'
@@ -498,6 +510,8 @@ import '../../features/offers/domain/usecase/get_saved_offers_usecase.dart'
     as _i553;
 import '../../features/offers/domain/usecase/remove_offer_from_calendar_usecase.dart'
     as _i442;
+import '../../features/offers/domain/usecase/restore_campaign_checkout_usecase.dart'
+    as _i706;
 import '../../features/offers/domain/usecase/save_offer_usecase.dart' as _i898;
 import '../../features/offers/domain/usecase/start_campaign_payment_usecase.dart'
     as _i530;
@@ -507,6 +521,8 @@ import '../../features/offers/domain/usecase/validate_discount_usecase.dart'
     as _i1032;
 import '../../features/offers/presentation/manager/campaign_payment_view_model.dart'
     as _i102;
+import '../../features/offers/presentation/manager/campaign_selection_view_model.dart'
+    as _i109;
 import '../../features/offers/presentation/manager/offer_purchase_view_model.dart'
     as _i170;
 import '../../features/offers/presentation/manager/offers_view_model.dart'
@@ -765,6 +781,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.factory<_i141.CampaignCheckoutAttemptStore>(
+      () => _i141.CampaignCheckoutAttemptStore(gh<_i42.SharedPrefHelper>()),
+    );
     gh.factory<_i800.FamilyMemberViewModel>(
       () => _i800.FamilyMemberViewModel(
         gh<_i556.GetFamilyMemberDetailUseCase>(),
@@ -788,6 +807,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i819.LanguageService>(
       () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i656.CampaignPaymentAttemptStore>(
+      () => _i656.CampaignPaymentAttemptStore(
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i227.TokenService>(),
+      ),
     );
     gh.factory<_i807.CalendarFlowViewModel>(
       () => _i807.CalendarFlowViewModel(
@@ -1223,6 +1248,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i59.OffersRepositoryImpl(
         gh<_i470.OffersRemoteDataSource>(),
         gh<_i227.TokenService>(),
+        campaignPaymentAttemptStore: gh<_i656.CampaignPaymentAttemptStore>(),
+        campaignCheckoutAttemptStore: gh<_i141.CampaignCheckoutAttemptStore>(),
       ),
     );
     gh.factory<_i895.CheckoutSubscriptionUseCase>(
@@ -1634,6 +1661,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1066.AddOfferToCalendarUseCase>(
       () => _i1066.AddOfferToCalendarUseCase(gh<_i1067.OffersRepository>()),
     );
+    gh.factory<_i949.CancelCampaignSubscriptionUseCase>(
+      () => _i949.CancelCampaignSubscriptionUseCase(
+        gh<_i1067.OffersRepository>(),
+      ),
+    );
     gh.factory<_i885.CreateCampaignCheckoutSessionUseCase>(
       () => _i885.CreateCampaignCheckoutSessionUseCase(
         gh<_i1067.OffersRepository>(),
@@ -1645,9 +1677,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i908.GetAvailableOffersUseCase>(
       () => _i908.GetAvailableOffersUseCase(gh<_i1067.OffersRepository>()),
     );
+    gh.factory<_i693.GetCampaignDetailsUseCase>(
+      () => _i693.GetCampaignDetailsUseCase(gh<_i1067.OffersRepository>()),
+    );
     gh.factory<_i224.GetCampaignPaymentStatusUseCase>(
       () =>
           _i224.GetCampaignPaymentStatusUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i473.GetCampaignQuoteUseCase>(
+      () => _i473.GetCampaignQuoteUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i51.GetCampaignsUseCase>(
+      () => _i51.GetCampaignsUseCase(gh<_i1067.OffersRepository>()),
     );
     gh.factory<_i285.GetCustomerOfferDetailsUseCase>(
       () => _i285.GetCustomerOfferDetailsUseCase(gh<_i1067.OffersRepository>()),
@@ -1671,6 +1712,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i442.RemoveOfferFromCalendarUseCase>(
       () => _i442.RemoveOfferFromCalendarUseCase(gh<_i1067.OffersRepository>()),
+    );
+    gh.factory<_i706.RestoreCampaignCheckoutUseCase>(
+      () => _i706.RestoreCampaignCheckoutUseCase(gh<_i1067.OffersRepository>()),
     );
     gh.factory<_i898.SaveOfferUseCase>(
       () => _i898.SaveOfferUseCase(gh<_i1067.OffersRepository>()),
@@ -1761,6 +1805,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i241.UpdateCustomerAddressUseCase>(
       () => _i241.UpdateCustomerAddressUseCase(gh<_i556.AddressesRepository>()),
+    );
+    gh.factory<_i109.CampaignSelectionViewModel>(
+      () => _i109.CampaignSelectionViewModel(
+        gh<_i51.GetCampaignsUseCase>(),
+        gh<_i693.GetCampaignDetailsUseCase>(),
+        gh<_i473.GetCampaignQuoteUseCase>(),
+        gh<_i885.CreateCampaignCheckoutSessionUseCase>(),
+        restoreCampaignCheckoutUseCase:
+            gh<_i706.RestoreCampaignCheckoutUseCase>(),
+      ),
     );
     gh.factory<_i960.FamilyContextViewModel>(
       () =>
@@ -2003,15 +2057,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i973.LookupFamilyMemberUseCase>(),
       ),
     );
-    gh.factory<_i676.FamilyCalendarViewModel>(
-      () => _i676.FamilyCalendarViewModel(
-        gh<_i356.GetFamilyMembersUseCase>(),
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
-        familyContextViewModel: gh<_i960.FamilyContextViewModel>(),
-      ),
-    );
     gh.factory<_i912.OffersViewModel>(
       () => _i912.OffersViewModel(
         gh<_i908.GetAvailableOffersUseCase>(),
@@ -2162,6 +2207,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i640.GetCustomerDeliveryWidgetUseCase>(),
         gh<_i540.NotificationBadgeViewModel>(),
         gh<_i378.CustomerDeliveryRealtimeService>(),
+      ),
+    );
+    gh.factory<_i676.FamilyCalendarViewModel>(
+      () => _i676.FamilyCalendarViewModel(
+        gh<_i356.GetFamilyMembersUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
       ),
     );
     gh.factory<_i1055.FamilyOverviewViewModel>(

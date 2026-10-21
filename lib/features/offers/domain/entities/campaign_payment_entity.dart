@@ -43,7 +43,9 @@ class CampaignPaymentEntity {
   final bool? isFailed;
   final String? subscriptionId;
 
-  bool get isTerminal => status.isTerminal;
+  bool get isTerminal => status == CampaignPaymentStatus.paid
+      ? subscriptionId?.isNotEmpty == true
+      : status.isTerminal;
 
   bool get isAuthoritativePaid =>
       status == CampaignPaymentStatus.paid || (isPaid == true);

@@ -38,11 +38,14 @@ class CampaignPaymentState {
   final int paymentMethodId;
   final int pollAttemptCount;
 
-  bool get isSuccess => status == CampaignPaymentStatus.paid;
+  bool get isSuccess =>
+      status == CampaignPaymentStatus.paid &&
+      subscriptionId?.isNotEmpty == true;
   bool get isFailed => status == CampaignPaymentStatus.failed;
   bool get isExpired => status == CampaignPaymentStatus.expired;
   bool get isCancelled => status == CampaignPaymentStatus.cancelled;
-  bool get isTerminal => status.isTerminal;
+  bool get isTerminal =>
+      status == CampaignPaymentStatus.paid ? isSuccess : status.isTerminal;
   bool get canRetry =>
       !isLoading &&
       !isPolling &&

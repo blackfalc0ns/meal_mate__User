@@ -1,10 +1,10 @@
+import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/models/family_restaurants_view_data.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/screens/family_restaurants_screen.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_member_selector.dart';
@@ -64,7 +64,7 @@ void main() {
   testWidgets('empty backend result never falls back to fake restaurants', (
     tester,
   ) async {
-    final viewModel = FamilyCalendarViewModel.test(null, null, null, null);
+    final viewModel = createFamilyCalendarViewModel();
     addTearDown(viewModel.close);
 
     await tester.pumpWidget(

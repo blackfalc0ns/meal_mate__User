@@ -439,13 +439,12 @@ class _RedeemPackageScreenState extends State<RedeemPackageScreen> {
                                     state.selectedMethod?.id == method.id,
                                 onTap: () => _viewModel.selectMethod(method),
                               ),
-                            if (summary.termsAcceptanceRequired)
-                              CheckboxListTile(
-                                value: state.termsAccepted,
-                                onChanged: (value) =>
-                                    _viewModel.acceptTerms(value ?? false),
-                                title: Text(locale.profile_settings_terms),
-                              ),
+                            CheckboxListTile(
+                              value: state.termsAccepted,
+                              onChanged: (value) =>
+                                  _viewModel.acceptTerms(value ?? false),
+                              title: Text(locale.profile_settings_terms),
+                            ),
                             AppButton(
                               text: locale.offer_checkout_proceed_button,
                               onPressed: state.canPay

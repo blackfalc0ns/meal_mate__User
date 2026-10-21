@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -80,7 +81,13 @@ class OfferQuickPreviewSheet extends StatelessWidget {
             ),
             const SizedBox(height: Spacing.sm),
             Text(
-              offer.description(lang),
+              offer.isAvailable
+                  ? offer.description(lang)
+                  : ErrorMessagePresenter.mapCode(
+                      context,
+                      offer.availabilityReasonCode ??
+                          'offers.customer.unavailable',
+                    ),
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
                 fontSize: FontSize.size13,
@@ -164,7 +171,11 @@ class OfferQuickPreviewSheet extends StatelessWidget {
               text: offer.isCouponOnly
                   ? locale.offers_coupon_button
                   : locale.offer_details_plan_section_title,
-              onPressed: (offer.isExpired ||
+              onPressed:
+                  (!offer.isAvailable ||
+                      (offer.isCouponOnly &&
+                          offer.promoCode?.trim().isNotEmpty != true) ||
+                      offer.isExpired ||
                       offer.isSoldOut ||
                       offer.purchaseMode == OfferPurchaseMode.unknown)
                   ? null
@@ -172,9 +183,10 @@ class OfferQuickPreviewSheet extends StatelessWidget {
                       Navigator.of(context).pop();
                       if (offer.isDirectPurchase) {
                         unawaited(
-                          Navigator.of(
-                            context,
-                          ).pushNamed(AppRoutes.redeemPackage, arguments: offer),
+                          Navigator.of(context).pushNamed(
+                            AppRoutes.redeemPackage,
+                            arguments: offer,
+                          ),
                         );
                       } else if (offer.isCouponOnly) {
                         if (offer.promoCode != null &&

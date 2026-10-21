@@ -43,6 +43,8 @@ class OfferResponseDto {
     this.allowedDurationDays,
     this.isSaved,
     this.isAvailable,
+    this.availabilityReasonCode,
+    this.ineligibilityReasonCodes,
     this.eligibleProgramIds,
     this.eligibleBundleIds,
     this.eligibleRestaurantIds,
@@ -88,6 +90,8 @@ class OfferResponseDto {
   final List<int>? allowedDurationDays;
   final bool? isSaved;
   final bool? isAvailable;
+  final String? availabilityReasonCode;
+  final List<String>? ineligibilityReasonCodes;
   final List<String>? eligibleProgramIds;
   final List<String>? eligibleBundleIds;
   final List<String>? eligibleRestaurantIds;

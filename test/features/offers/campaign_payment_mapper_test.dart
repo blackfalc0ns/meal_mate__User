@@ -5,6 +5,39 @@ import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_
 import 'package:meal_meat_user/features/offers/domain/entities/start_campaign_payment_request_entity.dart';
 
 void main() {
+  test('paid payment without subscription keeps verification open', () {
+    final payment = const CampaignPaymentResponseDto(
+      status: 'Paid',
+      isPaid: true,
+    ).toEntity();
+    expect(payment.isTerminal, false);
+    final complete = const CampaignPaymentResponseDto(
+      status: 'Completed',
+      isPaid: true,
+      subscriptionId: 'subscription',
+    ).toEntity();
+    expect(complete.isTerminal, true);
+    expect(complete.subscriptionId, 'subscription');
+    for (final status in [
+      'PaymentPending',
+      'Committing',
+      'RefundPending',
+      'NewServerStatus',
+    ]) {
+      expect(
+        CampaignPaymentResponseDto(status: status).toEntity().isTerminal,
+        false,
+      );
+    }
+    expect(
+      const CampaignPaymentResponseDto(
+        status: 'PaymentFailed',
+        isFailed: true,
+      ).toEntity().status,
+      CampaignPaymentStatus.failed,
+    );
+  });
+
   group('CampaignPaymentMapper Tests', () {
     test('StartCampaignPaymentRequestEntity maps to DTO accurately', () {
       const entity = StartCampaignPaymentRequestEntity(
@@ -51,10 +84,10 @@ void main() {
     test(
       'CampaignPaymentResponseDto status mappings: Paid, Failed, Expired, Cancelled, Unknown',
       () {
-        // Paid via status string
+        // Status text alone does not confirm settlement.
         expect(
           const CampaignPaymentResponseDto(status: 'Paid').toEntity().status,
-          CampaignPaymentStatus.paid,
+          CampaignPaymentStatus.pending,
         );
         // Paid via isPaid flag
         expect(

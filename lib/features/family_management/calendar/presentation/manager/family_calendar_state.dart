@@ -20,7 +20,6 @@ class FamilyCalendarState {
     this.dayFailure,
     this.capabilitiesFailure,
     this.memberCapabilities = const [],
-    this.fallbackCapabilities = const [],
   });
 
   final List<FamilyMemberSummaryEntity> members;
@@ -38,7 +37,6 @@ class FamilyCalendarState {
   final Failure? dayFailure;
   final Failure? capabilitiesFailure;
   final List<FamilyCapabilityEntity> memberCapabilities;
-  final List<FamilyCapabilityEntity> fallbackCapabilities;
 
   bool get hasCalendarData => days.isNotEmpty;
 
@@ -62,15 +60,7 @@ class FamilyCalendarState {
     final capability = memberCapabilities
         .where((item) => item.action.toLowerCase() == action.toLowerCase())
         .firstOrNull;
-    if (capability != null) return capability.allowed;
-    final fallback = fallbackCapabilities
-        .where(
-          (item) =>
-              item.action.toLowerCase() == action.toLowerCase() ||
-              item.requiredPermission?.toLowerCase() == action.toLowerCase(),
-        )
-        .firstOrNull;
-    return fallback?.allowed ?? false;
+    return capability?.allowed ?? false;
   }
 
   bool get canSelectRestaurant =>
@@ -103,7 +93,6 @@ class FamilyCalendarState {
     Failure? dayFailure,
     Failure? capabilitiesFailure,
     List<FamilyCapabilityEntity>? memberCapabilities,
-    List<FamilyCapabilityEntity>? fallbackCapabilities,
     bool clearCalendarFailure = false,
     bool clearDayFailure = false,
     bool clearCapabilitiesFailure = false,
@@ -128,6 +117,5 @@ class FamilyCalendarState {
         ? null
         : capabilitiesFailure ?? this.capabilitiesFailure,
     memberCapabilities: memberCapabilities ?? this.memberCapabilities,
-    fallbackCapabilities: fallbackCapabilities ?? this.fallbackCapabilities,
   );
 }

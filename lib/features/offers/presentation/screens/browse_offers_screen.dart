@@ -34,7 +34,9 @@ class BrowseOffersScreen extends StatelessWidget {
       );
     }
     return BlocProvider(
-      create: (_) => getIt<OffersViewModel>()..doIntent(const GetOffersEvent(includeCampaigns: false)),
+      create: (_) =>
+          getIt<OffersViewModel>()
+            ..doIntent(const GetOffersEvent(includeCampaigns: false)),
       child: const _BrowseOffersContent(),
     );
   }
@@ -188,6 +190,7 @@ class _BrowseOffersContent extends StatelessWidget {
   }
 
   void _openOfferDetails(BuildContext context, OfferEntity offer) {
+    if (!offer.isAvailable) return;
     switch (offer.purchaseMode) {
       case OfferPurchaseMode.directPurchase:
         unawaited(

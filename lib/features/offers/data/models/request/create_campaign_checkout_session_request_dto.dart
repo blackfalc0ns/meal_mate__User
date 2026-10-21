@@ -6,6 +6,7 @@ part 'create_campaign_checkout_session_request_dto.g.dart';
 class CreateCampaignCheckoutSessionRequestDto {
   const CreateCampaignCheckoutSessionRequestDto({
     this.idempotencyKey,
+    this.quoteId,
     required this.campaignId,
     required this.bundleId,
     required this.customerId,
@@ -15,6 +16,7 @@ class CreateCampaignCheckoutSessionRequestDto {
   });
 
   final String? idempotencyKey;
+  final String? quoteId;
   final String campaignId;
   final String bundleId;
   final String customerId;

@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -30,30 +31,23 @@ class OffersHeroCard extends StatelessWidget {
       discountHighlight =
           '${offer!.discountAmount!.toInt()} ${lang == 'ar' ? 'د.ك' : 'KWD'}';
     } else {
-      discountHighlight = '30%';
+      discountHighlight = '';
     }
 
-    final cleanTitle = offer != null && offer!.title(lang).isNotEmpty
-        ? offer!
-            .title(lang)
-            .replaceAll('[معاينة] ', '')
-            .replaceAll('[معاينة]', '')
-            .trim()
-        : locale.offers_hero_subtitle;
+    final cleanTitle = offer?.title(lang) ?? locale.offers_hero_subtitle;
+    final description = offer?.isAvailable == false
+        ? ErrorMessagePresenter.mapCode(
+            context,
+            offer?.availabilityReasonCode ?? 'offers.customer.unavailable',
+          )
+        : offer?.description(lang) ?? locale.offers_hero_description;
 
-    final rawDesc = offer != null && offer!.description(lang).isNotEmpty
-        ? offer!.description(lang)
-        : locale.offers_hero_description;
-    final cleanDesc = rawDesc
-        .replaceAll('بيانات معاينة معزولة لعرضها في تطبيق الجوال.', '')
-        .trim();
-    final description = cleanDesc.isNotEmpty ? cleanDesc : rawDesc;
-
-    final headlinePrefix =
-        locale.offers_hero_title.contains('خصم') ? 'خصم ' : 'Discount ';
+    final headlinePrefix = locale.offers_hero_title.contains('خصم')
+        ? 'خصم '
+        : 'Discount ';
 
     return InkWell(
-      onTap: onTap,
+      onTap: offer?.isAvailable == false ? null : onTap,
       borderRadius: BorderRadius.circular(Spacing.offersHeroRadius),
       child: Container(
         padding: const EdgeInsets.all(Spacing.md),
@@ -83,8 +77,9 @@ class OffersHeroCard extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.12,
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(Spacing.offersHeroRadius),
+                    borderRadius: BorderRadius.circular(
+                      Spacing.offersHeroRadius,
+                    ),
                     child: Image.network(
                       offer!.bannerImageUrl!,
                       width: Spacing.offersHeroImageWidth,

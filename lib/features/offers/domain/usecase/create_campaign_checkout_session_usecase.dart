@@ -10,6 +10,9 @@ class CreateCampaignCheckoutSessionUseCase {
   final OffersRepository _repository;
 
   Future<ApiResult<CampaignSessionEntity>> call({
+    double? expectedFinalPrice,
+    String? quoteId,
+    String? idempotencyKey,
     required String campaignId,
     required String bundleId,
     required int durationDays,
@@ -17,6 +20,9 @@ class CreateCampaignCheckoutSessionUseCase {
     String? deliveryGovernorate,
   }) {
     return _repository.createCampaignCheckoutSession(
+      expectedFinalPrice: expectedFinalPrice,
+      quoteId: quoteId,
+      idempotencyKey: idempotencyKey,
       campaignId: campaignId,
       bundleId: bundleId,
       durationDays: durationDays,

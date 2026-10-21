@@ -159,8 +159,6 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
           ),
         );
         unawaited(_loadRestaurants(event.localeName));
-      default:
-        break;
     }
   }
 
@@ -183,14 +181,14 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
           selectedMealsForDay: result.data.meals,
         ),
       );
-      calendar.applyDaySnapshot(result.data);
+      calendar.doIntent(ApplyFamilyCalendarDaySnapshotEvent(result.data));
     }
   }
 
   void _syncCalendar() {
     final day = state.selectedDay;
     if (day == null) return;
-    calendar.applyDaySnapshot(day);
+    calendar.doIntent(ApplyFamilyCalendarDaySnapshotEvent(day));
   }
 
   Future<void> _loadRestaurants(String localeName, {String? query}) async {

@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_flow_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/create_campaign_checkout_session_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/evaluate_offer_discount_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
@@ -37,7 +39,10 @@ abstract interface class OffersRemoteDataSource {
   Future<OfferDetailsResponseDto> getOfferPurchaseDetails(String offerId);
 
   Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
-    String offerId, {String? startDate, bool? includeFriday});
+    String offerId, {
+    String? startDate,
+    bool? includeFriday,
+  });
 
   Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
     String offerId,
@@ -76,4 +81,17 @@ abstract interface class OffersRemoteDataSource {
   );
 
   Future<CampaignPaymentResponseDto> getCampaignPaymentStatus(String sessionId);
+  Future<CampaignPageResponseDto> getCampaigns({
+    int pageSize = 20,
+    String? cursor,
+  });
+  Future<CampaignDetailsResponseDto> getCampaignDetails(
+    String campaignId, {
+    String? bundleId,
+    int? durationDays,
+  });
+  Future<CampaignQuoteResponseDto> getCampaignQuote(
+    CampaignQuoteRequestDto request,
+  );
+  Future<void> cancelCampaignSubscription(String subscriptionId);
 }

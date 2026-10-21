@@ -98,7 +98,10 @@ class CalendarScrollableDayStripState extends State<CalendarScrollableDayStrip>
   }
 
   void _centerDay(int index) {
-    if (!widget.controller.hasClients) return;
+    if (!widget.controller.hasClients ||
+        widget.controller.positions.length != 1) {
+      return;
+    }
 
     final viewportWidth = widget.controller.position.viewportDimension;
     final rawOffset =

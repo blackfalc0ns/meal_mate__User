@@ -298,6 +298,13 @@ abstract class EndPoints {
       '/api/v1/customer/referrals/summary';
   static const String customerCampaignPricePreview =
       '/api/v1/customer/campaigns/price-preview';
+  static const String customerCampaignSubscriptionCancel =
+      '/api/v1/customer/campaigns/subscriptions/{id}/cancel';
+  static const String customerCampaigns = '/api/v1/customer/campaigns';
+  static const String customerCampaignDetails =
+      '/api/v1/customer/campaigns/{campaignId}';
+  static const String customerCampaignQuote =
+      '/api/v1/customer/campaigns/quote';
   static const String customerCampaignCheckoutSession =
       '/api/v1/customer/campaigns/checkout-session';
   static const String customerCampaignPayment =

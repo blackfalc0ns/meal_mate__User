@@ -1,3 +1,14 @@
+import 'package:meal_meat_user/core/errors/api_exception.dart';
+import 'package:meal_meat_user/core/errors/api_error_type.dart';
+import 'package:dio/dio.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_checkout_session_response_dto.dart';
+import 'package:meal_meat_user/features/offers/data/services/campaign_checkout_attempt_store.dart';
+import 'package:meal_meat_user/features/offers/data/services/campaign_payment_attempt_store.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_flow_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_quote_request_entity.dart';
+import 'package:meal_meat_user/features/offers/data/mapper/campaign_flow_mapper.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
@@ -22,7 +33,16 @@ import 'package:meal_meat_user/features/offers/domain/repo/offers_repository.dar
 
 @Injectable(as: OffersRepository)
 class OffersRepositoryImpl implements OffersRepository {
-  const OffersRepositoryImpl(this._remoteDataSource, this._tokenService);
+  const OffersRepositoryImpl(
+    this._remoteDataSource,
+    this._tokenService, {
+    this.campaignPaymentAttemptStore,
+    this.campaignCheckoutAttemptStore,
+  });
+
+  final CampaignCheckoutAttemptStore? campaignCheckoutAttemptStore;
+
+  final CampaignPaymentAttemptStore? campaignPaymentAttemptStore;
 
   final OffersRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
@@ -210,6 +230,9 @@ class OffersRepositoryImpl implements OffersRepository {
 
   @override
   Future<ApiResult<CampaignSessionEntity>> createCampaignCheckoutSession({
+    double? expectedFinalPrice,
+    String? quoteId,
+    String? idempotencyKey,
     required String campaignId,
     required String bundleId,
     required int durationDays,
@@ -222,6 +245,8 @@ class OffersRepositoryImpl implements OffersRepository {
         throw StateError('Authenticated customer id is required');
       }
       final request = CreateCampaignCheckoutSessionRequestDto(
+        quoteId: quoteId,
+        idempotencyKey: idempotencyKey,
         campaignId: campaignId,
         bundleId: bundleId,
         customerId: customerId,
@@ -229,9 +254,23 @@ class OffersRepositoryImpl implements OffersRepository {
         requestedServiceDates: requestedServiceDates,
         deliveryGovernorate: deliveryGovernorate,
       );
-      final response = await _remoteDataSource.createCampaignCheckoutSession(
-        request,
-      );
+      final persisted = quoteId == null
+          ? request
+          : await campaignCheckoutAttemptStore?.restoreOrSave(
+                  request,
+                  expectedFinalPrice: expectedFinalPrice,
+                ) ??
+                request;
+      final response = await _createCampaignSession(persisted);
+      if (quoteId != null && response.sessionId?.isNotEmpty == true) {
+        await campaignCheckoutAttemptStore?.saveSession(customerId, {
+          ...response.toJson(),
+          'campaignId': campaignId,
+          'bundleId': bundleId,
+          'customerId': customerId,
+          'durationDays': durationDays,
+        });
+      }
       return response.toEntity();
     });
   }
@@ -241,9 +280,11 @@ class OffersRepositoryImpl implements OffersRepository {
     StartCampaignPaymentRequestEntity request,
   ) {
     return safeApiCall(() async {
+      final persisted =
+          await campaignPaymentAttemptStore?.restoreOrSave(request) ?? request;
       final response = await _remoteDataSource.startCampaignPayment(
-        request.sessionId,
-        request.toDto(),
+        persisted.sessionId,
+        persisted.toDto(),
       );
       return response.toEntity();
     });
@@ -257,7 +298,144 @@ class OffersRepositoryImpl implements OffersRepository {
       final response = await _remoteDataSource.getCampaignPaymentStatus(
         sessionId,
       );
-      return response.toEntity();
+      final payment = response.toEntity();
+      if (payment.isTerminal) {
+        final owner = await _tokenService.getCurrentUserId();
+        if (owner != null) {
+          final saved = await campaignCheckoutAttemptStore?.readSession(owner);
+          if (saved?['sessionId'] == sessionId) {
+            await campaignCheckoutAttemptStore?.clearPending(owner);
+          }
+        }
+      }
+      return payment;
     });
+  }
+
+  @override
+  Future<ApiResult<CampaignPageEntity>> getCampaigns({
+    int pageSize = 20,
+    String? cursor,
+  }) => safeApiCall(
+    () async => (await _remoteDataSource.getCampaigns(
+      pageSize: pageSize,
+      cursor: cursor,
+    )).toEntity(),
+  );
+  @override
+  Future<ApiResult<CampaignDetailsEntity>> getCampaignDetails(
+    String campaignId, {
+    String? bundleId,
+    int? durationDays,
+  }) => safeApiCall(
+    () async => (await _remoteDataSource.getCampaignDetails(
+      campaignId,
+      bundleId: bundleId,
+      durationDays: durationDays,
+    )).toEntity(),
+  );
+  @override
+  Future<ApiResult<CampaignQuoteEntity>> getCampaignQuote(
+    CampaignQuoteRequestEntity request,
+  ) => safeApiCall(() async {
+    final customerId = await _tokenService.getCurrentUserId();
+    if (customerId == null || customerId.isEmpty) {
+      throw StateError('Authenticated customer id is required');
+    }
+    return (await _remoteDataSource.getCampaignQuote(
+      CampaignQuoteRequestDto(
+        customerId: customerId,
+        campaignId: request.campaignId,
+        programId: request.programId,
+        campaignBundleId: request.campaignBundleId,
+        durationDays: request.durationDays,
+        startDate: request.startDate,
+        addressId: request.addressId,
+        promoCode: request.promoCode,
+      ),
+    )).toEntity();
+  });
+  @override
+  Future<ApiResult<CampaignSessionEntity?>> restoreCampaignCheckoutSession() =>
+      safeApiCall(() async {
+        final owner = await _tokenService.getCurrentUserId();
+        if (owner == null || owner.isEmpty) {
+          throw StateError('Authenticated customer is required');
+        }
+        final pending = await campaignCheckoutAttemptStore?.readPending(owner);
+        if (pending == null) return null;
+        final saved = await campaignCheckoutAttemptStore?.readSession(owner);
+        if (saved != null) {
+          final response = CampaignCheckoutSessionResponseDto.fromJson(saved);
+          await _validateCampaignPrice(owner, response);
+          return response.toEntity();
+        }
+        final response = await _createCampaignSession(pending);
+        if (response.sessionId?.isNotEmpty != true) {
+          throw StateError('Campaign session missing');
+        }
+        final data = {
+          ...response.toJson(),
+          'campaignId': pending.campaignId,
+          'bundleId': pending.bundleId,
+          'customerId': owner,
+          'durationDays': pending.durationDays,
+        };
+        await campaignCheckoutAttemptStore?.saveSession(owner, data);
+        return CampaignCheckoutSessionResponseDto.fromJson(data).toEntity();
+      });
+  Future<CampaignCheckoutSessionResponseDto> _createCampaignSession(
+    CreateCampaignCheckoutSessionRequestDto request,
+  ) async {
+    try {
+      final response = await _remoteDataSource.createCampaignCheckoutSession(
+        request,
+      );
+      await _validateCampaignPrice(request.customerId, response);
+      return response;
+    } on DioException catch (error) {
+      final failure = ServerFailure.fromDioError(dioException: error);
+      if (const {
+        'Campaign.SelectionMismatch',
+        'campaign.invalid_start_date',
+        'Campaign.ScheduleUnavailable',
+        'Campaign.QuoteStale',
+        'Campaign.QuoteExpired',
+        'Campaign.NoLongerAvailable',
+        'Campaign.QuoteNotFound',
+        'Campaign.CapacityUnavailable',
+        'Campaign.Ineligible',
+        'campaign.pricing_policy_not_approved',
+      }.contains(failure.code)) {
+        final pending = await campaignCheckoutAttemptStore?.readPending(
+          request.customerId,
+        );
+        if (pending?.quoteId == request.quoteId) {
+          await campaignCheckoutAttemptStore?.clearPending(request.customerId);
+        }
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> cancelCampaignSubscription(String subscriptionId) =>
+      safeApiCall(
+        () => _remoteDataSource.cancelCampaignSubscription(subscriptionId),
+      );
+  Future<void> _validateCampaignPrice(
+    String owner,
+    CampaignCheckoutSessionResponseDto response,
+  ) async {
+    final expected = await campaignCheckoutAttemptStore?.readExpectedPrice(
+      owner,
+    );
+    if (expected != null && response.finalCustomerPrice != expected) {
+      throw const ApiException(
+        errorType: ApiErrorType.conflict,
+        message: 'Campaign.SelectionMismatch',
+        backendErrorCode: 'Campaign.SelectionMismatch',
+      );
+    }
   }
 }

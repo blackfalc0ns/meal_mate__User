@@ -5,6 +5,41 @@ import 'package:meal_meat_user/features/offers/data/models/response/offer_respon
 import 'package:meal_meat_user/features/offers/presentation/manager/offers_state.dart';
 
 void main() {
+  test(
+    'campaign sources are excluded while synced Offer remains purchasable',
+    () {
+      const coupon = OfferEntity(
+        id: 'coupon',
+        nameAr: '',
+        nameEn: '',
+        descriptionAr: '',
+        descriptionEn: '',
+        sourceType: 'Campaign',
+        campaignId: 'c',
+        promoCode: 'Save20',
+        purchaseMode: OfferPurchaseMode.couponOnly,
+      );
+      const direct = OfferEntity(
+        id: 'real-offer',
+        nameAr: '',
+        nameEn: '',
+        descriptionAr: '',
+        descriptionEn: '',
+        sourceType: 'Offer',
+        campaignId: 'c',
+        purchaseMode: OfferPurchaseMode.directPurchase,
+      );
+      const state = OffersState(
+        allOffers: [coupon, direct],
+        filteredOffers: [coupon, direct],
+      );
+      expect(state.couponOffers, isEmpty);
+      expect(state.readyOffers, [direct]);
+      expect(state.campaignBanners, isEmpty);
+      expect(direct.isCampaign, false);
+    },
+  );
+
   test('campaign source type survives response mapping', () {
     final response = OfferResponseDto.fromJson({
       'id': 'campaign-1',
@@ -28,6 +63,7 @@ void main() {
     );
     const coupon = OfferEntity(
       id: 'coupon-1',
+      promoCode: 'SAVE20',
       nameAr: 'كوبون',
       nameEn: 'Coupon',
       descriptionAr: '',
@@ -48,7 +84,7 @@ void main() {
       filteredOffers: [campaign, coupon, projectedCampaign],
     );
 
-    expect(state.campaignBanners, [campaign, projectedCampaign]);
+    expect(state.campaignBanners, [campaign]);
     expect(state.couponOffers, [coupon]);
   });
 }

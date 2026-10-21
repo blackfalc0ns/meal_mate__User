@@ -27,6 +27,8 @@ import 'package:meal_meat_user/features/offers/presentation/manager/offers_view_
 import 'package:meal_meat_user/features/offers/presentation/screens/offers_screen.dart';
 
 class FakeOffersRepository implements OffersRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
   List<OfferEntity> availableOffers = [];
   bool saveCalled = false;
 
@@ -53,7 +55,9 @@ class FakeOffersRepository implements OffersRepository {
     return ApiSuccessResult(
       data: OffersHubEntity(
         availableOffers: availableOffers,
-        heroOffers: availableOffers.where((o) => o.bannerImageUrl != null).toList(),
+        heroOffers: availableOffers
+            .where((o) => o.bannerImageUrl != null)
+            .toList(),
         savedOffers: const [],
       ),
     );
@@ -82,15 +86,13 @@ class FakeOffersRepository implements OffersRepository {
   Future<ApiResult<OfferCalendarEntryEntity>> addOfferToCalendar(
     String offerId,
     String scheduledDate,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<void>> removeOfferFromCalendar(
     String offerId,
     String date,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId) async =>
@@ -101,13 +103,12 @@ class FakeOffersRepository implements OffersRepository {
     String offerId, {
     String? startDate,
     bool? includeFriday,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<List<OfferEligibleRestaurantEntity>>>
-      getOfferEligibleRestaurants(String offerId) async =>
-          throw UnimplementedError();
+  getOfferEligibleRestaurants(String offerId) async =>
+      throw UnimplementedError();
 
   @override
   Future<ApiResult<OfferEvaluationEntity>> evaluateOffer({
@@ -120,38 +121,36 @@ class FakeOffersRepository implements OffersRepository {
     String? bundleId,
     String? restaurantId,
     List<String>? selectedMealIds,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<ValidateDiscountResultEntity>> validateDiscount({
     required String code,
     dynamic programId,
     dynamic bundleId,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignSessionEntity>> createCampaignCheckoutSession({
+    double? expectedFinalPrice,
+    String? quoteId,
+    String? idempotencyKey,
     required String campaignId,
     required String bundleId,
     required int durationDays,
     List<String>? requestedServiceDates,
     String? deliveryGovernorate,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignPaymentEntity>> startCampaignPayment(
     StartCampaignPaymentRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignPaymentEntity>> getCampaignPaymentStatus(
     String sessionId,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -218,13 +217,61 @@ void main() {
       unawaited(viewModel.close());
     });
 
+    test(
+      'campaign sources never enter list, hero or filtered results',
+      () async {
+        repository.availableOffers = [
+          directOffer,
+          couponOffer,
+          directOffer.copyWith(
+            id: 'campaign-direct',
+            sourceType: 'Campaign',
+            bannerImageUrl: 'https://example.com/image.jpg',
+          ),
+          couponOffer.copyWith(id: 'campaign-coupon', sourceType: 'Campaign'),
+        ];
+        viewModel.doIntent(const GetOffersEvent());
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.allOffers.map((offer) => offer.id), [
+          'direct-1',
+          'coupon-1',
+        ]);
+        expect(
+          viewModel.state.heroOffers.any(
+            (offer) => offer.sourceType == 'Campaign',
+          ),
+          false,
+        );
+        viewModel.doIntent(const SelectOfferCategoryEvent(2));
+        expect(viewModel.state.filteredOffers.map((offer) => offer.id), [
+          'coupon-1',
+        ]);
+        viewModel.doIntent(const LoadOffersHubEvent());
+        await Future<void>.delayed(Duration.zero);
+        expect(
+          viewModel.state.allOffers.any(
+            (offer) => offer.sourceType == 'Campaign',
+          ),
+          false,
+        );
+        expect(
+          viewModel.state.heroOffers.any(
+            (offer) => offer.sourceType == 'Campaign',
+          ),
+          false,
+        );
+      },
+    );
+
     test('derives readyOffers and couponOffers from one source list', () async {
       viewModel.doIntent(const LoadOffersHubEvent());
       await Future<void>.delayed(Duration.zero);
 
       expect(viewModel.state.readyOffers.map((o) => o.id), ['direct-1']);
       expect(viewModel.state.couponOffers.map((o) => o.id), ['coupon-1']);
-      expect(viewModel.state.unclassifiedOffers.map((o) => o.id), ['unknown-1']);
+      expect(viewModel.state.unclassifiedOffers.map((o) => o.id), [
+        'unknown-1',
+      ]);
 
       // Category filter: category 2 filters for promoCode != null
       viewModel.doIntent(const SelectOfferCategoryEvent(2));
@@ -247,7 +294,10 @@ void main() {
       viewModel.doIntent(const ToggleSaveOfferEvent('direct-1'));
       await Future<void>.delayed(Duration.zero);
       expect(viewModel.state.readyOffers.first.isSaved, isTrue);
-      expect(viewModel.state.allOffers.firstWhere((o) => o.id == 'direct-1').isSaved, isTrue);
+      expect(
+        viewModel.state.allOffers.firstWhere((o) => o.id == 'direct-1').isSaved,
+        isTrue,
+      );
     });
   });
 
@@ -272,7 +322,67 @@ void main() {
       );
     }
 
-    testWidgets('displays ready offers and coupons in separate named sections', (tester) async {
+    testWidgets(
+      'displays ready offers and coupons in separate named sections',
+      (tester) async {
+        repository.availableOffers = [directOffer, couponOffer];
+        viewModel = OffersViewModel(
+          GetAvailableOffersUseCase(repository),
+          GetOffersHubUseCase(repository),
+          GetSavedOffersUseCase(repository),
+          SaveOfferUseCase(repository),
+          UnsaveOfferUseCase(repository),
+          GetOfferCalendarUseCase(repository),
+        );
+        viewModel.doIntent(const LoadOffersHubEvent());
+
+        await tester.pumpWidget(
+          buildTestApp(OffersScreen(viewModel: viewModel)),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Ready to buy offers'), findsOneWidget);
+        expect(find.text('Discount coupons'), findsOneWidget);
+
+        expect(find.byKey(const ValueKey('direct-1')), findsOneWidget);
+        expect(find.byKey(const ValueKey('coupon-1')), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'empty ready section shows empty state without hiding coupons',
+      (tester) async {
+        repository.availableOffers = [couponOffer];
+        viewModel = OffersViewModel(
+          GetAvailableOffersUseCase(repository),
+          GetOffersHubUseCase(repository),
+          GetSavedOffersUseCase(repository),
+          SaveOfferUseCase(repository),
+          UnsaveOfferUseCase(repository),
+          GetOfferCalendarUseCase(repository),
+        );
+        viewModel.doIntent(const LoadOffersHubEvent());
+
+        await tester.pumpWidget(
+          buildTestApp(OffersScreen(viewModel: viewModel)),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Ready to buy offers'), findsOneWidget);
+        expect(find.text('Discount coupons'), findsOneWidget);
+
+        expect(
+          find.text('No ready to buy offers currently available'),
+          findsOneWidget,
+        );
+        expect(find.byKey(const ValueKey('coupon-1')), findsOneWidget);
+        expect(find.byKey(const ValueKey('direct-1')), findsNothing);
+      },
+    );
+
+    testWidgets('renders Arabic labels and RTL layout correctly', (
+      tester,
+    ) async {
       repository.availableOffers = [directOffer, couponOffer];
       viewModel = OffersViewModel(
         GetAvailableOffersUseCase(repository),
@@ -285,53 +395,6 @@ void main() {
       viewModel.doIntent(const LoadOffersHubEvent());
 
       await tester.pumpWidget(buildTestApp(OffersScreen(viewModel: viewModel)));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Ready to buy offers'), findsOneWidget);
-      expect(find.text('Discount coupons'), findsOneWidget);
-
-      expect(find.byKey(const ValueKey('direct-1')), findsOneWidget);
-      expect(find.byKey(const ValueKey('coupon-1')), findsOneWidget);
-    });
-
-    testWidgets('empty ready section shows empty state without hiding coupons', (tester) async {
-      repository.availableOffers = [couponOffer];
-      viewModel = OffersViewModel(
-        GetAvailableOffersUseCase(repository),
-        GetOffersHubUseCase(repository),
-        GetSavedOffersUseCase(repository),
-        SaveOfferUseCase(repository),
-        UnsaveOfferUseCase(repository),
-        GetOfferCalendarUseCase(repository),
-      );
-      viewModel.doIntent(const LoadOffersHubEvent());
-
-      await tester.pumpWidget(buildTestApp(OffersScreen(viewModel: viewModel)));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Ready to buy offers'), findsOneWidget);
-      expect(find.text('Discount coupons'), findsOneWidget);
-
-      expect(find.text('No ready to buy offers currently available'), findsOneWidget);
-      expect(find.byKey(const ValueKey('coupon-1')), findsOneWidget);
-      expect(find.byKey(const ValueKey('direct-1')), findsNothing);
-    });
-
-    testWidgets('renders Arabic labels and RTL layout correctly', (tester) async {
-      repository.availableOffers = [directOffer, couponOffer];
-      viewModel = OffersViewModel(
-        GetAvailableOffersUseCase(repository),
-        GetOffersHubUseCase(repository),
-        GetSavedOffersUseCase(repository),
-        SaveOfferUseCase(repository),
-        UnsaveOfferUseCase(repository),
-        GetOfferCalendarUseCase(repository),
-      );
-      viewModel.doIntent(const LoadOffersHubEvent());
-
-      await tester.pumpWidget(
-        buildTestApp(OffersScreen(viewModel: viewModel)),
-      );
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -344,8 +407,10 @@ void main() {
 
       expect(find.text('عروض الشراء المباشر'), findsOneWidget);
       expect(find.text('كوبونات الخصم'), findsOneWidget);
-      expect(Directionality.of(tester.element(find.byType(OffersScreen))), TextDirection.rtl);
+      expect(
+        Directionality.of(tester.element(find.byType(OffersScreen))),
+        TextDirection.rtl,
+      );
     });
   });
 }
-

@@ -39,25 +39,36 @@ class OffersState {
 
   bool get isEmpty => !isLoading && failure == null && allOffers.isEmpty;
 
-  List<OfferEntity> get campaignBanners =>
-      allOffers.where((offer) => offer.isCampaign).toList();
+  List<OfferEntity> get campaignBanners => allOffers
+      .where(
+        (offer) =>
+            offer.sourceType != 'Campaign' &&
+            offer.isCampaign &&
+            offer.promoCode?.trim().isNotEmpty != true,
+      )
+      .toList();
 
   List<OfferEntity> get readyOffers => filteredOffers
       .where(
         (offer) =>
-            !offer.isCampaign &&
+            offer.sourceType != 'Campaign' &&
             offer.purchaseMode == OfferPurchaseMode.directPurchase,
       )
       .toList();
   List<OfferEntity> get couponOffers => filteredOffers
       .where(
         (offer) =>
-            !offer.isCampaign &&
-            offer.purchaseMode == OfferPurchaseMode.couponOnly,
+            offer.sourceType != 'Campaign' &&
+            offer.purchaseMode == OfferPurchaseMode.couponOnly &&
+            offer.promoCode?.trim().isNotEmpty == true,
       )
       .toList();
   List<OfferEntity> get unclassifiedOffers => filteredOffers
-      .where((offer) => offer.purchaseMode == OfferPurchaseMode.unknown)
+      .where(
+        (offer) =>
+            offer.sourceType != 'Campaign' &&
+            offer.purchaseMode == OfferPurchaseMode.unknown,
+      )
       .toList();
 
   OffersState copyWith({

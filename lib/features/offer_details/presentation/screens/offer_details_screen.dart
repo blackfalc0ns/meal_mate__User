@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -146,6 +147,21 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     const SizedBox(height: Spacing.base),
                   ],
 
+                  if (offer?.isAvailable == false) ...[
+                    Text(
+                      ErrorMessagePresenter.mapCode(
+                        context,
+                        offer?.availabilityReasonCode ??
+                            'offers.customer.unavailable',
+                      ),
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size12,
+                        color: color.error,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                  ],
                   // Promo code copy box if code is present
                   if (offer?.promoCode != null &&
                       offer!.promoCode!.isNotEmpty) ...[
@@ -170,14 +186,22 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                               : (offer.isCouponOnly
                                     ? locale.offers_coupon_button
                                     : locale.offer_details_plan_section_title)),
-                    onPressed: isExpired ||
+                    onPressed:
+                        !offer.isAvailable ||
+                            (offer.isCouponOnly &&
+                                offer.promoCode?.trim().isNotEmpty != true) ||
+                            isExpired ||
                             isSoldOut ||
                             offer.purchaseMode == OfferPurchaseMode.unknown
                         ? null
                         : () => _navigateToRedeemPackage(context, offer),
                     height: Spacing.offerDetailsBottomButtonHeight,
                     borderRadius: Spacing.offerDetailsBottomButtonRadius,
-                    gradient: isExpired ||
+                    gradient:
+                        !offer.isAvailable ||
+                            (offer.isCouponOnly &&
+                                offer.promoCode?.trim().isNotEmpty != true) ||
+                            isExpired ||
                             isSoldOut ||
                             offer.purchaseMode == OfferPurchaseMode.unknown
                         ? null
@@ -283,6 +307,7 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
 
   void _navigateToRedeemPackage(BuildContext context, OfferEntity? offer) {
     if (offer == null) return;
+    if (!offer.isAvailable) return;
     switch (offer.purchaseMode) {
       case OfferPurchaseMode.directPurchase:
         unawaited(

@@ -5,18 +5,20 @@ part 'get_customer_available_offers_request_dto.g.dart';
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class GetCustomerAvailableOffersRequestDto {
   const GetCustomerAvailableOffersRequestDto({
-    required this.customerId,
-    this.cartAmount = 0.0,
-    this.durationDays = 26,
+    this.customerId,
+    this.cartAmount,
+    this.durationDays,
+    this.includeCampaigns,
     this.deliveryGovernorate,
     this.programId,
     this.bundleId,
     this.restaurantId,
   });
 
-  final String customerId;
-  final double cartAmount;
-  final int durationDays;
+  final String? customerId;
+  final double? cartAmount;
+  final int? durationDays;
+  final bool? includeCampaigns;
   final String? deliveryGovernorate;
   final String? programId;
   final String? bundleId;

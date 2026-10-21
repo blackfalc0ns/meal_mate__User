@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'campaign_checkout_session_response_dto.g.dart';
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class CampaignCheckoutSessionResponseDto {
   const CampaignCheckoutSessionResponseDto({
     this.sessionId,
@@ -25,6 +25,9 @@ class CampaignCheckoutSessionResponseDto {
   final String? currency;
   final String? expiresAtUtc;
   final String? status;
+
+  Map<String, dynamic> toJson() =>
+      _$CampaignCheckoutSessionResponseDtoToJson(this);
 
   factory CampaignCheckoutSessionResponseDto.fromJson(
     Map<String, dynamic> json,

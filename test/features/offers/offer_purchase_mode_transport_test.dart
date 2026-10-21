@@ -51,72 +51,105 @@ void main() {
 
     setUp(() {
       adapter = _CapturingAdapter();
-      dio = Dio(BaseOptions(baseUrl: 'https://api.trymealmate.com'))..httpClientAdapter = adapter;
+      dio = Dio(BaseOptions(baseUrl: 'https://api.trymealmate.com'))
+        ..httpClientAdapter = adapter;
       apiServices = ApiServices(dio);
       remoteDataSource = OffersRemoteDataSourceImpl(apiServices);
       repository = OffersRepositoryImpl(remoteDataSource, _FakeTokenService());
       useCase = GetAvailableOffersUseCase(repository);
     });
 
-    test('ApiServices sends includeCampaigns=false when includeCampaigns is false', () async {
-      adapter.responseBody = [];
-      await apiServices.getCustomerAvailableOffers(includeCampaigns: false);
+    test(
+      'ApiServices sends includeCampaigns=false when includeCampaigns is false',
+      () async {
+        adapter.responseBody = [];
+        await apiServices.getCustomerAvailableOffers(includeCampaigns: false);
 
-      expect(adapter.lastOptions.uri.path, '/api/v1/customer/offers/available');
-      expect(adapter.lastOptions.uri.queryParameters['includeCampaigns'], 'false');
-    });
+        expect(
+          adapter.lastOptions.uri.path,
+          '/api/v1/customer/offers/available',
+        );
+        expect(
+          adapter.lastOptions.uri.queryParameters['includeCampaigns'],
+          'false',
+        );
+      },
+    );
 
-    test('ApiServices omits includeCampaigns when includeCampaigns is null', () async {
-      adapter.responseBody = [];
-      await apiServices.getCustomerAvailableOffers();
+    test(
+      'ApiServices omits includeCampaigns when includeCampaigns is null',
+      () async {
+        adapter.responseBody = [];
+        await apiServices.getCustomerAvailableOffers();
 
-      expect(adapter.lastOptions.uri.path, '/api/v1/customer/offers/available');
-      expect(adapter.lastOptions.uri.queryParameters.containsKey('includeCampaigns'), isFalse);
-    });
+        expect(
+          adapter.lastOptions.uri.path,
+          '/api/v1/customer/offers/available',
+        );
+        expect(
+          adapter.lastOptions.uri.queryParameters.containsKey(
+            'includeCampaigns',
+          ),
+          isFalse,
+        );
+      },
+    );
 
-    test('GetAvailableOffersUseCase threads includeCampaigns=false through data source to Retrofit', () async {
-      adapter.responseBody = [
-        {
-          'id': 'direct-offer-qa',
-          'title': 'Direct Test Offer',
-          'description': 'QA direct offer',
-          'purchaseMode': 'DirectPurchase',
-          'price': 15.0,
-        },
-        {
-          'id': 'coupon-offer-qa',
-          'title': 'Coupon Test Offer',
-          'description': 'QA coupon offer',
-          'purchaseMode': 'CouponOnly',
-          'promoCode': 'TEST50',
-        },
-      ];
+    test(
+      'GetAvailableOffersUseCase threads includeCampaigns=false through data source to Retrofit',
+      () async {
+        adapter.responseBody = [
+          {
+            'id': 'direct-offer-qa',
+            'title': 'Direct Test Offer',
+            'description': 'QA direct offer',
+            'purchaseMode': 'DirectPurchase',
+            'price': 15.0,
+          },
+          {
+            'id': 'coupon-offer-qa',
+            'title': 'Coupon Test Offer',
+            'description': 'QA coupon offer',
+            'purchaseMode': 'CouponOnly',
+            'promoCode': 'TEST50',
+          },
+        ];
 
-      final result = await useCase(includeCampaigns: false);
+        final result = await useCase(includeCampaigns: false);
 
-      // Verify the generated Retrofit query sends includeCampaigns=false
-      expect(adapter.lastOptions.uri.queryParameters['includeCampaigns'], 'false');
+        expect(adapter.lastOptions.method, 'POST');
+        expect(adapter.lastOptions.data, {'includeCampaigns': false});
+        expect(adapter.lastOptions.queryParameters, isEmpty);
 
-      // Verify the response entity mapping and purchaseMode partition
-      expect(result, isA<ApiSuccessResult<List<OfferEntity>>>());
-      final offers = (result as ApiSuccessResult<List<OfferEntity>>).data;
-      expect(offers, hasLength(2));
+        // Verify the response entity mapping and purchaseMode partition
+        expect(result, isA<ApiSuccessResult<List<OfferEntity>>>());
+        final offers = (result as ApiSuccessResult<List<OfferEntity>>).data;
+        expect(offers, hasLength(2));
 
-      // Acceptance assertions from plan
-      final rawResponse = adapter.responseBody;
-      expect(rawResponse.any((item) => item['purchaseMode'] == 'DirectPurchase'), isTrue);
+        // Acceptance assertions from plan
+        final rawResponse = adapter.responseBody;
+        expect(
+          rawResponse.any((item) => item['purchaseMode'] == 'DirectPurchase'),
+          isTrue,
+        );
 
-      final state = OffersState(filteredOffers: offers);
-      expect(state.readyOffers.every((offer) => offer.isDirectPurchase), isTrue);
-      expect(state.couponOffers.every((offer) => offer.isCouponOnly), isTrue);
-      expect(state.readyOffers.map((o) => o.id), ['direct-offer-qa']);
-      expect(state.couponOffers.map((o) => o.id), ['coupon-offer-qa']);
-    });
+        final state = OffersState(filteredOffers: offers);
+        expect(
+          state.readyOffers.every((offer) => offer.isDirectPurchase),
+          isTrue,
+        );
+        expect(state.couponOffers.every((offer) => offer.isCouponOnly), isTrue);
+        expect(state.readyOffers.map((o) => o.id), ['direct-offer-qa']);
+        expect(state.couponOffers.map((o) => o.id), ['coupon-offer-qa']);
+      },
+    );
 
     test('purchaseOptions is never called for coupon-only offers', () async {
       int purchaseOptionsCalls = 0;
       final countingAdapter = _CapturingAdapter();
-      final countingDio = Dio(BaseOptions(baseUrl: 'https://api.trymealmate.com'))..httpClientAdapter = countingAdapter;
+      final countingDio = Dio(
+        BaseOptions(baseUrl: 'https://api.trymealmate.com'),
+      )..httpClientAdapter = countingAdapter;
 
       // Intercept purchase options calls
       countingDio.interceptors.add(

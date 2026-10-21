@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/features/offers/data/models/request/get_customer_available_offers_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_flow_response_dto.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
@@ -923,9 +926,7 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.familyMemberDetach)
-  Future<void> detachFamilyMember(
-    @Path('memberId') String memberId,
-  );
+  Future<void> detachFamilyMember(@Path('memberId') String memberId);
 
   @GET(EndPoints.customerSubscriptionUpgradeOptions)
   Future<SubscriptionUpgradeOptionsResponseDto> getSubscriptionUpgradeOptions(
@@ -1055,6 +1056,11 @@ abstract class ApiServices {
     @Query('includeCampaigns') bool? includeCampaigns,
   });
 
+  @POST(EndPoints.customerOffersAvailable)
+  Future<List<OfferResponseDto>> postCustomerAvailableOffers(
+    @Body() GetCustomerAvailableOffersRequestDto request,
+  );
+
   @GET(EndPoints.customerOffersHub)
   Future<OffersHubResponseDto> getOffersHub();
 
@@ -1133,6 +1139,27 @@ abstract class ApiServices {
   @POST(EndPoints.customerOffersEvaluate)
   Future<EvaluateOfferDiscountResponseDto> evaluateOfferDiscount(
     @Body() EvaluateOfferDiscountRequestDto request,
+  );
+
+  @POST(EndPoints.customerCampaignSubscriptionCancel)
+  Future<void> cancelCampaignSubscription(@Path('id') String subscriptionId);
+
+  @GET(EndPoints.customerCampaigns)
+  Future<CampaignPageResponseDto> getCampaigns({
+    @Query('pageSize') int pageSize = 20,
+    @Query('cursor') String? cursor,
+  });
+
+  @GET(EndPoints.customerCampaignDetails)
+  Future<CampaignDetailsResponseDto> getCampaignDetails(
+    @Path('campaignId') String campaignId, {
+    @Query('bundleId') String? bundleId,
+    @Query('durationDays') int? durationDays,
+  });
+
+  @POST(EndPoints.customerCampaignQuote)
+  Future<CampaignQuoteResponseDto> getCampaignQuote(
+    @Body() CampaignQuoteRequestDto request,
   );
 
   @POST(EndPoints.customerCampaignCheckoutSession)

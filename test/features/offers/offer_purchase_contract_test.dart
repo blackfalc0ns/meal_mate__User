@@ -1,3 +1,7 @@
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_summary_mapper.dart';
+import 'package:meal_meat_user/features/offers/presentation/manager/offer_purchase_state.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/offer_purchase_options_entity.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/features/offers/data/mapper/offer_purchase_options_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_purchase_options_response_dto.dart';
@@ -7,6 +11,48 @@ import 'package:meal_meat_user/features/payment/data/mapper/payment_mapper.dart'
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';
 
 void main() {
+  test('direct payment requires explicit review consent and a live quote', () {
+    final summary = SubscriptionSummaryResponseDto.fromJson({
+      'canCheckout': true,
+      'quoteId': 'q',
+      'finalPrice': 20,
+      'termsAcceptanceRequired': false,
+    }).toEntity();
+    final state = OfferPurchaseState(
+      summary: summary,
+      selectedOption: const OfferPurchaseOptionEntity(
+        programId: 'p',
+        bundleId: 'b',
+        tier: 'Basic',
+        durationDays: 6,
+        startDate: '2026-11-01',
+        includeFriday: false,
+        canCheckout: true,
+      ),
+      selectedMethod: const PaymentMethodEntity(
+        id: 3,
+        type: PaymentMethodType.payzah,
+        title: '',
+        subtitle: '',
+        isAvailable: true,
+      ),
+      quoteExpiresAtLocal: DateTime.now().add(const Duration(minutes: 5)),
+    );
+    expect(state.canPay, false);
+    expect(state.copyWith(termsAccepted: true).canPay, true);
+    expect(
+      state
+          .copyWith(
+            termsAccepted: true,
+            quoteExpiresAtLocal: DateTime.now().subtract(
+              const Duration(seconds: 1),
+            ),
+          )
+          .canPay,
+      false,
+    );
+  });
+
   test('purchase options preserve server selection and blocked prices', () {
     final response = OfferPurchaseOptionsResponseDto.fromJson({
       'offerId': 'offer-1',

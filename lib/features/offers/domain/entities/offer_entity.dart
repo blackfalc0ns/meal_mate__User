@@ -28,6 +28,8 @@ class OfferEntity {
     this.allowedDurationDays = const [],
     this.isSaved = false,
     this.isAvailable = true,
+    this.availabilityReasonCode,
+    this.ineligibilityReasonCodes = const [],
     this.purchaseMode = OfferPurchaseMode.unknown,
   });
 
@@ -49,8 +51,10 @@ class OfferEntity {
   final String? sourceType;
 
   bool get isCampaign =>
-      (campaignId != null && campaignId!.isNotEmpty) ||
-      sourceType == 'Campaign';
+      sourceType == 'Campaign' ||
+      (sourceType == null &&
+          !isDirectPurchase &&
+          campaignId?.isNotEmpty == true);
   final String? promoCode;
   final bool allowStacking;
   final String? termsAndConditionsAr;
@@ -61,6 +65,8 @@ class OfferEntity {
   final List<int> allowedDurationDays;
   final bool isSaved;
   final bool isAvailable;
+  final String? availabilityReasonCode;
+  final List<String> ineligibilityReasonCodes;
   final OfferPurchaseMode purchaseMode;
 
   bool get isDirectPurchase => purchaseMode == OfferPurchaseMode.directPurchase;
@@ -93,6 +99,8 @@ class OfferEntity {
     List<int>? allowedDurationDays,
     bool? isSaved,
     bool? isAvailable,
+    String? availabilityReasonCode,
+    List<String>? ineligibilityReasonCodes,
     OfferPurchaseMode? purchaseMode,
   }) {
     return OfferEntity(
@@ -122,6 +130,10 @@ class OfferEntity {
       allowedDurationDays: allowedDurationDays ?? this.allowedDurationDays,
       isSaved: isSaved ?? this.isSaved,
       isAvailable: isAvailable ?? this.isAvailable,
+      availabilityReasonCode:
+          availabilityReasonCode ?? this.availabilityReasonCode,
+      ineligibilityReasonCodes:
+          ineligibilityReasonCodes ?? this.ineligibilityReasonCodes,
       purchaseMode: purchaseMode ?? this.purchaseMode,
     );
   }

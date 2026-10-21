@@ -46,6 +46,8 @@ class TestNavigatorObserver extends NavigatorObserver {
 }
 
 class FakeOffersRepository implements OffersRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
   List<OfferEntity> availableOffers = [];
   OfferEntity? singleOffer;
 
@@ -72,7 +74,9 @@ class FakeOffersRepository implements OffersRepository {
     return ApiSuccessResult(
       data: OffersHubEntity(
         availableOffers: availableOffers,
-        heroOffers: availableOffers.where((o) => o.bannerImageUrl != null).toList(),
+        heroOffers: availableOffers
+            .where((o) => o.bannerImageUrl != null)
+            .toList(),
         savedOffers: const [],
       ),
     );
@@ -80,13 +84,15 @@ class FakeOffersRepository implements OffersRepository {
 
   @override
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId) async {
-    return ApiSuccessResult(data: singleOffer ?? availableOffers.firstWhere((o) => o.id == offerId));
+    return ApiSuccessResult(
+      data: singleOffer ?? availableOffers.firstWhere((o) => o.id == offerId),
+    );
   }
 
   @override
   Future<ApiResult<List<OfferEligibleRestaurantEntity>>>
-      getOfferEligibleRestaurants(String offerId) async =>
-          const ApiSuccessResult(data: []);
+  getOfferEligibleRestaurants(String offerId) async =>
+      const ApiSuccessResult(data: []);
 
   @override
   Future<ApiResult<void>> saveOffer(String offerId) async =>
@@ -108,23 +114,20 @@ class FakeOffersRepository implements OffersRepository {
   Future<ApiResult<OfferCalendarEntryEntity>> addOfferToCalendar(
     String offerId,
     String scheduledDate,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<void>> removeOfferFromCalendar(
     String offerId,
     String date,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<OfferPurchaseOptionsEntity>> getOfferPurchaseOptions(
     String offerId, {
     String? startDate,
     bool? includeFriday,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<OfferEvaluationEntity>> evaluateOffer({
@@ -137,38 +140,36 @@ class FakeOffersRepository implements OffersRepository {
     String? bundleId,
     String? restaurantId,
     List<String>? selectedMealIds,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<ValidateDiscountResultEntity>> validateDiscount({
     required String code,
     dynamic programId,
     dynamic bundleId,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignSessionEntity>> createCampaignCheckoutSession({
+    double? expectedFinalPrice,
+    String? quoteId,
+    String? idempotencyKey,
     required String campaignId,
     required String bundleId,
     required int durationDays,
     List<String>? requestedServiceDates,
     String? deliveryGovernorate,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignPaymentEntity>> startCampaignPayment(
     StartCampaignPaymentRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<CampaignPaymentEntity>> getCampaignPaymentStatus(
     String sessionId,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -250,7 +251,9 @@ void main() {
       expect(pushed.first.settings.arguments, directOffer);
     });
 
-    testWidgets('routes coupon-only offer to promoCodeInput with promoCode', (tester) async {
+    testWidgets('routes coupon-only offer to promoCodeInput with promoCode', (
+      tester,
+    ) async {
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(
@@ -275,31 +278,37 @@ void main() {
       expect(redeemPushed, isEmpty);
     });
 
-    testWidgets('campaign projection never passes campaignId to offerDetails or redeemPackage', (tester) async {
-      final observer = TestNavigatorObserver();
-      await tester.pumpWidget(
-        buildWrapper(
-          child: const OfferQuickPreviewSheet(offer: campaignProjection),
-          observer: observer,
-        ),
-      );
+    testWidgets(
+      'campaign projection never passes campaignId to offerDetails or redeemPackage',
+      (tester) async {
+        final observer = TestNavigatorObserver();
+        await tester.pumpWidget(
+          buildWrapper(
+            child: const OfferQuickPreviewSheet(offer: campaignProjection),
+            observer: observer,
+          ),
+        );
 
-      final btn = find.byType(ElevatedButton);
-      await tester.tap(btn);
-      await tester.pumpAndSettle();
+        final btn = find.byType(ElevatedButton);
+        await tester.tap(btn);
+        await tester.pumpAndSettle();
 
-      final detailsPushed = observer.pushedRoutes
-          .where((r) => r.settings.name == AppRoutes.offerDetails)
-          .toList();
-      expect(detailsPushed, isEmpty);
+        final detailsPushed = observer.pushedRoutes
+            .where((r) => r.settings.name == AppRoutes.offerDetails)
+            .toList();
+        expect(detailsPushed, isEmpty);
 
-      final promoPushed = observer.pushedRoutes
-          .where((r) => r.settings.name == AppRoutes.promoCodeInput)
-          .toList();
-      expect(promoPushed, hasLength(1));
-      expect(promoPushed.first.settings.arguments, 'CAMP50');
-      expect(promoPushed.first.settings.arguments, isNot('campaign-exclusive-99'));
-    });
+        final promoPushed = observer.pushedRoutes
+            .where((r) => r.settings.name == AppRoutes.promoCodeInput)
+            .toList();
+        expect(promoPushed, hasLength(1));
+        expect(promoPushed.first.settings.arguments, 'CAMP50');
+        expect(
+          promoPushed.first.settings.arguments,
+          isNot('campaign-exclusive-99'),
+        );
+      },
+    );
 
     testWidgets('unknown purchase mode CTA is disabled', (tester) async {
       final observer = TestNavigatorObserver();
@@ -406,49 +415,56 @@ void main() {
       unawaited(viewModel.close());
     });
 
-    testWidgets('direct offer routes to offerDetails, coupon routes to promoCodeInput, unknown does not route', (tester) async {
-      repository.availableOffers = [directOffer, couponOffer, unknownOffer];
-      viewModel = OffersViewModel(
-        GetAvailableOffersUseCase(repository),
-        GetOffersHubUseCase(repository),
-        GetSavedOffersUseCase(repository),
-        SaveOfferUseCase(repository),
-        UnsaveOfferUseCase(repository),
-        GetOfferCalendarUseCase(repository),
-      );
-      viewModel.doIntent(const GetOffersEvent());
+    testWidgets(
+      'direct offer routes to offerDetails, coupon routes to promoCodeInput, unknown does not route',
+      (tester) async {
+        repository.availableOffers = [directOffer, couponOffer, unknownOffer];
+        viewModel = OffersViewModel(
+          GetAvailableOffersUseCase(repository),
+          GetOffersHubUseCase(repository),
+          GetSavedOffersUseCase(repository),
+          SaveOfferUseCase(repository),
+          UnsaveOfferUseCase(repository),
+          GetOfferCalendarUseCase(repository),
+        );
+        viewModel.doIntent(const GetOffersEvent());
 
-      final observer = TestNavigatorObserver();
-      await tester.pumpWidget(
-        buildWrapper(
-          child: BrowseOffersScreen(viewModel: viewModel),
-          observer: observer,
-        ),
-      );
-      await tester.pumpAndSettle();
+        final observer = TestNavigatorObserver();
+        await tester.pumpWidget(
+          buildWrapper(
+            child: BrowseOffersScreen(viewModel: viewModel),
+            observer: observer,
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap direct offer
-      await tester.tap(find.text('Direct Offer'));
-      await tester.pumpAndSettle();
-      expect(
-        observer.pushedRoutes.where((r) => r.settings.name == AppRoutes.offerDetails),
-        hasLength(1),
-      );
+        // Tap direct offer
+        await tester.tap(find.text('Direct Offer'));
+        await tester.pumpAndSettle();
+        expect(
+          observer.pushedRoutes.where(
+            (r) => r.settings.name == AppRoutes.offerDetails,
+          ),
+          hasLength(1),
+        );
 
-      // Tap coupon offer
-      await tester.tap(find.text('Coupon Offer'));
-      await tester.pumpAndSettle();
-      expect(
-        observer.pushedRoutes.where((r) => r.settings.name == AppRoutes.promoCodeInput),
-        hasLength(1),
-      );
+        // Tap coupon offer
+        await tester.tap(find.text('Coupon Offer'));
+        await tester.pumpAndSettle();
+        expect(
+          observer.pushedRoutes.where(
+            (r) => r.settings.name == AppRoutes.promoCodeInput,
+          ),
+          hasLength(1),
+        );
 
-      // Tap unknown offer - should not push any new route
-      final routeCountBefore = observer.pushedRoutes.length;
-      await tester.tap(find.text('Unknown Offer'));
-      await tester.pumpAndSettle();
-      expect(observer.pushedRoutes.length, routeCountBefore);
-    });
+        // Tap unknown offer - should not push any new route
+        final routeCountBefore = observer.pushedRoutes.length;
+        await tester.tap(find.text('Unknown Offer'));
+        await tester.pumpAndSettle();
+        expect(observer.pushedRoutes.length, routeCountBefore);
+      },
+    );
   });
 
   group('OfferDetailsScreen CTA routing and guards', () {
@@ -477,7 +493,10 @@ void main() {
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(
-          child: OfferDetailsScreen(offerId: 'direct-offer-1', viewModel: detailsVm),
+          child: OfferDetailsScreen(
+            offerId: 'direct-offer-1',
+            viewModel: detailsVm,
+          ),
           observer: observer,
         ),
       );
@@ -495,7 +514,9 @@ void main() {
       expect(pushed, hasLength(1));
     });
 
-    testWidgets('coupon-only offer CTA routes to promoCodeInput', (tester) async {
+    testWidgets('coupon-only offer CTA routes to promoCodeInput', (
+      tester,
+    ) async {
       repository.singleOffer = couponOffer;
       detailsVm = OfferDetailsViewModel(
         GetCustomerOfferDetailsUseCase(repository),
@@ -509,7 +530,10 @@ void main() {
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(
-          child: OfferDetailsScreen(offerId: 'coupon-offer-1', viewModel: detailsVm),
+          child: OfferDetailsScreen(
+            offerId: 'coupon-offer-1',
+            viewModel: detailsVm,
+          ),
           observer: observer,
         ),
       );
@@ -528,7 +552,9 @@ void main() {
       expect(pushed.first.settings.arguments, 'DISCOUNT50');
 
       expect(
-        observer.pushedRoutes.where((r) => r.settings.name == AppRoutes.redeemPackage),
+        observer.pushedRoutes.where(
+          (r) => r.settings.name == AppRoutes.redeemPackage,
+        ),
         isEmpty,
       );
     });
@@ -547,7 +573,10 @@ void main() {
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(
-          child: OfferDetailsScreen(offerId: 'unknown-offer-1', viewModel: detailsVm),
+          child: OfferDetailsScreen(
+            offerId: 'unknown-offer-1',
+            viewModel: detailsVm,
+          ),
           observer: observer,
         ),
       );
@@ -559,7 +588,9 @@ void main() {
   });
 
   group('PromoCodeInputScreen initial code review', () {
-    testWidgets('initial code is prefilled in input without auto-validation', (tester) async {
+    testWidgets('initial code is prefilled in input without auto-validation', (
+      tester,
+    ) async {
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(

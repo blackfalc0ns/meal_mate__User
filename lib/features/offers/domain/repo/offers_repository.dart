@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_flow_entity.dart';
+import 'package:meal_meat_user/features/offers/domain/entities/campaign_quote_request_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_session_entity.dart';
@@ -31,7 +33,10 @@ abstract interface class OffersRepository {
   Future<ApiResult<OfferEntity>> getOfferDetails(String offerId);
 
   Future<ApiResult<OfferPurchaseOptionsEntity>> getOfferPurchaseOptions(
-    String offerId, {String? startDate, bool? includeFriday});
+    String offerId, {
+    String? startDate,
+    bool? includeFriday,
+  });
 
   Future<ApiResult<List<OfferEligibleRestaurantEntity>>>
   getOfferEligibleRestaurants(String offerId);
@@ -69,6 +74,9 @@ abstract interface class OffersRepository {
   });
 
   Future<ApiResult<CampaignSessionEntity>> createCampaignCheckoutSession({
+    double? expectedFinalPrice,
+    String? quoteId,
+    String? idempotencyKey,
     required String campaignId,
     required String bundleId,
     required int durationDays,
@@ -83,4 +91,18 @@ abstract interface class OffersRepository {
   Future<ApiResult<CampaignPaymentEntity>> getCampaignPaymentStatus(
     String sessionId,
   );
+  Future<ApiResult<CampaignPageEntity>> getCampaigns({
+    int pageSize = 20,
+    String? cursor,
+  });
+  Future<ApiResult<CampaignDetailsEntity>> getCampaignDetails(
+    String campaignId, {
+    String? bundleId,
+    int? durationDays,
+  });
+  Future<ApiResult<CampaignQuoteEntity>> getCampaignQuote(
+    CampaignQuoteRequestEntity request,
+  );
+  Future<ApiResult<CampaignSessionEntity?>> restoreCampaignCheckoutSession();
+  Future<ApiResult<void>> cancelCampaignSubscription(String subscriptionId);
 }

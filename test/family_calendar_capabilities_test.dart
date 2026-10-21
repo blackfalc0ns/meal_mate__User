@@ -1,3 +1,4 @@
+import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +16,6 @@ import 'package:meal_meat_user/features/family_context/domain/entities/family_ca
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
@@ -186,7 +186,7 @@ void main() {
       tester,
     ) async {
       final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-      final vm = FamilyCalendarViewModel.test(null, null, fakeDayUseCase, null);
+      final vm = createFamilyCalendarViewModel(day: fakeDayUseCase);
 
       // Initialize state with canEditMealsAndDays = false
       vm.emit(
@@ -255,7 +255,7 @@ void main() {
       tester,
     ) async {
       final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-      final vm = FamilyCalendarViewModel.test(null, null, fakeDayUseCase, null);
+      final vm = createFamilyCalendarViewModel(day: fakeDayUseCase);
 
       // Initialize state with filled meal and unitExchange = false
       vm.emit(
@@ -317,12 +317,7 @@ void main() {
       'Locked or closed day (canEdit: false) disables all actions regardless of capabilities',
       (tester) async {
         final fakeDayUseCase = _FakeGetCalendarDayUseCase();
-        final vm = FamilyCalendarViewModel.test(
-          null,
-          null,
-          fakeDayUseCase,
-          null,
-        );
+        final vm = createFamilyCalendarViewModel(day: fakeDayUseCase);
 
         vm.emit(
           FamilyCalendarState(
@@ -395,12 +390,7 @@ void main() {
           ),
         );
 
-        final calendar = FamilyCalendarViewModel.test(
-          null,
-          null,
-          fakeDayUseCase,
-          null,
-        );
+        final calendar = createFamilyCalendarViewModel(day: fakeDayUseCase);
         calendar.emit(
           FamilyCalendarState(
             currentSubscriptionId: 'sub-1',

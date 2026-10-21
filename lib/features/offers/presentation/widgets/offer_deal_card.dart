@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -37,20 +38,15 @@ class OfferDealCard extends StatelessWidget {
         (offer.campaignId != null);
 
     final accentColor = isOrangeTheme ? color.tertiary : color.primary;
-    final onAccentColor =
-        isOrangeTheme ? color.onTertiary : color.onPrimary;
+    final onAccentColor = isOrangeTheme ? color.onTertiary : color.onPrimary;
 
-    final cleanTitle = offer
-        .title(lang)
-        .replaceAll('[معاينة] ', '')
-        .replaceAll('[معاينة]', '')
-        .trim();
-
-    final rawDesc = offer.description(lang);
-    final cleanDesc = rawDesc
-        .replaceAll('بيانات معاينة معزولة لعرضها في تطبيق الجوال.', '')
-        .trim();
-    final descriptionText = cleanDesc.isNotEmpty ? cleanDesc : rawDesc;
+    final cleanTitle = offer.title(lang);
+    final descriptionText = offer.isAvailable
+        ? offer.description(lang)
+        : ErrorMessagePresenter.mapCode(
+            context,
+            offer.availabilityReasonCode ?? 'offers.customer.unavailable',
+          );
 
     final duration = offer.remainingDuration;
     final hasTimer = duration > Duration.zero;
@@ -71,7 +67,7 @@ class OfferDealCard extends StatelessWidget {
     return Material(
       color: color.surface.withValues(alpha: 0),
       child: InkWell(
-        onTap: onTap,
+        onTap: offer.isAvailable ? onTap : null,
         borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
         child: Container(
           width: Spacing.offersDealCardWidth,

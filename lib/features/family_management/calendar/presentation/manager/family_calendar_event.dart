@@ -49,6 +49,18 @@ class RetryFamilyCalendarEvent extends FamilyCalendarEvent {
   final String localeName;
 }
 
+class RetryFamilyCalendarDayEvent extends FamilyCalendarEvent {
+  const RetryFamilyCalendarDayEvent({required this.localeName});
+
+  final String localeName;
+}
+
 class RetryFamilyCapabilitiesEvent extends FamilyCalendarEvent {
   const RetryFamilyCapabilitiesEvent();
+}
+
+class ApplyFamilyCalendarDaySnapshotEvent extends FamilyCalendarEvent {
+  const ApplyFamilyCalendarDaySnapshotEvent(this.day);
+
+  final CalendarDayEntity day;
 }

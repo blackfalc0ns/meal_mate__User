@@ -46,7 +46,7 @@ class OffersScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) =>
           getIt<OffersViewModel>()
-            ..doIntent(const GetOffersEvent(includeCampaigns: true)),
+            ..doIntent(const GetOffersEvent(includeCampaigns: false)),
       child: const _OffersContent(),
     );
   }
@@ -69,7 +69,8 @@ class _OffersContentState extends State<_OffersContent> {
   }
 
   void _onOfferTap(BuildContext context, OfferEntity offer) {
-    if (offer.isCampaign) return;
+    if (!offer.isAvailable) return;
+    if (offer.sourceType == 'Campaign') return;
     switch (offer.purchaseMode) {
       case OfferPurchaseMode.directPurchase:
         unawaited(
@@ -78,6 +79,7 @@ class _OffersContentState extends State<_OffersContent> {
           ).pushNamed(AppRoutes.offerDetails, arguments: offer.id),
         );
       case OfferPurchaseMode.couponOnly:
+        if (offer.promoCode?.trim().isNotEmpty != true) return;
         unawaited(
           Navigator.of(
             context,
@@ -157,7 +159,7 @@ class _OffersContentState extends State<_OffersContent> {
                     return ApiErrorWidget(
                       exception: state.failure!.exception,
                       onRetry: () => context.read<OffersViewModel>().doIntent(
-                        const LoadOffersHubEvent(),
+                        const GetOffersEvent(includeCampaigns: false),
                       ),
                     );
                   }
@@ -199,7 +201,7 @@ class _OffersContentState extends State<_OffersContent> {
                   return RefreshIndicator(
                     onRefresh: () async {
                       context.read<OffersViewModel>().doIntent(
-                        const RefreshOffersEvent(includeCampaigns: true),
+                        const RefreshOffersEvent(includeCampaigns: false),
                       );
                     },
                     child: CustomScrollView(
@@ -216,7 +218,7 @@ class _OffersContentState extends State<_OffersContent> {
                                 onRetry: () =>
                                     context.read<OffersViewModel>().doIntent(
                                       const RefreshOffersEvent(
-                                        includeCampaigns: true,
+                                        includeCampaigns: false,
                                       ),
                                     ),
                               ),

@@ -48,6 +48,8 @@ extension OfferResponseDtoMapper on OfferResponseDto {
       allowedDurationDays: allowedDurationDays ?? const [],
       isSaved: isSaved ?? false,
       isAvailable: isAvailable ?? true,
+      availabilityReasonCode: availabilityReasonCode,
+      ineligibilityReasonCodes: ineligibilityReasonCodes ?? const [],
       purchaseMode: parseOfferPurchaseMode(purchaseMode),
     );
   }

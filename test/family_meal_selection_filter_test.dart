@@ -1,3 +1,4 @@
+import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
@@ -12,7 +13,6 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 
 void main() {
@@ -20,7 +20,7 @@ void main() {
     'selecting a meal category requests its slot from the backend',
     () async {
       final repository = _RecordingCalendarRepository();
-      final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+      final calendar = createFamilyCalendarViewModel();
       addTearDown(calendar.close);
       final viewModel = FamilyMealSelectionViewModel(
         calendar: calendar,
@@ -81,7 +81,7 @@ void main() {
     'selects the required meals in one slot and sends all of them',
     () async {
       final repository = _RecordingCalendarRepository();
-      final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+      final calendar = createFamilyCalendarViewModel();
       addTearDown(calendar.close);
       final viewModel = FamilyMealSelectionViewModel(
         calendar: calendar,
@@ -147,7 +147,7 @@ void main() {
 
   test('does not load meals when setting the restaurant fails', () async {
     final repository = _RecordingCalendarRepository(failSetRestaurant: true);
-    final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+    final calendar = createFamilyCalendarViewModel();
     addTearDown(calendar.close);
     final viewModel = FamilyMealSelectionViewModel(
       calendar: calendar,
@@ -189,7 +189,7 @@ void main() {
 
   test('hydrates selected meals from backend isSelected values', () async {
     final repository = _RecordingCalendarRepository(returnSelectedMeals: true);
-    final calendar = FamilyCalendarViewModel.test(null, null, null, null);
+    final calendar = createFamilyCalendarViewModel();
     addTearDown(calendar.close);
     final viewModel = FamilyMealSelectionViewModel(
       calendar: calendar,

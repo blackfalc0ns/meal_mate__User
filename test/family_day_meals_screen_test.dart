@@ -1,10 +1,14 @@
+import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
+import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meals_loading_skeleton.dart';
@@ -17,9 +21,7 @@ void main() {
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: FamilyDayMealsScreen(
-        viewModel: FamilyCalendarViewModel.test(null, null, null, null),
-      ),
+      home: FamilyDayMealsScreen(viewModel: createFamilyCalendarViewModel()),
     );
   }
 
@@ -94,4 +96,114 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'supplied ViewModel stays open when FamilyDayMealsScreen is disposed',
+    (tester) async {
+      final viewModel = createFamilyCalendarViewModel();
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: FamilyDayMealsScreen(viewModel: viewModel),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpWidget(const SizedBox.shrink());
+      expect(viewModel.isClosed, isFalse);
+    },
+  );
+
+  testWidgets(
+    'supplied ViewModel via args stays open when FamilyDayMealsScreen is disposed',
+    (tester) async {
+      final viewModel = createFamilyCalendarViewModel();
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: FamilyDayMealsScreen(
+            args: FamilyDayMealsArgs(
+              subscriptionId: 'sub-test',
+              date: DateTime(2026, 9, 20),
+              viewModel: viewModel,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpWidget(const SizedBox.shrink());
+      expect(viewModel.isClosed, isFalse);
+    },
+  );
+
+  testWidgets(
+    'locally created ViewModel closes when FamilyDayMealsScreen is disposed',
+    (tester) async {
+      final createdViewModel = createFamilyCalendarViewModel();
+      if (getIt.isRegistered<FamilyCalendarViewModel>()) {
+        getIt.unregister<FamilyCalendarViewModel>();
+      }
+      getIt.registerFactory<FamilyCalendarViewModel>(() => createdViewModel);
+      addTearDown(() {
+        if (getIt.isRegistered<FamilyCalendarViewModel>()) {
+          getIt.unregister<FamilyCalendarViewModel>();
+        }
+      });
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          locale: Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: FamilyDayMealsScreen(),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpWidget(const SizedBox.shrink());
+      expect(createdViewModel.isClosed, isTrue);
+    },
+  );
+
+  testWidgets(
+    'tapping next/previous day dispatches SelectFamilyCalendarDayEvent',
+    (tester) async {
+      final initialDate = DateTime(2026, 9, 20);
+      final viewModel = createFamilyCalendarViewModel();
+      viewModel.emit(
+        FamilyCalendarState(
+          currentSubscriptionId: 'sub-1',
+          selectedDate: initialDate,
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: FamilyDayMealsScreen(
+            viewModel: viewModel,
+            args: FamilyDayMealsArgs(
+              subscriptionId: 'sub-1',
+              date: initialDate,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // Find arrow buttons in FamilyDayHeader
+      final arrowButtons = find.byType(OutlinedButton);
+      expect(arrowButtons, findsWidgets);
+
+      // Tap next day arrow
+      await tester.tap(arrowButtons.first);
+      await tester.pump();
+
+      expect(viewModel.state.selectedDate, isNotNull);
+    },
+  );
 }

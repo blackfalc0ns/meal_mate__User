@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -23,10 +24,12 @@ class OfferBrowseCard extends StatelessWidget {
     final locale = context.localization;
     final lang = Localizations.localeOf(context).languageCode;
 
-    final isUnknown = offer.purchaseMode == OfferPurchaseMode.unknown;
+    final isUnknown =
+        offer.purchaseMode == OfferPurchaseMode.unknown ||
+        (offer.isCouponOnly && offer.promoCode?.trim().isNotEmpty != true);
 
     return InkWell(
-      onTap: isUnknown ? null : onTap,
+      onTap: isUnknown || !offer.isAvailable ? null : onTap,
       borderRadius: BorderRadius.circular(Spacing.md),
       child: Container(
         decoration: BoxDecoration(
@@ -108,7 +111,13 @@ class OfferBrowseCard extends StatelessWidget {
                   ),
                   const SizedBox(height: Spacing.xs),
                   Text(
-                    offer.description(lang),
+                    offer.isAvailable
+                        ? offer.description(lang)
+                        : ErrorMessagePresenter.mapCode(
+                            context,
+                            offer.availabilityReasonCode ??
+                                'offers.customer.unavailable',
+                          ),
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
@@ -134,14 +143,18 @@ class OfferBrowseCard extends StatelessWidget {
                         const SizedBox.shrink(),
                       if (!isUnknown)
                         InkWell(
-                          onTap: onActionTap ?? onTap,
+                          onTap: offer.isAvailable
+                              ? onActionTap ?? onTap
+                              : null,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: Spacing.sm,
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: color.primary,
+                              color: offer.isAvailable
+                                  ? color.primary
+                                  : color.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(Spacing.xs),
                             ),
                             child: Text(
@@ -149,7 +162,9 @@ class OfferBrowseCard extends StatelessWidget {
                               style: getBoldStyle(
                                 fontFamily: FontConstant.alexandria,
                                 fontSize: FontSize.size11,
-                                color: color.onPrimary,
+                                color: offer.isAvailable
+                                    ? color.onPrimary
+                                    : color.onSurfaceVariant,
                               ),
                             ),
                           ),

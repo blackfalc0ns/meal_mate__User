@@ -1,3 +1,4 @@
+import '../../support/family_calendar_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
@@ -13,7 +14,6 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
@@ -239,11 +239,9 @@ void main() {
         );
         final calendarUseCase = FakeGetCalendarUseCase();
 
-        final viewModel = FamilyCalendarViewModel.test(
-          null,
-          calendarUseCase,
-          null,
-          capabilitiesUseCase,
+        final viewModel = createFamilyCalendarViewModel(
+          calendar: calendarUseCase,
+          capabilities: capabilitiesUseCase,
         );
 
         const memberWithSub = FamilyMemberSummaryEntity(
@@ -311,11 +309,9 @@ void main() {
         );
         final calendarUseCase = FakeGetCalendarUseCase();
 
-        final viewModel = FamilyCalendarViewModel.test(
-          null,
-          calendarUseCase,
-          null,
-          capabilitiesUseCase,
+        final viewModel = createFamilyCalendarViewModel(
+          calendar: calendarUseCase,
+          capabilities: capabilitiesUseCase,
         );
 
         const member = FamilyMemberSummaryEntity(
@@ -368,11 +364,8 @@ void main() {
           ),
         );
 
-        final calendar = FamilyCalendarViewModel.test(
-          null,
-          FakeGetCalendarUseCase(),
-          null,
-          null,
+        final calendar = createFamilyCalendarViewModel(
+          calendar: FakeGetCalendarUseCase(),
         );
         final viewModel = FamilyMealSelectionViewModel(
           calendar: calendar,

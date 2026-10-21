@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart' as intl;
@@ -9,7 +6,6 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_en
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
-import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
@@ -19,85 +15,53 @@ import 'package:meal_meat_user/features/family_management/overview/domain/usecas
 @injectable
 class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   FamilyCalendarViewModel(
-    GetFamilyMembersUseCase getMembersUseCase,
-    GetCalendarUseCase getCalendarUseCase,
-    GetCalendarDayUseCase getCalendarDayUseCase,
-    GetFamilyMemberCapabilitiesUseCase getCapabilitiesUseCase, {
-    FamilyContextViewModel? familyContextViewModel,
-  }) : this._(
-         getMembersUseCase,
-         getCalendarUseCase,
-         getCalendarDayUseCase,
-         getCapabilitiesUseCase,
-         familyContextViewModel,
-       );
-
-  @visibleForTesting
-  FamilyCalendarViewModel.test([
-    GetFamilyMembersUseCase? getMembersUseCase,
-    GetCalendarUseCase? getCalendarUseCase,
-    GetCalendarDayUseCase? getCalendarDayUseCase,
-    GetFamilyMemberCapabilitiesUseCase? getCapabilitiesUseCase,
-  ]) : this._(
-         getMembersUseCase,
-         getCalendarUseCase,
-         getCalendarDayUseCase,
-         getCapabilitiesUseCase,
-         null,
-       );
-
-  FamilyCalendarViewModel._(
     this._getMembersUseCase,
     this._getCalendarUseCase,
     this._getCalendarDayUseCase,
     this._getCapabilitiesUseCase,
-    FamilyContextViewModel? familyContextViewModel,
-  ) : super(
-        FamilyCalendarState(
-          fallbackCapabilities:
-              familyContextViewModel?.state.primaryContext?.capabilities ??
-              const [],
-        ),
-      ) {
-    _contextSubscription = familyContextViewModel?.stream.listen((
-      contextState,
-    ) {
-      if (!isClosed) {
-        emit(
-          state.copyWith(
-            fallbackCapabilities:
-                contextState.primaryContext?.capabilities ?? const [],
-          ),
-        );
-      }
-    });
-  }
+  ) : super(const FamilyCalendarState());
 
-  final GetFamilyMembersUseCase? _getMembersUseCase;
-  final GetCalendarUseCase? _getCalendarUseCase;
-  final GetCalendarDayUseCase? _getCalendarDayUseCase;
-  final GetFamilyMemberCapabilitiesUseCase? _getCapabilitiesUseCase;
-  StreamSubscription<dynamic>? _contextSubscription;
+  final GetFamilyMembersUseCase _getMembersUseCase;
+  final GetCalendarUseCase _getCalendarUseCase;
+  final GetCalendarDayUseCase _getCalendarDayUseCase;
+  final GetFamilyMemberCapabilitiesUseCase _getCapabilitiesUseCase;
 
-  @override
-  Future<void> close() async {
-    await _contextSubscription?.cancel();
-    return super.close();
-  }
+  int _memberRequestToken = 0;
+  int _calendarRequestToken = 0;
+  int _dayRequestToken = 0;
+  int _capabilitiesRequestToken = 0;
+  String? _requestedMemberId;
+  String? _requestedSubscriptionId;
 
   void applyDaySnapshot(CalendarDayEntity day) {
-    final date = day.date;
+    doIntent(ApplyFamilyCalendarDaySnapshotEvent(day));
+  }
+
+  void _applyDaySnapshot(CalendarDayEntity day) {
+    final date = day.date ?? state.selectedDate;
+    if (date == null) return;
+
+    final dayWithSelection = day.copyWith(isSelected: true);
     final updatedDays = state.days.map((existing) {
-      if (date != null &&
+      final isSelected =
           existing.date != null &&
           existing.date!.year == date.year &&
           existing.date!.month == date.month &&
-          existing.date!.day == date.day) {
-        return day;
+          existing.date!.day == date.day;
+      if (isSelected) {
+        return dayWithSelection;
       }
-      return existing;
+      return existing.copyWith(isSelected: false);
     }).toList();
-    emit(state.copyWith(selectedDay: day, days: updatedDays));
+
+    emit(
+      state.copyWith(
+        selectedDate: date,
+        selectedDay: dayWithSelection,
+        days: updatedDays,
+        clearDayFailure: true,
+      ),
+    );
   }
 
   Future<void> doIntent(FamilyCalendarEvent event) async {
@@ -112,12 +76,19 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         _changeMonth(event.months);
       case RetryFamilyCalendarEvent():
         await _retry(event.localeName);
+      case RetryFamilyCalendarDayEvent():
+        await _retryDayDetails(event.localeName);
       case RetryFamilyCapabilitiesEvent():
         await _loadCapabilitiesForActiveMember();
+      case ApplyFamilyCalendarDaySnapshotEvent():
+        _applyDaySnapshot(event.day);
     }
   }
 
   Future<void> _init(InitFamilyCalendarEvent event) async {
+    _requestedMemberId = event.args?.memberId;
+    _requestedSubscriptionId = event.args?.subscriptionId;
+
     final initialDate = event.initialDate ?? event.args?.date ?? DateTime.now();
     final visibleMonth = DateTime(initialDate.year, initialDate.month);
 
@@ -130,10 +101,17 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     if (members.isNotEmpty) {
       selectedIndex = _findMemberIndex(
         members,
-        memberId: event.args?.memberId,
-        subscriptionId: event.args?.subscriptionId,
+        memberId: _requestedMemberId,
+        subscriptionId: _requestedSubscriptionId,
       );
     }
+
+    final selectedDayDate = state.selectedDay?.date;
+    final isSameDate =
+        selectedDayDate != null &&
+        selectedDayDate.year == initialDate.year &&
+        selectedDayDate.month == initialDate.month &&
+        selectedDayDate.day == initialDate.day;
 
     emit(
       state.copyWith(
@@ -143,6 +121,9 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         currentMemberName: event.args?.displayName,
         visibleMonth: visibleMonth,
         selectedDate: initialDate,
+        clearSelectedDay: !isSameDate,
+        isLoadingCalendar: false,
+        isLoadingDay: false,
         memberCapabilities: const [],
         clearCapabilitiesFailure: true,
         clearCalendarFailure: true,
@@ -151,10 +132,10 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     );
 
     if (members.isEmpty) {
-      if (_getMembersUseCase == null) return;
+      final token = ++_memberRequestToken;
       emit(state.copyWith(isLoadingMembers: true));
       final membersResult = await _getMembersUseCase(locale: event.localeName);
-      if (isClosed) return;
+      if (isClosed || token != _memberRequestToken) return;
 
       switch (membersResult) {
         case ApiSuccessResult(:final data):
@@ -162,14 +143,21 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
           if (members.isNotEmpty) {
             selectedIndex = _findMemberIndex(
               members,
-              memberId: event.args?.memberId,
-              subscriptionId: event.args?.subscriptionId,
+              memberId: _requestedMemberId,
+              subscriptionId: _requestedSubscriptionId,
             );
           }
+          final selectedMember =
+              members.isNotEmpty && selectedIndex < members.length
+              ? members[selectedIndex]
+              : null;
           emit(
             state.copyWith(
               members: members,
               selectedMemberIndex: selectedIndex,
+              currentSubscriptionId:
+                  selectedMember?.effectiveSubscriptionId ?? '',
+              currentMemberName: selectedMember?.displayName,
               isLoadingMembers: false,
             ),
           );
@@ -177,6 +165,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
           emit(
             state.copyWith(isLoadingMembers: false, calendarFailure: failure),
           );
+          return;
       }
     }
 
@@ -207,6 +196,10 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     if (index < 0 || index >= state.members.length) return;
     if (index == state.selectedMemberIndex) return;
 
+    _calendarRequestToken++;
+    _dayRequestToken++;
+    _capabilitiesRequestToken++;
+
     final selectedMember = state.members[index];
     emit(
       state.copyWith(
@@ -233,10 +226,11 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     await _loadCapabilitiesForActiveMember();
 
     final subId = state.activeSubscriptionId;
-    if (subId == null || subId.isEmpty || _getCalendarUseCase == null) {
+    if (subId == null || subId.isEmpty) {
       return;
     }
 
+    final token = ++_calendarRequestToken;
     emit(state.copyWith(isLoadingCalendar: true, clearCalendarFailure: true));
 
     final result = await _getCalendarUseCase(
@@ -244,7 +238,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       localeName: localeName,
     );
 
-    if (isClosed) return;
+    if (isClosed || token != _calendarRequestToken) return;
     if (state.activeSubscriptionId != subId) return;
 
     switch (result) {
@@ -269,7 +263,8 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
         emit(
           state.copyWith(
             days: mappedDays,
-            selectedDay: matchedSelectedDay ?? state.selectedDay,
+            selectedDay: matchedSelectedDay,
+            clearSelectedDay: matchedSelectedDay == null,
             isLoadingCalendar: false,
           ),
         );
@@ -292,12 +287,11 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
   Future<void> _loadCapabilitiesForActiveMember() async {
     final activeMember = state.currentMember;
-    if (activeMember != null &&
-        activeMember.memberId.isNotEmpty &&
-        _getCapabilitiesUseCase != null) {
+    if (activeMember != null && activeMember.memberId.isNotEmpty) {
+      final token = ++_capabilitiesRequestToken;
       emit(state.copyWith(clearCapabilitiesFailure: true));
       final capResult = await _getCapabilitiesUseCase(activeMember.memberId);
-      if (isClosed) return;
+      if (isClosed || token != _capabilitiesRequestToken) return;
       if (state.currentMember?.memberId != activeMember.memberId) return;
       switch (capResult) {
         case ApiSuccessResult<List<FamilyCapabilityEntity>>():
@@ -352,7 +346,7 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     required String subscriptionId,
     required String localeName,
   }) async {
-    if (_getCalendarDayUseCase == null) return;
+    final token = ++_dayRequestToken;
     final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
     emit(state.copyWith(isLoadingDay: true, clearDayFailure: true));
 
@@ -362,12 +356,13 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
       localeName: localeName,
     );
 
-    if (isClosed) return;
+    if (isClosed || token != _dayRequestToken) return;
     if (state.activeSubscriptionId != subscriptionId ||
         state.selectedDate?.year != date.year ||
         state.selectedDate?.month != date.month ||
-        state.selectedDate?.day != date.day)
+        state.selectedDate?.day != date.day) {
       return;
+    }
 
     switch (result) {
       case ApiSuccessResult():
@@ -406,14 +401,31 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
   Future<void> _retry(String localeName) async {
     if (state.members.isEmpty) {
-      if (_getMembersUseCase == null) return;
+      final token = ++_memberRequestToken;
       emit(state.copyWith(isLoadingMembers: true, clearCalendarFailure: true));
       final membersResult = await _getMembersUseCase(locale: localeName);
-      if (isClosed) return;
+      if (isClosed || token != _memberRequestToken) return;
 
       switch (membersResult) {
         case ApiSuccessResult(:final data):
-          emit(state.copyWith(members: data, isLoadingMembers: false));
+          final selectedIndex = _findMemberIndex(
+            data,
+            memberId: _requestedMemberId,
+            subscriptionId: _requestedSubscriptionId,
+          );
+          final selectedMember = data.isNotEmpty && selectedIndex < data.length
+              ? data[selectedIndex]
+              : null;
+          emit(
+            state.copyWith(
+              members: data,
+              selectedMemberIndex: selectedIndex,
+              currentSubscriptionId:
+                  selectedMember?.effectiveSubscriptionId ?? '',
+              currentMemberName: selectedMember?.displayName,
+              isLoadingMembers: false,
+            ),
+          );
         case ApiErrorResult(:final failure):
           emit(
             state.copyWith(isLoadingMembers: false, calendarFailure: failure),
@@ -423,5 +435,16 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
     }
 
     await _loadCalendarForActiveMember(localeName);
+  }
+
+  Future<void> _retryDayDetails(String localeName) async {
+    final subId = state.activeSubscriptionId;
+    final date = state.selectedDate;
+    if (subId == null || subId.isEmpty || date == null) return;
+    await _fetchDayDetails(
+      date: date,
+      subscriptionId: subId,
+      localeName: localeName,
+    );
   }
 }

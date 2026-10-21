@@ -81,17 +81,20 @@ class OffersViewModel extends Cubit<OffersState> {
 
     switch (result) {
       case ApiSuccessResult(:final data):
-        final heroOffers = data.where((o) => o.bannerImageUrl != null).toList();
+        final offers = _withoutCampaigns(data);
+        final heroOffers = offers
+            .where((o) => o.bannerImageUrl != null)
+            .toList();
         final heroList = heroOffers.isNotEmpty
             ? heroOffers
-            : (data.isNotEmpty ? [data.first] : <OfferEntity>[]);
-        final filtered = _filterOffers(data, state.selectedCategoryIndex);
+            : (offers.isNotEmpty ? [offers.first] : <OfferEntity>[]);
+        final filtered = _filterOffers(offers, state.selectedCategoryIndex);
 
         emit(
           state.copyWith(
             isLoading: false,
             isRefreshing: false,
-            allOffers: data,
+            allOffers: offers,
             filteredOffers: filtered,
             heroOffers: heroList,
             clearFailure: true,
@@ -117,23 +120,20 @@ class OffersViewModel extends Cubit<OffersState> {
     final result = await _getOffersHubUseCase();
     switch (result) {
       case ApiSuccessResult(:final data):
-        final heroList = data.heroOffers.isNotEmpty
-            ? data.heroOffers
-            : (data.availableOffers.isNotEmpty
-                  ? [data.availableOffers.first]
-                  : <OfferEntity>[]);
-        final filtered = _filterOffers(
-          data.availableOffers,
-          state.selectedCategoryIndex,
-        );
+        final offers = _withoutCampaigns(data.availableOffers);
+        final heroes = _withoutCampaigns(data.heroOffers);
+        final heroList = heroes.isNotEmpty
+            ? heroes
+            : (offers.isNotEmpty ? [offers.first] : <OfferEntity>[]);
+        final filtered = _filterOffers(offers, state.selectedCategoryIndex);
         emit(
           state.copyWith(
             isLoading: false,
             isRefreshing: false,
-            allOffers: data.availableOffers,
+            allOffers: offers,
             filteredOffers: filtered,
             heroOffers: heroList,
-            savedOffers: data.savedOffers,
+            savedOffers: _withoutCampaigns(data.savedOffers),
             serverTimeUtc: data.serverTimeUtc,
             clearFailure: true,
           ),
@@ -165,7 +165,7 @@ class OffersViewModel extends Cubit<OffersState> {
   Future<void> _loadSavedOffers() async {
     final result = await _getSavedOffersUseCase();
     if (result is ApiSuccessResult<List<OfferEntity>>) {
-      emit(state.copyWith(savedOffers: result.data));
+      emit(state.copyWith(savedOffers: _withoutCampaigns(result.data)));
     }
   }
 
@@ -252,7 +252,11 @@ class OffersViewModel extends Cubit<OffersState> {
     );
   }
 
+  List<OfferEntity> _withoutCampaigns(List<OfferEntity> offers) =>
+      offers.where((offer) => offer.sourceType != 'Campaign').toList();
+
   List<OfferEntity> _filterOffers(List<OfferEntity> list, int categoryIndex) {
+    list = _withoutCampaigns(list);
     return switch (categoryIndex) {
       1 =>
         list

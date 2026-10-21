@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
+import 'package:meal_meat_user/features/offers/data/models/response/campaign_flow_response_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_services.dart';
 import 'package:meal_meat_user/features/offers/data/data_source/offers_remote_data_source.dart';
@@ -38,6 +40,20 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
     bool? eligibleOnly,
     bool? includeCampaigns,
   }) {
+    if (includeCampaigns != null) {
+      return _apiServices.postCustomerAvailableOffers(
+        GetCustomerAvailableOffersRequestDto(
+          includeCampaigns: includeCampaigns,
+          cartAmount: cartAmount ?? legacyRequest?.cartAmount,
+          durationDays: durationDays ?? legacyRequest?.durationDays,
+          deliveryGovernorate:
+              deliveryGovernorate ?? legacyRequest?.deliveryGovernorate,
+          programId: programId ?? legacyRequest?.programId,
+          bundleId: bundleId ?? legacyRequest?.bundleId,
+          restaurantId: restaurantId ?? legacyRequest?.restaurantId,
+        ),
+      );
+    }
     return _apiServices.getCustomerAvailableOffers(
       cartAmount: cartAmount ?? legacyRequest?.cartAmount,
       durationDays: durationDays ?? legacyRequest?.durationDays,
@@ -71,9 +87,14 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
 
   @override
   Future<OfferPurchaseOptionsResponseDto> getOfferPurchaseOptions(
-    String offerId, {String? startDate, bool? includeFriday}) =>
-      _apiServices.getOfferPurchaseOptions(offerId,
-        startDate: startDate, includeFriday: includeFriday);
+    String offerId, {
+    String? startDate,
+    bool? includeFriday,
+  }) => _apiServices.getOfferPurchaseOptions(
+    offerId,
+    startDate: startDate,
+    includeFriday: includeFriday,
+  );
 
   @override
   Future<List<OfferEligibleRestaurantDto>> getOfferEligibleRestaurants(
@@ -107,7 +128,9 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
     String offerId,
     String scheduledDate,
   ) {
-    return _apiServices.addOfferToCalendar(offerId, {'scheduledDate': scheduledDate});
+    return _apiServices.addOfferToCalendar(offerId, {
+      'scheduledDate': scheduledDate,
+    });
   }
 
   @override
@@ -150,4 +173,27 @@ class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
   ) {
     return _apiServices.getCampaignPaymentStatus(sessionId);
   }
+
+  @override
+  Future<CampaignPageResponseDto> getCampaigns({
+    int pageSize = 20,
+    String? cursor,
+  }) => _apiServices.getCampaigns(pageSize: pageSize, cursor: cursor);
+  @override
+  Future<CampaignDetailsResponseDto> getCampaignDetails(
+    String campaignId, {
+    String? bundleId,
+    int? durationDays,
+  }) => _apiServices.getCampaignDetails(
+    campaignId,
+    bundleId: bundleId,
+    durationDays: durationDays,
+  );
+  @override
+  Future<CampaignQuoteResponseDto> getCampaignQuote(
+    CampaignQuoteRequestDto request,
+  ) => _apiServices.getCampaignQuote(request);
+  @override
+  Future<void> cancelCampaignSubscription(String subscriptionId) =>
+      _apiServices.cancelCampaignSubscription(subscriptionId);
 }
