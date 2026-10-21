@@ -1,10 +1,12 @@
-import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
+import 'package:meal_meat_user/features/offers/presentation/widgets/offer_deal_countdown_bar.dart';
 
 class OfferDealCard extends StatelessWidget {
   const OfferDealCard({super.key, required this.offer, this.onTap});
@@ -12,30 +14,81 @@ class OfferDealCard extends StatelessWidget {
   final OfferEntity offer;
   final VoidCallback? onTap;
 
-  String _formatDuration(Duration d) {
-    final hours = d.inHours.toString().padLeft(2, '0');
-    final minutes = (d.inMinutes % 60).toString().padLeft(2, '0');
-    final seconds = (d.inSeconds % 60).toString().padLeft(2, '0');
-    return '$hours:$minutes:$seconds';
+  Widget _buildPlaceholder(Color accentColor) {
+    return Center(
+      child: Container(
+        width: 52,
+        height: 52,
+        decoration: BoxDecoration(
+          color: accentColor.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Icon(
+          offer.promoCode != null
+              ? Icons.confirmation_number_outlined
+              : Icons.local_offer_rounded,
+          color: accentColor,
+          size: Spacing.iconMd,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHighlightedTitle(
+    String title,
+    Color accentColor,
+    Color defaultColor,
+  ) {
+    final parts = title.trim().split(' ');
+    if (parts.length >= 2) {
+      final firstPart = parts.sublist(0, parts.length - 1).join(' ');
+      final lastPart = parts.last;
+      return Text.rich(
+        TextSpan(
+          text: '$firstPart ',
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size11,
+            color: defaultColor,
+          ),
+          children: [
+            TextSpan(
+              text: lastPart,
+              style: getBoldStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size11,
+                color: accentColor,
+              ),
+            ),
+          ],
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+      );
+    }
+    return Text(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.center,
+      style: getBoldStyle(
+        fontFamily: FontConstant.alexandria,
+        fontSize: FontSize.size11,
+        color: defaultColor,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
     final lang = Localizations.localeOf(context).languageCode;
-
-    final discountText = offer.discountRate != null && offer.discountRate! > 0
-        ? '-${(offer.discountRate! * 100).toInt()}%'
-        : (offer.discountAmount != null && offer.discountAmount! > 0
-              ? '-${offer.discountAmount!.toInt()} ${lang == 'ar' ? 'د.ك' : 'KWD'}'
-              : (offer.formattedDiscount().isNotEmpty
-                    ? '-${offer.formattedDiscount()}'
-                    : ''));
 
     final isOrangeTheme =
         (offer.discountRate != null && offer.discountRate! >= 0.25) ||
-        (offer.campaignId != null);
+        (offer.campaignId != null && offer.campaignId!.isNotEmpty);
 
     final accentColor = isOrangeTheme ? color.tertiary : color.primary;
     final onAccentColor = isOrangeTheme ? color.onTertiary : color.onPrimary;
@@ -48,20 +101,18 @@ class OfferDealCard extends StatelessWidget {
             offer.availabilityReasonCode ?? 'offers.customer.unavailable',
           );
 
-    final duration = offer.remainingDuration;
-    final hasTimer = duration > Duration.zero;
-    final String timerDigits;
-    if (hasTimer) {
-      if (duration.inDays > 0) {
-        timerDigits =
-            '${duration.inDays} ${lang == 'ar' ? 'يوم' : 'd'} : ${duration.inHours % 24} ${lang == 'ar' ? 'ساعة' : 'h'}';
-      } else {
-        timerDigits = _formatDuration(duration);
-      }
-    } else if (offer.promoCode != null && offer.promoCode!.isNotEmpty) {
-      timerDigits = offer.promoCode!;
+    final String? badgeLabel;
+    if (offer.discountRate != null && offer.discountRate! > 0) {
+      final rate = offer.discountRate!;
+      final pct = rate > 1.0 ? rate.round() : (rate * 100).round();
+      badgeLabel = '-$pct%';
+    } else if (offer.discountAmount != null && offer.discountAmount! > 0) {
+      badgeLabel =
+          '-${offer.discountAmount!.toInt()} ${lang == 'ar' ? 'د.ك' : 'KWD'}';
+    } else if (offer.formattedDiscount().isNotEmpty) {
+      badgeLabel = '-${offer.formattedDiscount()}';
     } else {
-      timerDigits = locale.offers_featured_button;
+      badgeLabel = null;
     }
 
     return Material(
@@ -71,154 +122,115 @@ class OfferDealCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
         child: Container(
           width: Spacing.offersDealCardWidth,
-          padding: const EdgeInsets.all(Spacing.sm),
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(Spacing.offersDealCardRadius),
             border: Border.all(
-              color: color.outlineVariant.withValues(alpha: 0.6),
+              color: color.outlineVariant.withValues(alpha: 0.5),
               width: Spacing.border,
             ),
             boxShadow: [
               BoxShadow(
-                color: color.shadow.withValues(alpha: 0.03),
+                color: color.shadow.withValues(alpha: 0.04),
                 blurRadius: 8,
-                offset: const Offset(0, 3),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
+          clipBehavior: Clip.antiAlias,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Top Discount Badge (Solid colored pill like Figma)
-              if (discountText.isNotEmpty)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.xs,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: accentColor,
-                    borderRadius: BorderRadius.circular(Spacing.xs),
-                  ),
-                  child: Text(
-                    discountText,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: onAccentColor,
+              // Top Badge (flush with topEnd corner)
+              if (badgeLabel != null)
+                Align(
+                  alignment: isOrangeTheme
+                      ? Alignment.topCenter
+                      : AlignmentDirectional.topEnd,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.sm,
+                      vertical: Spacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: accentColor,
+                      borderRadius: isOrangeTheme
+                          ? const BorderRadius.vertical(
+                              bottom: Radius.circular(Spacing.xs),
+                            )
+                          : const BorderRadiusDirectional.only(
+                              topEnd:
+                                  Radius.circular(Spacing.offersDealCardRadius),
+                              bottomStart: Radius.circular(Spacing.sm),
+                            ),
+                    ),
+                    child: Text(
+                      badgeLabel,
+                      textAlign: TextAlign.center,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size11,
+                        color: onAccentColor,
+                      ),
                     ),
                   ),
                 )
               else
-                const SizedBox(height: Spacing.md),
+                const SizedBox(height: Spacing.xs),
 
-              // Title & Subtitle
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    cleanTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: accentColor,
-                    ),
+              // Product / Meal Image from Network or Branded Placeholder
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.xs,
+                    vertical: Spacing.xxs,
                   ),
-                  const SizedBox(height: Spacing.xxs),
-                  Text(
-                    descriptionText,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: getRegularStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: color.onSurfaceVariant,
-                    ),
+                  child: AppCachedNetworkImage(
+                    imageUrl: offer.bannerImageUrl,
+                    fit: BoxFit.contain,
+                    errorWidget: _buildPlaceholder(accentColor),
                   ),
-                ],
+                ),
               ),
 
-              // Bottom Countdown / Action Pill
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.xs,
-                  vertical: 4,
+              // Title with highlighted keyword
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                child: _buildHighlightedTitle(
+                  cleanTitle,
+                  accentColor,
+                  color.onSurface,
                 ),
-                decoration: BoxDecoration(
-                  color: accentColor,
-                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              ),
+              const SizedBox(height: Spacing.xxs),
+
+              // Subtitle
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                child: Text(
+                  descriptionText,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.alexandria,
+                    fontSize: FontSize.size9,
+                    color: color.onSurfaceVariant,
+                  ),
                 ),
-                child: hasTimer
-                    ? Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            locale.offers_countdown_label,
-                            style: getMediumStyle(
-                              fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size8,
-                              color: onAccentColor.withValues(alpha: 0.92),
-                            ),
-                          ),
-                          const SizedBox(height: 1),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.access_time_rounded,
-                                size: 10,
-                                color: onAccentColor,
-                              ),
-                              const SizedBox(width: 3),
-                              Flexible(
-                                child: Text(
-                                  timerDigits,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: getBoldStyle(
-                                    fontFamily: FontConstant.alexandria,
-                                    fontSize: FontSize.size9,
-                                    color: onAccentColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            offer.promoCode != null
-                                ? Icons.confirmation_number_outlined
-                                : Icons.arrow_forward_rounded,
-                            size: Spacing.iconSm,
-                            color: onAccentColor,
-                          ),
-                          const SizedBox(width: Spacing.xxs),
-                          Flexible(
-                            child: Text(
-                              timerDigits,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size9,
-                                color: onAccentColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+              ),
+              const SizedBox(height: Spacing.xs),
+
+              // Bottom Countdown / Coupon Footer Bar (flush with bottom edge)
+              OfferDealCountdownBar(
+                endsAt: offer.endsAt,
+                serverNowUtc: offer.serverNowUtc,
+                serverObservedAtUtc: offer.serverObservedAtUtc,
+                promoCode: offer.promoCode,
+                accentColor: accentColor,
+                onAccentColor: onAccentColor,
+                bottomRadius: Spacing.offersDealCardRadius,
               ),
             ],
           ),

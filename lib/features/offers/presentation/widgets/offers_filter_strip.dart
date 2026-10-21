@@ -55,7 +55,7 @@ class OffersFilterStrip extends StatelessWidget {
                         Icon(
                           filter.icon,
                           size: Spacing.offersFilterIconSize,
-                          color: selected ? color.onPrimary : color.onSurfaceVariant,
+                          color: selected ? color.onPrimary : color.onSurface,
                           semanticLabel: filter.label,
                         ),
                         const SizedBox(width: Spacing.xs),
@@ -65,7 +65,7 @@ class OffersFilterStrip extends StatelessWidget {
                           style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size12,
-                            color: selected ? color.onPrimary : color.onSurfaceVariant,
+                            color: selected ? color.onPrimary : color.onSurface,
                           ),
                         ),
                       ],

@@ -341,7 +341,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('Ready to buy offers'), findsOneWidget);
+        expect(find.text('Featured offers'), findsOneWidget);
         expect(find.text('Discount coupons'), findsOneWidget);
 
         expect(find.byKey(const ValueKey('direct-1')), findsOneWidget);
@@ -368,7 +368,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('Ready to buy offers'), findsOneWidget);
+        expect(find.text('Featured offers'), findsOneWidget);
         expect(find.text('Discount coupons'), findsOneWidget);
 
         expect(
@@ -405,7 +405,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('عروض الشراء المباشر'), findsOneWidget);
+      expect(find.text('عروض مميزة'), findsOneWidget);
       expect(find.text('كوبونات الخصم'), findsOneWidget);
       expect(
         Directionality.of(tester.element(find.byType(OffersScreen))),

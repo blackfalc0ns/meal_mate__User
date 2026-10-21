@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/widget/app_cached_network_image.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 
 class OfferBrowseCard extends StatelessWidget {
@@ -50,13 +51,13 @@ class OfferBrowseCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 color: color.primary.withValues(alpha: 0.08),
-                child:
-                    offer.bannerImageUrl != null &&
+                child: offer.bannerImageUrl != null &&
                         offer.bannerImageUrl!.isNotEmpty
-                    ? Image.network(
-                        offer.bannerImageUrl!,
+                    ? AppCachedNetworkImage(
+                        imageUrl: offer.bannerImageUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => Icon(
+                        borderRadius: BorderRadius.circular(Spacing.sm),
+                        errorWidget: Icon(
                           Icons.local_offer_rounded,
                           color: color.primary,
                           size: 36,

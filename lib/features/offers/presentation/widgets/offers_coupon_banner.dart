@@ -27,10 +27,10 @@ class OffersCouponBanner extends StatelessWidget {
             vertical: Spacing.sm,
           ),
           decoration: BoxDecoration(
-            color: color.tertiary.withValues(alpha: 0.08),
+            color: color.surfaceContainerLow,
             borderRadius: BorderRadius.circular(Spacing.offersCouponBannerRadius),
             border: Border.all(
-              color: color.tertiary.withValues(alpha: 0.22),
+              color: color.outlineVariant.withValues(alpha: 0.5),
               width: Spacing.border,
             ),
           ),
@@ -42,9 +42,9 @@ class OffersCouponBanner extends StatelessWidget {
                 child: Text.rich(
                   TextSpan(
                     text: locale.offers_coupon_prefix,
-                    style: getBoldStyle(
+                    style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
+                      fontSize: FontSize.size11,
                       color: color.onSurface,
                     ),
                     children: [
@@ -52,16 +52,16 @@ class OffersCouponBanner extends StatelessWidget {
                         text: locale.offers_coupon_highlight,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
-                          color: color.primary,
+                          fontSize: FontSize.size11,
+                          color: color.onSurface,
                         ),
                       ),
                       TextSpan(
                         text: '${locale.offers_coupon_suffix}\n${locale.offers_coupon_second_line}',
-                        style: getMediumStyle(
+                        style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
+                          color: color.onSurface,
                         ),
                       ),
                     ],

@@ -146,7 +146,13 @@ class _OffersContentState extends State<_OffersContent> {
                 onPressed: () =>
                     Navigator.of(context).pushNamed(AppRoutes.promoCodeInput),
               ),
-              actions: [NotificationButton(onTap: () {})],
+              actions: [
+                NotificationButton(
+                  hasNotification: true,
+                  badgeColor: color.tertiary,
+                  onTap: () {},
+                ),
+              ],
             ),
             Expanded(
               child: BlocBuilder<OffersViewModel, OffersState>(
@@ -178,7 +184,7 @@ class _OffersContentState extends State<_OffersContent> {
                     ),
                     OfferFilterEntity(
                       label: locale.offers_filter_offers,
-                      icon: Icons.card_membership_rounded,
+                      icon: Icons.inventory_2_outlined,
                       isSelected: state.selectedCategoryIndex == 1,
                     ),
                     OfferFilterEntity(
@@ -188,7 +194,7 @@ class _OffersContentState extends State<_OffersContent> {
                     ),
                     OfferFilterEntity(
                       label: locale.offers_filter_meals,
-                      icon: Icons.timer_outlined,
+                      icon: Icons.access_time_rounded,
                       isSelected: state.selectedCategoryIndex == 3,
                     ),
                     OfferFilterEntity(
@@ -264,7 +270,7 @@ class _OffersContentState extends State<_OffersContent> {
                           const SliverToBoxAdapter(
                             child: SizedBox(height: Spacing.sm),
                           ),
-                        ] else if (heroOffer != null) ...[
+                        ] else ...[
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -272,7 +278,9 @@ class _OffersContentState extends State<_OffersContent> {
                               ),
                               child: OffersHeroCard(
                                 offer: heroOffer,
-                                onTap: () => _onOfferTap(context, heroOffer),
+                                onTap: heroOffer != null
+                                    ? () => _onOfferTap(context, heroOffer)
+                                    : null,
                               ),
                             ),
                           ),
@@ -281,7 +289,7 @@ class _OffersContentState extends State<_OffersContent> {
                               padding: EdgeInsetsDirectional.only(
                                 top: Spacing.sm,
                               ),
-                              child: OffersPageIndicator(itemCount: 3),
+                              child: OffersPageIndicator(itemCount: 4),
                             ),
                           ),
                           const SliverToBoxAdapter(
@@ -298,11 +306,11 @@ class _OffersContentState extends State<_OffersContent> {
                             },
                           ),
                         ),
-                        // Ready Offers Section
+                        // Featured Offers Section (★ عروض مميزة)
                         SliverToBoxAdapter(
                           child: OffersSectionHeader(
-                            title: locale.offers_ready_section_title,
-                            icon: Icons.local_offer_rounded,
+                            title: locale.offers_featured_section_title,
+                            icon: Icons.star_rounded,
                             iconColor: color.primary,
                           ),
                         ),
@@ -330,7 +338,7 @@ class _OffersContentState extends State<_OffersContent> {
                         const SliverToBoxAdapter(
                           child: SizedBox(height: Spacing.md),
                         ),
-                        // Coupon Offers Section
+                        // Coupon Offers Section (كوبونات الخصم)
                         SliverToBoxAdapter(
                           child: OffersSectionHeader(
                             title: locale.offers_coupons_section_title,

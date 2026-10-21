@@ -56,39 +56,21 @@ class OffersInviteBanner extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               PositionedDirectional(
-                top: 2,
-                start: 4,
+                top: 4,
+                start: 6,
                 child: Icon(
-                  Icons.eco_outlined,
-                  size: 20,
-                  color: color.primary.withValues(alpha: 0.15),
+                  Icons.people_alt_outlined,
+                  size: 26,
+                  color: color.primary.withValues(alpha: 0.16),
                 ),
               ),
               PositionedDirectional(
-                bottom: 2,
-                end: 6,
+                bottom: 4,
+                end: 8,
                 child: Icon(
-                  Icons.eco_rounded,
-                  size: 22,
-                  color: color.primary.withValues(alpha: 0.15),
-                ),
-              ),
-              PositionedDirectional(
-                top: 8,
-                end: 18,
-                child: Icon(
-                  Icons.spa_outlined,
-                  size: 14,
-                  color: color.primary.withValues(alpha: 0.12),
-                ),
-              ),
-              PositionedDirectional(
-                bottom: 12,
-                start: 16,
-                child: Icon(
-                  Icons.spa_rounded,
-                  size: 14,
-                  color: color.primary.withValues(alpha: 0.12),
+                  Icons.card_giftcard_rounded,
+                  size: 28,
+                  color: color.primary.withValues(alpha: 0.16),
                 ),
               ),
               Column(
@@ -101,7 +83,7 @@ class OffersInviteBanner extends StatelessWidget {
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
-                      color: color.onSurfaceVariant,
+                      color: color.onSurface,
                     ),
                   ),
                   const SizedBox(height: Spacing.xxs),
@@ -150,3 +132,5 @@ class OffersInviteBanner extends StatelessWidget {
     );
   }
 }
+
+
