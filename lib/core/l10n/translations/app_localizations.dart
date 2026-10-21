@@ -3140,6 +3140,108 @@ abstract class AppLocalizations {
   /// **'Choose plan'**
   String get offer_details_open_plans_button;
 
+  /// No description provided for @offer_details_benefits_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Why this offer?'**
+  String get offer_details_benefits_section_title;
+
+  /// No description provided for @offer_details_benefit_saving_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Bigger Savings'**
+  String get offer_details_benefit_saving_title;
+
+  /// No description provided for @offer_details_benefit_saving_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get better value at a lower price'**
+  String get offer_details_benefit_saving_desc;
+
+  /// No description provided for @offer_details_benefit_goals_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal-Oriented'**
+  String get offer_details_benefit_goals_title;
+
+  /// No description provided for @offer_details_benefit_goals_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition plans supporting your health goals'**
+  String get offer_details_benefit_goals_desc;
+
+  /// No description provided for @offer_details_benefit_flexibility_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible Choice'**
+  String get offer_details_benefit_flexibility_title;
+
+  /// No description provided for @offer_details_benefit_flexibility_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your plan and change it whenever needed'**
+  String get offer_details_benefit_flexibility_desc;
+
+  /// No description provided for @offer_details_featured_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Offer'**
+  String get offer_details_featured_badge;
+
+  /// No description provided for @offer_details_active_code_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Code Active'**
+  String get offer_details_active_code_badge;
+
+  /// No description provided for @offer_details_pill_every_month.
+  ///
+  /// In en, this message translates to:
+  /// **'Better every month'**
+  String get offer_details_pill_every_month;
+
+  /// No description provided for @offer_details_pill_goals.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports your goals'**
+  String get offer_details_pill_goals;
+
+  /// No description provided for @offer_details_pill_integrated_plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrated plans'**
+  String get offer_details_pill_integrated_plans;
+
+  /// No description provided for @offer_details_valid_on_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid on'**
+  String get offer_details_valid_on_label;
+
+  /// No description provided for @offer_details_valid_on_all_monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'All monthly plans'**
+  String get offer_details_valid_on_all_monthly;
+
+  /// No description provided for @offer_details_terms_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot be combined with other offers'**
+  String get offer_details_terms_short;
+
+  /// No description provided for @offer_details_info_offer_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer type'**
+  String get offer_details_info_offer_type;
+
+  /// No description provided for @offer_details_info_terms_short_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get offer_details_info_terms_short_label;
+
   /// No description provided for @currency.
   ///
   /// In en, this message translates to:

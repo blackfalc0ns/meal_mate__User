@@ -1649,6 +1649,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offer_details_open_plans_button => 'Choose plan';
 
   @override
+  String get offer_details_benefits_section_title => 'Why this offer?';
+
+  @override
+  String get offer_details_benefit_saving_title => 'Bigger Savings';
+
+  @override
+  String get offer_details_benefit_saving_desc =>
+      'Get better value at a lower price';
+
+  @override
+  String get offer_details_benefit_goals_title => 'Goal-Oriented';
+
+  @override
+  String get offer_details_benefit_goals_desc =>
+      'Nutrition plans supporting your health goals';
+
+  @override
+  String get offer_details_benefit_flexibility_title => 'Flexible Choice';
+
+  @override
+  String get offer_details_benefit_flexibility_desc =>
+      'Choose your plan and change it whenever needed';
+
+  @override
+  String get offer_details_featured_badge => 'Special Offer';
+
+  @override
+  String get offer_details_active_code_badge => 'Code Active';
+
+  @override
+  String get offer_details_pill_every_month => 'Better every month';
+
+  @override
+  String get offer_details_pill_goals => 'Supports your goals';
+
+  @override
+  String get offer_details_pill_integrated_plans => 'Integrated plans';
+
+  @override
+  String get offer_details_valid_on_label => 'Valid on';
+
+  @override
+  String get offer_details_valid_on_all_monthly => 'All monthly plans';
+
+  @override
+  String get offer_details_terms_short =>
+      'Cannot be combined with other offers';
+
+  @override
+  String get offer_details_info_offer_type => 'Offer type';
+
+  @override
+  String get offer_details_info_terms_short_label => 'Terms';
+
+  @override
   String get currency => 'KWD';
 
   @override

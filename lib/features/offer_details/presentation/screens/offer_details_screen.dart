@@ -2,7 +2,6 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -20,7 +19,7 @@ import 'package:meal_meat_user/features/offer_details/data/offer_details_data.da
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_event.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_state.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_view_model.dart';
-import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_countdown_timer_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_benefits_section.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_hero_card.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/widgets/offer_details_info_card.dart';
@@ -101,9 +100,10 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
               );
             }
 
-            final offer = state.offer;
-            final isExpired = _isOfferExpired || (offer?.isExpired ?? false);
-            final isSoldOut = offer?.isSoldOut ?? false;
+            final offer = state.offer!;
+            final isExpired = _isOfferExpired || offer.isExpired;
+            final isSoldOut = offer.isSoldOut;
+            final details = _detailsFromOffer(offer, locale);
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -116,7 +116,7 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (state.failure != null && state.offer != null) ...[
+                  if (state.failure != null) ...[
                     InlineApiErrorWidget(
                       failure: state.failure!,
                       onRetry: () => context
@@ -125,33 +125,25 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     ),
                     const SizedBox(height: Spacing.base),
                   ],
-                  if (offer?.bannerImageUrl != null)
-                    OfferDetailsHeroCard(
-                      details: _detailsFromOffer(offer!, locale),
-                    ),
+
+                  // Hero Card (Figma 12.02)
+                  OfferDetailsHeroCard(
+                    details: details,
+                    onExpired: () {
+                      if (mounted) {
+                        setState(() {
+                          _isOfferExpired = true;
+                        });
+                      }
+                    },
+                  ),
                   const SizedBox(height: Spacing.base),
 
-                  // Countdown Timer
-                  if (offer?.endsAt != null) ...[
-                    OfferCountdownTimerWidget(
-                      endsAt: offer!.endsAt!,
-                      serverNowUtc: offer.serverNowUtc,
-                      onExpired: () {
-                        if (mounted) {
-                          setState(() {
-                            _isOfferExpired = true;
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(height: Spacing.base),
-                  ],
-
-                  if (offer?.isAvailable == false) ...[
+                  if (!offer.isAvailable) ...[
                     Text(
                       ErrorMessagePresenter.mapCode(
                         context,
-                        offer?.availabilityReasonCode ??
+                        offer.availabilityReasonCode ??
                             'offers.customer.unavailable',
                       ),
                       style: getRegularStyle(
@@ -162,32 +154,26 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                     ),
                     const SizedBox(height: Spacing.sm),
                   ],
-                  // Promo code copy box if code is present
-                  if (offer?.promoCode != null &&
-                      offer!.promoCode!.isNotEmpty) ...[
-                    _buildPromoCodeCard(context, offer.promoCode!),
-                    const SizedBox(height: Spacing.base),
+
+                  // Info Card with 4 rows & integrated Coupon Box (Figma 12.02)
+                  OfferDetailsInfoCard(details: details),
+                  const SizedBox(height: Spacing.base),
+
+                  // "Why this offer?" Benefits Section (Figma 12.02)
+                  if (details.benefits.isNotEmpty) ...[
+                    OfferDetailsBenefitsSection(details: details),
+                    const SizedBox(height: Spacing.lg),
                   ],
 
-                  OfferDetailsInfoCard(
-                    details: _detailsFromOffer(offer!, locale),
-                  ),
-                  const SizedBox(height: Spacing.md),
-                  if (_detailsFromOffer(offer, locale).benefits.isNotEmpty)
-                    OfferDetailsBenefitsSection(
-                      details: _detailsFromOffer(offer, locale),
-                    ),
-                  const SizedBox(height: Spacing.xl),
                   AppButton(
                     text: isExpired
                         ? locale.offer_status_expired
                         : (isSoldOut
-                              ? locale.offer_status_sold_out
-                              : (offer.isCouponOnly
-                                    ? locale.offers_coupon_button
-                                    : locale.offer_details_plan_section_title)),
-                    onPressed:
-                        !offer.isAvailable ||
+                            ? locale.offer_status_sold_out
+                            : (offer.isCouponOnly
+                                ? locale.offers_coupon_button
+                                : locale.offer_details_plan_section_title)),
+                    onPressed: !offer.isAvailable ||
                             (offer.isCouponOnly &&
                                 offer.promoCode?.trim().isNotEmpty != true) ||
                             isExpired ||
@@ -197,8 +183,7 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
                         : () => _navigateToRedeemPackage(context, offer),
                     height: Spacing.offerDetailsBottomButtonHeight,
                     borderRadius: Spacing.offerDetailsBottomButtonRadius,
-                    gradient:
-                        !offer.isAvailable ||
+                    gradient: !offer.isAvailable ||
                             (offer.isCouponOnly &&
                                 offer.promoCode?.trim().isNotEmpty != true) ||
                             isExpired ||
@@ -222,86 +207,85 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
     );
   }
 
-  Widget _buildPromoCodeCard(BuildContext context, String promoCode) {
-    final color = context.colorScheme;
-    final locale = context.localization;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.md,
-        vertical: Spacing.sm,
-      ),
-      decoration: BoxDecoration(
-        color: color.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(Spacing.sm),
-        border: Border.all(color: color.primary.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.discount_outlined, color: color.primary, size: 20),
-          const SizedBox(width: Spacing.sm),
-          Text(
-            '${locale.offer_details_code_label}: ',
-            style: getMediumStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size13,
-              color: color.onSurfaceVariant,
-            ),
-          ),
-          Text(
-            promoCode,
-            style: getBoldStyle(
-              fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size14,
-              color: color.primary,
-            ),
-          ),
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              unawaited(Clipboard.setData(ClipboardData(text: promoCode)));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(locale.offer_details_copy_code),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(Spacing.xs),
-              child: Icon(Icons.copy_rounded, color: color.primary, size: 18),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   OfferDetailsData _detailsFromOffer(OfferEntity offer, dynamic locale) {
+    final endsAt = offer.endsAt;
+    final formattedEndsAt = endsAt != null
+        ? DateFormat('d MMMM yyyy', locale.localeName).format(endsAt.toLocal())
+        : locale.offer_details_hero_timer_label;
+
+    final discountRate = offer.discountRate;
+    final discountStr = discountRate != null
+        ? '${(discountRate * 100).round()}%'
+        : (offer.discountAmount != null
+            ? '${offer.discountAmount!.round()} ${locale.currency}'
+            : '20%');
+
+    final offerName = offer.title(locale.localeName);
+    final offerDesc = offer.description(locale.localeName);
+    final offerTerms = offer.terms(locale.localeName);
+
     return OfferDetailsData(
       heroImageUrl: offer.bannerImageUrl,
       couponCode: offer.promoCode,
+      discountRate: offer.discountRate,
+      discountText: discountStr,
+      offerHeading: discountRate != null
+          ? 'خصم $discountStr على الباقات'
+          : locale.offer_details_hero_heading,
+      offerSubtitle: offerName.isNotEmpty
+          ? offerName
+          : locale.offer_details_hero_subtitle,
+      endsAt: offer.endsAt,
+      serverNowUtc: offer.serverNowUtc,
+      isFeatured: true,
+      isCodeActive: offer.isAvailable,
       infoRows: [
         OfferDetailsInfoRowData(
-          label: locale.offer_details_info_title,
-          value: offer.description(locale.localeName),
+          label: locale.offer_details_info_offer_type,
+          value: offerDesc.isNotEmpty
+              ? offerDesc
+              : (offerName.isNotEmpty
+                  ? offerName
+                  : locale.offer_details_info_summary),
           icon: OfferDetailsIconType.tag,
         ),
         if (offer.endsAt != null)
           OfferDetailsInfoRowData(
             label: locale.offer_details_info_duration_label,
-            value: offer.endsAt!.toLocal().toString(),
+            value: formattedEndsAt,
             icon: OfferDetailsIconType.calendar,
           ),
-        if (offer.terms(locale.localeName) != null)
-          OfferDetailsInfoRowData(
-            label: locale.offer_details_info_terms_label,
-            value: offer.terms(locale.localeName)!,
-            icon: OfferDetailsIconType.document,
-          ),
+        OfferDetailsInfoRowData(
+          label: locale.offer_details_valid_on_label,
+          value: locale.offer_details_valid_on_all_monthly,
+          icon: OfferDetailsIconType.box,
+        ),
+        OfferDetailsInfoRowData(
+          label: locale.offer_details_info_terms_short_label,
+          value: offerTerms?.isNotEmpty == true
+              ? offerTerms!
+              : locale.offer_details_terms_short,
+          icon: OfferDetailsIconType.document,
+        ),
       ],
-      benefitsTitle: locale.offer_details_title,
-      benefits: const [],
+      benefitsTitle: locale.offer_details_benefits_section_title,
+      benefits: [
+        OfferDetailsBenefitData(
+          title: locale.offer_details_benefit_saving_title,
+          description: locale.offer_details_benefit_saving_desc,
+          icon: OfferDetailsIconType.money,
+        ),
+        OfferDetailsBenefitData(
+          title: locale.offer_details_benefit_goals_title,
+          description: locale.offer_details_benefit_goals_desc,
+          icon: OfferDetailsIconType.target,
+        ),
+        OfferDetailsBenefitData(
+          title: locale.offer_details_benefit_flexibility_title,
+          description: locale.offer_details_benefit_flexibility_desc,
+          icon: OfferDetailsIconType.sliders,
+        ),
+      ],
     );
   }
 

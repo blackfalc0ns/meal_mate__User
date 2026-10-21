@@ -6,6 +6,14 @@ class OfferDetailsData {
     required this.infoRows,
     required this.benefitsTitle,
     required this.benefits,
+    this.discountRate,
+    this.discountText,
+    this.offerHeading,
+    this.offerSubtitle,
+    this.endsAt,
+    this.serverNowUtc,
+    this.isFeatured = true,
+    this.isCodeActive = true,
   });
 
   final String? heroImageUrl;
@@ -13,6 +21,14 @@ class OfferDetailsData {
   final List<OfferDetailsInfoRowData> infoRows;
   final String benefitsTitle;
   final List<OfferDetailsBenefitData> benefits;
+  final double? discountRate;
+  final String? discountText;
+  final String? offerHeading;
+  final String? offerSubtitle;
+  final DateTime? endsAt;
+  final DateTime? serverNowUtc;
+  final bool isFeatured;
+  final bool isCodeActive;
 }
 
 class OfferDetailsInfoRowData {

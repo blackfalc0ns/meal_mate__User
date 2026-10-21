@@ -1626,6 +1626,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offer_details_open_plans_button => 'اختيار الباقة';
 
   @override
+  String get offer_details_benefits_section_title => 'لماذا هذا العرض؟';
+
+  @override
+  String get offer_details_benefit_saving_title => 'توفير أكبر';
+
+  @override
+  String get offer_details_benefit_saving_desc => 'احصل على قيمة أفضل بسعر أقل';
+
+  @override
+  String get offer_details_benefit_goals_title => 'مناسب للأهداف';
+
+  @override
+  String get offer_details_benefit_goals_desc =>
+      'خطط غذائية لدعم أهدافك الصحية والرياضية';
+
+  @override
+  String get offer_details_benefit_flexibility_title => 'مرونة في الاختيار';
+
+  @override
+  String get offer_details_benefit_flexibility_desc =>
+      'اختر الباقة التي تناسبك وغيرّها وقت ما تحتاج';
+
+  @override
+  String get offer_details_featured_badge => 'عرض مميز';
+
+  @override
+  String get offer_details_active_code_badge => 'كود مفعل';
+
+  @override
+  String get offer_details_pill_every_month => 'كل شهر أفضل';
+
+  @override
+  String get offer_details_pill_goals => 'تساعدك على أهدافك';
+
+  @override
+  String get offer_details_pill_integrated_plans => 'خطط متكاملة';
+
+  @override
+  String get offer_details_valid_on_label => 'صالح على';
+
+  @override
+  String get offer_details_valid_on_all_monthly => 'جميع الباقات الشهرية';
+
+  @override
+  String get offer_details_terms_short => 'لا يدمج مع عروض أخرى';
+
+  @override
+  String get offer_details_info_offer_type => 'نوع العرض';
+
+  @override
+  String get offer_details_info_terms_short_label => 'الشروط';
+
+  @override
   String get currency => 'د.ك';
 
   @override
