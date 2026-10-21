@@ -1,10 +1,11 @@
+import '../../support/family_member_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/core/network/sensitive_data_sanitizer.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_access_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
@@ -18,14 +19,14 @@ import 'package:meal_meat_user/features/family_management/member/presentation/ma
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 
 class FakeAccessFamilyMemberRepository implements FamilyMemberRepository {
-  UpdateFamilyMemberAccessRequestDto? lastUpdateRequest;
+  UpdateFamilyMemberAccessRequestEntity? lastUpdateRequest;
   ApiResult<FamilyMemberAccessEntity>? updateResult;
   int updateCallCount = 0;
 
   @override
   Future<ApiResult<FamilyMemberAccessEntity>> updateMemberAccess(
     String memberId,
-    UpdateFamilyMemberAccessRequestDto request,
+    UpdateFamilyMemberAccessRequestEntity request,
   ) async {
     updateCallCount++;
     lastUpdateRequest = request;
@@ -64,7 +65,7 @@ class FakeAccessFamilyMemberRepository implements FamilyMemberRepository {
 }
 
 FamilyMemberViewModel _createViewModel(FakeAccessFamilyMemberRepository fakeRepo) {
-  return FamilyMemberViewModel(
+  return createFamilyMemberViewModel(
     GetFamilyMemberDetailUseCase(fakeRepo),
     GetFamilyMemberAccessUseCase(fakeRepo),
     UpdateFamilyMemberAccessUseCase(fakeRepo),

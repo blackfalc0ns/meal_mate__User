@@ -172,6 +172,10 @@ import '../../features/family_context/presentation/manager/family_context_view_m
     as _i960;
 import '../../features/family_management/calendar/presentation/manager/family_calendar_view_model.dart'
     as _i676;
+import '../../features/family_management/meal_selection/presentation/manager/family_meal_selection_state.dart'
+    as _i854;
+import '../../features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart'
+    as _i670;
 import '../../features/family_management/member/data/data_source/family_member_remote_data_source.dart'
     as _i596;
 import '../../features/family_management/member/data/data_source/family_member_remote_data_source_impl.dart'
@@ -783,18 +787,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i141.CampaignCheckoutAttemptStore>(
       () => _i141.CampaignCheckoutAttemptStore(gh<_i42.SharedPrefHelper>()),
-    );
-    gh.factory<_i800.FamilyMemberViewModel>(
-      () => _i800.FamilyMemberViewModel(
-        gh<_i556.GetFamilyMemberDetailUseCase>(),
-        gh<_i190.GetFamilyMemberAccessUseCase>(),
-        gh<_i191.UpdateFamilyMemberAccessUseCase>(),
-        gh<_i63.GetFamilyMemberPermissionsUseCase>(),
-        gh<_i146.UpdateFamilyMemberPermissionsUseCase>(),
-        gh<_i236.UpdateFamilyMemberBasicInfoUseCase>(),
-        gh<_i353.RenewFamilyMemberSubscriptionUseCase>(),
-        gh<_i812.DetachFamilyMemberUseCase>(),
-      ),
     );
     gh.lazySingleton<_i227.TokenService>(
       () => _i227.TokenService(
@@ -1816,7 +1808,7 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i706.RestoreCampaignCheckoutUseCase>(),
       ),
     );
-    gh.factory<_i960.FamilyContextViewModel>(
+    gh.lazySingleton<_i960.FamilyContextViewModel>(
       () =>
           _i960.FamilyContextViewModel(gh<_i673.GetMyFamilyContextsUseCase>()),
     );
@@ -2014,6 +2006,24 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i790.GetSubscriptionPackagesUseCase>(),
       ),
     );
+    gh.factoryParam<
+      _i670.FamilyMealSelectionViewModel,
+      _i676.FamilyCalendarViewModel,
+      _i854.FamilyMealSelectionState?
+    >(
+      (calendar, initialState) => _i670.FamilyMealSelectionViewModel(
+        gh<_i389.GetCalendarRestaurantsUseCase>(),
+        gh<_i389.GetCalendarAvailableMealsUseCase>(),
+        gh<_i896.SaveCalendarDayMealsUseCase>(),
+        gh<_i133.SetCalendarDayRestaurantUseCase>(),
+        gh<_i438.ConfirmCalendarDayMealsUseCase>(),
+        gh<_i147.AutoSelectCalendarDayUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i960.FamilyContextViewModel>(),
+        calendar: calendar,
+        initialState: initialState,
+      ),
+    );
     gh.lazySingleton<_i63.PushNotificationService>(
       () => _i63.PushNotificationService(
         gh<_i892.FirebaseMessaging>(),
@@ -2209,12 +2219,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i378.CustomerDeliveryRealtimeService>(),
       ),
     );
-    gh.factory<_i676.FamilyCalendarViewModel>(
-      () => _i676.FamilyCalendarViewModel(
-        gh<_i356.GetFamilyMembersUseCase>(),
-        gh<_i200.GetCalendarUseCase>(),
-        gh<_i705.GetCalendarDayUseCase>(),
-        gh<_i128.GetFamilyMemberCapabilitiesUseCase>(),
+    gh.factory<_i800.FamilyMemberViewModel>(
+      () => _i800.FamilyMemberViewModel(
+        gh<_i556.GetFamilyMemberDetailUseCase>(),
+        gh<_i190.GetFamilyMemberAccessUseCase>(),
+        gh<_i191.UpdateFamilyMemberAccessUseCase>(),
+        gh<_i63.GetFamilyMemberPermissionsUseCase>(),
+        gh<_i146.UpdateFamilyMemberPermissionsUseCase>(),
+        gh<_i236.UpdateFamilyMemberBasicInfoUseCase>(),
+        gh<_i353.RenewFamilyMemberSubscriptionUseCase>(),
+        gh<_i812.DetachFamilyMemberUseCase>(),
+        gh<_i960.FamilyContextViewModel>(),
       ),
     );
     gh.factory<_i1055.FamilyOverviewViewModel>(
@@ -2235,6 +2250,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i227.TokenService>(),
         gh<_i43.BiometricService>(),
         gh<_i378.CustomerDeliveryRealtimeService>(),
+      ),
+    );
+    gh.factory<_i676.FamilyCalendarViewModel>(
+      () => _i676.FamilyCalendarViewModel(
+        gh<_i356.GetFamilyMembersUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+        gh<_i705.GetCalendarDayUseCase>(),
+        gh<_i960.FamilyContextViewModel>(),
       ),
     );
     gh.factory<_i776.InfluencerAnalyticsViewModel>(

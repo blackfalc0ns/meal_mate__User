@@ -159,45 +159,43 @@ void main() {
     },
   );
 
-  testWidgets(
-    'renders inline error when capabilitiesFailure or dayFailure is present',
-    (tester) async {
-      final viewModel = createFamilyCalendarViewModel();
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          locale: const Locale('ar'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: FamilyMemberCalendarScreen(
-            viewModel: viewModel,
-            args: const FamilyMemberCalendarArgs(
-              subscriptionId: 'sub-1',
-              displayName: 'أحمد',
-            ),
+  testWidgets('renders inline error when dayFailure is present', (
+    tester,
+  ) async {
+    final viewModel = createFamilyCalendarViewModel();
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: FamilyMemberCalendarScreen(
+          viewModel: viewModel,
+          args: const FamilyMemberCalendarArgs(
+            subscriptionId: 'sub-1',
+            displayName: 'أحمد',
           ),
         ),
-      );
-      await tester.pump();
+      ),
+    );
+    await tester.pump();
 
-      viewModel.emit(
-        FamilyCalendarState(
-          currentSubscriptionId: 'sub-1',
-          selectedDate: DateTime(2026, 9, 20),
-          days: [
-            CalendarDayEntity(
-              dayNumber: 20,
-              weekday: 'الأحد',
-              date: DateTime(2026, 9, 20),
-            ),
-          ],
-          capabilitiesFailure: Failure(errorMessage: 'Capabilities error'),
-          dayFailure: Failure(errorMessage: 'Day error'),
-        ),
-      );
-      await tester.pump();
+    viewModel.emit(
+      FamilyCalendarState(
+        currentSubscriptionId: 'sub-1',
+        selectedDate: DateTime(2026, 9, 20),
+        days: [
+          CalendarDayEntity(
+            dayNumber: 20,
+            weekday: 'الأحد',
+            date: DateTime(2026, 9, 20),
+          ),
+        ],
+        dayFailure: Failure(errorMessage: 'Day error'),
+      ),
+    );
+    await tester.pump();
 
-      expect(find.byType(InlineApiErrorWidget), findsNWidgets(2));
-    },
-  );
+    expect(find.byType(InlineApiErrorWidget), findsOneWidget);
+  });
 }

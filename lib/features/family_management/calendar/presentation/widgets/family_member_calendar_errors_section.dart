@@ -9,12 +9,10 @@ import 'package:meal_meat_user/features/family_management/calendar/presentation/
 class FamilyMemberCalendarErrorsSection extends StatelessWidget {
   const FamilyMemberCalendarErrorsSection({
     super.key,
-    required this.onRetryCapabilities,
     required this.onRetryCalendar,
     required this.onRetryDay,
   });
 
-  final VoidCallback onRetryCapabilities;
   final VoidCallback onRetryCalendar;
   final VoidCallback onRetryDay;
 
@@ -23,19 +21,6 @@ class FamilyMemberCalendarErrorsSection extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        BlocSelector<FamilyCalendarViewModel, FamilyCalendarState, Failure?>(
-          selector: (state) => state.capabilitiesFailure,
-          builder: (context, failure) {
-            if (failure == null) return const SizedBox.shrink();
-            return Padding(
-              padding: const EdgeInsets.only(bottom: Spacing.md),
-              child: InlineApiErrorWidget(
-                failure: failure,
-                onRetry: onRetryCapabilities,
-              ),
-            );
-          },
-        ),
         BlocSelector<
           FamilyCalendarViewModel,
           FamilyCalendarState,

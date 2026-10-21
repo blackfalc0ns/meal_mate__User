@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
+import 'package:meal_meat_user/core/di/di.dart';
+import 'support/family_meal_selection_view_model_factory.dart';
 import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,6 +14,9 @@ import 'package:meal_meat_user/features/family_management/meal_selection/present
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/widgets/family_restaurants_member_selector_item.dart';
 
 void main() {
+  setUp(registerFamilyMealSelectionFactory);
+  tearDown(() => getIt.unregister<FamilyMealSelectionViewModel>());
+
   testWidgets('selecting another member reports its index', (tester) async {
     int? selectedIndex;
 

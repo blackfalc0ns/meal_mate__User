@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_event.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +62,11 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
 
       // Guarantee local session clear even if network/remote fails
       await _tokenService.clearSession();
+      if (getIt.isRegistered<FamilyContextViewModel>()) {
+        getIt<FamilyContextViewModel>().doIntent(
+          const ClearFamilyContextsEvent(),
+        );
+      }
 
       if (isClosed) return;
 
@@ -87,6 +95,11 @@ class LogoutViewModel extends Bloc<LogoutEvent, LogoutState> {
       // Always guarantee local cleanup on exceptions
       await _deliveryRealtimeService?.disconnect();
       await _tokenService.clearSession();
+      if (getIt.isRegistered<FamilyContextViewModel>()) {
+        getIt<FamilyContextViewModel>().doIntent(
+          const ClearFamilyContextsEvent(),
+        );
+      }
       if (!isClosed) {
         emit(
           state.copyWith(

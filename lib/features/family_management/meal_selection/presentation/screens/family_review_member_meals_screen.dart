@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/core/di/di.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
@@ -46,12 +47,15 @@ class _FamilyReviewMemberMealsScreenState
     super.initState();
     _viewModel = widget.args?.selectionViewModel;
     if (_viewModel == null && widget.args?.viewModel != null) {
-      _viewModel = FamilyMealSelectionViewModel(
-        calendar: widget.args!.viewModel!,
-        subscriptionId: widget.args?.subscriptionId,
-        date: widget.args?.date,
-        memberName: widget.args?.memberName,
-        members: widget.args?.members,
+      _viewModel = getIt<FamilyMealSelectionViewModel>(
+        param1: widget.args!.viewModel!,
+        param2: FamilyMealSelectionState.fromCalendar(
+          widget.args!.viewModel!.state,
+          subscriptionId: widget.args?.subscriptionId,
+          date: widget.args?.date,
+          memberName: widget.args?.memberName,
+          members: widget.args?.members,
+        ),
       );
       _ownsViewModel = true;
     }

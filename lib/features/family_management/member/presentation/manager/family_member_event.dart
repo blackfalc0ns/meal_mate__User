@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_write_request_entity.dart';
 
 sealed class FamilyMemberEvent {
   const FamilyMemberEvent();
@@ -62,7 +62,7 @@ class UpdateFamilyMemberPermissionsEvent extends FamilyMemberEvent {
 class UpdateFamilyMemberBasicInfoEvent extends FamilyMemberEvent {
   const UpdateFamilyMemberBasicInfoEvent(this.memberId, this.request);
   final String memberId;
-  final FamilyMemberWriteRequestDto request;
+  final FamilyMemberWriteRequestEntity request;
 }
 
 class RenewFamilyMemberSubscriptionEvent extends FamilyMemberEvent {
@@ -74,4 +74,3 @@ class DetachFamilyMemberEvent extends FamilyMemberEvent {
   const DetachFamilyMemberEvent(this.memberId);
   final String memberId;
 }
-

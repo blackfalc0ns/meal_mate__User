@@ -41,17 +41,7 @@ class _FamilyMemberPermissionsScreenState
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt.isRegistered<FamilyMemberViewModel>()
-        ? getIt<FamilyMemberViewModel>()
-        : FamilyMemberViewModel(
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-          );
+    _viewModel = getIt<FamilyMemberViewModel>();
   }
 
   @override
@@ -175,9 +165,13 @@ class _FamilyMemberPermissionsScreenState
                               color: color.surface,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusMd,
+                                ),
                                 side: BorderSide(
-                                  color: color.outlineVariant.withValues(alpha: 0.5),
+                                  color: color.outlineVariant.withValues(
+                                    alpha: 0.5,
+                                  ),
                                 ),
                               ),
                               child: Column(
@@ -185,9 +179,12 @@ class _FamilyMemberPermissionsScreenState
                                   for (final permission in group.permissions)
                                     FamilyPermissionRow(
                                       permission: permission,
-                                      value: state.permissionValues[permission.key] ??
+                                      value:
+                                          state.permissionValues[permission
+                                              .key] ??
                                           permission.value,
-                                      isReadOnly: widget.isManager || state.isSaving,
+                                      isReadOnly:
+                                          widget.isManager || state.isSaving,
                                       onChanged: (value) => _viewModel.doIntent(
                                         ToggleFamilyPermissionEvent(
                                           permission.key,

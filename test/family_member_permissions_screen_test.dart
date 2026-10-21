@@ -1,3 +1,4 @@
+import 'support/family_member_view_model_factory.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_permissions_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
@@ -68,7 +69,7 @@ class _FakeRepo implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberPermissionsEntity>> updateMemberPermissions(
     String memberId,
-    UpdateFamilyMemberPermissionsRequestDto request, {
+    UpdateFamilyMemberPermissionsRequestEntity request, {
     String locale = 'ar',
   }) async {
     if (updateCompleter != null) {
@@ -77,7 +78,7 @@ class _FakeRepo implements FamilyMemberRepository {
     return ApiSuccessResult(
       data: FamilyMemberPermissionsEntity(
         memberId: memberId,
-        values: request.permissions,
+        values: {'edit_meals': true, 'edit_address': false, ...request.patch},
         groups: const [],
       ),
     );
@@ -91,7 +92,7 @@ void main() {
     await getIt.reset();
     repo = _FakeRepo();
     getIt.registerFactory<FamilyMemberViewModel>(
-      () => FamilyMemberViewModel(
+      () => createFamilyMemberViewModel(
         GetFamilyMemberDetailUseCase(repo),
         GetFamilyMemberAccessUseCase(repo),
         UpdateFamilyMemberAccessUseCase(repo),
@@ -139,7 +140,7 @@ void main() {
       expect(appButton.onPressed, isNull);
 
       // Toggle switch to change value
-      final switchFinder = find.byType(SwitchListTile).first;
+      final switchFinder = find.byType(Switch).first;
       await tester.tap(switchFinder);
       await tester.pumpAndSettle();
 
@@ -174,7 +175,8 @@ void main() {
           ),
         ),
       );
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
 
       // Indicator removed and snackbar displayed
       expect(find.byType(CustomProgressIndicator), findsNothing);

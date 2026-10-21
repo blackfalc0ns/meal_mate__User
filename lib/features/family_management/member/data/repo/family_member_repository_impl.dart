@@ -1,10 +1,11 @@
+import 'package:meal_meat_user/features/family_management/member/data/mapper/family_member_request_mapper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_management/member/data/data_source/family_member_remote_data_source.dart';
 import 'package:meal_meat_user/features/family_management/member/data/mapper/family_member_mapper.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_write_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_access_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_permissions_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
@@ -49,10 +50,13 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberAccessEntity>> updateMemberAccess(
     String memberId,
-    UpdateFamilyMemberAccessRequestDto request,
+    UpdateFamilyMemberAccessRequestEntity request,
   ) async {
     try {
-      final dto = await _remoteDataSource.updateMemberAccess(memberId, request);
+      final dto = await _remoteDataSource.updateMemberAccess(
+        memberId,
+        request.toDto(),
+      );
       final entity = FamilyMemberMapper.toAccessEntity(dto);
       return ApiSuccessResult(data: entity);
     } catch (e) {
@@ -80,13 +84,13 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberPermissionsEntity>> updateMemberPermissions(
     String memberId,
-    UpdateFamilyMemberPermissionsRequestDto request, {
+    UpdateFamilyMemberPermissionsRequestEntity request, {
     String locale = 'ar',
   }) async {
     try {
       final dto = await _remoteDataSource.updateMemberPermissions(
         memberId,
-        request,
+        request.toDto(),
       );
       final entity = FamilyMemberMapper.toPermissionsEntity(
         dto,
@@ -101,10 +105,10 @@ class FamilyMemberRepositoryImpl implements FamilyMemberRepository {
   @override
   Future<ApiResult<void>> updateMemberBasicInfo(
     String memberId,
-    FamilyMemberWriteRequestDto request,
+    FamilyMemberWriteRequestEntity request,
   ) async {
     try {
-      await _remoteDataSource.updateMemberBasicInfo(memberId, request);
+      await _remoteDataSource.updateMemberBasicInfo(memberId, request.toDto());
       return const ApiSuccessResult(data: null);
     } catch (e) {
       return ApiErrorResult(failure: mapFamilyManagementError(e));

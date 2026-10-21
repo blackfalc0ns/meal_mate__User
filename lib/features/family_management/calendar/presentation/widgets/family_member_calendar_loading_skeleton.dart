@@ -16,10 +16,10 @@ class FamilyMemberCalendarLoadingSkeleton extends StatelessWidget {
       key: const ValueKey('family-calendar-loading-skeleton'),
       children: [
         if (includeMemberSelector) ...[
-          SizedBox(
+          const SizedBox(
             height: Spacing.familyDayMemberSelectorHeight,
             child: Row(
-              children: const [
+              children: [
                 ShimmerPlaceholder.rect(
                   width: Spacing.familyDayMemberSelectorWidth,
                   height: Spacing.familyDayMemberSelectorHeight,

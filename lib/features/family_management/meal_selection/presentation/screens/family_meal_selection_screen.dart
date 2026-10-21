@@ -9,6 +9,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -47,12 +48,15 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
     if (_viewModel == null) {
       final calendar =
           widget.args?.viewModel ?? getIt<FamilyCalendarViewModel>();
-      _viewModel = FamilyMealSelectionViewModel(
-        calendar: calendar,
-        subscriptionId: widget.args?.subscriptionId,
-        date: widget.args?.date,
-        memberName: widget.args?.memberName,
-        members: widget.args?.members,
+      _viewModel = getIt<FamilyMealSelectionViewModel>(
+        param1: calendar,
+        param2: FamilyMealSelectionState.fromCalendar(
+          calendar.state,
+          subscriptionId: widget.args?.subscriptionId,
+          date: widget.args?.date,
+          memberName: widget.args?.memberName,
+          members: widget.args?.members,
+        ),
       );
       _ownsViewModel = true;
     }
@@ -256,7 +260,17 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                           },
                         ),
                         const SizedBox(height: Spacing.base),
-                        if (state.isLoadingAvailableMeals)
+                        if (state.availableMealsFailure != null &&
+                            availableMeals.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: Spacing.md),
+                            child: InlineApiErrorWidget(
+                              failure: state.availableMealsFailure!,
+                              onRetry: _retryAvailableMeals,
+                            ),
+                          ),
+                        if (state.isLoadingAvailableMeals &&
+                            availableMeals.isEmpty)
                           const FamilyMealSelectionLoadingSkeleton()
                         else if (state.availableMealsFailure != null &&
                             availableMeals.isEmpty)
@@ -266,16 +280,7 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
                             ),
                             child: ApiErrorWidget(
                               exception: state.availableMealsFailure!.exception,
-                              onRetry: () {
-                                _viewModel!.doIntent(
-                                  LoadFamilyAvailableMealsEvent(
-                                    slot: _slotForCategory(
-                                      state.selectedCategoryIndex,
-                                    ),
-                                    localeName: locale.localeName,
-                                  ),
-                                );
-                              },
+                              onRetry: _retryAvailableMeals,
                             ),
                           )
                         else if (availableMeals.isNotEmpty)
@@ -317,6 +322,17 @@ class _FamilyMealSelectionScreenState extends State<FamilyMealSelectionScreen> {
               );
             },
           ),
+    );
+  }
+
+  void _retryAvailableMeals() {
+    final viewModel = _viewModel;
+    if (viewModel == null) return;
+    viewModel.doIntent(
+      LoadFamilyAvailableMealsEvent(
+        slot: _slotForCategory(viewModel.state.selectedCategoryIndex),
+        localeName: context.localization.localeName,
+      ),
     );
   }
 

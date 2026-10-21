@@ -47,17 +47,7 @@ class _FamilyMemberAccessScreenState extends State<FamilyMemberAccessScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt.isRegistered<FamilyMemberViewModel>()
-        ? getIt<FamilyMemberViewModel>()
-        : FamilyMemberViewModel(
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-          );
+    _viewModel = getIt<FamilyMemberViewModel>();
     _viewModel.doIntent(LoadFamilyMemberAccessEvent(widget.memberId));
   }
 

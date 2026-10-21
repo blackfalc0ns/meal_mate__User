@@ -1,3 +1,4 @@
+import '../../support/family_meal_selection_view_model_factory.dart';
 import '../../support/family_calendar_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
@@ -14,24 +15,7 @@ import 'package:meal_meat_user/features/family_management/calendar/domain/entiti
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
-import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
-import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
-import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
-
-class FakeFamilyMemberRepository implements FamilyMemberRepository {
-  List<FamilyCapabilityEntity> capabilitiesToReturn = [];
-
-  @override
-  Future<ApiResult<List<FamilyCapabilityEntity>>> getMemberCapabilities(
-    String memberId,
-  ) async {
-    return ApiSuccessResult(data: capabilitiesToReturn);
-  }
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
 
 class FakeSaveDayMealsUseCase implements SaveCalendarDayMealsUseCase {
   ApiResult<CalendarDayEntity>? result;
@@ -86,7 +70,7 @@ void main() {
   group('Family Calendar Capability Gating & State Tests', () {
     test('1. Granular capabilities evaluate independently: add-only', () {
       const state = FamilyCalendarState(
-        memberCapabilities: [
+        currentUserCapabilities: [
           FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
           FamilyCapabilityEntity(action: 'selectRestaurant', allowed: false),
           FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
@@ -104,7 +88,7 @@ void main() {
 
     test('2. Granular capabilities evaluate independently: replace-only', () {
       const state = FamilyCalendarState(
-        memberCapabilities: [
+        currentUserCapabilities: [
           FamilyCapabilityEntity(action: 'unitExchange', allowed: true),
           FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
           FamilyCapabilityEntity(action: 'selectRestaurant', allowed: false),
@@ -120,7 +104,7 @@ void main() {
 
     test('3. Granular capabilities evaluate independently: confirm-only', () {
       const state = FamilyCalendarState(
-        memberCapabilities: [
+        currentUserCapabilities: [
           FamilyCapabilityEntity(action: 'confirmMeals', allowed: true),
           FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
           FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
@@ -138,7 +122,7 @@ void main() {
       '4. Granular capabilities evaluate independently: restaurant-only',
       () {
         const state = FamilyCalendarState(
-          memberCapabilities: [
+          currentUserCapabilities: [
             FamilyCapabilityEntity(action: 'selectRestaurant', allowed: true),
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
             FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
@@ -157,7 +141,7 @@ void main() {
       '5. Read-only scenario: canViewCalendar is true, all edit capabilities false',
       () {
         const state = FamilyCalendarState(
-          memberCapabilities: [
+          currentUserCapabilities: [
             FamilyCapabilityEntity(action: 'viewCalendar', allowed: true),
             FamilyCapabilityEntity(action: 'selectRestaurant', allowed: false),
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
@@ -178,7 +162,7 @@ void main() {
       '6. Legacy fallback: editDailyMeals enables all granular editing capabilities',
       () {
         const state = FamilyCalendarState(
-          memberCapabilities: [
+          currentUserCapabilities: [
             FamilyCapabilityEntity(action: 'editDailyMeals', allowed: true),
           ],
         );
@@ -233,15 +217,10 @@ void main() {
     test(
       '8. Ineligible subscription: switching to member with null subscription does not leak previous subscription',
       () async {
-        final fakeRepo = FakeFamilyMemberRepository();
-        final capabilitiesUseCase = GetFamilyMemberCapabilitiesUseCase(
-          fakeRepo,
-        );
         final calendarUseCase = FakeGetCalendarUseCase();
 
         final viewModel = createFamilyCalendarViewModel(
           calendar: calendarUseCase,
-          capabilities: capabilitiesUseCase,
         );
 
         const memberWithSub = FamilyMemberSummaryEntity(
@@ -297,58 +276,6 @@ void main() {
     );
 
     test(
-      '9. ViewModel fetches member capabilities on member selection/init',
-      () async {
-        final fakeRepo = FakeFamilyMemberRepository();
-        fakeRepo.capabilitiesToReturn = const [
-          FamilyCapabilityEntity(action: 'selectRestaurant', allowed: true),
-          FamilyCapabilityEntity(action: 'confirmMeals', allowed: false),
-        ];
-        final capabilitiesUseCase = GetFamilyMemberCapabilitiesUseCase(
-          fakeRepo,
-        );
-        final calendarUseCase = FakeGetCalendarUseCase();
-
-        final viewModel = createFamilyCalendarViewModel(
-          calendar: calendarUseCase,
-          capabilities: capabilitiesUseCase,
-        );
-
-        const member = FamilyMemberSummaryEntity(
-          memberId: 'm-capabilities-test',
-          displayName: 'Test Member',
-          role: 2,
-          ageYears: 20,
-          isPaused: false,
-          programName: 'Active',
-          remainingDays: 10,
-          setupStatus: 2,
-          subscriptionId: 'sub-cap-1',
-        );
-
-        viewModel.doIntent(
-          InitFamilyCalendarEvent(
-            args: const FamilyMemberCalendarArgs(
-              members: [member],
-              memberId: 'm-capabilities-test',
-              subscriptionId: 'sub-cap-1',
-            ),
-            initialDate: DateTime(2026, 10, 15),
-            localeName: 'en',
-          ),
-        );
-
-        await Future<void>.delayed(const Duration(milliseconds: 20));
-
-        expect(viewModel.state.memberCapabilities.length, equals(2));
-        expect(viewModel.state.canSelectRestaurant, isTrue);
-        expect(viewModel.state.canConfirmMeals, isFalse);
-
-        viewModel.close();
-      },
-    );
-
-    test(
       '10. 403 Forbidden handling on save meals: records saveMealsFailure and does not claim success',
       () async {
         final fakeSave = FakeSaveDayMealsUseCase();
@@ -367,7 +294,7 @@ void main() {
         final calendar = createFamilyCalendarViewModel(
           calendar: FakeGetCalendarUseCase(),
         );
-        final viewModel = FamilyMealSelectionViewModel(
+        final viewModel = createFamilyMealSelectionViewModel(
           calendar: calendar,
           subscriptionId: 'sub-1',
           saveDayMealsUseCase: fakeSave,

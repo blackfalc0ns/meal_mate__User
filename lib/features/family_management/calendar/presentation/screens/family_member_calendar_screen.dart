@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -8,7 +10,6 @@ import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_app_bar_title.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_errors_section.dart';
@@ -16,7 +17,6 @@ import 'package:meal_meat_user/features/family_management/calendar/presentation/
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_picker_section.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_plan_section.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_selected_day_section.dart';
-import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 
 class FamilyMemberCalendarScreen extends StatefulWidget {
   const FamilyMemberCalendarScreen({super.key, this.args, this.viewModel});
@@ -34,10 +34,12 @@ class _FamilyMemberCalendarScreenState
   late final FamilyCalendarViewModel _viewModel;
   late final bool _isViewModelSupplied;
   bool _initialized = false;
+  late final DateTime _fallbackDate;
 
   @override
   void initState() {
     super.initState();
+    _fallbackDate = widget.args?.date ?? DateTime.now();
     _isViewModelSupplied = widget.viewModel != null;
     _viewModel = widget.viewModel ?? getIt<FamilyCalendarViewModel>();
   }
@@ -48,11 +50,13 @@ class _FamilyMemberCalendarScreenState
     if (_initialized) return;
     _initialized = true;
 
-    _viewModel.doIntent(
-      InitFamilyCalendarEvent(
-        args: widget.args,
-        initialDate: widget.args?.date,
-        localeName: context.localization.localeName,
+    unawaited(
+      _viewModel.doIntent(
+        InitFamilyCalendarEvent(
+          args: widget.args,
+          initialDate: widget.args?.date,
+          localeName: context.localization.localeName,
+        ),
       ),
     );
   }
@@ -60,16 +64,82 @@ class _FamilyMemberCalendarScreenState
   @override
   void dispose() {
     if (!_isViewModelSupplied) {
-      _viewModel.close();
+      unawaited(_viewModel.close());
     }
     super.dispose();
+  }
+
+  void _selectMember(int index) => unawaited(
+    _viewModel.doIntent(
+      SelectFamilyMemberEvent(
+        index: index,
+        localeName: context.localization.localeName,
+      ),
+    ),
+  );
+  void _changeMonth(int months) => unawaited(
+    _viewModel.doIntent(ChangeFamilyCalendarMonthEvent(months: months)),
+  );
+  void _selectDay(CalendarDayEntity day) => unawaited(
+    _viewModel.doIntent(
+      SelectFamilyCalendarDayEvent(
+        day: day,
+        localeName: context.localization.localeName,
+      ),
+    ),
+  );
+  void _retryCalendar() => unawaited(
+    _viewModel.doIntent(
+      RetryFamilyCalendarEvent(localeName: context.localization.localeName),
+    ),
+  );
+  void _retryDay() => unawaited(
+    _viewModel.doIntent(
+      RetryFamilyCalendarDayEvent(localeName: context.localization.localeName),
+    ),
+  );
+
+  void _chooseMeals() {
+    final state = _viewModel.state;
+    final subId = state.activeSubscriptionId;
+    if (subId == null || subId.isEmpty) return;
+    unawaited(
+      Navigator.of(context).pushNamed(
+        AppRoutes.familyRestaurants,
+        arguments: FamilyRestaurantsArgs(
+          subscriptionId: subId,
+          date: state.selectedDate ?? _fallbackDate,
+          memberName: state.displayName,
+          memberId: state.currentMember?.memberId ?? widget.args?.memberId,
+          members: state.members,
+          viewModel: _viewModel,
+        ),
+      ),
+    );
+  }
+
+  void _showDetails() {
+    final state = _viewModel.state;
+    final subId = state.activeSubscriptionId;
+    if (subId == null || subId.isEmpty) return;
+    unawaited(
+      Navigator.of(context).pushNamed(
+        AppRoutes.familyMemberDayDetails,
+        arguments: FamilyDayMealsArgs(
+          subscriptionId: subId,
+          date: state.selectedDate ?? _fallbackDate,
+          memberName: state.displayName,
+          memberId: state.currentMember?.memberId ?? widget.args?.memberId,
+          members: state.members,
+          viewModel: _viewModel,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
-
     return BlocProvider<FamilyCalendarViewModel>.value(
       value: _viewModel,
       child: Scaffold(
@@ -91,183 +161,33 @@ class _FamilyMemberCalendarScreenState
             ),
             child: Column(
               children: [
-                BlocSelector<
-                  FamilyCalendarViewModel,
-                  FamilyCalendarState,
-                  ({
-                    List<FamilyMemberSummaryEntity> members,
-                    int selectedIndex,
-                    String displayName,
-                    bool isLoading,
-                  })
-                >(
-                  selector: (state) => (
-                    members: state.members,
-                    selectedIndex: state.selectedMemberIndex,
-                    displayName: state.displayName,
-                    isLoading: state.isLoadingMembers,
-                  ),
-                  builder: (context, data) {
-                    return FamilyMemberCalendarMemberSelectorSection(
-                      members: data.members,
-                      selectedIndex: data.selectedIndex,
-                      fallbackDisplayName: data.displayName,
-                      fallbackMemberId: widget.args?.memberId,
-                      fallbackSubscriptionId: widget.args?.subscriptionId,
-                      isLoading: data.isLoading,
-                      onMemberSelected: (index) {
-                        _viewModel.doIntent(
-                          SelectFamilyMemberEvent(
-                            index: index,
-                            localeName: locale.localeName,
-                          ),
-                        );
-                      },
-                    );
-                  },
+                FamilyMemberCalendarMemberSelectorSection(
+                  fallbackMemberId: widget.args?.memberId,
+                  fallbackSubscriptionId: widget.args?.subscriptionId,
+                  onMemberSelected: _selectMember,
                 ),
                 const SizedBox(height: Spacing.familyMemberCalendarMonthTopGap),
                 FamilyMemberCalendarPlanSection(
-                  onRetry: () => _viewModel.doIntent(
-                    RetryFamilyCalendarEvent(localeName: locale.localeName),
-                  ),
+                  onRetry: _retryCalendar,
                   child: Column(
                     children: [
                       FamilyMemberCalendarErrorsSection(
-                        onRetryCapabilities: () => _viewModel.doIntent(
-                          const RetryFamilyCapabilitiesEvent(),
-                        ),
-                        onRetryCalendar: () => _viewModel.doIntent(
-                          RetryFamilyCalendarEvent(
-                            localeName: locale.localeName,
-                          ),
-                        ),
-                        onRetryDay: () => _viewModel.doIntent(
-                          RetryFamilyCalendarDayEvent(
-                            localeName: locale.localeName,
-                          ),
-                        ),
+                        onRetryCalendar: _retryCalendar,
+                        onRetryDay: _retryDay,
                       ),
-                      BlocSelector<
-                        FamilyCalendarViewModel,
-                        FamilyCalendarState,
-                        ({
-                          DateTime visibleMonth,
-                          DateTime? selectedDate,
-                          List<CalendarDayEntity> days,
-                        })
-                      >(
-                        selector: (state) => (
-                          visibleMonth:
-                              state.visibleMonth ??
-                              state.selectedDate ??
-                              DateTime.now(),
-                          selectedDate: state.selectedDate,
-                          days: state.days,
-                        ),
-                        builder: (context, data) {
-                          return FamilyMemberCalendarPickerSection(
-                            visibleMonth: data.visibleMonth,
-                            selectedDate: data.selectedDate,
-                            serviceDays: data.days,
-                            onMonthChanged: (months) {
-                              _viewModel.doIntent(
-                                ChangeFamilyCalendarMonthEvent(months: months),
-                              );
-                            },
-                            onDaySelected: (day) {
-                              _viewModel.doIntent(
-                                SelectFamilyCalendarDayEvent(
-                                  day: day,
-                                  localeName: locale.localeName,
-                                ),
-                              );
-                            },
-                          );
-                        },
+                      FamilyMemberCalendarPickerSection(
+                        fallbackDate: _fallbackDate,
+                        onMonthChanged: _changeMonth,
+                        onDaySelected: _selectDay,
                       ),
                       const SizedBox(
                         height: Spacing.familyMemberCalendarSelectedMealsTopGap,
                       ),
-                      BlocSelector<
-                        FamilyCalendarViewModel,
-                        FamilyCalendarState,
-                        ({
-                          DateTime selectedDate,
-                          CalendarDayEntity? selectedDay,
-                          bool isLoadingDay,
-                          bool canEdit,
-                          String? memberId,
-                          String displayName,
-                          String? activeSubscriptionId,
-                          List<FamilyMemberSummaryEntity> members,
-                        })
-                      >(
-                        selector: (state) {
-                          final hasMeals =
-                              state.selectedDay?.meals.isNotEmpty == true;
-                          final canEdit =
-                              (state.selectedDay?.isEditable == true) &&
-                              (hasMeals
-                                  ? state.canViewCalendar
-                                  : state.canEditMealsAndDays);
-                          return (
-                            selectedDate: state.selectedDate ?? DateTime.now(),
-                            selectedDay: state.selectedDay,
-                            isLoadingDay: state.isLoadingDay,
-                            canEdit: canEdit,
-                            memberId:
-                                state.currentMember?.memberId ??
-                                widget.args?.memberId,
-                            displayName: state.displayName,
-                            activeSubscriptionId: state.activeSubscriptionId,
-                            members: state.members,
-                          );
-                        },
-                        builder: (context, data) {
-                          return FamilyMemberSelectedDaySection(
-                            selectedDate: data.selectedDate,
-                            selectedDay: data.selectedDay,
-                            isLoadingDay: data.isLoadingDay,
-                            canEdit: data.canEdit,
-                            memberId: data.memberId,
-                            displayName: data.displayName,
-                            onChooseMeals: () {
-                              final activeSubId = data.activeSubscriptionId;
-                              if (activeSubId == null || activeSubId.isEmpty) {
-                                return;
-                              }
-                              Navigator.of(context).pushNamed(
-                                AppRoutes.familyRestaurants,
-                                arguments: FamilyRestaurantsArgs(
-                                  subscriptionId: activeSubId,
-                                  date: data.selectedDate,
-                                  memberName: data.displayName,
-                                  memberId: data.memberId,
-                                  members: data.members,
-                                  viewModel: _viewModel,
-                                ),
-                              );
-                            },
-                            onShowDetails: () {
-                              final activeSubId = data.activeSubscriptionId;
-                              if (activeSubId == null || activeSubId.isEmpty) {
-                                return;
-                              }
-                              Navigator.of(context).pushNamed(
-                                AppRoutes.familyMemberDayDetails,
-                                arguments: FamilyDayMealsArgs(
-                                  subscriptionId: activeSubId,
-                                  date: data.selectedDate,
-                                  memberName: data.displayName,
-                                  memberId: data.memberId,
-                                  members: data.members,
-                                  viewModel: _viewModel,
-                                ),
-                              );
-                            },
-                          );
-                        },
+                      FamilyMemberSelectedDaySection(
+                        fallbackDate: _fallbackDate,
+                        fallbackMemberId: widget.args?.memberId,
+                        onChooseMeals: _chooseMeals,
+                        onShowDetails: _showDetails,
                       ),
                     ],
                   ),

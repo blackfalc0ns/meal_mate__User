@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
@@ -12,27 +15,11 @@ import 'package:meal_meat_user/features/family_management/calendar/presentation/
 class FamilyDayMealsListSection extends StatelessWidget {
   const FamilyDayMealsListSection({
     super.key,
-    required this.meals,
-    required this.restaurantName,
-    required this.isEditable,
-    required this.canEditMealsAndDays,
-    required this.canUnitExchange,
-    required this.isLoadingCalendar,
-    required this.hasCalendarData,
-    this.calendarFailure,
     required this.onRetryCalendar,
     required this.onChooseMeals,
     required this.onEditMeal,
   });
 
-  final List<CalendarMealEntity> meals;
-  final String restaurantName;
-  final bool isEditable;
-  final bool canEditMealsAndDays;
-  final bool canUnitExchange;
-  final bool isLoadingCalendar;
-  final bool hasCalendarData;
-  final Failure? calendarFailure;
   final VoidCallback onRetryCalendar;
   final VoidCallback onChooseMeals;
   final ValueChanged<String> onEditMeal;
@@ -50,66 +37,103 @@ class FamilyDayMealsListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
-    if (isLoadingCalendar && !hasCalendarData) {
-      return const FamilyDayMealsLoadingSkeleton();
-    }
+    return BlocSelector<
+      FamilyCalendarViewModel,
+      FamilyCalendarState,
+      ({
+        List<CalendarMealEntity> meals,
+        String restaurantName,
+        bool isEditable,
+        bool canEditMealsAndDays,
+        bool canUnitExchange,
+        bool isLoadingCalendar,
+        bool hasCalendarData,
+        Failure? calendarFailure,
+      })
+    >(
+      selector: (state) => (
+        meals: state.selectedDay?.meals ?? const [],
+        restaurantName: state.selectedDay?.restaurant?.name ?? '',
+        isEditable: state.selectedDay?.isEditable == true,
+        canEditMealsAndDays: state.canEditMealsAndDays,
+        canUnitExchange: state.canUnitExchange,
+        isLoadingCalendar: state.isLoadingCalendar,
+        hasCalendarData: state.hasCalendarData,
+        calendarFailure: state.calendarFailure,
+      ),
+      builder: (context, data) {
+        final (
+          :meals,
+          :restaurantName,
+          :isEditable,
+          :canEditMealsAndDays,
+          :canUnitExchange,
+          :isLoadingCalendar,
+          :hasCalendarData,
+          :calendarFailure,
+        ) = data;
+        if (isLoadingCalendar && !hasCalendarData) {
+          return const FamilyDayMealsLoadingSkeleton();
+        }
 
-    if (calendarFailure != null && !hasCalendarData) {
-      return ApiErrorWidget(
-        exception: calendarFailure!.exception,
-        onRetry: onRetryCalendar,
-      );
-    }
+        if (calendarFailure != null && !hasCalendarData) {
+          return ApiErrorWidget(
+            exception: calendarFailure.exception,
+            onRetry: onRetryCalendar,
+          );
+        }
 
-    if (meals.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: Spacing.md),
-        child: FamilyDayMealCard(
-          meal: FamilyDayMealEntity(
-            mealType: locale.calendar_title,
-            restaurantName: restaurantName,
-            mealName: locale.family_member_choose_meal,
-            actionLabel: locale.family_review_edit_button,
-            imageAsset: Assets.profileBillingPlanBottle,
-            iconType: FamilyDayMealIconType.lunch,
-            isEmpty: true,
-          ),
-          onEditPressed: (isEditable && canEditMealsAndDays)
-              ? onChooseMeals
-              : null,
-        ),
-      );
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final meal in meals) ...[
-          FamilyDayMealCard(
-            meal: FamilyDayMealEntity(
-              mealType: meal.mealType.isNotEmpty
-                  ? meal.mealType
-                  : (meal.slot.isNotEmpty ? meal.slot : ''),
-              restaurantName: restaurantName,
-              mealName: meal.title,
-              actionLabel: locale.family_review_edit_button,
-              imageAsset: meal.imageAsset,
-              imageUrl: meal.imageUrl,
-              iconType: _mapSlotToIconType(meal.slot),
-              calories: meal.calories,
-              carbs: meal.carbs,
-              protein: meal.protein,
-              fat: meal.fat,
+        if (meals.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: Spacing.md),
+            child: FamilyDayMealCard(
+              meal: FamilyDayMealEntity(
+                mealType: locale.calendar_title,
+                restaurantName: restaurantName,
+                mealName: locale.family_member_choose_meal,
+                actionLabel: locale.family_review_edit_button,
+                imageAsset: Assets.profileBillingPlanBottle,
+                iconType: FamilyDayMealIconType.lunch,
+                isEmpty: true,
+              ),
+              onEditPressed: (isEditable && canEditMealsAndDays)
+                  ? onChooseMeals
+                  : null,
             ),
-            onEditPressed: (isEditable && canUnitExchange)
-                ? () => onEditMeal(
-                    meal.slot.isNotEmpty ? meal.slot : meal.mealType,
-                  )
-                : null,
-          ),
-          const SizedBox(height: Spacing.familyDayMealListGap),
-        ],
-      ],
+          );
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final meal in meals) ...[
+              FamilyDayMealCard(
+                meal: FamilyDayMealEntity(
+                  mealType: meal.mealType.isNotEmpty
+                      ? meal.mealType
+                      : (meal.slot.isNotEmpty ? meal.slot : ''),
+                  restaurantName: restaurantName,
+                  mealName: meal.title,
+                  actionLabel: locale.family_review_edit_button,
+                  imageAsset: meal.imageAsset,
+                  imageUrl: meal.imageUrl,
+                  iconType: _mapSlotToIconType(meal.slot),
+                  calories: meal.calories,
+                  carbs: meal.carbs,
+                  protein: meal.protein,
+                  fat: meal.fat,
+                ),
+                onEditPressed: (isEditable && canUnitExchange)
+                    ? () => onEditMeal(
+                        meal.slot.isNotEmpty ? meal.slot : meal.mealType,
+                      )
+                    : null,
+              ),
+              const SizedBox(height: Spacing.familyDayMealListGap),
+            ],
+          ],
+        );
+      },
     );
   }
 }

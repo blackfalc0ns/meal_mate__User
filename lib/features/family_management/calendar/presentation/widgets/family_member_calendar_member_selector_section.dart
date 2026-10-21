@@ -1,82 +1,100 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
+import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_day_details_entity.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_member_selector.dart';
-import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_member_calendar_loading_skeleton.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
+import 'family_calendar_member_presentation.dart';
+import 'family_day_member_selector.dart';
+import 'family_member_calendar_loading_skeleton.dart';
 
-class FamilyMemberCalendarMemberSelectorSection extends StatelessWidget {
+class FamilyMemberCalendarMemberSelectorSection extends StatefulWidget {
   const FamilyMemberCalendarMemberSelectorSection({
     super.key,
-    required this.members,
-    required this.selectedIndex,
-    this.fallbackDisplayName,
     this.fallbackMemberId,
     this.fallbackSubscriptionId,
-    required this.isLoading,
+    this.showLoading = true,
     required this.onMemberSelected,
   });
-
-  final List<FamilyMemberSummaryEntity> members;
-  final int selectedIndex;
-  final String? fallbackDisplayName;
   final String? fallbackMemberId;
   final String? fallbackSubscriptionId;
-  final bool isLoading;
+  final bool showLoading;
   final ValueChanged<int> onMemberSelected;
+  @override
+  State<FamilyMemberCalendarMemberSelectorSection> createState() =>
+      _FamilyMemberCalendarMemberSelectorSectionState();
+}
+
+class _FamilyMemberCalendarMemberSelectorSectionState
+    extends State<FamilyMemberCalendarMemberSelectorSection> {
+  List<FamilyMemberSummaryEntity>? _sourceMembers;
+  String? _localeName;
+  String? _fallbackName;
+  String? _fallbackMemberId;
+  String? _fallbackSubscriptionId;
+  List<FamilyDayMemberEntity> _members = const [];
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const FamilyMemberCalendarLoadingSkeleton(
-        includeMemberSelector: true,
-      );
-    }
-
     final locale = context.localization;
-    List<FamilyDayMemberEntity> selectorMembers = [];
-
-    if (members.isNotEmpty) {
-      selectorMembers = members.map((m) {
-        return FamilyDayMemberEntity(
-          name: m.displayName,
-          ageLabel: m.ageYears == null
-              ? ''
-              : locale.family_member_age_years(m.ageYears!),
-          statusLabel: m.isPaused
-              ? locale.family_member_paused_label
-              : locale.family_member_active_label,
-          imageAsset: Assets.profileAvatar,
-          memberId: m.memberId,
-          subscriptionId: m.effectiveSubscriptionId,
+    return BlocSelector<
+      FamilyCalendarViewModel,
+      FamilyCalendarState,
+      ({
+        List<FamilyMemberSummaryEntity> members,
+        int index,
+        String fallbackName,
+        bool loading,
+      })
+    >(
+      selector: (state) => (
+        members: state.members,
+        index: state.selectedMemberIndex,
+        fallbackName: state.members.isEmpty ? state.displayName : '',
+        loading: widget.showLoading && state.isLoadingMembers,
+      ),
+      builder: (context, data) {
+        if (data.loading) {
+          return const FamilyMemberCalendarLoadingSkeleton(
+            includeMemberSelector: true,
+          );
+        }
+        if (!identical(_sourceMembers, data.members) ||
+            _localeName != locale.localeName ||
+            _fallbackName != data.fallbackName ||
+            _fallbackMemberId != widget.fallbackMemberId ||
+            _fallbackSubscriptionId != widget.fallbackSubscriptionId) {
+          _sourceMembers = data.members;
+          _localeName = locale.localeName;
+          _fallbackName = data.fallbackName;
+          _fallbackMemberId = widget.fallbackMemberId;
+          _fallbackSubscriptionId = widget.fallbackSubscriptionId;
+          _members = data.members.isNotEmpty
+              ? data.members
+                    .map(
+                      (member) => presentFamilyCalendarMember(member, locale),
+                    )
+                    .toList()
+              : data.fallbackName.isEmpty
+              ? const []
+              : [
+                  presentFamilyCalendarMember(
+                    null,
+                    locale,
+                    displayName: data.fallbackName,
+                    memberId: widget.fallbackMemberId,
+                    subscriptionId: widget.fallbackSubscriptionId,
+                  ),
+                ];
+        }
+        if (_members.isEmpty) return const SizedBox.shrink();
+        return FamilyDayMemberSelector(
+          members: _members,
+          selectedIndex: data.index.clamp(0, _members.length - 1),
+          onMemberSelected: widget.onMemberSelected,
         );
-      }).toList();
-    } else if (fallbackDisplayName != null && fallbackDisplayName!.isNotEmpty) {
-      selectorMembers = [
-        FamilyDayMemberEntity(
-          name: fallbackDisplayName!,
-          ageLabel: '',
-          statusLabel: locale.family_member_active_label,
-          imageAsset: Assets.profileAvatar,
-          memberId: fallbackMemberId,
-          subscriptionId: fallbackSubscriptionId,
-        ),
-      ];
-    }
-
-    if (selectorMembers.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    final safeSelectedMemberIndex = selectedIndex
-        .clamp(0, selectorMembers.length - 1)
-        .toInt();
-
-    return FamilyDayMemberSelector(
-      members: selectorMembers,
-      selectedIndex: safeSelectedMemberIndex,
-      onMemberSelected: onMemberSelected,
+      },
     );
   }
 }

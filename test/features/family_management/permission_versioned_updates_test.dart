@@ -1,8 +1,10 @@
+import 'package:meal_meat_user/features/family_management/member/data/mapper/family_member_request_mapper.dart';
+import '../../support/family_member_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_permissions_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
@@ -13,11 +15,10 @@ import 'package:meal_meat_user/features/family_management/member/domain/usecase/
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_basic_info_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
-import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_failure.dart';
 
 class FakeFamilyMemberRepository implements FamilyMemberRepository {
-  UpdateFamilyMemberPermissionsRequestDto? lastUpdateRequest;
+  UpdateFamilyMemberPermissionsRequestEntity? lastUpdateRequest;
   int updateCallCount = 0;
   int getPermissionsCallCount = 0;
 
@@ -27,7 +28,7 @@ class FakeFamilyMemberRepository implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberPermissionsEntity>> updateMemberPermissions(
     String memberId,
-    UpdateFamilyMemberPermissionsRequestDto request, {
+    UpdateFamilyMemberPermissionsRequestEntity request, {
     String locale = 'ar',
   }) async {
     updateCallCount++;
@@ -50,8 +51,8 @@ class FakeFamilyMemberRepository implements FamilyMemberRepository {
 
 void main() {
   group('Task 5: Versioned Permission Updates and Conflict Handling', () {
-    test('UpdateFamilyMemberPermissionsRequestDto omits unchanged keys and strips obsolete keys', () {
-      final request = UpdateFamilyMemberPermissionsRequestDto(
+    test('UpdateFamilyMemberPermissionsRequestEntity omits unchanged keys and strips obsolete keys', () {
+      final request = UpdateFamilyMemberPermissionsRequestEntity(
         expectedVersion: 4,
         patch: {
           'editDailyMeals': true,
@@ -60,7 +61,7 @@ void main() {
         },
       );
 
-      final json = request.toJson();
+      final json = request.toDto().toJson();
 
       expect(json['expectedVersion'], 4);
       expect(json['editDailyMeals'], true);
@@ -76,7 +77,7 @@ void main() {
 
     test('ViewModel sends only changed nullable patch keys and expectedVersion', () async {
       final fakeRepo = FakeFamilyMemberRepository();
-      final viewModel = FamilyMemberViewModel(
+      final viewModel = createFamilyMemberViewModel(
         GetFamilyMemberDetailUseCase(fakeRepo),
         GetFamilyMemberAccessUseCase(fakeRepo),
         UpdateFamilyMemberAccessUseCase(fakeRepo),
@@ -160,7 +161,7 @@ void main() {
 
     test('ViewModel does not call update when no permission values changed', () async {
       final fakeRepo = FakeFamilyMemberRepository();
-      final viewModel = FamilyMemberViewModel(
+      final viewModel = createFamilyMemberViewModel(
         GetFamilyMemberDetailUseCase(fakeRepo),
         GetFamilyMemberAccessUseCase(fakeRepo),
         UpdateFamilyMemberAccessUseCase(fakeRepo),
@@ -190,7 +191,7 @@ void main() {
 
     test('409 Conflict triggers fresh catalog load and discards stale patch', () async {
       final fakeRepo = FakeFamilyMemberRepository();
-      final viewModel = FamilyMemberViewModel(
+      final viewModel = createFamilyMemberViewModel(
         GetFamilyMemberDetailUseCase(fakeRepo),
         GetFamilyMemberAccessUseCase(fakeRepo),
         UpdateFamilyMemberAccessUseCase(fakeRepo),
@@ -256,7 +257,7 @@ void main() {
 
     test('403 Forbidden denial preserves error, reloads permissions, and does not claim success', () async {
       final fakeRepo = FakeFamilyMemberRepository();
-      final viewModel = FamilyMemberViewModel(
+      final viewModel = createFamilyMemberViewModel(
         GetFamilyMemberDetailUseCase(fakeRepo),
         GetFamilyMemberAccessUseCase(fakeRepo),
         UpdateFamilyMemberAccessUseCase(fakeRepo),

@@ -1,3 +1,4 @@
+import 'support/family_meal_selection_view_model_factory.dart';
 import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -13,7 +14,6 @@ import 'package:meal_meat_user/features/calendar/domain/usecase/set_calendar_day
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_event.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
-import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 
 void main() {
   test(
@@ -22,7 +22,7 @@ void main() {
       final repository = _RecordingCalendarRepository();
       final calendar = createFamilyCalendarViewModel();
       addTearDown(calendar.close);
-      final viewModel = FamilyMealSelectionViewModel(
+      final viewModel = createFamilyMealSelectionViewModel(
         calendar: calendar,
 
         subscriptionId: 'subscription-1',
@@ -83,7 +83,7 @@ void main() {
       final repository = _RecordingCalendarRepository();
       final calendar = createFamilyCalendarViewModel();
       addTearDown(calendar.close);
-      final viewModel = FamilyMealSelectionViewModel(
+      final viewModel = createFamilyMealSelectionViewModel(
         calendar: calendar,
 
         subscriptionId: 'subscription-1',
@@ -149,7 +149,7 @@ void main() {
     final repository = _RecordingCalendarRepository(failSetRestaurant: true);
     final calendar = createFamilyCalendarViewModel();
     addTearDown(calendar.close);
-    final viewModel = FamilyMealSelectionViewModel(
+    final viewModel = createFamilyMealSelectionViewModel(
       calendar: calendar,
 
       subscriptionId: 'subscription-1',
@@ -191,7 +191,7 @@ void main() {
     final repository = _RecordingCalendarRepository(returnSelectedMeals: true);
     final calendar = createFamilyCalendarViewModel();
     addTearDown(calendar.close);
-    final viewModel = FamilyMealSelectionViewModel(
+    final viewModel = createFamilyMealSelectionViewModel(
       calendar: calendar,
 
       subscriptionId: 'subscription-1',

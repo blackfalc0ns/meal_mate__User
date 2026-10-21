@@ -1,4 +1,3 @@
-import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
@@ -7,7 +6,6 @@ import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_e
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
 import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
-import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 
 class FamilyMealSelectionState {
@@ -29,7 +27,7 @@ class FamilyMealSelectionState {
     selectedDate: date ?? calendar.selectedDate,
     selectedDay: calendar.selectedDay,
     isLoadingDay: calendar.isLoadingDay,
-    memberCapabilities: calendar.memberCapabilities,
+    currentUserCapabilities: calendar.currentUserCapabilities,
     selectedMealsForDay: calendar.selectedDay?.meals ?? const [],
   );
 
@@ -61,7 +59,7 @@ class FamilyMealSelectionState {
     this.restaurantsFailure,
     this.availableMealsFailure,
     this.saveMealsFailure,
-    this.memberCapabilities = const [],
+    this.currentUserCapabilities = const [],
   });
 
   final List<FamilyMemberSummaryEntity> members;
@@ -77,7 +75,7 @@ class FamilyMealSelectionState {
   final bool isLoadingDay;
   final Failure? calendarFailure;
   final Failure? dayFailure;
-  final List<FamilyCapabilityEntity> memberCapabilities;
+  final List<FamilyCapabilityEntity> currentUserCapabilities;
 
   // Restaurant & Meal Selection Flow
   final List<CalendarRestaurantOptionEntity> restaurants;
@@ -128,17 +126,11 @@ class FamilyMealSelectionState {
   }
 
   bool canPerformAction(String action) {
-    if (memberCapabilities.isNotEmpty) {
-      final cap = memberCapabilities
+    if (currentUserCapabilities.isNotEmpty) {
+      final cap = currentUserCapabilities
           .where((c) => c.action.toLowerCase() == action.toLowerCase())
           .firstOrNull;
       if (cap != null) return cap.allowed;
-    }
-    if (getIt.isRegistered<FamilyContextViewModel>()) {
-      final ctx = getIt<FamilyContextViewModel>().state.primaryContext;
-      if (ctx != null) {
-        return ctx.can(action);
-      }
     }
     return false;
   }
@@ -197,7 +189,7 @@ class FamilyMealSelectionState {
     Failure? restaurantsFailure,
     Failure? availableMealsFailure,
     Failure? saveMealsFailure,
-    List<FamilyCapabilityEntity>? memberCapabilities,
+    List<FamilyCapabilityEntity>? currentUserCapabilities,
     bool clearCalendarFailure = false,
     bool clearDayFailure = false,
     bool clearRestaurantsFailure = false,
@@ -250,7 +242,8 @@ class FamilyMealSelectionState {
       saveMealsFailure: clearSaveMealsFailure
           ? null
           : (saveMealsFailure ?? this.saveMealsFailure),
-      memberCapabilities: memberCapabilities ?? this.memberCapabilities,
+      currentUserCapabilities:
+          currentUserCapabilities ?? this.currentUserCapabilities,
     );
   }
 }

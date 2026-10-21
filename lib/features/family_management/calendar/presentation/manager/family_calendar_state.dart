@@ -18,8 +18,7 @@ class FamilyCalendarState {
     this.isLoadingDay = false,
     this.calendarFailure,
     this.dayFailure,
-    this.capabilitiesFailure,
-    this.memberCapabilities = const [],
+    this.currentUserCapabilities = const [],
   });
 
   final List<FamilyMemberSummaryEntity> members;
@@ -35,8 +34,7 @@ class FamilyCalendarState {
   final bool isLoadingDay;
   final Failure? calendarFailure;
   final Failure? dayFailure;
-  final Failure? capabilitiesFailure;
-  final List<FamilyCapabilityEntity> memberCapabilities;
+  final List<FamilyCapabilityEntity> currentUserCapabilities;
 
   bool get hasCalendarData => days.isNotEmpty;
 
@@ -57,7 +55,7 @@ class FamilyCalendarState {
   }
 
   bool canPerformAction(String action) {
-    final capability = memberCapabilities
+    final capability = currentUserCapabilities
         .where((item) => item.action.toLowerCase() == action.toLowerCase())
         .firstOrNull;
     return capability?.allowed ?? false;
@@ -91,11 +89,9 @@ class FamilyCalendarState {
     bool? isLoadingDay,
     Failure? calendarFailure,
     Failure? dayFailure,
-    Failure? capabilitiesFailure,
-    List<FamilyCapabilityEntity>? memberCapabilities,
+    List<FamilyCapabilityEntity>? currentUserCapabilities,
     bool clearCalendarFailure = false,
     bool clearDayFailure = false,
-    bool clearCapabilitiesFailure = false,
     bool clearSelectedDay = false,
   }) => FamilyCalendarState(
     members: members ?? this.members,
@@ -113,9 +109,7 @@ class FamilyCalendarState {
         ? null
         : calendarFailure ?? this.calendarFailure,
     dayFailure: clearDayFailure ? null : dayFailure ?? this.dayFailure,
-    capabilitiesFailure: clearCapabilitiesFailure
-        ? null
-        : capabilitiesFailure ?? this.capabilitiesFailure,
-    memberCapabilities: memberCapabilities ?? this.memberCapabilities,
+    currentUserCapabilities:
+        currentUserCapabilities ?? this.currentUserCapabilities,
   );
 }

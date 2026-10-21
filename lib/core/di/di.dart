@@ -79,7 +79,6 @@ import '../../features/family_management/member/domain/usecase/update_family_mem
 import '../../features/family_management/member/domain/usecase/renew_family_member_subscription_usecase.dart';
 import '../../features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
 import '../../features/family_management/member/domain/usecase/detach_family_member_usecase.dart';
-import '../../features/family_management/member/presentation/manager/family_member_view_model.dart';
 import '../../features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import '../../features/calendar/domain/usecase/get_calendar_restaurants_usecase.dart';
 import '../../features/calendar/domain/usecase/get_calendar_available_meals_usecase.dart';
@@ -367,20 +366,6 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<DetachFamilyMemberUseCase>()) {
     getIt.registerFactory<DetachFamilyMemberUseCase>(
       () => DetachFamilyMemberUseCase(getIt()),
-    );
-  }
-  if (!getIt.isRegistered<FamilyMemberViewModel>()) {
-    getIt.registerFactory<FamilyMemberViewModel>(
-      () => FamilyMemberViewModel(
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-      ),
     );
   }
   // Calendar

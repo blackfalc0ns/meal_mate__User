@@ -5,12 +5,14 @@ import 'package:meal_meat_user/features/family_context/domain/usecase/get_my_fam
 import 'family_context_event.dart';
 import 'family_context_state.dart';
 
-@injectable
+@lazySingleton
 class FamilyContextViewModel extends Cubit<FamilyContextState> {
   FamilyContextViewModel(this._getMyFamilyContextsUseCase)
     : super(const FamilyContextState());
 
   final GetMyFamilyContextsUseCase _getMyFamilyContextsUseCase;
+
+  int _requestToken = 0;
 
   void loadFamilyContext() => doIntent(const LoadFamilyContextsEvent());
 
@@ -19,16 +21,18 @@ class FamilyContextViewModel extends Cubit<FamilyContextState> {
       case LoadFamilyContextsEvent():
         _loadContexts();
       case ClearFamilyContextsEvent():
+        _requestToken++;
         emit(const FamilyContextState());
     }
   }
 
   Future<void> _loadContexts() async {
+    final token = ++_requestToken;
     emit(state.copyWith(isLoading: true, failure: () => null));
 
     final result = await _getMyFamilyContextsUseCase();
 
-    if (isClosed) return;
+    if (isClosed || token != _requestToken) return;
 
     switch (result) {
       case ApiSuccessResult(:final data):

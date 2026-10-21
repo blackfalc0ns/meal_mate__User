@@ -55,10 +55,6 @@ class RetryFamilyCalendarDayEvent extends FamilyCalendarEvent {
   final String localeName;
 }
 
-class RetryFamilyCapabilitiesEvent extends FamilyCalendarEvent {
-  const RetryFamilyCapabilitiesEvent();
-}
-
 class ApplyFamilyCalendarDaySnapshotEvent extends FamilyCalendarEvent {
   const ApplyFamilyCalendarDaySnapshotEvent(this.day);
 

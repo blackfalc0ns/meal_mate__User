@@ -7,6 +7,7 @@ import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
@@ -36,17 +37,21 @@ class FamilyRestaurantsScreen extends StatefulWidget {
 class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
   FamilyMealSelectionViewModel? _viewModel;
   bool _initialized = false;
+  String? _lastSearchQuery;
 
   @override
   void initState() {
     super.initState();
     final calendar = widget.args?.viewModel ?? getIt<FamilyCalendarViewModel>();
-    _viewModel = FamilyMealSelectionViewModel(
-      calendar: calendar,
-      subscriptionId: widget.args?.subscriptionId,
-      date: widget.args?.date,
-      memberName: widget.args?.memberName,
-      members: widget.args?.members,
+    _viewModel = getIt<FamilyMealSelectionViewModel>(
+      param1: calendar,
+      param2: FamilyMealSelectionState.fromCalendar(
+        calendar.state,
+        subscriptionId: widget.args?.subscriptionId,
+        date: widget.args?.date,
+        memberName: widget.args?.memberName,
+        members: widget.args?.members,
+      ),
     );
   }
 
@@ -180,12 +185,22 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
                 ),
               ),
               const SizedBox(height: Spacing.familyRestaurantsGridTopGap),
-              if (state.isLoadingRestaurants)
+              if (state.restaurantsFailure != null && restaurants.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: Spacing.md),
+                  child: InlineApiErrorWidget(
+                    failure: state.restaurantsFailure!,
+                    onRetry: () =>
+                        _loadRestaurants(locale.localeName, _lastSearchQuery),
+                  ),
+                ),
+              if (state.isLoadingRestaurants && restaurants.isEmpty)
                 const FamilyRestaurantsLoadingSkeleton()
               else if (state.restaurantsFailure != null && restaurants.isEmpty)
                 ApiErrorWidget(
                   exception: state.restaurantsFailure!.exception,
-                  onRetry: () => _loadRestaurants(locale.localeName),
+                  onRetry: () =>
+                      _loadRestaurants(locale.localeName, _lastSearchQuery),
                 )
               else if (restaurants.isEmpty)
                 EmptyStateWidget(
@@ -221,6 +236,7 @@ class _FamilyRestaurantsScreenState extends State<FamilyRestaurantsScreen> {
   }
 
   void _loadRestaurants(String localeName, [String? query]) {
+    _lastSearchQuery = query;
     _viewModel?.doIntent(
       LoadFamilyRestaurantsEvent(query: query, localeName: localeName),
     );

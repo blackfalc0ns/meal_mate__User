@@ -48,17 +48,7 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt.isRegistered<FamilyMemberViewModel>()
-        ? getIt<FamilyMemberViewModel>()
-        : FamilyMemberViewModel(
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-          );
+    _viewModel = getIt<FamilyMemberViewModel>();
   }
 
   @override
@@ -179,9 +169,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
                 IconButton(
                   icon: const Icon(Icons.notifications_none_rounded),
                   tooltip: locale.profile_settings_notifications,
-                  onPressed: () => Navigator.of(context).pushNamed(
-                    AppRoutes.notifications,
-                  ),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.notifications),
                 ),
               ],
               onBackPressed: () => Navigator.maybePop(context),
@@ -213,14 +202,14 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
     final statusLabel = detail.isDetached
         ? locale.family_member_detached_label
         : (detail.isDisabled
-            ? locale.family_member_disabled_label
-            : (detail.isPaidPreparingCalendar
-                ? locale.family_member_paid_preparing_label
-                : (detail.isSetupRequired
-                    ? locale.family_member_setup_required_label
-                    : (detail.isPaused
-                        ? locale.family_member_paused_label
-                        : locale.family_member_active_label))));
+              ? locale.family_member_disabled_label
+              : (detail.isPaidPreparingCalendar
+                    ? locale.family_member_paid_preparing_label
+                    : (detail.isSetupRequired
+                          ? locale.family_member_setup_required_label
+                          : (detail.isPaused
+                                ? locale.family_member_paused_label
+                                : locale.family_member_active_label))));
 
     final member = ui.FamilyMemberDetailEntity(
       memberId: detail.memberId,
@@ -229,7 +218,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       canManageAccess: isViewerManager && !detail.isDetached,
       title: locale.family_member_details_title(detail.displayName),
       name: detail.displayName,
-      imageAsset: (detail.displayName.contains('أحمد') ||
+      imageAsset:
+          (detail.displayName.contains('أحمد') ||
               detail.displayName.toLowerCase().contains('ahmed'))
           ? AssetsFake.familyMemberAhmed
           : resolveFamilyMemberAvatar(1),
@@ -256,8 +246,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           : locale.family_member_no_plan,
       packageDescription: detail.hasPlan
           ? (start.isEmpty || end.isEmpty
-              ? locale.family_member_package_default_subtitle
-              : locale.family_member_subscription_dates(start, end))
+                ? locale.family_member_package_default_subtitle
+                : locale.family_member_subscription_dates(start, end))
           : '',
       packageSubtitle: detail.hasPlan
           ? locale.family_member_package_default_subtitle
@@ -267,10 +257,10 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       completedValue: detail.hasPlan && detail.remainingDays > 0
           ? '${detail.remainingDays}/${detail.remainingDays + 2}'
           : (nutrition != null && nutrition.calories > 0
-              ? locale.family_member_calories_value(
-                  nutrition.calories.toStringAsFixed(0),
-                )
-              : '0/0'),
+                ? locale.family_member_calories_value(
+                    nutrition.calories.toStringAsFixed(0),
+                  )
+                : '0/0'),
       completedLabel: locale.family_member_completed_days_label,
       progress: detail.hasPlan && detail.remainingDays > 0
           ? (detail.remainingDays / (detail.remainingDays + 2)).clamp(0.0, 1.0)
@@ -311,8 +301,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
       },
       onRenew: detail.canRenew && detail.renewalPath != null
           ? () => _viewModel.doIntent(
-                RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
-              )
+              RenewFamilyMemberSubscriptionEvent(detail.renewalPath!),
+            )
           : () {
               CustomSnackbar.showWarning(
                 context: context,
@@ -390,7 +380,8 @@ class _FamilyMemberDetailScreenState extends State<FamilyMemberDetailScreen> {
           const SizedBox(height: Spacing.familyMemberDetailCardGap),
           FamilyMemberDetailPackageCard(
             member: member,
-            showAction: isViewerManager &&
+            showAction:
+                isViewerManager &&
                 !detail.isDetached &&
                 detail.canRenew &&
                 !detail.hasUpcomingSubscription,

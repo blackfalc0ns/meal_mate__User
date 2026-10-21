@@ -1,13 +1,13 @@
+import 'package:meal_meat_user/core/di/di.dart';
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
+import 'package:meal_meat_user/features/family_context/domain/usecase/get_my_family_contexts_usecase.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_day_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/repo/calendar_repository.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_day_usecase.dart';
 import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
-import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_view_model.dart';
-import 'package:meal_meat_user/features/family_management/member/domain/repo/family_member_repository.dart';
-import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_capabilities_usecase.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/entities/family_member_summary_entity.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/repo/family_overview_repository.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/usecase/get_family_members_usecase.dart';
@@ -16,7 +16,6 @@ FamilyCalendarViewModel createFamilyCalendarViewModel({
   GetFamilyMembersUseCase? members,
   GetCalendarUseCase? calendar,
   GetCalendarDayUseCase? day,
-  GetFamilyMemberCapabilitiesUseCase? capabilities,
   List<FamilyMemberSummaryEntity> membersData = const [],
 }) {
   final calendarRepository = _EmptyCalendarRepository();
@@ -25,8 +24,9 @@ FamilyCalendarViewModel createFamilyCalendarViewModel({
         GetFamilyMembersUseCase(_EmptyFamilyOverviewRepository(membersData)),
     calendar ?? GetCalendarUseCase(calendarRepository),
     day ?? GetCalendarDayUseCase(calendarRepository),
-    capabilities ??
-        GetFamilyMemberCapabilitiesUseCase(_EmptyFamilyMemberRepository()),
+    getIt.isRegistered<FamilyContextViewModel>()
+        ? getIt<FamilyContextViewModel>()
+        : FamilyContextViewModel(_UnusedContextUseCase()),
   );
 }
 
@@ -73,12 +73,7 @@ class _EmptyCalendarRepository implements CalendarRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _EmptyFamilyMemberRepository implements FamilyMemberRepository {
-  @override
-  Future<ApiResult<List<FamilyCapabilityEntity>>> getMemberCapabilities(
-    String memberId,
-  ) async => const ApiSuccessResult(data: []);
-
+class _UnusedContextUseCase implements GetMyFamilyContextsUseCase {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

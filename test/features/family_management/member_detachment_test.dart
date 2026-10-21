@@ -1,3 +1,4 @@
+import '../../support/family_member_view_model_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
@@ -32,7 +33,7 @@ class FakeDetachFamilyMemberRepository implements FamilyMemberRepository {
 FamilyMemberViewModel _createViewModel(
   FakeDetachFamilyMemberRepository fakeRepo,
 ) {
-  return FamilyMemberViewModel(
+  return createFamilyMemberViewModel(
     GetFamilyMemberDetailUseCase(fakeRepo),
     GetFamilyMemberAccessUseCase(fakeRepo),
     UpdateFamilyMemberAccessUseCase(fakeRepo),

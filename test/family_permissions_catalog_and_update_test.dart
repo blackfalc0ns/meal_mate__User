@@ -1,12 +1,14 @@
+import 'package:meal_meat_user/features/family_management/member/data/mapper/family_member_request_mapper.dart';
+import 'support/family_member_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_management/member/data/mapper/family_member_mapper.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_write_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_access_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_permissions_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
@@ -18,7 +20,6 @@ import 'package:meal_meat_user/features/family_management/member/domain/usecase/
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_basic_info_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_permissions_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
-import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_info_dialog.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_permission_row.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_failure.dart';
@@ -38,7 +39,7 @@ class FakeGetAccess implements GetFamilyMemberAccessUseCase {
 
 class FakeUpdateAccess implements UpdateFamilyMemberAccessUseCase {
   @override
-  Future<ApiResult<FamilyMemberAccessEntity>> call(String memberId, UpdateFamilyMemberAccessRequestDto request) async =>
+  Future<ApiResult<FamilyMemberAccessEntity>> call(String memberId, UpdateFamilyMemberAccessRequestEntity request) async =>
       throw UnimplementedError();
 }
 
@@ -58,13 +59,13 @@ class FakeGetPermissions implements GetFamilyMemberPermissionsUseCase {
 
 class FakeUpdatePermissions implements UpdateFamilyMemberPermissionsUseCase {
   int callCount = 0;
-  UpdateFamilyMemberPermissionsRequestDto? lastRequest;
-  ApiResult<FamilyMemberPermissionsEntity> Function(UpdateFamilyMemberPermissionsRequestDto req)? onCall;
+  UpdateFamilyMemberPermissionsRequestEntity? lastRequest;
+  ApiResult<FamilyMemberPermissionsEntity> Function(UpdateFamilyMemberPermissionsRequestEntity req)? onCall;
 
   @override
   Future<ApiResult<FamilyMemberPermissionsEntity>> call(
     String memberId,
-    UpdateFamilyMemberPermissionsRequestDto request, {
+    UpdateFamilyMemberPermissionsRequestEntity request, {
     String locale = 'ar',
   }) async {
     callCount++;
@@ -78,7 +79,7 @@ class FakeUpdatePermissions implements UpdateFamilyMemberPermissionsUseCase {
 
 class FakeUpdateBasicInfo implements UpdateFamilyMemberBasicInfoUseCase {
   @override
-  Future<ApiResult<void>> call(String memberId, FamilyMemberWriteRequestDto request) async =>
+  Future<ApiResult<void>> call(String memberId, FamilyMemberWriteRequestEntity request) async =>
       throw UnimplementedError();
 }
 
@@ -310,7 +311,7 @@ void main() {
 
   group('Task 5: Versioned Permission Updates and Conflict Handling Tests', () {
     test('Update request builds nullable patch with changed keys only and omits unchanged keys', () {
-      const request = UpdateFamilyMemberPermissionsRequestDto(
+      const request = UpdateFamilyMemberPermissionsRequestEntity(
         expectedVersion: 4,
         patch: {
           'editDailyMeals': true,
@@ -318,7 +319,7 @@ void main() {
         },
       );
 
-      final json = request.toJson();
+      final json = request.toDto().toJson();
       expect(json['expectedVersion'], 4);
       expect(json['editDailyMeals'], true);
       expect(json['viewInvoices'], false);
@@ -402,7 +403,7 @@ void main() {
         ),
       );
 
-      final viewModel = FamilyMemberViewModel(
+      final viewModel = createFamilyMemberViewModel(
         mockGetDetail,
         mockGetAccess,
         mockUpdateAccess,

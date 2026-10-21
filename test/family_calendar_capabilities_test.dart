@@ -1,3 +1,4 @@
+import 'support/family_meal_selection_view_model_factory.dart';
 import 'support/family_calendar_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,7 +17,6 @@ import 'package:meal_meat_user/features/family_context/domain/entities/family_ca
 import 'package:meal_meat_user/features/family_management/calendar/domain/entities/family_calendar_args.dart';
 import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_event.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/manager/family_calendar_state.dart';
-import 'package:meal_meat_user/features/family_management/meal_selection/presentation/manager/family_meal_selection_view_model.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/screens/family_day_meals_screen.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_current_restaurant_card.dart';
 import 'package:meal_meat_user/features/family_management/calendar/presentation/widgets/family_day_meal_card.dart';
@@ -117,7 +117,7 @@ void main() {
       'Capability getters evaluate independent granular actions correctly',
       () {
         const stateAddOnly = FamilyCalendarState(
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
             FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
             FamilyCapabilityEntity(action: 'confirmMeals', allowed: false),
@@ -133,7 +133,7 @@ void main() {
         expect(stateAddOnly.canViewCalendar, isTrue);
 
         const stateReplaceOnly = FamilyCalendarState(
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
             FamilyCapabilityEntity(action: 'unitExchange', allowed: true),
             FamilyCapabilityEntity(action: 'confirmMeals', allowed: false),
@@ -147,7 +147,7 @@ void main() {
         expect(stateReplaceOnly.canSelectRestaurant, isFalse);
 
         const stateConfirmOnly = FamilyCalendarState(
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'confirmMeals', allowed: true),
           ],
         );
@@ -157,7 +157,7 @@ void main() {
         expect(stateConfirmOnly.canUnitExchange, isFalse);
 
         const stateRestaurantOnly = FamilyCalendarState(
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'selectRestaurant', allowed: true),
           ],
         );
@@ -169,7 +169,7 @@ void main() {
 
     test('Legacy editDailyMeals fallback grants all granular meal actions', () {
       const legacyState = FamilyCalendarState(
-        memberCapabilities: const [
+        currentUserCapabilities: const [
           FamilyCapabilityEntity(action: 'editDailyMeals', allowed: true),
         ],
       );
@@ -201,7 +201,7 @@ void main() {
             isLocked: false,
             meals: const [],
           ),
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: false),
           ],
         ),
@@ -228,7 +228,7 @@ void main() {
 
       // Now enable canEditMealsAndDays
       final newState = vm.state.copyWith(
-        memberCapabilities: const [
+        currentUserCapabilities: const [
           FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
         ],
       );
@@ -271,7 +271,7 @@ void main() {
             restaurant: _kDefaultRestaurant,
             meals: const [_kDefaultMeal],
           ),
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'unitExchange', allowed: false),
             FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
           ],
@@ -300,7 +300,7 @@ void main() {
       // Enable unitExchange
       vm.emit(
         vm.state.copyWith(
-          memberCapabilities: const [
+          currentUserCapabilities: const [
             FamilyCapabilityEntity(action: 'unitExchange', allowed: true),
           ],
         ),
@@ -332,7 +332,7 @@ void main() {
               restaurant: _kDefaultRestaurant,
               meals: const [_kDefaultMeal],
             ),
-            memberCapabilities: const [
+            currentUserCapabilities: const [
               FamilyCapabilityEntity(action: 'unitExchange', allowed: true),
               FamilyCapabilityEntity(action: 'editMealsAndDays', allowed: true),
               FamilyCapabilityEntity(action: 'selectRestaurant', allowed: true),
@@ -403,7 +403,7 @@ void main() {
             ),
           ),
         );
-        final vm = FamilyMealSelectionViewModel(
+        final vm = createFamilyMealSelectionViewModel(
           calendar: calendar,
           getCalendarDayUseCase: fakeDayUseCase,
           saveDayMealsUseCase: fakeSaveUseCase,

@@ -1,15 +1,15 @@
+import 'support/family_member_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_access_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/get_family_member_access_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/usecase/update_family_member_access_usecase.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_state.dart';
-import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/screens/family_member_access_screen.dart';
 import 'package:meal_meat_user/features/family_management/shared/family_management_failure.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/widgets/family_member_access_credentials_card.dart';
@@ -34,13 +34,13 @@ class _FakeGetAccess implements GetFamilyMemberAccessUseCase {
 
 class _FakeUpdateAccess implements UpdateFamilyMemberAccessUseCase {
   int callCount = 0;
-  List<UpdateFamilyMemberAccessRequestDto> sentRequests = [];
+  List<UpdateFamilyMemberAccessRequestEntity> sentRequests = [];
   ApiResult<FamilyMemberAccessEntity>? result;
 
   @override
   Future<ApiResult<FamilyMemberAccessEntity>> call(
     String memberId,
-    UpdateFamilyMemberAccessRequestDto request,
+    UpdateFamilyMemberAccessRequestEntity request,
   ) async {
     callCount++;
     sentRequests.add(request);
@@ -77,7 +77,7 @@ void main() {
     test('First issuance sends a unique credentialOperationKey and returns generated password', () async {
       final fakeGet = _FakeGetAccess();
       final fakeUpdate = _FakeUpdateAccess();
-      final vm = FamilyMemberViewModel(null, fakeGet, fakeUpdate);
+      final vm = createFamilyMemberViewModel(null, fakeGet, fakeUpdate);
 
       vm.doIntent(
         const UpdateFamilyMemberAccessEvent(
@@ -101,7 +101,7 @@ void main() {
     test('Retrying the operation reuses the existing credentialOperationKey without generating a fresh key', () async {
       final fakeGet = _FakeGetAccess();
       final fakeUpdate = _FakeUpdateAccess();
-      final vm = FamilyMemberViewModel(null, fakeGet, fakeUpdate);
+      final vm = createFamilyMemberViewModel(null, fakeGet, fakeUpdate);
 
       // First attempt
       vm.doIntent(
@@ -133,7 +133,7 @@ void main() {
     test('Explicit reset generates a brand new credentialOperationKey', () async {
       final fakeGet = _FakeGetAccess();
       final fakeUpdate = _FakeUpdateAccess();
-      final vm = FamilyMemberViewModel(null, fakeGet, fakeUpdate);
+      final vm = createFamilyMemberViewModel(null, fakeGet, fakeUpdate);
 
       // First attempt
       vm.doIntent(
@@ -171,7 +171,7 @@ void main() {
           isPasswordAlreadyIssued: true,
         ),
       );
-      final vm = FamilyMemberViewModel(null, fakeGet, fakeUpdate);
+      final vm = createFamilyMemberViewModel(null, fakeGet, fakeUpdate);
 
       vm.doIntent(
         const UpdateFamilyMemberAccessEvent(
@@ -189,7 +189,7 @@ void main() {
     test('ClearGeneratedPasswordEvent removes generated password from state', () async {
       final fakeGet = _FakeGetAccess();
       final fakeUpdate = _FakeUpdateAccess();
-      final vm = FamilyMemberViewModel(null, fakeGet, fakeUpdate);
+      final vm = createFamilyMemberViewModel(null, fakeGet, fakeUpdate);
 
       vm.emit(
         FamilyMemberState(

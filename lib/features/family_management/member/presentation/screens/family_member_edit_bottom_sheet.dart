@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/app_text_field.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_write_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_event.dart';
 import 'package:meal_meat_user/features/family_management/member/presentation/manager/family_member_view_model.dart';
@@ -74,7 +74,7 @@ class _FamilyMemberEditBottomSheetState
   void _onSave() {
     if (!_formKey.currentState!.validate()) return;
 
-    final request = FamilyMemberWriteRequestDto(
+    final request = FamilyMemberWriteRequestEntity(
       displayName: _nameController.text.trim(),
       relationshipCode: _relationshipCode,
       gender: _gender,

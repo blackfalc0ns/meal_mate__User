@@ -50,6 +50,7 @@ abstract class AppRoutes {
   static const String browseOffers = '/browse-offers';
   static const String promoCodeInput = '/promo-code-input';
   static const String redeemPackage = '/redeem-package';
+  static const String offerSubscriptionSummary = '/offer-subscription-summary';
   static const String promoCheckout = '/promo-checkout';
   static const String campaignCheckout = '/campaign-checkout';
   static const String campaignPayment = '/campaign-payment';

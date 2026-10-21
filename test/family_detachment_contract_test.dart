@@ -1,3 +1,4 @@
+import 'support/family_member_view_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -84,7 +85,7 @@ void main() {
   group('Task 8: Detachment and Post-Detachment Authorization Tests', () {
     test('Detachment is blocked when financial intent is pending', () async {
       final fakeDetach = _FakeDetachMemberUseCase();
-      final vm = FamilyMemberViewModel(
+      final vm = createFamilyMemberViewModel(
         null,
         null,
         null,
@@ -126,7 +127,7 @@ void main() {
 
     test('Detachment is blocked when member does not have active account login setup', () async {
       final fakeDetach = _FakeDetachMemberUseCase();
-      final vm = FamilyMemberViewModel(
+      final vm = createFamilyMemberViewModel(
         null,
         null,
         null,
@@ -180,7 +181,7 @@ void main() {
       }
       getIt.registerSingleton<FamilyContextViewModel>(contextVm);
 
-      final vm = FamilyMemberViewModel(
+      final vm = createFamilyMemberViewModel(
         null,
         null,
         null,
@@ -229,7 +230,7 @@ void main() {
 
     test('Detachment is idempotent and can be safely retried', () async {
       final fakeDetach = _FakeDetachMemberUseCase();
-      final vm = FamilyMemberViewModel(
+      final vm = createFamilyMemberViewModel(
         null,
         null,
         null,
@@ -335,7 +336,7 @@ void main() {
         getIt.unregister<FamilyMemberViewModel>();
       }
       getIt.registerFactory<FamilyMemberViewModel>(
-        () => FamilyMemberViewModel(fakeDetail),
+        () => createFamilyMemberViewModel(fakeDetail),
       );
 
       final summary = const FamilyMemberSummaryEntity(

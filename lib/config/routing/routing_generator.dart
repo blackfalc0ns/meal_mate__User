@@ -25,6 +25,8 @@ import 'package:meal_meat_user/features/offers/presentation/screens/offers_scree
 import 'package:meal_meat_user/features/offers/presentation/screens/browse_offers_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/promo_code_input_screen.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/redeem_package_screen.dart';
+import 'package:meal_meat_user/features/offers/presentation/screens/offer_subscription_summary_screen.dart';
+import 'package:meal_meat_user/features/offers/presentation/manager/offer_purchase_view_model.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/campaign_payment_screen.dart';
@@ -511,6 +513,17 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: RedeemPackageScreen(offer: offer),
+        );
+      case AppRoutes.offerSubscriptionSummary:
+        final viewModel = settings.arguments is OfferPurchaseViewModel
+            ? settings.arguments! as OfferPurchaseViewModel
+            : null;
+        if (viewModel == null) {
+          return _buildRoute(settings: settings, page: const OffersScreen());
+        }
+        return _buildRoute(
+          settings: settings,
+          page: OfferSubscriptionSummaryScreen(viewModel: viewModel),
         );
       case AppRoutes.promoCheckout:
         final args = settings.arguments is OfferCheckoutArgs

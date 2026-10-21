@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_context/domain/entities/family_capability_entity.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/family_member_write_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_access_request_dto.dart';
-import 'package:meal_meat_user/features/family_management/member/data/models/request/update_family_member_permissions_request_dto.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_write_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_access_request_entity.dart';
+import 'package:meal_meat_user/features/family_management/member/domain/entities/update_family_member_permissions_request_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_access_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_detail_entity.dart';
 import 'package:meal_meat_user/features/family_management/member/domain/entities/family_member_permissions_entity.dart';
@@ -42,7 +42,7 @@ class FakeFamilyMemberRepository implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberAccessEntity>> updateMemberAccess(
     String memberId,
-    UpdateFamilyMemberAccessRequestDto request,
+    UpdateFamilyMemberAccessRequestEntity request,
   ) async => throw UnimplementedError();
 
   @override
@@ -54,14 +54,14 @@ class FakeFamilyMemberRepository implements FamilyMemberRepository {
   @override
   Future<ApiResult<FamilyMemberPermissionsEntity>> updateMemberPermissions(
     String memberId,
-    UpdateFamilyMemberPermissionsRequestDto request, {
+    UpdateFamilyMemberPermissionsRequestEntity request, {
     String locale = 'ar',
   }) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<void>> updateMemberBasicInfo(
     String memberId,
-    FamilyMemberWriteRequestDto request,
+    FamilyMemberWriteRequestEntity request,
   ) async => const ApiSuccessResult(data: null);
 
   @override

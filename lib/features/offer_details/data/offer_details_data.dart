@@ -1,4 +1,3 @@
-
 class OfferDetailsData {
   const OfferDetailsData({
     this.heroImageUrl,

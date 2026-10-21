@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_event.dart';
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -641,7 +642,9 @@ class LoginViewModel extends Cubit<LoginState> {
 
   Future<void> _refreshFamilyContexts() async {
     if (getIt.isRegistered<FamilyContextViewModel>()) {
-      getIt<FamilyContextViewModel>().loadFamilyContext();
+      final context = getIt<FamilyContextViewModel>();
+      context.doIntent(const ClearFamilyContextsEvent());
+      context.loadFamilyContext();
     } else {
       final useCase = getMyFamilyContextsUseCase;
       if (useCase == null) return;
