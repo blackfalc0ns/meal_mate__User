@@ -268,6 +268,7 @@ String mapFailureMessage(
       return locale.restaurant_tier_unavailable_already_elite;
     case 'upgrade_request_pending':
       return locale.restaurant_tier_unavailable_pending;
+    case 'no_remaining_service_days':
     case 'upgrade_no_remaining_days':
       return locale.restaurant_tier_unavailable_no_days;
     case 'pricing.unavailable':

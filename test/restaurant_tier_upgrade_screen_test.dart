@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/core/constants/assets.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/base_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/routing_generator.dart';
@@ -5,11 +7,6 @@ import 'package:meal_meat_user/config/theme/app_theme.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/profile_image_request_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/entities/update_customer_profile_request_entity.dart';
-import 'package:meal_meat_user/features/profile/domain/repo/profile_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_upgrade/domain/entities/restaurant_tier_upgrade_args.dart';
@@ -27,10 +24,14 @@ import 'package:meal_meat_user/features/subscription_upgrade/presentation/widget
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/widgets/restaurant_tier_upgrade_actions.dart';
 
 void main() {
+  var unavailable = false;
   setUp(() async {
     await getIt.reset();
+    unavailable = false;
     getIt.registerFactory<RestaurantTierUpgradeViewModel>(() {
-      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake();
+      final upgradeRepository = _RestaurantTierUpgradeRepositoryFake(
+        unavailable: unavailable,
+      );
       return RestaurantTierUpgradeViewModel(
         GetSubscriptionUpgradeOptionsUseCase(upgradeRepository),
         GetSubscriptionUpgradeSummaryUseCase(upgradeRepository),
@@ -83,6 +84,42 @@ void main() {
       expect(find.byType(RestaurantTierPaymentSection), findsOneWidget);
     },
   );
+  for (final language in ['ar', 'en']) {
+    testWidgets(
+      'unavailable upgrade uses error artwork and reason in $language',
+      (tester) async {
+        unavailable = true;
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: Locale(language),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const RestaurantTierUpgradeScreen(
+              args: RestaurantTierUpgradeArgs(subscriptionId: 'sub-1'),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final context = tester.element(
+          find.byType(RestaurantTierUpgradeScreen),
+        );
+        final locale = AppLocalizations.of(context)!;
+        expect(
+          find.text(locale.restaurant_tier_unavailable_no_days),
+          findsOneWidget,
+        );
+        expect(find.text(locale.error_unknown), findsNothing);
+        expect(find.byIcon(Icons.info_outline_rounded), findsNothing);
+        final state = tester.widget<BaseErrorWidget>(
+          find.byType(BaseErrorWidget),
+        );
+        expect(state.title, locale.subscription_upgrade_not_available);
+        expect(state.imageAsset, Assets.errorIllustration);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
 }
 
 const _plusOption = SubscriptionUpgradeOptionEntity(
@@ -137,10 +174,25 @@ const _upgradeOptions = SubscriptionUpgradeOptionsEntity(
 
 class _RestaurantTierUpgradeRepositoryFake
     implements RestaurantTierUpgradeRepository {
+  _RestaurantTierUpgradeRepositoryFake({this.unavailable = false});
+  final bool unavailable;
   @override
   Future<ApiResult<SubscriptionUpgradeOptionsEntity>> getUpgradeOptions(
     String subscriptionId,
   ) async {
+    if (unavailable) {
+      return const ApiSuccessResult(
+        data: SubscriptionUpgradeOptionsEntity(
+          canUpgrade: false,
+          unavailableReason: 'no_remaining_service_days',
+          currentTier: 'Basic',
+          remainingServiceDays: 0,
+          totalServiceDays: 6,
+          upgradeEndpoint: '',
+          options: [],
+        ),
+      );
+    }
     return const ApiSuccessResult(data: _upgradeOptions);
   }
 

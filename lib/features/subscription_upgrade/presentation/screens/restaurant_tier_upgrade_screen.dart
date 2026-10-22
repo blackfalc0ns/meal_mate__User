@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -5,7 +6,7 @@ import 'package:meal_meat_user/config/routing/routing_extensions.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
-import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_meat_user/core/errors/error_widgets/base_error_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/errors/failure_mapper.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
@@ -88,28 +89,36 @@ class _RestaurantTierUpgradeScreenState
               if (optionsEntity == null) {
                 return Scaffold(
                   appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-                  body: EmptyStateWidget(
-                    title: title,
+                  body: BaseErrorWidget(
+                    title: locale.subscription_upgrade_not_available,
                     description:
                         state.errorMessage ??
                         locale.subscription_upgrade_not_available,
-                    icon: Icons.star_border_rounded,
+                    imageAsset: Assets.errorIllustration,
                   ),
                 );
               }
 
               if (!optionsEntity.canUpgrade) {
                 final reason = optionsEntity.unavailableReason?.trim();
-                final description = (reason != null && reason.isNotEmpty)
-                    ? mapFailureMessage(context, reason)
+                final mappedReason = (reason != null && reason.isNotEmpty)
+                    ? mapFailureMessage(
+                        context,
+                        reason,
+                        preserveUnmappedCode: true,
+                      )
+                    : null;
+                final description =
+                    mappedReason != null && mappedReason != reason
+                    ? mappedReason
                     : locale.restaurant_tier_unavailable_generic;
 
                 return Scaffold(
                   appBar: CustomAppBar(elevation: Spacing.zero, title: title),
-                  body: EmptyStateWidget(
-                    title: title,
+                  body: BaseErrorWidget(
+                    title: locale.subscription_upgrade_not_available,
                     description: description,
-                    icon: Icons.info_outline_rounded,
+                    imageAsset: Assets.errorIllustration,
                   ),
                 );
               }
