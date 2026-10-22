@@ -26,6 +26,11 @@ extension FamilySummaryMemberDtoMapper on FamilySummaryMemberDto {
       setupStatus: setupStatus ?? 0,
       isReady: isReady ?? (setupStatus == 2),
       roleAr: roleAr,
+      gender: gender,
+      durationDays: durationDays,
+      selectedTier: selectedTier,
+      includeFriday: includeFriday ?? false,
+      startDate: startDate,
     );
   }
 }

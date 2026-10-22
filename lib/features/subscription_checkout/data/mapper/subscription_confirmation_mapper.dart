@@ -24,6 +24,7 @@ extension SubscriptionConfirmationResponseDtoMapper
       tierNameAr: tierNameAr,
       tierNameEn: tierNameEn,
       paymentDate: paymentDate,
+      includeFriday: includeFriday ?? false,
     );
   }
 }

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 
-String mapFailureMessage(BuildContext context, String message) {
+String mapFailureMessage(
+  BuildContext context,
+  String message, {
+  bool preserveUnmappedCode = false,
+}) {
   final locale = context.localization;
 
   switch (message) {
+    case 'auth.invalid_credentials':
+      return locale.auth_invalid_credentials;
     case 'subscription.start_dates_unavailable':
       return locale.start_dates_unavailable_description;
     case 'FRIDAY_EXCLUDED_BY_PLAN':
@@ -407,26 +413,39 @@ String mapFailureMessage(BuildContext context, String message) {
     default:
       if (message.startsWith('subscription_flow.')) {
         final stripped = message.substring('subscription_flow.'.length);
-        final mapped = mapFailureMessage(context, stripped);
+        final mapped = mapFailureMessage(
+          context,
+          stripped,
+          preserveUnmappedCode: preserveUnmappedCode,
+        );
         if (mapped != stripped) {
           return mapped;
         }
       }
       if (message.startsWith('family.')) {
         final stripped = message.substring('family.'.length);
-        final mapped = mapFailureMessage(context, stripped);
+        final mapped = mapFailureMessage(
+          context,
+          stripped,
+          preserveUnmappedCode: preserveUnmappedCode,
+        );
         if (mapped != stripped) {
           return mapped;
         }
       }
       if (message.startsWith('checkout.')) {
         final stripped = message.substring('checkout.'.length);
-        final mapped = mapFailureMessage(context, stripped);
+        final mapped = mapFailureMessage(
+          context,
+          stripped,
+          preserveUnmappedCode: preserveUnmappedCode,
+        );
         if (mapped != stripped) {
           return mapped;
         }
       }
-      if (!message.contains(' ') &&
+      if (!preserveUnmappedCode &&
+          !message.contains(' ') &&
           (message.contains('.') || message.contains('_'))) {
         return locale.error_unknown;
       }

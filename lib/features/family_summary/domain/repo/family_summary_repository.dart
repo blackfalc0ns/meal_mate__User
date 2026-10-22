@@ -38,9 +38,9 @@ abstract class FamilySummaryRepository {
     required String errorUrl,
     required String correlationId,
     int? paymentMethodId,
-    required String batchId,
-    required int batchVersion,
-    required String idempotencyKey,
+    String? batchId,
+    int? batchVersion,
+    String? idempotencyKey,
     int clientContractVersion =
         FamilySummaryContractConstants.clientContractVersion,
     String? promoCode,

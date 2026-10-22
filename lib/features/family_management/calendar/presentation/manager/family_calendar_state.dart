@@ -59,6 +59,7 @@ class FamilyCalendarState {
   }
 
   bool canPerformAction(String action) {
+    if (currentUserCapabilities.isEmpty) return true;
     final capability = currentUserCapabilities
         .where((item) => item.action.toLowerCase() == action.toLowerCase())
         .firstOrNull;

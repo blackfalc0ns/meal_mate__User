@@ -18,12 +18,21 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/family_management/overview/domain/usecase/get_family_home_usecase.dart';
 
+import 'package:meal_meat_user/features/payment/presentation/widgets/success/subscription_success_family_members_row.dart';
+
 /// Screen displayed after a successful subscription payment / activation.
 /// Conforms to Figma M-06.08 - Subscription / Success (node 3356:7428).
-class PaymentSuccessScreen extends StatelessWidget {
+class PaymentSuccessScreen extends StatefulWidget {
   const PaymentSuccessScreen({super.key, this.args});
 
   final PaymentSuccessArgs? args;
+
+  @override
+  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+  int _selectedMemberIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +40,12 @@ class PaymentSuccessScreen extends StatelessWidget {
     final locale = context.localization;
 
     final resolvedArgs =
-        args ??
+        widget.args ??
         PaymentSuccessArgs(
           subscriptionId: '',
           packageName: locale.subscription_healthy_balanced,
           durationDays: 30,
-          durationLabel: '30 ${locale.health_goals_days}',
+          durationLabel: '30 ${locale.subscription_day}',
           restaurantTier: locale.subscription_summary_restaurant_tier_value,
           paymentDate: DateTime.now().toIso8601String().split('T').first,
           startDate: DateTime.now()
@@ -50,6 +59,15 @@ class PaymentSuccessScreen extends StatelessWidget {
               .split('T')
               .first,
         );
+
+    final hasMembers = resolvedArgs.members.isNotEmpty;
+    final activeMember = hasMembers &&
+            _selectedMemberIndex < resolvedArgs.members.length
+        ? resolvedArgs.members[_selectedMemberIndex]
+        : null;
+    final cardArgs = activeMember != null
+        ? resolvedArgs.forMember(activeMember)
+        : resolvedArgs;
 
     return PopScope(
       canPop: false,
@@ -86,43 +104,73 @@ class PaymentSuccessScreen extends StatelessWidget {
                   child: Column(
                     key: const ValueKey('subscription-success-content'),
                     children: [
-                      if (resolvedArgs.isFamily)
-                        FutureBuilder(
-                          future: getIt<GetFamilyHomeUseCase>()(),
-                          builder: (context, snapshot) {
-                            final result = snapshot.data;
-                            if (result == null || result is! ApiSuccessResult) {
-                              return const SizedBox.shrink();
-                            }
-                            final data = (result as ApiSuccessResult).data;
-                            final members = data.members;
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Spacing.md,
-                              ),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    for (final member in members)
-                                      Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.only(
-                                              end: Spacing.sm,
-                                            ),
-                                        child: Chip(
-                                          avatar: const Icon(Icons.person),
-                                          label: Text(member.displayName),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
                       const SubscriptionSuccessHeroHeader(),
-                      SubscriptionSuccessSummaryCard(args: resolvedArgs),
+                      if (resolvedArgs.isFamily) ...[
+                        if (hasMembers) ...[
+                          SubscriptionSuccessFamilyMembersRow(
+                            members: resolvedArgs.members,
+                            selectedIndex: _selectedMemberIndex,
+                            onMemberSelected: (index) {
+                              setState(() => _selectedMemberIndex = index);
+                            },
+                          ),
+                          const SizedBox(height: Spacing.xs),
+                        ] else ...[
+                          FutureBuilder(
+                            future: getIt<GetFamilyHomeUseCase>()(),
+                            builder: (context, snapshot) {
+                              final result = snapshot.data;
+                              if (result == null || result is! ApiSuccessResult) {
+                                return const SizedBox.shrink();
+                              }
+                              final data = (result as ApiSuccessResult).data;
+                              final apiMembers = data.members;
+
+                              final list = <PaymentSuccessMemberArgs>[
+                                PaymentSuccessMemberArgs(
+                                  memberId: resolvedArgs.subscriptionId,
+                                  displayName: data.name
+                                          .replaceAll('عائلة ', '')
+                                          .trim()
+                                          .isNotEmpty
+                                      ? data.name.replaceAll('عائلة ', '').trim()
+                                      : 'المدير',
+                                  isManager: true,
+                                  packageName: resolvedArgs.packageName,
+                                  durationDays: resolvedArgs.durationDays,
+                                  restaurantTier: resolvedArgs.restaurantTier,
+                                  includeFriday: resolvedArgs.includeFriday,
+                                  startDate: resolvedArgs.startDate,
+                                  endDate: resolvedArgs.endDate,
+                                  gender: 1,
+                                ),
+                                for (int i = 0; i < apiMembers.length; i++)
+                                  PaymentSuccessMemberArgs(
+                                    memberId: apiMembers[i].memberId,
+                                    displayName: apiMembers[i].displayName,
+                                    isManager: apiMembers[i].role == 'Manager',
+                                    gender: 2,
+                                  ),
+                              ];
+
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: Spacing.xs),
+                                child: SubscriptionSuccessFamilyMembersRow(
+                                  members: list,
+                                  selectedIndex: _selectedMemberIndex.clamp(
+                                    0,
+                                    list.length - 1,
+                                  ),
+                                  onMemberSelected: (index) {
+                                    setState(() => _selectedMemberIndex = index);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ],
+                      SubscriptionSuccessSummaryCard(args: cardArgs),
                       const SizedBox(height: Spacing.xs),
                       const SubscriptionPaymentConfirmedBanner(),
                       const SizedBox(height: Spacing.xs),

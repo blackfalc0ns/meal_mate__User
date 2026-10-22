@@ -132,7 +132,7 @@ class FamilyMealSelectionState {
           .firstOrNull;
       if (cap != null) return cap.allowed;
     }
-    return false;
+    return currentUserCapabilities.isEmpty;
   }
 
   bool get canSelectRestaurant =>

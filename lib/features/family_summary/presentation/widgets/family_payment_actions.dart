@@ -11,6 +11,7 @@ class FamilyPaymentActions extends StatelessWidget {
     super.key,
     this.canCheckout = true,
     this.isLoading = false,
+    this.isRetry = false,
     this.checkoutBlockReason,
     this.onConfirmPayment,
     this.onResolveBlocker,
@@ -18,6 +19,7 @@ class FamilyPaymentActions extends StatelessWidget {
 
   final bool canCheckout;
   final bool isLoading;
+  final bool isRetry;
   final String? checkoutBlockReason;
   final VoidCallback? onConfirmPayment;
   final VoidCallback? onResolveBlocker;
@@ -31,7 +33,8 @@ class FamilyPaymentActions extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!canCheckout &&
+        if (!isRetry &&
+            !canCheckout &&
             checkoutBlockReason != null &&
             checkoutBlockReason!.isNotEmpty) ...[
           InkWell(
@@ -92,7 +95,9 @@ class FamilyPaymentActions extends StatelessWidget {
             const SizedBox(width: Spacing.xs),
             Expanded(
               child: AppButton.filled(
-                text: locale.family_confirm_payment,
+                text: isRetry
+                    ? locale.billing_uncompleted_resume
+                    : locale.family_confirm_payment,
                 onPressed: canCheckout && !isLoading ? onConfirmPayment : null,
                 height: Spacing.familySetupBottomButtonHeight,
                 borderRadius: Spacing.radiusPill,

@@ -12,6 +12,11 @@ class FamilySummaryMemberDto {
     this.setupStatus,
     this.isReady,
     this.roleAr,
+    this.gender,
+    this.durationDays,
+    this.selectedTier,
+    this.includeFriday,
+    this.startDate,
   });
 
   @JsonKey(readValue: _readMemberId)
@@ -24,9 +29,32 @@ class FamilySummaryMemberDto {
   @JsonKey(readValue: _readIsReady)
   final bool? isReady;
   final String? roleAr;
+  final int? gender;
+  final int? durationDays;
+  final String? selectedTier;
+  final bool? includeFriday;
+  final String? startDate;
 
-  factory FamilySummaryMemberDto.fromJson(Map<String, dynamic> json) =>
-      _$FamilySummaryMemberDtoFromJson(json);
+  factory FamilySummaryMemberDto.fromJson(Map<String, dynamic> json) {
+    final generated = _$FamilySummaryMemberDtoFromJson(json);
+    final genderRaw = json['gender'];
+    final gender = genderRaw is int
+        ? genderRaw
+        : (genderRaw == 'Female' ? 2 : 1);
+    return FamilySummaryMemberDto(
+      memberId: generated.memberId,
+      displayName: generated.displayName,
+      isManager: generated.isManager,
+      setupStatus: generated.setupStatus,
+      isReady: generated.isReady,
+      roleAr: generated.roleAr,
+      gender: gender,
+      durationDays: _nullableIntFromJson(json['durationDays']),
+      selectedTier: json['selectedTier'] as String?,
+      includeFriday: json['includeFriday'] as bool?,
+      startDate: json['startDate'] as String?,
+    );
+  }
 }
 
 @JsonSerializable(createToJson: false)

@@ -335,6 +335,63 @@ void main() {
       expect(find.text('Credit Card'), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'In pending checkout or retry state, action button triggers RetryFamilySubscriptionPaymentEvent',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      const method1 = PaymentMethodEntity(
+        id: 3,
+        title: 'KNET',
+        subtitle: '',
+        type: PaymentMethodType.payzah,
+        isAvailable: true,
+      );
+
+      final vm = _MockFamilyCheckoutViewModel(
+        const FamilyCheckoutState(
+          summary: FamilySummaryEntity(
+            subtotal: 100,
+            familyDiscountPercent: 0,
+            familyDiscountAmount: 0,
+            finalPrice: 100,
+            canCheckout: false,
+            checkoutBlockReason: 'family.checkout_pending',
+            selectedNewSubscriberCount: 1,
+            batchId: 'batch-1',
+            batchVersion: 1,
+          ),
+          selectedSummaryMemberId: 'm-1',
+          paymentMethods: [method1],
+          selectedPaymentMethod: method1,
+        ),
+      );
+
+      await setUpViewModel(vm);
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Find the retry / resume payment button
+      final resumeButton = find.byType(ElevatedButton);
+      expect(resumeButton, findsWidgets);
+
+      await tester.tap(resumeButton.last);
+      await tester.pump();
+
+      expect(
+        vm.dispatchedEvents.any(
+          (e) => e is RetryFamilySubscriptionPaymentEvent && e.paymentMethodId == 3,
+        ),
+        isTrue,
+      );
+    },
+  );
 }
 
 class _RouteCountObserver extends NavigatorObserver {

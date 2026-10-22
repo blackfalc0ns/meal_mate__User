@@ -3061,5 +3061,6 @@
   "start_dates_unavailable": "لا توجد مواعيد بداية متاحة",
   "start_dates_unavailable_description": "حاول لاحقًا لتحميل مواعيد التوصيل المتاحة.",
   "calendar_permissions_unavailable": "صلاحيات تعديل الأيام غير متاحة. حدّث الصفحة وحاول مرة أخرى.",
-  "operational_friday_excluded": "باقتك لا تشمل أيام الجمعة. اختر يومًا آخر متاحًا."
+  "operational_friday_excluded": "باقتك لا تشمل أيام الجمعة. اختر يومًا آخر متاحًا.",
+  "auth_invalid_credentials": "\u0631\u0642\u0645 \u0627\u0644\u0647\u0627\u062a\u0641 \u0623\u0648 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u063a\u064a\u0631 \u0635\u062d\u064a\u062d\u0629."
 }

@@ -132,9 +132,11 @@ class AppButton extends StatelessWidget {
     Widget button;
     switch (variant) {
       case AppButtonVariant.filled:
+        final isDisabled = onPressed == null || isLoading;
         button = _GradientButtonShell(
           gradient: gradient,
           borderRadius: r,
+          isDisabled: isDisabled,
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
@@ -249,11 +251,13 @@ class _GradientButtonShell extends StatelessWidget {
     required this.child,
     required this.borderRadius,
     this.gradient,
+    this.isDisabled = false,
   });
 
   final Widget child;
   final double borderRadius;
   final LinearGradient? gradient;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -261,12 +265,21 @@ class _GradientButtonShell extends StatelessWidget {
       return child;
     }
 
-    return DecoratedBox(
+    final decorated = DecoratedBox(
       decoration: BoxDecoration(
         gradient: gradient,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: child,
     );
+
+    if (isDisabled) {
+      return Opacity(
+        opacity: 0.5,
+        child: decorated,
+      );
+    }
+
+    return decorated;
   }
 }

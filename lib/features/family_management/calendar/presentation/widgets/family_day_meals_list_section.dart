@@ -101,7 +101,7 @@ class FamilyDayMealsListSection extends StatelessWidget {
                   iconType: FamilyDayMealIconType.lunch,
                   isEmpty: true,
                 ),
-                onEditPressed: (isEditable && canEditMealsAndDays)
+                onEditPressed: isEditable
                     ? onChooseMeals
                     : null,
               ),
@@ -128,7 +128,7 @@ class FamilyDayMealsListSection extends StatelessWidget {
                     protein: meal.protein,
                     fat: meal.fat,
                   ),
-                  onEditPressed: (isEditable && canUnitExchange)
+                  onEditPressed: isEditable
                       ? () => onEditMeal(
                           meal.slot.isNotEmpty ? meal.slot : meal.mealType,
                         )

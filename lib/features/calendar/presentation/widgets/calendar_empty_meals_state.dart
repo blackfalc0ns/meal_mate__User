@@ -25,6 +25,8 @@ class CalendarEmptyMealsState extends StatelessWidget {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     final slideBegin = isRtl ? 0.08 : -0.08;
 
+    final isClosed = onAddMeals == null && !isNoSubscription;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
       child:
@@ -56,6 +58,8 @@ class CalendarEmptyMealsState extends StatelessWidget {
                     child: Text(
                       isNoSubscription
                           ? locale.calendar_no_subscription_description
+                          : isClosed
+                          ? locale.calendar_operational_deadline_passed_generic
                           : locale.calendar_empty_meals_description,
                       textAlign: TextAlign.center,
                       style: getRegularStyle(
@@ -71,13 +75,23 @@ class CalendarEmptyMealsState extends StatelessWidget {
                     child: AppButton(
                       text: isNoSubscription
                           ? locale.calendar_no_subscription_button
+                          : isClosed
+                          ? locale.family_member_day_closed_button
                           : locale.calendar_empty_meals_button,
                       onPressed: onAddMeals,
                       icon: isNoSubscription
                           ? Icons.arrow_forward_rounded
+                          : isClosed
+                          ? null
                           : Icons.add_rounded,
                       iconBeforeText: false,
-                      gradient: color.calendarNoSubscriptionGradient,
+                      gradient: isClosed
+                          ? null
+                          : color.calendarNoSubscriptionGradient,
+                      color: isClosed ? color.surfaceContainerHighest : null,
+                      textColor: isClosed
+                          ? color.onSurfaceVariant.withValues(alpha: 0.6)
+                          : null,
                       height: Spacing.calendarEmptyMealsButtonHeight,
                       borderRadius: Spacing.calendarEmptyMealsButtonRadius,
                       fontSize: FontSize.size17,

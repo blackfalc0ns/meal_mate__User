@@ -169,7 +169,7 @@ class FamilyMemberDetailProfileCard extends StatelessWidget {
                   ],
                 ),
                 child: Icon(
-                  Icons.chevron_left_rounded,
+                  Icons.chevron_right_rounded,
                   size: Spacing.iconMd,
                   color: color.onSurface,
                 ),

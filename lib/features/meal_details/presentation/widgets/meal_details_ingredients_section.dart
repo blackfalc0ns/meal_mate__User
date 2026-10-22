@@ -115,7 +115,7 @@ class _MealDetailsIngredientsSectionState
                     border: Border.all(color: color.outlineVariant),
                   ),
                   child: Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurface,
                     semanticLabel: locale.calendar_ingredients,

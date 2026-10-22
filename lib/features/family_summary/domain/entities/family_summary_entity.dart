@@ -7,6 +7,11 @@ class FamilySummaryMemberEntity {
   final int setupStatus;
   final bool isReady;
   final String? roleAr;
+  final int? gender;
+  final int? durationDays;
+  final String? selectedTier;
+  final bool includeFriday;
+  final String? startDate;
 
   const FamilySummaryMemberEntity({
     required this.memberId,
@@ -15,6 +20,11 @@ class FamilySummaryMemberEntity {
     this.setupStatus = 0,
     this.isReady = false,
     this.roleAr,
+    this.gender,
+    this.durationDays,
+    this.selectedTier,
+    this.includeFriday = false,
+    this.startDate,
   });
 }
 

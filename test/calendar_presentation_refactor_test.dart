@@ -41,6 +41,7 @@ void main() {
                 weekday: '',
                 date: DateTime.now().add(const Duration(days: 10)),
                 status: status,
+                canEdit: status == 'open',
               ),
               showBottomSpace: false,
               onSelectRestaurant: () => restaurantOpened = true,
@@ -51,6 +52,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       if (status == 'frozen') {
         expect(find.byType(CalendarFrozenDayState), findsOneWidget);
         expect(find.byType(CalendarEmptyMealsState), findsNothing);

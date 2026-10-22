@@ -83,6 +83,21 @@ extension FamilyFlowCurrentResponseDtoMapper on FamilyFlowCurrentResponseDto {
           : null,
       sessionMessage: sessionMessage,
       packageAvailable: packageAvailable ?? false,
+      pendingCheckout: pendingCheckout != null
+          ? FamilyPendingCheckoutEntity(
+              familyGroupId: pendingCheckout!.familyGroupId,
+              paymentAnchorSubscriptionId:
+                  pendingCheckout!.paymentAnchorSubscriptionId,
+              paymentUrl: pendingCheckout!.paymentUrl,
+              holdExpiresAtUtc: pendingCheckout!.holdExpiresAtUtc != null
+                  ? DateTime.tryParse(pendingCheckout!.holdExpiresAtUtc!)
+                  : null,
+              finalPrice: pendingCheckout!.finalPrice,
+              batchId: pendingCheckout!.batchId,
+              batchVersion: pendingCheckout!.batchVersion,
+            )
+          : null,
+      retryPaymentEndpoint: retryPaymentEndpoint,
     );
   }
 }

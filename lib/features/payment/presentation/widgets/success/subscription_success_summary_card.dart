@@ -23,11 +23,16 @@ class SubscriptionSuccessSummaryCard extends StatelessWidget {
             ? args.packageName!
             : (conf != null ? conf.bundleName(locale.localeName) : '');
     final durationDays = args.durationDays ?? conf?.durationDays;
+    final includeFriday = args.includeFriday || (conf?.includeFriday ?? false);
+    final fridayText = includeFriday
+        ? locale.subscription_with_friday
+        : locale.subscription_without_friday;
     final duration =
-        args.durationLabel ??
-        (durationDays != null
-            ? '$durationDays ${locale.health_goals_days}'
-            : '');
+        (args.durationLabel != null && args.durationLabel!.isNotEmpty)
+            ? args.durationLabel!
+            : (durationDays != null
+                ? '$durationDays ${locale.subscription_day} $fridayText'
+                : '');
     final restaurantTier =
         (args.restaurantTier != null && args.restaurantTier!.isNotEmpty)
             ? args.restaurantTier!

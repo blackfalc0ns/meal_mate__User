@@ -3110,5 +3110,6 @@
   "start_dates_unavailable": "No start dates available",
   "start_dates_unavailable_description": "Try again later to load the available delivery dates.",
   "calendar_permissions_unavailable": "Day permissions are unavailable. Refresh and try again.",
-  "operational_friday_excluded": "Your plan does not include Fridays. Choose another available day."
+  "operational_friday_excluded": "Your plan does not include Fridays. Choose another available day.",
+  "auth_invalid_credentials": "The phone number or password is incorrect."
 }

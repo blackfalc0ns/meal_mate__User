@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_member_response_dto.dart';
 
+import 'package:meal_meat_user/features/family_subscription_setup/data/models/response/family_pending_checkout_response_dto.dart';
+
 part 'family_flow_current_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -23,6 +25,8 @@ class FamilyFlowCurrentResponseDto {
     this.sessionExpiresAtUtc,
     this.sessionMessage,
     this.packageAvailable,
+    this.pendingCheckout,
+    this.retryPaymentEndpoint,
   });
 
   final String? familyGroupId;
@@ -46,6 +50,8 @@ class FamilyFlowCurrentResponseDto {
   final String? sessionExpiresAtUtc;
   final String? sessionMessage;
   final bool? packageAvailable;
+  final FamilyPendingCheckoutResponseDto? pendingCheckout;
+  final String? retryPaymentEndpoint;
 
   factory FamilyFlowCurrentResponseDto.fromJson(Map<String, dynamic> json) =>
       _$FamilyFlowCurrentResponseDtoFromJson(json);

@@ -166,7 +166,7 @@ class _FamilyMemberCalendarScreenState
                   fallbackSubscriptionId: widget.args?.subscriptionId,
                   onMemberSelected: _selectMember,
                 ),
-                const SizedBox(height: Spacing.familyMemberCalendarMonthTopGap),
+                const SizedBox(height: Spacing.md),
                 FamilyMemberCalendarPlanSection(
                   onRetry: _retryCalendar,
                   child: Column(

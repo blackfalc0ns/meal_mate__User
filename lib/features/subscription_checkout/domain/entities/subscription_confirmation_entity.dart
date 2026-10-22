@@ -19,6 +19,7 @@ class SubscriptionConfirmationEntity {
     this.tierNameAr,
     this.tierNameEn,
     this.paymentDate,
+    this.includeFriday = false,
   });
 
   final String subscriptionId;
@@ -40,6 +41,7 @@ class SubscriptionConfirmationEntity {
   final String? tierNameAr;
   final String? tierNameEn;
   final String? paymentDate;
+  final bool includeFriday;
 
   String programName(String lang) => lang.startsWith('ar')
       ? (programNameAr.isNotEmpty ? programNameAr : programNameEn)

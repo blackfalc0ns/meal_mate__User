@@ -48,9 +48,7 @@ class FamilyMemberCalendarActionSection extends StatelessWidget {
               ),
             FamilyMemberCalendarPrimaryAction(
               hasMeals: hasMeals,
-              canEdit: hasMeals
-                  ? data.canView
-                  : data.canEdit && data.day?.isEditable == true,
+              canEdit: hasMeals ? data.canView : data.day?.isEditable == true,
               onChooseMeals: onChooseMeals,
               onShowDetails: onShowDetails,
             ),

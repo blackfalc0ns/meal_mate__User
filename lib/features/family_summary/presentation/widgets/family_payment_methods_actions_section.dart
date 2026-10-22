@@ -73,60 +73,90 @@ class FamilyPaymentMethodsActionsSection extends StatelessWidget {
                 },
               ),
             ] else if (activeState.failure != null &&
-                activeState.summary != null) ...[
+                (activeState.summary != null ||
+                    activeState.currentFlow?.pendingCheckout != null)) ...[
               const SizedBox(height: Spacing.md),
               InlineApiErrorWidget(
                 failure: activeState.failure!,
-                onRetry: () => context.read<FamilyCheckoutViewModel>().doIntent(
-                  GetFamilySummaryEvent(
-                    memberId: activeState.selectedSummaryMemberId,
-                  ),
-                ),
+                onRetry: () {
+                  final viewModel = context.read<FamilyCheckoutViewModel>();
+                  if (activeState.failure?.code ==
+                      SubscriptionErrorCodes.paymentInitializationFailed) {
+                    final methodId =
+                        activeState.selectedPaymentMethod?.id ?? 3;
+                    viewModel.doIntent(
+                      RetryFamilySubscriptionPaymentEvent(
+                        callbackUrl: FamilyCheckoutContractConstants
+                            .defaultSuccessCallbackUrl,
+                        errorUrl: FamilyCheckoutContractConstants
+                            .defaultErrorCallbackUrl,
+                        correlationId: viewModel.correlationId,
+                        paymentMethodId: methodId,
+                      ),
+                    );
+                  } else {
+                    viewModel.doIntent(
+                      GetFamilySummaryEvent(
+                        memberId: activeState.selectedSummaryMemberId,
+                      ),
+                    );
+                  }
+                },
               ),
             ],
             const SizedBox(height: Spacing.lg),
-            FamilyPaymentActions(
-              canCheckout: activeState.summary?.canCheckout ?? false,
-              isLoading: activeState.isCheckoutLoading,
-              checkoutBlockReason: activeState.summary?.checkoutBlockReason,
-              onResolveBlocker: () {
-                final route = familyCheckoutBlockerRoute(
-                  activeState.summary?.checkoutBlockReason,
-                );
-                if (route != null) {
-                  unawaited(context.pushReplacementNamed(route));
-                }
-              },
-              onConfirmPayment: activeState.selectedPaymentMethod?.id == null
-                  ? null
-                  : () {
-                      final methodId = activeState.selectedPaymentMethod?.id;
-                      if (methodId == null) return;
-                      final viewModel = context.read<FamilyCheckoutViewModel>();
-                      final isPending =
-                          activeState.summary?.checkoutBlockReason ==
-                          SubscriptionErrorCodes.familyCheckoutPending;
-                      viewModel.doIntent(
-                        isPending
-                            ? RetryFamilySubscriptionPaymentEvent(
-                                callbackUrl: FamilyCheckoutContractConstants
-                                    .defaultSuccessCallbackUrl,
-                                errorUrl: FamilyCheckoutContractConstants
-                                    .defaultErrorCallbackUrl,
-                                correlationId: viewModel.correlationId,
-                                paymentMethodId: methodId,
-                              )
-                            : CheckoutFamilySubscriptionEvent(
-                                callbackUrl: FamilyCheckoutContractConstants
-                                    .defaultSuccessCallbackUrl,
-                                errorUrl: FamilyCheckoutContractConstants
-                                    .defaultErrorCallbackUrl,
-                                correlationId: viewModel.correlationId,
-                                paymentMethodId: methodId,
-                              ),
-                      );
-                    },
-            ),
+            () {
+              final isPendingOrRetry =
+                  activeState.summary?.checkoutBlockReason ==
+                      SubscriptionErrorCodes.familyCheckoutPending ||
+                  activeState.currentFlow?.isCheckoutPending == true ||
+                  activeState.currentFlow?.canRetryPayment == true ||
+                  activeState.failure?.code ==
+                      SubscriptionErrorCodes.paymentInitializationFailed;
+              final canCheckoutOrRetry =
+                  (activeState.summary?.canCheckout == true) || isPendingOrRetry;
+
+              return FamilyPaymentActions(
+                canCheckout: canCheckoutOrRetry,
+                isLoading:
+                    activeState.isCheckoutLoading || activeState.isRetryLoading,
+                isRetry: isPendingOrRetry,
+                checkoutBlockReason: isPendingOrRetry
+                    ? null
+                    : activeState.summary?.checkoutBlockReason,
+                onResolveBlocker: () {
+                  final route = familyCheckoutBlockerRoute(
+                    activeState.summary?.checkoutBlockReason,
+                  );
+                  if (route != null) {
+                    unawaited(context.pushReplacementNamed(route));
+                  }
+                },
+                onConfirmPayment: () {
+                  final methodId = activeState.selectedPaymentMethod?.id ?? 3;
+                  final viewModel = context.read<FamilyCheckoutViewModel>();
+                  viewModel.doIntent(
+                    isPendingOrRetry
+                        ? RetryFamilySubscriptionPaymentEvent(
+                            callbackUrl: FamilyCheckoutContractConstants
+                                .defaultSuccessCallbackUrl,
+                            errorUrl: FamilyCheckoutContractConstants
+                                .defaultErrorCallbackUrl,
+                            correlationId: viewModel.correlationId,
+                            paymentMethodId: methodId,
+                          )
+                        : CheckoutFamilySubscriptionEvent(
+                            callbackUrl: FamilyCheckoutContractConstants
+                                .defaultSuccessCallbackUrl,
+                            errorUrl: FamilyCheckoutContractConstants
+                                .defaultErrorCallbackUrl,
+                            correlationId: viewModel.correlationId,
+                            paymentMethodId: methodId,
+                          ),
+                  );
+                },
+              );
+            }(),
           ],
         );
       },

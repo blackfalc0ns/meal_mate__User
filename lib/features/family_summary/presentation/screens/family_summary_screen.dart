@@ -22,6 +22,7 @@ import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_home_action.dart';
 import 'package:meal_meat_user/features/family_shared/presentation/widgets/family_flow_scope.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
 
 class FamilySummaryScreen extends StatefulWidget {
   const FamilySummaryScreen({super.key});
@@ -137,6 +138,45 @@ class _FamilySummaryScreenState extends State<FamilySummaryScreen> {
     if (state.checkoutResult != null &&
         state.checkoutResult != _lastHandledCheckoutResult) {
       _lastHandledCheckoutResult = state.checkoutResult;
+      final summary = state.summary;
+      final familyMembers = <PaymentSuccessMemberArgs>[
+        if (summary != null)
+          for (int i = 0; i < summary.members.length; i++) ...[
+            () {
+              final m = summary.members[i];
+              final s = summary.memberSchedules
+                  .where((sc) => sc.memberId == m.memberId)
+                  .firstOrNull;
+              final isSel = summary.selectedMember?.memberId == m.memberId;
+              final sel = isSel ? summary.selectedMember : null;
+              final durationDays = m.durationDays ??
+                  s?.deliveryDaysCount ??
+                  sel?.durationDays;
+              final tier = m.selectedTier ??
+                  sel?.tierNameAr ??
+                  summary.selectedMember?.tierNameAr;
+              final startDate = m.startDate ??
+                  s?.firstDeliveryDate ??
+                  sel?.startDate;
+              final endDate = s?.endDate;
+              final includeFriday =
+                  m.includeFriday || (sel?.includeFriday ?? false);
+              return PaymentSuccessMemberArgs(
+                memberId: m.memberId,
+                displayName: m.displayName,
+                isManager: m.isManager,
+                packageName:
+                    sel?.bundleNameAr ?? summary.selectedMember?.bundleNameAr,
+                durationDays: durationDays,
+                restaurantTier: tier,
+                startDate: startDate,
+                endDate: endDate,
+                includeFriday: includeFriday,
+                gender: m.gender ?? (m.isManager ? 1 : 2),
+              );
+            }(),
+          ],
+      ];
       unawaited(
         Navigator.of(context, rootNavigator: true)
             .pushNamed(
@@ -146,10 +186,12 @@ class _FamilySummaryScreenState extends State<FamilySummaryScreen> {
                 flowType: 'family',
                 batchId: state.summary?.batchId,
                 batchVersion: state.summary?.batchVersion,
+                familyMembers: familyMembers,
               ),
             )
             .then((_) {
-              if (context.mounted) {
+              if (context.mounted &&
+                  ModalRoute.of(context)?.isCurrent == true) {
                 final activeMemberId = context
                     .read<FamilySummaryViewModel>()
                     .state

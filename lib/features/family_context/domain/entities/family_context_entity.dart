@@ -39,12 +39,13 @@ class FamilyContextEntity {
   }
 
   bool can(String action) {
+    if (isManager) return true;
     final cap = capabilities
         .where((c) =>
             c.action.toLowerCase() == action.toLowerCase() ||
             (c.requiredPermission?.toLowerCase() == action.toLowerCase()))
         .firstOrNull;
-    return cap?.allowed ?? false;
+    return cap?.allowed ?? capabilities.isEmpty;
   }
 
   bool canPerform(String action) => can(action);

@@ -1,5 +1,29 @@
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_member_entity.dart';
 
+class FamilyPendingCheckoutEntity {
+  final String? familyGroupId;
+  final String? paymentAnchorSubscriptionId;
+  final String? paymentUrl;
+  final DateTime? holdExpiresAtUtc;
+  final double? finalPrice;
+  final String? batchId;
+  final int? batchVersion;
+
+  const FamilyPendingCheckoutEntity({
+    this.familyGroupId,
+    this.paymentAnchorSubscriptionId,
+    this.paymentUrl,
+    this.holdExpiresAtUtc,
+    this.finalPrice,
+    this.batchId,
+    this.batchVersion,
+  });
+
+  bool get isHoldExpired =>
+      holdExpiresAtUtc != null &&
+      DateTime.now().toUtc().isAfter(holdExpiresAtUtc!);
+}
+
 class FamilyFlowCurrentEntity {
   final String? familyGroupId;
   final String? name;
@@ -17,6 +41,8 @@ class FamilyFlowCurrentEntity {
   final DateTime? sessionExpiresAtUtc;
   final String? sessionMessage;
   final bool packageAvailable;
+  final FamilyPendingCheckoutEntity? pendingCheckout;
+  final String? retryPaymentEndpoint;
 
   const FamilyFlowCurrentEntity({
     this.familyGroupId,
@@ -35,7 +61,18 @@ class FamilyFlowCurrentEntity {
     this.sessionExpiresAtUtc,
     this.sessionMessage,
     this.packageAvailable = false,
+    this.pendingCheckout,
+    this.retryPaymentEndpoint,
   });
+
+  bool get isCheckoutPending =>
+      status == 2 ||
+      pendingCheckout != null ||
+      (retryPaymentEndpoint != null && retryPaymentEndpoint!.isNotEmpty);
+
+  bool get canRetryPayment =>
+      (retryPaymentEndpoint != null && retryPaymentEndpoint!.isNotEmpty) ||
+      pendingCheckout != null;
 
   String packageName(String languageCode) {
     if (languageCode.toLowerCase().startsWith('en') &&
@@ -64,6 +101,8 @@ class FamilyFlowCurrentEntity {
     DateTime? sessionExpiresAtUtc,
     String? sessionMessage,
     bool? packageAvailable,
+    FamilyPendingCheckoutEntity? pendingCheckout,
+    String? retryPaymentEndpoint,
   }) {
     return FamilyFlowCurrentEntity(
       familyGroupId: familyGroupId ?? this.familyGroupId,
@@ -83,6 +122,8 @@ class FamilyFlowCurrentEntity {
       sessionExpiresAtUtc: sessionExpiresAtUtc ?? this.sessionExpiresAtUtc,
       sessionMessage: sessionMessage ?? this.sessionMessage,
       packageAvailable: packageAvailable ?? this.packageAvailable,
+      pendingCheckout: pendingCheckout ?? this.pendingCheckout,
+      retryPaymentEndpoint: retryPaymentEndpoint ?? this.retryPaymentEndpoint,
     );
   }
 }

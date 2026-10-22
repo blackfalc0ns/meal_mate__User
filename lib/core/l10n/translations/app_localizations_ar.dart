@@ -7798,4 +7798,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get operational_friday_excluded =>
       'باقتك لا تشمل أيام الجمعة. اختر يومًا آخر متاحًا.';
+
+  @override
+  String get auth_invalid_credentials => 'رقم الهاتف أو كلمة المرور غير صحيحة.';
 }

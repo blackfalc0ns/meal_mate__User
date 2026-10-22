@@ -24,6 +24,7 @@ class SubscriptionConfirmationResponseDto {
     this.tierNameAr,
     this.tierNameEn,
     this.paymentDate,
+    this.includeFriday,
   });
 
   final String? subscriptionId;
@@ -55,11 +56,35 @@ class SubscriptionConfirmationResponseDto {
   final String? tierNameEn;
   @JsonKey(readValue: _readPaymentDate)
   final String? paymentDate;
+  final bool? includeFriday;
 
   factory SubscriptionConfirmationResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$SubscriptionConfirmationResponseDtoFromJson(json);
+  ) {
+    final generated = _$SubscriptionConfirmationResponseDtoFromJson(json);
+    return SubscriptionConfirmationResponseDto(
+      subscriptionId: generated.subscriptionId,
+      status: generated.status,
+      programNameAr: generated.programNameAr,
+      programNameEn: generated.programNameEn,
+      bundleNameAr: generated.bundleNameAr,
+      bundleNameEn: generated.bundleNameEn,
+      startDate: generated.startDate,
+      endDate: generated.endDate,
+      paidAmount: generated.paidAmount,
+      appliedDiscount: generated.appliedDiscount,
+      currency: generated.currency,
+      referralShareCode: generated.referralShareCode,
+      referralShareMessage: generated.referralShareMessage,
+      referralShareUrl: generated.referralShareUrl,
+      durationDays: generated.durationDays,
+      tier: generated.tier,
+      tierNameAr: generated.tierNameAr,
+      tierNameEn: generated.tierNameEn,
+      paymentDate: generated.paymentDate,
+      includeFriday: json['includeFriday'] as bool?,
+    );
+  }
 }
 
 Object? _readPaidAmount(Map<dynamic, dynamic> json, String key) {

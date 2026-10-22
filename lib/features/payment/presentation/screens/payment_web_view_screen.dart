@@ -152,8 +152,10 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
                       ? checkout.startDate
                       : checkout.chosenStartDate),
               endDate: conf?.endDate,
+              includeFriday: conf?.includeFriday ?? false,
               isFamily: isFamily,
               confirmation: conf,
+              members: args.familyMembers,
             );
             unawaited(
               Navigator.of(context).pushNamedAndRemoveUntil(

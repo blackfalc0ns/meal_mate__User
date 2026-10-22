@@ -72,7 +72,10 @@ class FamilySummaryContent extends StatelessWidget {
                       FamilySubscriptionScheduleSection(state: state),
                       const SizedBox(height: Spacing.lg),
                       const FamilyCouponCard(),
-                      FamilyPriceSummarySection(summary: state.summary),
+                      FamilyPriceSummarySection(
+                        summary: state.summary,
+                        pendingCheckout: state.currentFlow?.pendingCheckout,
+                      ),
                       FamilyMealOverviewSection(
                         summary: state.summary,
                         flowMembers: state.members,

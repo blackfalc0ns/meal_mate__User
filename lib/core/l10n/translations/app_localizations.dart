@@ -14353,6 +14353,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your plan does not include Fridays. Choose another available day.'**
   String get operational_friday_excluded;
+
+  /// No description provided for @auth_invalid_credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'The phone number or password is incorrect.'**
+  String get auth_invalid_credentials;
 }
 
 class _AppLocalizationsDelegate

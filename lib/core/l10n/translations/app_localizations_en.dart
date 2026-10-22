@@ -7919,4 +7919,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get operational_friday_excluded =>
       'Your plan does not include Fridays. Choose another available day.';
+
+  @override
+  String get auth_invalid_credentials =>
+      'The phone number or password is incorrect.';
 }

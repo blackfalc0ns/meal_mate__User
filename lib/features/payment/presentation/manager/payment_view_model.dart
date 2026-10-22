@@ -584,6 +584,10 @@ class PaymentViewModel extends Cubit<PaymentState> {
                 if (getIt.isRegistered<FamilyFlowSnapshotStore>()) {
                   getIt<FamilyFlowSnapshotStore>().invalidate();
                 }
+                await _sharedPrefHelper.saveData(
+                  key: StorageKeys.currentSubscriptionId,
+                  val: subscriptionId,
+                );
                 if (isClosed || currentGen != _fulfillmentGeneration) return;
                 emit(
                   state.copyWith(

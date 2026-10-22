@@ -1,5 +1,4 @@
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 sealed class FamilySummaryEvent {
   const FamilySummaryEvent();
@@ -54,12 +53,12 @@ class RetryFamilySubscriptionPaymentEvent extends FamilyCheckoutEvent {
     required this.callbackUrl,
     required this.errorUrl,
     required this.correlationId,
-    required this.paymentMethodId,
+    this.paymentMethodId,
   });
   final String callbackUrl;
   final String errorUrl;
   final String correlationId;
-  final int paymentMethodId;
+  final int? paymentMethodId;
 }
 
 class UpdateMemberStartDateEvent extends FamilyCheckoutEvent {

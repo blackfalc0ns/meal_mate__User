@@ -147,19 +147,16 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
     RetryFamilySubscriptionPaymentEvent event,
   ) async {
     if (state.isCheckoutLoading || state.isRetryLoading) return;
-    final summary = state.summary;
     final retryUseCase = _retryFamilySubscriptionPaymentUseCase;
     if (retryUseCase == null) return;
-    final batchId = summary?.batchId;
-    final batchVersion = summary?.batchVersion;
-    if (batchId == null || batchVersion == null) return;
-    final key = _getOrCreateIdempotencyKey(
-      batchId: batchId,
-      batchVersion: batchVersion,
-      amount: summary?.finalPrice ?? 0,
-      paymentMethodId: event.paymentMethodId,
-      promoCode: state.appliedPromoCode,
-    );
+    final summary = state.summary;
+    final pendingCheckout = state.currentFlow?.pendingCheckout;
+    final batchId = summary?.batchId ?? pendingCheckout?.batchId;
+    final batchVersion =
+        summary?.batchVersion ?? pendingCheckout?.batchVersion;
+    final effectivePaymentMethodId =
+        event.paymentMethodId ?? state.selectedPaymentMethod?.id ?? 3;
+
     emit(
       state.copyWith(
         isRetryLoading: true,
@@ -171,11 +168,13 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
       callbackUrl: event.callbackUrl,
       errorUrl: event.errorUrl,
       correlationId: event.correlationId,
-      paymentMethodId: event.paymentMethodId,
+      paymentMethodId: effectivePaymentMethodId,
       batchId: batchId,
       batchVersion: batchVersion,
-      idempotencyKey: key,
+      idempotencyKey: null,
       promoCode: state.appliedPromoCode,
+      clientContractVersion:
+          FamilyCheckoutContractConstants.clientContractVersion,
     );
     if (isClosed) return;
     switch (result) {
@@ -183,10 +182,19 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
         emit(
           state.copyWith(isRetryLoading: false, checkoutResult: result.data),
         );
-        await _refreshAfterPaymentAttempt();
       case ApiErrorResult():
         emit(state.copyWith(isRetryLoading: false, failure: result.failure));
-        await _refreshAfterPaymentAttempt();
+        if (result.failure.code ==
+                SubscriptionErrorCodes.familyBatchReviewRequired ||
+            result.failure.code ==
+                SubscriptionErrorCodes.familyCheckoutPending ||
+            result.failure.code == SubscriptionErrorCodes.familyBatchClosed) {
+          await _refreshAfterPaymentAttempt();
+        }
+        if (result.failure.code == SubscriptionErrorCodes.familyQuoteChanged) {
+          _invalidateQuoteAndIdempotency();
+          await _refreshAfterPaymentAttempt();
+        }
     }
   }
 
@@ -336,6 +344,12 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
         emit(
           state.copyWith(isCurrentFlowLoading: false, currentFlow: result.data),
         );
+        final pending = result.data.pendingCheckout;
+        if ((result.data.isCheckoutPending || result.data.canRetryPayment) &&
+            state.paymentMethods.isEmpty &&
+            (pending?.finalPrice ?? 0) > 0) {
+          unawaited(_getFamilyPaymentMethods(pending!.finalPrice!));
+        }
       case ApiErrorResult():
         emit(
           state.copyWith(isCurrentFlowLoading: false, failure: result.failure),
@@ -375,29 +389,41 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
             summary.selectedMemberId ??
             summary.selectedMember?.memberId ??
             state.selectedSummaryMemberId;
+        final isCheckoutPending =
+            summary.checkoutBlockReason ==
+                SubscriptionErrorCodes.familyCheckoutPending ||
+            state.currentFlow?.isCheckoutPending == true ||
+            state.currentFlow?.canRetryPayment == true;
+        final canPay = summary.canCheckout || isCheckoutPending;
+        final effectivePrice = summary.finalPrice > 0
+            ? summary.finalPrice
+            : (state.currentFlow?.pendingCheckout?.finalPrice ?? 0.0);
+
         emit(
           state.copyWith(
             isSummaryLoading: false,
             summary: summary,
             selectedSummaryMemberId: activeMemberId,
-            paymentMethods: summary.canCheckout && summary.finalPrice > 0
+            paymentMethods: canPay && effectivePrice > 0
                 ? state.paymentMethods
                 : const [],
-            clearSelectedPaymentMethod:
-                !summary.canCheckout || summary.finalPrice <= 0,
+            clearSelectedPaymentMethod: !canPay || effectivePrice <= 0,
           ),
         );
-        if (summary.canCheckout && summary.finalPrice > 0) {
-          _getFamilyPaymentMethods();
+        if (canPay && effectivePrice > 0) {
+          unawaited(_getFamilyPaymentMethods(effectivePrice));
         }
       case ApiErrorResult():
         emit(state.copyWith(isSummaryLoading: false, failure: result.failure));
     }
   }
 
-  Future<void> _getFamilyPaymentMethods() async {
+  Future<void> _getFamilyPaymentMethods([double? amountOverride]) async {
     final reqId = ++_paymentMethodsRequestId;
-    final amount = state.summary?.finalPrice ?? 0.0;
+    final amount = amountOverride ??
+        state.summary?.finalPrice ??
+        state.currentFlow?.pendingCheckout?.finalPrice ??
+        0.0;
     emit(state.copyWith(isPaymentMethodsLoading: true));
     final result = await _getFamilyPaymentMethodsUseCase(amount);
     if (isClosed || reqId != _paymentMethodsRequestId) return;
@@ -480,9 +506,7 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
             result.failure.code == SubscriptionErrorCodes.familyBatchClosed) {
           await _refreshAfterPaymentAttempt();
         }
-        if (result.failure.code ==
-                SubscriptionErrorCodes.paymentInitializationFailed ||
-            result.failure.code == SubscriptionErrorCodes.familyQuoteChanged ||
+        if (result.failure.code == SubscriptionErrorCodes.familyQuoteChanged ||
             result.failure.code ==
                 SubscriptionErrorCodes.familyDeliveryVersionChanged ||
             result.failure.code ==
@@ -490,7 +514,7 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
             result.failure.code ==
                 SubscriptionErrorCodes.familyIdempotencyKeyUsed) {
           _invalidateQuoteAndIdempotency();
-          _getFamilySummary(memberId: state.selectedSummaryMemberId);
+          unawaited(_getFamilySummary(memberId: state.selectedSummaryMemberId));
         }
     }
   }

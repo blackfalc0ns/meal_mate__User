@@ -70,14 +70,18 @@ class _SubscriptionBillingContentState
           GetSubscriptionResumePreviewEvent(subscriptionId),
         );
       },
-      onResumeFamily: (item) {
+      onResumeFamily: (item) async {
         final next = item.actions.nextScreen?.toLowerCase();
         final route =
             next == 'family_payment' ||
                 item.status.toLowerCase() == 'checkoutpending'
             ? AppRoutes.familyPaymentSetup
             : AppRoutes.familySubscriptionSetup;
-        context.pushNamed(route);
+        await context.pushNamed(route);
+        if (!mounted) return;
+        context.read<SubscriptionBillingViewModel>().doIntent(
+          const GetSubscriptionBillingEvent(),
+        );
       },
       onResume: (subscriptionId, [startDate]) {
         context.read<SubscriptionBillingViewModel>().doIntent(

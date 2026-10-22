@@ -36,7 +36,11 @@ class ErrorMessagePresenter {
       if (candidate != null &&
           candidate.trim().isNotEmpty &&
           candidate.trim() != 'unknown') {
-        final mapped = mapFailureMessage(context, candidate.trim());
+        final mapped = mapFailureMessage(
+          context,
+          candidate.trim(),
+          preserveUnmappedCode: true,
+        );
         if (mapped != candidate.trim()) {
           return mapped;
         }
@@ -107,8 +111,8 @@ class ErrorMessagePresenter {
     final candidate = (preferred != null && preferred.trim().isNotEmpty)
         ? preferred
         : (fallback != null && fallback.trim().isNotEmpty)
-            ? fallback
-            : null;
+        ? fallback
+        : null;
 
     if (candidate != null) {
       final sanitized = sanitizeBackendMessage(candidate);
@@ -169,7 +173,11 @@ class ErrorMessagePresenter {
         continue;
       }
       final trimmedCode = code.trim();
-      final message = mapFailureMessage(context, trimmedCode);
+      final message = mapFailureMessage(
+        context,
+        trimmedCode,
+        preserveUnmappedCode: true,
+      );
       if (message != trimmedCode) {
         return message;
       }
@@ -201,7 +209,8 @@ class ErrorMessagePresenter {
     final lower = message.toLowerCase();
 
     // Detect technical namespaced codes (e.g. subscription_flow.no_restaurants_for_selection, auth.foo)
-    if (!message.contains(' ') && (message.contains('.') || message.contains('_'))) {
+    if (!message.contains(' ') &&
+        (message.contains('.') || message.contains('_'))) {
       return true;
     }
 
