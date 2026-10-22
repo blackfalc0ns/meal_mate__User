@@ -4,10 +4,12 @@ class CalendarMonthGrid extends StatelessWidget {
   const CalendarMonthGrid({
     super.key,
     required this.days,
+    this.includeFriday = true,
     required this.onDaySelected,
   });
 
   final List<CalendarDayEntity> days;
+  final bool includeFriday;
   final ValueChanged<CalendarDayEntity> onDaySelected;
 
   @override
@@ -20,7 +22,7 @@ class CalendarMonthGrid extends StatelessWidget {
       locale.calendar_weekday_tue_short,
       locale.calendar_weekday_wed_short,
       locale.calendar_weekday_thu_short,
-      locale.calendar_weekday_fri_short,
+      if (includeFriday) locale.calendar_weekday_fri_short,
     ];
 
     return Column(
@@ -45,8 +47,8 @@ class CalendarMonthGrid extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: days.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: includeFriday ? 7 : 6,
                 mainAxisSpacing: Spacing.xss,
                 crossAxisSpacing: Spacing.sm,
                 childAspectRatio: 1.25,

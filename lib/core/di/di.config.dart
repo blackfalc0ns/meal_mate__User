@@ -32,6 +32,8 @@ import '../../features/addresses/domain/usecase/add_customer_address_usecase.dar
     as _i898;
 import '../../features/addresses/domain/usecase/confirm_set_default_address_usecase.dart'
     as _i267;
+import '../../features/addresses/domain/usecase/customer_address_editor_operations.dart'
+    as _i87;
 import '../../features/addresses/domain/usecase/delete_customer_address_usecase.dart'
     as _i624;
 import '../../features/addresses/domain/usecase/get_customer_addresses_usecase.dart'
@@ -75,6 +77,8 @@ import '../../features/auth/presentation/manager/biometric_view_model.dart'
     as _i162;
 import '../../features/auth/presentation/manager/calling_codes_view_model.dart'
     as _i416;
+import '../../features/auth/presentation/manager/login_view_model.dart'
+    as _i608;
 import '../../features/auth/presentation/manager/logout_view_model.dart'
     as _i331;
 import '../../features/auth/presentation/manager/password_recovery_view_model.dart'
@@ -132,6 +136,22 @@ import '../../features/change_password/domain/usecase/change_customer_password_u
     as _i845;
 import '../../features/change_password/presentation/manager/change_password_view_model.dart'
     as _i480;
+import '../../features/compensations/data/data_source/compensations_remote_data_source.dart'
+    as _i157;
+import '../../features/compensations/data/data_source/compensations_remote_data_source_impl.dart'
+    as _i1054;
+import '../../features/compensations/data/repo/compensations_repository_impl.dart'
+    as _i358;
+import '../../features/compensations/domain/repo/compensations_repository.dart'
+    as _i924;
+import '../../features/compensations/domain/usecase/choose_compensation_usecase.dart'
+    as _i445;
+import '../../features/compensations/domain/usecase/get_compensation_alternative_dates_usecase.dart'
+    as _i533;
+import '../../features/compensations/domain/usecase/get_compensations_usecase.dart'
+    as _i654;
+import '../../features/compensations/presentation/manager/compensations_view_model.dart'
+    as _i78;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source.dart'
     as _i1040;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source_impl.dart'
@@ -216,6 +236,8 @@ import '../../features/family_management/overview/domain/usecase/get_family_home
     as _i932;
 import '../../features/family_management/overview/domain/usecase/get_family_members_usecase.dart'
     as _i356;
+import '../../features/family_management/overview/domain/usecase/get_family_switcher_usecase.dart'
+    as _i234;
 import '../../features/family_management/overview/presentation/manager/family_overview_view_model.dart'
     as _i1055;
 import '../../features/family_package_days/data/data_source/family_package_days_remote_data_source.dart'
@@ -537,16 +559,14 @@ import '../../features/payment/data/data_source/payment_remote_data_source_impl.
     as _i621;
 import '../../features/payment/data/repo/payment_repository_impl.dart' as _i914;
 import '../../features/payment/domain/repo/payment_repository.dart' as _i996;
-import '../../features/payment/domain/usecase/checkout_subscription_usecase.dart'
-    as _i895;
-import '../../features/payment/domain/usecase/get_payment_methods_usecase.dart'
-    as _i365;
 import '../../features/payment/domain/usecase/get_subscription_calendar_usecase.dart'
     as _i182;
 import '../../features/payment/domain/usecase/get_subscription_confirmation_usecase.dart'
     as _i552;
 import '../../features/payment/domain/usecase/get_subscription_payment_status_usecase.dart'
     as _i173;
+import '../../features/payment/presentation/manager/payment_view_model.dart'
+    as _i502;
 import '../../features/profile/data/data_source/profile_remote_data_source.dart'
     as _i998;
 import '../../features/profile/data/data_source/profile_remote_data_source_impl.dart'
@@ -564,14 +584,36 @@ import '../../features/profile/domain/usecase/update_customer_profile_usecase.da
     as _i857;
 import '../../features/profile/presentation/manager/profile_view_model.dart'
     as _i446;
+import '../../features/subscription_checkout/data/data_source/eligible_start_dates_remote_data_source.dart'
+    as _i706;
+import '../../features/subscription_checkout/data/data_source/eligible_start_dates_remote_data_source_impl.dart'
+    as _i993;
+import '../../features/subscription_checkout/data/data_source/subscription_checkout_remote_data_source.dart'
+    as _i953;
+import '../../features/subscription_checkout/data/data_source/subscription_checkout_remote_data_source_impl.dart'
+    as _i256;
 import '../../features/subscription_checkout/data/data_source/subscription_summary_remote_data_source.dart'
     as _i155;
 import '../../features/subscription_checkout/data/data_source/subscription_summary_remote_data_source_impl.dart'
     as _i846;
+import '../../features/subscription_checkout/data/repo/eligible_start_dates_repository_impl.dart'
+    as _i160;
+import '../../features/subscription_checkout/data/repo/subscription_checkout_repository_impl.dart'
+    as _i431;
 import '../../features/subscription_checkout/data/repo/subscription_summary_repository_impl.dart'
     as _i636;
+import '../../features/subscription_checkout/domain/repo/eligible_start_dates_repository.dart'
+    as _i340;
+import '../../features/subscription_checkout/domain/repo/subscription_checkout_repository.dart'
+    as _i855;
 import '../../features/subscription_checkout/domain/repo/subscription_summary_repository.dart'
     as _i1060;
+import '../../features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart'
+    as _i637;
+import '../../features/subscription_checkout/domain/usecase/get_eligible_start_dates_usecase.dart'
+    as _i173;
+import '../../features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart'
+    as _i32;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_pricing_preview_usecase.dart'
     as _i923;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_readiness_usecase.dart'
@@ -580,6 +622,10 @@ import '../../features/subscription_checkout/domain/usecase/get_subscription_res
     as _i656;
 import '../../features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart'
     as _i926;
+import '../../features/subscription_checkout/presentation/manager/start_dates_view_model.dart'
+    as _i223;
+import '../../features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart'
+    as _i378;
 import '../../features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart'
     as _i356;
 import '../../features/subscription_packages/data/data_source/subscription_packages_remote_data_source.dart'
@@ -710,7 +756,9 @@ import '../helpers/shared_pref.dart' as _i42;
 import '../network/api_services.dart' as _i804;
 import '../network/external_modules.dart' as _i576;
 import '../payment/payment_attempt_store.dart' as _i1028;
+import '../payment/payment_deep_link_coordinator.dart' as _i565;
 import '../services/app_navigator_service.dart' as _i179;
+import '../services/auth_refresh_service.dart' as _i820;
 import '../services/device_id_service.dart' as _i148;
 import '../services/language_interceptor.dart' as _i32;
 import '../services/language_service.dart' as _i819;
@@ -816,6 +864,13 @@ extension GetItInjectableX on _i174.GetIt {
         mealSelectionCubit: gh<_i1020.MealSelectionViewModel>(),
       ),
     );
+    gh.lazySingleton<_i565.PaymentDeepLinkCoordinator>(
+      () => _i565.PaymentDeepLinkCoordinator(
+        tokenService: gh<_i227.TokenService>(),
+        paymentAttemptStore: gh<_i1028.PaymentAttemptStore>(),
+        navigatorService: gh<_i179.AppNavigatorService>(),
+      ),
+    );
     gh.lazySingleton<_i43.BiometricService>(
       () => _i43.BiometricService(
         gh<_i152.LocalAuthentication>(),
@@ -837,6 +892,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i32.LanguageInterceptor>(
       () => _i32.LanguageInterceptor(gh<_i819.LanguageService>()),
+    );
+    gh.lazySingleton<_i820.AuthRefreshService>(
+      () => externalModules.provideAuthRefreshService(gh<_i227.TokenService>()),
     );
     gh.lazySingleton<_i177.AddressLocationCache>(
       () => _i177.AddressLocationCache(
@@ -884,6 +942,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i986.FamilyPackagesRemoteDataSource>(
       () => _i854.FamilyPackagesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.lazySingleton<_i706.EligibleStartDatesRemoteDataSource>(
+      () =>
+          _i993.EligibleStartDatesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i961.FoodPreferencesRemoteDataSource>(
       () => _i194.FoodPreferencesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -929,6 +991,9 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i1039.SubscriptionTierRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.lazySingleton<_i157.CompensationsRemoteDataSource>(
+      () => _i1054.CompensationsRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i738.CustomerWalletRepository>(
       () => _i792.CustomerWalletRepositoryImpl(
         gh<_i1032.CustomerWalletRemoteDataSource>(),
@@ -944,8 +1009,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1038.SubscriptionTierRemoteDataSource>(),
       ),
     );
+    gh.factory<_i924.CompensationsRepository>(
+      () => _i358.CompensationsRepositoryImpl(
+        gh<_i157.CompensationsRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i996.PaymentRepository>(
       () => _i914.PaymentRepositoryImpl(gh<_i957.PaymentRemoteDataSource>()),
+    );
+    gh.factory<_i340.EligibleStartDatesRepository>(
+      () => _i160.EligibleStartDatesRepositoryImpl(
+        gh<_i706.EligibleStartDatesRemoteDataSource>(),
+      ),
     );
     gh.factory<_i306.FamilyPackageDaysRepository>(
       () => _i471.FamilyPackageDaysRepositoryImpl(
@@ -972,6 +1047,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i735.SubscriptionTypesRemoteDataSource>(
       () =>
           _i200.SubscriptionTypesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i445.ChooseCompensationUseCase>(
+      () =>
+          _i445.ChooseCompensationUseCase(gh<_i924.CompensationsRepository>()),
+    );
+    gh.factory<_i533.GetCompensationAlternativeDatesUseCase>(
+      () => _i533.GetCompensationAlternativeDatesUseCase(
+        gh<_i924.CompensationsRepository>(),
+      ),
+    );
+    gh.factory<_i654.GetCompensationsUseCase>(
+      () => _i654.GetCompensationsUseCase(gh<_i924.CompensationsRepository>()),
     );
     gh.factory<_i556.RestaurantTierUpgradeRemoteDataSource>(
       () => _i562.RestaurantTierUpgradeRemoteDataSourceImpl(
@@ -1182,6 +1269,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.factory<_i953.SubscriptionCheckoutRemoteDataSource>(
+      () => _i256.SubscriptionCheckoutRemoteDataSourceImpl(
+        gh<_i804.ApiServices>(),
+      ),
+    );
     gh.factory<_i583.FamilyPackagesRepository>(
       () => _i533.FamilyPackagesRepositoryImpl(
         gh<_i986.FamilyPackagesRemoteDataSource>(),
@@ -1243,12 +1335,6 @@ extension GetItInjectableX on _i174.GetIt {
         campaignPaymentAttemptStore: gh<_i656.CampaignPaymentAttemptStore>(),
         campaignCheckoutAttemptStore: gh<_i141.CampaignCheckoutAttemptStore>(),
       ),
-    );
-    gh.factory<_i895.CheckoutSubscriptionUseCase>(
-      () => _i895.CheckoutSubscriptionUseCase(gh<_i996.PaymentRepository>()),
-    );
-    gh.factory<_i365.GetPaymentMethodsUseCase>(
-      () => _i365.GetPaymentMethodsUseCase(gh<_i996.PaymentRepository>()),
     );
     gh.factory<_i182.GetSubscriptionCalendarUseCase>(
       () => _i182.GetSubscriptionCalendarUseCase(gh<_i996.PaymentRepository>()),
@@ -1330,6 +1416,16 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i818.UploadFileRepositoryImpl(gh<_i99.UploadFileRemoteDataSource>()),
     );
+    gh.factory<_i855.SubscriptionCheckoutRepository>(
+      () => _i431.SubscriptionCheckoutRepositoryImpl(
+        gh<_i953.SubscriptionCheckoutRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i173.GetEligibleStartDatesUseCase>(
+      () => _i173.GetEligibleStartDatesUseCase(
+        gh<_i340.EligibleStartDatesRepository>(),
+      ),
+    );
     gh.factory<_i655.SubscriptionTypesRepository>(
       () => _i555.SubscriptionTypesRepositoryImpl(
         gh<_i735.SubscriptionTypesRemoteDataSource>(),
@@ -1360,6 +1456,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i293.SubscriptionUncompletedSubscriptionRepository>(),
       ),
     );
+    gh.factory<_i78.CompensationsViewModel>(
+      () => _i78.CompensationsViewModel(
+        gh<_i654.GetCompensationsUseCase>(),
+        gh<_i533.GetCompensationAlternativeDatesUseCase>(),
+        gh<_i445.ChooseCompensationUseCase>(),
+      ),
+    );
     gh.factory<_i420.FoodPreferencesViewModel>(
       () => _i420.FoodPreferencesViewModel(
         gh<_i608.GetFoodPreferencesUseCase>(),
@@ -1383,6 +1486,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.FamilyAddressesRemoteDataSource>(),
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
+    );
+    gh.factory<_i223.StartDatesViewModel>(
+      () => _i223.StartDatesViewModel(gh<_i173.GetEligibleStartDatesUseCase>()),
     );
     gh.factory<_i718.GetSubscriptionProgramBundlesUseCase>(
       () => _i718.GetSubscriptionProgramBundlesUseCase(
@@ -1413,6 +1519,12 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i673.GetMyFamilyContextsUseCase(gh<_i195.FamilyContextRepository>()),
     );
+    gh.factory<_i356.SubscriptionSummaryViewModel>(
+      () => _i356.SubscriptionSummaryViewModel(
+        gh<_i926.GetSubscriptionSummaryUseCase>(),
+        getEligibleStartDatesUseCase: gh<_i173.GetEligibleStartDatesUseCase>(),
+      ),
+    );
     gh.factory<_i995.UploadFileUseCase>(
       () => _i995.UploadFileUseCase(gh<_i422.UploadFileRepository>()),
     );
@@ -1437,14 +1549,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i556.AddressLocationRepository>(),
       ),
     );
+    gh.factory<_i637.CheckoutSubscriptionUseCase>(
+      () => _i637.CheckoutSubscriptionUseCase(
+        gh<_i855.SubscriptionCheckoutRepository>(),
+      ),
+    );
+    gh.factory<_i32.GetPaymentMethodsUseCase>(
+      () => _i32.GetPaymentMethodsUseCase(
+        gh<_i855.SubscriptionCheckoutRepository>(),
+      ),
+    );
     gh.factory<_i986.SubscriptionPlanRepository>(
       () => _i738.SubscriptionPlanRepositoryImpl(
         gh<_i755.SubscriptionPlanRemoteDataSource>(),
-      ),
-    );
-    gh.factory<_i356.SubscriptionSummaryViewModel>(
-      () => _i356.SubscriptionSummaryViewModel(
-        gh<_i926.GetSubscriptionSummaryUseCase>(),
       ),
     );
     gh.factory<_i1068.SubscriptionPackagesRepository>(
@@ -1762,6 +1879,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i758.SaveFamilyMemberDislikedIngredientsUseCase>(),
       ),
     );
+    gh.factory<_i378.SubscriptionCheckoutViewModel>(
+      () => _i378.SubscriptionCheckoutViewModel(
+        gh<_i32.GetPaymentMethodsUseCase>(),
+        gh<_i637.CheckoutSubscriptionUseCase>(),
+      ),
+    );
     gh.factory<_i446.ProfileViewModel>(
       () => _i446.ProfileViewModel(
         gh<_i994.GetCustomerProfileUseCase>(),
@@ -1856,18 +1979,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i999.GetSubscriptionTypesUseCase>(),
         gh<_i377.GetSubscriptionConversionOptionsUseCase>(),
         gh<_i427.ConvertFromIndividualUseCase>(),
-      ),
-    );
-    gh.factory<_i170.OfferPurchaseViewModel>(
-      () => _i170.OfferPurchaseViewModel(
-        gh<_i285.GetCustomerOfferDetailsUseCase>(),
-        gh<_i136.GetOfferPurchaseOptionsUseCase>(),
-        gh<_i926.GetSubscriptionSummaryUseCase>(),
-        gh<_i365.GetPaymentMethodsUseCase>(),
-        gh<_i895.CheckoutSubscriptionUseCase>(),
-        gh<_i42.SharedPrefHelper>(),
-        gh<_i1028.PaymentAttemptStore>(),
-        gh<_i227.TokenService>(),
       ),
     );
     gh.factory<_i597.FamilyPackageDaysViewModel>(
@@ -1966,6 +2077,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i656.GetSubscriptionRestaurantAvailabilityUseCase>(),
       ),
     );
+    gh.factory<_i372.SubscriptionBillingViewModel>(
+      () => _i372.SubscriptionBillingViewModel(
+        gh<_i369.GetSubscriptionBillingUseCase>(),
+        gh<_i6.CreateSubscriptionRenewalRequestUseCase>(),
+        gh<_i458.CreateSubscriptionFreezeRequestUseCase>(),
+        gh<_i877.GetSubscriptionCancellationQuoteUseCase>(),
+        gh<_i490.CreateSubscriptionCancellationRequestUseCase>(),
+        gh<_i13.DeleteUncompletedSubscriptionUseCase>(),
+        gh<_i82.GetSubscriptionResumePreviewUseCase>(),
+        gh<_i829.ResumeSubscriptionUseCase>(),
+        gh<_i200.GetCalendarUseCase>(),
+      ),
+    );
     gh.factory<_i603.FamilyAddressesViewModel>(
       () => _i603.FamilyAddressesViewModel(
         gh<_i34.GetFamilyFlowCurrentUseCase>(),
@@ -1984,21 +2108,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i356.GetFamilyMembersUseCase>(
       () => _i356.GetFamilyMembersUseCase(gh<_i800.FamilyOverviewRepository>()),
     );
+    gh.factory<_i234.GetFamilySwitcherUseCase>(
+      () =>
+          _i234.GetFamilySwitcherUseCase(gh<_i800.FamilyOverviewRepository>()),
+    );
     gh.factory<_i760.InfluencerDashboardViewModel>(
       () => _i760.InfluencerDashboardViewModel(
         gh<_i493.GetInfluencerHomeUseCase>(),
         gh<_i460.GetInfluencerLinksUseCase>(),
-      ),
-    );
-    gh.factory<_i422.FamilySummaryViewModel>(
-      () => _i422.FamilySummaryViewModel(
-        gh<_i34.GetFamilyFlowCurrentUseCase>(),
-        gh<_i1042.GetFamilySummaryUseCase>(),
-        gh<_i475.GetFamilyPaymentMethodsUseCase>(),
-        gh<_i184.CheckoutFamilySubscriptionUseCase>(),
-        gh<_i773.SelectFamilyMemberSummaryUseCase>(),
-        gh<_i696.SaveFamilyMemberStartDateUseCase>(),
-        gh<_i822.RetryFamilySubscriptionPaymentUseCase>(),
       ),
     );
     gh.factory<_i854.SubscriptionPackagesViewModel>(
@@ -2044,15 +2161,27 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i41.FamilyFlowSnapshotStore>(),
       ),
     );
-    gh.factory<_i372.SubscriptionBillingViewModel>(
-      () => _i372.SubscriptionBillingViewModel(
+    gh.factory<_i170.OfferPurchaseViewModel>(
+      () => _i170.OfferPurchaseViewModel(
+        gh<_i285.GetCustomerOfferDetailsUseCase>(),
+        gh<_i136.GetOfferPurchaseOptionsUseCase>(),
+        gh<_i926.GetSubscriptionSummaryUseCase>(),
+        gh<_i32.GetPaymentMethodsUseCase>(),
+        gh<_i637.CheckoutSubscriptionUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i1028.PaymentAttemptStore>(),
+        gh<_i227.TokenService>(),
+      ),
+    );
+    gh.factory<_i502.PaymentViewModel>(
+      () => _i502.PaymentViewModel.create(
+        gh<_i173.GetSubscriptionPaymentStatusUseCase>(),
+        gh<_i182.GetSubscriptionCalendarUseCase>(),
+        gh<_i42.SharedPrefHelper>(),
+        gh<_i1028.PaymentAttemptStore>(),
+        gh<_i227.TokenService>(),
         gh<_i369.GetSubscriptionBillingUseCase>(),
-        gh<_i6.CreateSubscriptionRenewalRequestUseCase>(),
-        gh<_i458.CreateSubscriptionFreezeRequestUseCase>(),
-        gh<_i877.GetSubscriptionCancellationQuoteUseCase>(),
-        gh<_i490.CreateSubscriptionCancellationRequestUseCase>(),
-        gh<_i13.DeleteUncompletedSubscriptionUseCase>(),
-        gh<_i82.GetSubscriptionResumePreviewUseCase>(),
+        gh<_i552.GetSubscriptionConfirmationUseCase>(),
         gh<_i829.ResumeSubscriptionUseCase>(),
       ),
     );
@@ -2150,6 +2279,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i621.ResendPhoneOtpUseCase>(),
       ),
     );
+    gh.factory<_i422.FamilySummaryViewModel>(
+      () => _i422.FamilySummaryViewModel(
+        gh<_i34.GetFamilyFlowCurrentUseCase>(),
+        gh<_i1042.GetFamilySummaryUseCase>(),
+        gh<_i475.GetFamilyPaymentMethodsUseCase>(),
+        gh<_i184.CheckoutFamilySubscriptionUseCase>(),
+        gh<_i773.SelectFamilyMemberSummaryUseCase>(),
+        gh<_i696.SaveFamilyMemberStartDateUseCase>(),
+        gh<_i822.RetryFamilySubscriptionPaymentUseCase>(),
+        gh<_i173.GetEligibleStartDatesUseCase>(),
+      ),
+    );
     gh.factory<_i524.AddressesViewModel>(
       () => _i524.AddressesViewModel(
         gh<_i945.GetCustomerAddressesUseCase>(),
@@ -2232,6 +2373,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i960.FamilyContextViewModel>(),
       ),
     );
+    gh.factory<_i87.CustomerAddressEditorOperations>(
+      () => _i87.CustomerAddressEditorOperations.create(
+        previewNewAddressCoverageUseCase:
+            gh<_i1022.PreviewNewAddressCoverageUseCase>(),
+        previewExistingAddressCoverageUseCase:
+            gh<_i577.PreviewExistingAddressCoverageUseCase>(),
+        addCustomerAddressUseCase: gh<_i898.AddCustomerAddressUseCase>(),
+        updateCustomerAddressUseCase: gh<_i241.UpdateCustomerAddressUseCase>(),
+        confirmSetDefaultAddressUseCase:
+            gh<_i267.ConfirmSetDefaultAddressUseCase>(),
+      ),
+    );
     gh.factory<_i1055.FamilyOverviewViewModel>(
       () => _i1055.FamilyOverviewViewModel(
         gh<_i932.GetFamilyHomeUseCase>(),
@@ -2250,6 +2403,22 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i227.TokenService>(),
         gh<_i43.BiometricService>(),
         gh<_i378.CustomerDeliveryRealtimeService>(),
+      ),
+    );
+    gh.factory<_i608.LoginViewModel>(
+      () => _i608.LoginViewModel(
+        gh<_i911.LoginUseCase>(),
+        gh<_i43.BiometricService>(),
+        verifyFamilyFirstLoginOtpUseCase:
+            gh<_i688.VerifyFamilyFirstLoginOtpUseCase>(),
+        setFamilyFirstLoginPasswordUseCase:
+            gh<_i919.SetFamilyFirstLoginPasswordUseCase>(),
+        resendFamilyFirstLoginOtpUseCase:
+            gh<_i15.ResendFamilyFirstLoginOtpUseCase>(),
+        getCurrentCustomerSubscriptionUseCase:
+            gh<_i34.GetCurrentCustomerSubscriptionUseCase>(),
+        getMyFamilyContextsUseCase: gh<_i673.GetMyFamilyContextsUseCase>(),
+        sharedPrefHelper: gh<_i42.SharedPrefHelper>(),
       ),
     );
     gh.factory<_i676.FamilyCalendarViewModel>(

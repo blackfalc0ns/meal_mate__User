@@ -4253,7 +4253,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscription_restaurant_repetition_message.
   ///
   /// In en, this message translates to:
-  /// **'You can choose the same restaurant for up to {limit} days during the subscription.'**
+  /// **'{limit, plural, =1{You can choose the same restaurant for up to 1 day during the subscription.} other{You can choose the same restaurant for up to {limit} days during the subscription.}}'**
   String subscription_restaurant_repetition_message(int limit);
 
   /// No description provided for @subscription_payment_confirmation_title.
@@ -4279,6 +4279,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The selected date is in the past. Please choose another date.'**
   String get checkout_start_date_invalid;
+
+  /// No description provided for @subscription_start_date_adjusted_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription start date was automatically adjusted to the earliest available date to match the delivery schedule.'**
+  String get subscription_start_date_adjusted_notice;
 
   /// No description provided for @subscription_flow_profile_incomplete.
   ///
@@ -14101,6 +14107,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save payment recovery information. Please check your subscription status.'**
   String get offer_checkout_storage_failed;
+
+  /// No description provided for @compensations_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensations'**
+  String get compensations_title;
+
+  /// No description provided for @compensations_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds and replacement meal days'**
+  String get compensations_subtitle;
+
+  /// No description provided for @compensations_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No compensations'**
+  String get compensations_empty_title;
+
+  /// No description provided for @compensations_empty_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Your eligible meal compensations will appear here.'**
+  String get compensations_empty_description;
+
+  /// No description provided for @compensations_pending_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'You have compensations awaiting your choice. Review them before the deadline.'**
+  String get compensations_pending_notice;
+
+  /// No description provided for @compensations_refund.
+  ///
+  /// In en, this message translates to:
+  /// **'Request refund'**
+  String get compensations_refund;
+
+  /// No description provided for @compensations_alternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a replacement day'**
+  String get compensations_alternative;
+
+  /// No description provided for @compensations_confirm_day.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm replacement day'**
+  String get compensations_confirm_day;
+
+  /// No description provided for @compensations_refund_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Return the amount to the original payment methods?'**
+  String get compensations_refund_confirm;
+
+  /// No description provided for @compensations_deadline_note.
+  ///
+  /// In en, this message translates to:
+  /// **'If you do not choose before the deadline, an automatic refund to the original payment methods will begin.'**
+  String get compensations_deadline_note;
+
+  /// No description provided for @compensations_waiting_update.
+  ///
+  /// In en, this message translates to:
+  /// **'The choice is closed. Refresh to check the latest compensation status.'**
+  String get compensations_waiting_update;
+
+  /// No description provided for @compensations_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting your choice'**
+  String get compensations_pending;
+
+  /// No description provided for @compensations_auto_refund.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic refund in progress'**
+  String get compensations_auto_refund;
+
+  /// No description provided for @compensations_settled.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund completed'**
+  String get compensations_settled;
+
+  /// No description provided for @compensations_alternative_chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacement day confirmed'**
+  String get compensations_alternative_chosen;
+
+  /// No description provided for @compensations_other_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation is being processed'**
+  String get compensations_other_status;
+
+  /// No description provided for @compensations_no_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'No replacement dates are currently available. You can request a refund or try again later.'**
+  String get compensations_no_dates;
+
+  /// No description provided for @compensations_capacity_error.
+  ///
+  /// In en, this message translates to:
+  /// **'This date just filled up. Choose another available date.'**
+  String get compensations_capacity_error;
+
+  /// No description provided for @compensations_expired_error.
+  ///
+  /// In en, this message translates to:
+  /// **'The choice deadline has passed. Automatic refund is being processed.'**
+  String get compensations_expired_error;
+
+  /// No description provided for @compensations_ineligible_error.
+  ///
+  /// In en, this message translates to:
+  /// **'This compensation is eligible for a refund only.'**
+  String get compensations_ineligible_error;
+
+  /// No description provided for @compensations_unavailable_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount details are currently unavailable.'**
+  String get compensations_unavailable_amount;
+
+  /// No description provided for @compensations_refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh compensations'**
+  String get compensations_refresh;
+
+  /// No description provided for @compensations_failed_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed delivery: {date}'**
+  String compensations_failed_date(String date);
+
+  /// No description provided for @compensations_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation: {amount}'**
+  String compensations_total(String amount);
+
+  /// No description provided for @compensations_card_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'To card: {amount}'**
+  String compensations_card_amount(String amount);
+
+  /// No description provided for @compensations_wallet_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'To wallet: {amount}'**
+  String compensations_wallet_amount(String amount);
+
+  /// No description provided for @compensations_apology_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Apology credit: {amount}'**
+  String compensations_apology_amount(String amount);
+
+  /// No description provided for @compensations_selected_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacement date: {date}'**
+  String compensations_selected_date(String date);
+
+  /// No description provided for @compensations_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Time remaining: {time}'**
+  String compensations_remaining(String time);
+
+  /// No description provided for @payment_hold_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} left to complete payment'**
+  String payment_hold_remaining(String time);
+
+  /// No description provided for @payment_hold_expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment session expired'**
+  String get payment_hold_expired;
+
+  /// No description provided for @payment_hold_expired_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your meal and seat reservation were temporarily released due to session timeout. Tap below to renew the reservation and continue payment.'**
+  String get payment_hold_expired_desc;
+
+  /// No description provided for @payment_hold_renew.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew reservation & pay'**
+  String get payment_hold_renew;
+
+  /// No description provided for @payment_hold_return_to_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to subscription summary'**
+  String get payment_hold_return_to_summary;
+
+  /// No description provided for @calendar_operational_deadline_passed.
+  ///
+  /// In en, this message translates to:
+  /// **'The editing deadline for this day has passed (changes close {hours} hours before delivery).'**
+  String calendar_operational_deadline_passed(int hours);
+
+  /// No description provided for @calendar_operational_deadline_passed_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'The editing deadline for this day has passed.'**
+  String get calendar_operational_deadline_passed_generic;
+
+  /// No description provided for @start_dates_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your first delivery date'**
+  String get start_dates_title;
+
+  /// No description provided for @start_dates_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No start dates available'**
+  String get start_dates_unavailable;
+
+  /// No description provided for @start_dates_unavailable_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again later to load the available delivery dates.'**
+  String get start_dates_unavailable_description;
+
+  /// No description provided for @calendar_permissions_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Day permissions are unavailable. Refresh and try again.'**
+  String get calendar_permissions_unavailable;
+
+  /// No description provided for @operational_friday_excluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan does not include Fridays. Choose another available day.'**
+  String get operational_friday_excluded;
 }
 
 class _AppLocalizationsDelegate

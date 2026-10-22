@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +18,8 @@ class AppDateRangePicker extends StatefulWidget {
     required this.lastDate,
     this.initialStartDate,
     this.initialEndDate,
+    this.selectableDayPredicate,
+    this.rangeDayPredicate,
     super.key,
   });
 
@@ -27,6 +30,8 @@ class AppDateRangePicker extends StatefulWidget {
   final DateTime lastDate;
   final DateTime? initialStartDate;
   final DateTime? initialEndDate;
+  final bool Function(DateTime)? selectableDayPredicate;
+  final bool Function(DateTime)? rangeDayPredicate;
 
   static Future<DateTimeRange?> show({
     required BuildContext context,
@@ -37,6 +42,8 @@ class AppDateRangePicker extends StatefulWidget {
     required DateTime lastDate,
     DateTime? initialStartDate,
     DateTime? initialEndDate,
+    bool Function(DateTime)? selectableDayPredicate,
+    bool Function(DateTime)? rangeDayPredicate,
     bool barrierDismissible = true,
     bool enableDrag = true,
     bool showDragHandle = true,
@@ -64,6 +71,8 @@ class AppDateRangePicker extends StatefulWidget {
             lastDate: lastDate,
             initialStartDate: initialStartDate,
             initialEndDate: initialEndDate,
+            selectableDayPredicate: selectableDayPredicate,
+            rangeDayPredicate: rangeDayPredicate,
           ),
         ),
       ],
@@ -76,6 +85,8 @@ class AppDateRangePicker extends StatefulWidget {
 
 class _AppDateRangePickerState extends State<AppDateRangePicker> {
   late List<DateTime?> _selectedDates;
+  Timer? _permissionTimer;
+  bool _previousCanSubmit = false;
 
   @override
   void initState() {
@@ -88,6 +99,22 @@ class _AppDateRangePickerState extends State<AppDateRangePicker> {
           ? null
           : DateUtils.dateOnly(widget.initialEndDate!),
     ];
+    _previousCanSubmit = _canSubmit;
+    if (widget.selectableDayPredicate != null ||
+        widget.rangeDayPredicate != null) {
+      _permissionTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+        final allowed = _canSubmit;
+        if (allowed != _previousCanSubmit && mounted) {
+          setState(() => _previousCanSubmit = allowed);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _permissionTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -127,6 +154,7 @@ class _AppDateRangePickerState extends State<AppDateRangePicker> {
           CalendarDatePicker2(
             config: CalendarDatePicker2Config(
               calendarType: CalendarDatePicker2Type.range,
+              selectableDayPredicate: widget.selectableDayPredicate,
               firstDate: DateUtils.dateOnly(widget.firstDate),
               lastDate: DateUtils.dateOnly(widget.lastDate),
               currentDate: DateUtils.dateOnly(DateTime.now()),
@@ -176,6 +204,12 @@ class _AppDateRangePickerState extends State<AppDateRangePicker> {
                 color: color.onSurface,
               ),
               modePickerTextHandler: ({required monthDate, isMonthPicker}) {
+                if (isMonthPicker == true) {
+                  return DateFormat.MMMM(locale.localeName).format(monthDate);
+                }
+                if (isMonthPicker == false) {
+                  return DateFormat.y(locale.localeName).format(monthDate);
+                }
                 return DateFormat.yMMMM(locale.localeName).format(monthDate);
               },
             ),
@@ -183,6 +217,7 @@ class _AppDateRangePickerState extends State<AppDateRangePicker> {
             onValueChanged: (dates) {
               setState(() {
                 _selectedDates = dates;
+                _previousCanSubmit = _canSubmit;
               });
             },
           ),
@@ -221,7 +256,25 @@ class _AppDateRangePickerState extends State<AppDateRangePicker> {
     );
   }
 
-  bool get _canSubmit => _selectedDates.length >= 2 && _selectedRange != null;
+  bool get _canSubmit {
+    final range = _selectedRange;
+    if (_selectedDates.length < 2 || range == null) return false;
+    final endpointPredicate = widget.selectableDayPredicate;
+    if (endpointPredicate != null &&
+        (!endpointPredicate(range.start) || !endpointPredicate(range.end))) {
+      return false;
+    }
+    final predicate = widget.rangeDayPredicate ?? endpointPredicate;
+    if (predicate == null) return true;
+    for (
+      var day = range.start;
+      !day.isAfter(range.end);
+      day = DateTime(day.year, day.month, day.day + 1)
+    ) {
+      if (!predicate(day)) return false;
+    }
+    return true;
+  }
 
   DateTimeRange? get _selectedRange {
     if (_selectedDates.length < 2) {

@@ -5,6 +5,19 @@ String mapFailureMessage(BuildContext context, String message) {
   final locale = context.localization;
 
   switch (message) {
+    case 'subscription.start_dates_unavailable':
+      return locale.start_dates_unavailable_description;
+    case 'FRIDAY_EXCLUDED_BY_PLAN':
+    case 'friday_not_included':
+      return locale.operational_friday_excluded;
+    case 'cutoff_passed':
+      return locale.calendar_operational_deadline_passed_generic;
+    case 'CAPACITY_DEPLETED_FOR_DATE':
+      return locale.compensations_capacity_error;
+    case 'COMPENSATION_CHOICE_WINDOW_EXPIRED':
+      return locale.compensations_expired_error;
+    case 'ALTERNATIVE_DAY_NOT_ELIGIBLE':
+      return locale.compensations_ineligible_error;
     case 'error_connection_timeout':
       return locale.error_connection_timeout;
     case 'error_send_timeout':

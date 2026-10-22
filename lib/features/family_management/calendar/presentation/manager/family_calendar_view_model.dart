@@ -59,14 +59,18 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
   String? _requestedSubscriptionId;
 
   void applyDaySnapshot(CalendarDayEntity day) {
-    doIntent(ApplyFamilyCalendarDaySnapshotEvent(day));
+    unawaited(doIntent(ApplyFamilyCalendarDaySnapshotEvent(day)));
   }
 
   void _applyDaySnapshot(CalendarDayEntity day) {
     final date = day.date ?? state.selectedDate;
     if (date == null) return;
 
-    final dayWithSelection = day.copyWith(isSelected: true);
+    final dayWithSelection = day.copyWith(
+      isSelected: true,
+      operationalClock:
+          day.operationalClock ?? state.selectedDay?.operationalClock,
+    );
     final updatedDays = state.days.map((existing) {
       final isSelected =
           existing.date != null &&
@@ -259,7 +263,11 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final targetDate = state.selectedDate ?? DateTime.now();
+        var targetDate = state.selectedDate ?? DateTime.now();
+        if (result.data.includeFriday == false &&
+            targetDate.weekday == DateTime.friday) {
+          targetDate = result.data.days.firstOrNull?.date ?? targetDate;
+        }
         CalendarDayEntity? matchedSelectedDay;
 
         final mappedDays = result.data.days.map((day) {
@@ -278,7 +286,10 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
         emit(
           state.copyWith(
+            selectedDate: targetDate,
             days: mappedDays,
+            includeFriday: result.data.includeFriday != false,
+            operationalLeadHours: result.data.operationalLeadHours,
             selectedDay: matchedSelectedDay,
             clearSelectedDay: matchedSelectedDay == null,
             isLoadingCalendar: false,
@@ -303,7 +314,10 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
   Future<void> _selectDay(CalendarDayEntity day, String localeName) async {
     final newDate = day.date;
-    if (newDate == null) return;
+    if (newDate == null ||
+        (!state.includeFriday && newDate.weekday == DateTime.friday)) {
+      return;
+    }
 
     final updatedDays = state.days.map((d) {
       final isSelected =
@@ -365,7 +379,12 @@ class FamilyCalendarViewModel extends Cubit<FamilyCalendarState> {
 
     switch (result) {
       case ApiSuccessResult():
-        final dayWithSelection = result.data.copyWith(isSelected: true);
+        final dayWithSelection = result.data.copyWith(
+          isSelected: true,
+          operationalClock:
+              result.data.operationalClock ??
+              state.selectedDay?.operationalClock,
+        );
         final updatedDays = state.days.map((d) {
           if (d.date != null &&
               d.date!.year == date.year &&

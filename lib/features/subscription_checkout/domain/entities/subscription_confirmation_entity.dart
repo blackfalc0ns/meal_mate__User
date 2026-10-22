@@ -14,6 +14,11 @@ class SubscriptionConfirmationEntity {
     this.referralShareCode,
     this.referralShareMessage,
     this.referralShareUrl,
+    this.durationDays,
+    this.tier,
+    this.tierNameAr,
+    this.tierNameEn,
+    this.paymentDate,
   });
 
   final String subscriptionId;
@@ -30,10 +35,33 @@ class SubscriptionConfirmationEntity {
   final String? referralShareCode;
   final String? referralShareMessage;
   final String? referralShareUrl;
+  final int? durationDays;
+  final String? tier;
+  final String? tierNameAr;
+  final String? tierNameEn;
+  final String? paymentDate;
 
-  String programName(String lang) =>
-      lang == 'ar' ? programNameAr : (programNameEn.isNotEmpty ? programNameEn : programNameAr);
+  String programName(String lang) => lang.startsWith('ar')
+      ? (programNameAr.isNotEmpty ? programNameAr : programNameEn)
+      : (programNameEn.isNotEmpty ? programNameEn : programNameAr);
 
-  String bundleName(String lang) =>
-      lang == 'ar' ? bundleNameAr : (bundleNameEn.isNotEmpty ? bundleNameEn : bundleNameAr);
+  String bundleName(String lang) {
+    final ar = bundleNameAr.isNotEmpty ? bundleNameAr : programNameAr;
+    final en = bundleNameEn.isNotEmpty ? bundleNameEn : programNameEn;
+    if (lang.startsWith('ar')) {
+      return ar.isNotEmpty ? ar : en;
+    }
+    return en.isNotEmpty ? en : ar;
+  }
+
+  String tierName(String lang) {
+    final ar = (tierNameAr?.isNotEmpty == true) ? tierNameAr! : (tier ?? '');
+    final en = (tierNameEn?.isNotEmpty == true)
+        ? tierNameEn!
+        : ((tier?.isNotEmpty == true) ? tier! : (tierNameAr ?? ''));
+    if (lang.startsWith('ar')) {
+      return ar.isNotEmpty ? ar : en;
+    }
+    return en.isNotEmpty ? en : ar;
+  }
 }

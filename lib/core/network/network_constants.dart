@@ -5,6 +5,12 @@ abstract class NetworkConstants {
 }
 
 abstract class EndPoints {
+  static const String eligibleSubscriptionStartDates = '/api/v1/customer/subscription-flow/eligible-start-dates';
+  static const String customerCompensations = '/api/v1/customer/compensations';
+  static const String compensationAlternativeDates =
+      '$customerCompensations/{compensationId}/alternative-dates';
+  static const String compensationChoose =
+      '$customerCompensations/{compensationId}/choose';
   static const String login = '/api/v1/auth/customers/login';
   static const String register = '/api/v1/auth/customers/register';
   static const String verifyPhone = '/api/v1/auth/customers/verify-phone';

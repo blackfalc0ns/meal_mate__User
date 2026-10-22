@@ -84,6 +84,7 @@ abstract class AppRoutes {
   static const String addAllergy = '/add-allergy';
   static const String profileBilling = '/profile-billing';
   static const String wallet = '/wallet';
+  static const String compensations = '/compensations';
   static const String walletRefund = '/wallet-refund';
   static const String walletTransactions = '/wallet-transactions';
   static const String influencerDashboard = '/influencer-dashboard';

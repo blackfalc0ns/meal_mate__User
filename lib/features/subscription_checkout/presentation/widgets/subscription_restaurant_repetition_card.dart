@@ -15,7 +15,7 @@ class SubscriptionRestaurantRepetitionCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.base),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         border: Border.all(color: color.outlineVariant, width: Spacing.border),

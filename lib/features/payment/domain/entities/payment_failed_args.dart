@@ -1,5 +1,5 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 
 /// Arguments passed to [PaymentFailedScreen] to handle retry, change method, or custom actions.
 @immutable
@@ -12,7 +12,7 @@ class PaymentFailedArgs {
     this.onContactSupport,
   });
 
-  final PaymentArgs? paymentArgs;
+  final SubscriptionCheckoutArgs? paymentArgs;
   final String? errorMessage;
   final VoidCallback? onRetry;
   final VoidCallback? onChangePaymentMethod;

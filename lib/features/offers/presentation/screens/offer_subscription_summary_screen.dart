@@ -16,7 +16,7 @@ import 'package:meal_meat_user/features/offers/presentation/widgets/redeem_packa
 import 'package:meal_meat_user/features/offers/presentation/widgets/redeem_package_includes_card.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/redeem_package_price_card.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
-import 'package:meal_meat_user/features/payment/presentation/widgets/payment_method_tile.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/payment_method_tile.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_delivery_address_card.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_participating_restaurants_card.dart';
 

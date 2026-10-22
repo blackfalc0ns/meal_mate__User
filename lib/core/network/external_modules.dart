@@ -7,7 +7,11 @@ import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_it/get_it.dart';
+import 'package:meal_meat_user/core/services/auth_refresh_service.dart';
 import 'package:meal_meat_user/core/services/language_interceptor.dart';
+import 'package:meal_meat_user/core/services/token_service.dart';
+import 'package:meal_meat_user/features/auth/domain/usecase/refresh_token_usecase.dart';
 
 import '../services/token_interceptor.dart';
 import 'network_constants.dart';
@@ -85,5 +89,13 @@ abstract class ExternalModules {
   @lazySingleton
   FlutterLocalNotificationsPlugin provideFlutterLocalNotificationsPlugin() {
     return FlutterLocalNotificationsPlugin();
+  }
+
+  @lazySingleton
+  AuthRefreshService provideAuthRefreshService(TokenService tokenService) {
+    return AuthRefreshService(
+      tokenService: tokenService,
+      refreshTokenUseCaseProvider: () => GetIt.instance<RefreshTokenUseCase>(),
+    );
   }
 }

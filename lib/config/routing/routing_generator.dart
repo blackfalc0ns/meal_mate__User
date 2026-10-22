@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/screens/loading_preview_screen.dart';
@@ -31,15 +32,15 @@ import 'package:meal_meat_user/features/offers/domain/entities/offer_entity.dart
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/offers/presentation/screens/campaign_payment_screen.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/offer_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/activation_success_args.dart';
-import 'package:meal_meat_user/features/payment/presentation/screens/promo_applied_checkout_screen.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/promo_applied_checkout_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/activation_success_screen.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_failed_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_success_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_failed_screen.dart';
-import 'package:meal_meat_user/features/payment/presentation/screens/payment_screen.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/screens/subscription_checkout_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_success_screen.dart';
 import 'package:meal_meat_user/features/payment/presentation/screens/payment_web_view_screen.dart';
 import 'package:meal_meat_user/features/profile/domain/entities/customer_profile_entity.dart';
@@ -98,6 +99,7 @@ import 'package:meal_meat_user/features/subscription_upgrade/presentation/screen
 import 'package:meal_meat_user/features/subscription_upgrade/presentation/screens/restaurant_tier_upgrade_web_view_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_refund_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_screen.dart';
+import 'package:meal_meat_user/features/compensations/presentation/screens/compensations_screen.dart';
 import 'package:meal_meat_user/features/wallet/presentation/screens/wallet_transactions_screen.dart';
 import 'package:meal_meat_user/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:meal_meat_user/features/notifications/presentation/screens/notification_preferences_screen.dart';
@@ -567,12 +569,12 @@ class RouteGenerator {
           page: ActivationSuccessScreen(args: args),
         );
       case AppRoutes.payment:
-        final args = settings.arguments is PaymentArgs
-            ? settings.arguments! as PaymentArgs
+        final args = settings.arguments is SubscriptionCheckoutArgs
+            ? settings.arguments! as SubscriptionCheckoutArgs
             : null;
         return _buildRoute(
           settings: settings,
-          page: PaymentScreen(args: args),
+          page: SubscriptionCheckoutScreen(args: args),
         );
       case AppRoutes.paymentWebView:
         final args = settings.arguments is PaymentWebViewArgs
@@ -729,6 +731,11 @@ class RouteGenerator {
         );
       case AppRoutes.wallet:
         return _buildRoute(settings: settings, page: const WalletScreen());
+      case AppRoutes.compensations:
+        return _buildRoute(
+          settings: settings,
+          page: const CompensationsScreen(),
+        );
       case AppRoutes.walletRefund:
         return _buildRoute(
           settings: settings,

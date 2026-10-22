@@ -149,6 +149,9 @@ extension SubscriptionSummaryResponseDtoMapper
       serverNowUtc: serverNowUtc,
       quoteId: quoteId,
       paymentDate: paymentDate,
+      earliestStartDate: earliestStartDate,
+      requestedStartDate: requestedStartDate,
+      startDateAdjusted: startDateAdjusted ?? false,
       blockingReasons:
           blockingReasons ??
           (checkoutBlockReason != null ? [checkoutBlockReason!] : const []),

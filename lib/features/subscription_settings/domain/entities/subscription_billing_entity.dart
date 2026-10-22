@@ -145,8 +145,10 @@ class SubscriptionBillingResumeEntity {
     required this.holdExpiresAtUtc,
     required this.finalPrice,
     required this.paymentStatus,
+    this.serverTimeUtc,
   });
 
+  final DateTime? serverTimeUtc;
   final String subscriptionId;
   final String paymentUrl;
   final DateTime? holdExpiresAtUtc;

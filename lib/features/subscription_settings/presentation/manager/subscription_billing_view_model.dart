@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +28,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     this._deleteUncompletedSubscriptionUseCase,
     this._getSubscriptionResumePreviewUseCase,
     this._resumeSubscriptionUseCase,
+    this._getCalendarUseCase,
   ) : super(const SubscriptionBillingState());
 
   final GetSubscriptionBillingUseCase _getSubscriptionBillingUseCase;
@@ -42,6 +45,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
   final GetSubscriptionResumePreviewUseCase
   _getSubscriptionResumePreviewUseCase;
   final ResumeSubscriptionUseCase _resumeSubscriptionUseCase;
+  final GetCalendarUseCase _getCalendarUseCase;
 
   void doIntent(SubscriptionBillingEvent event) {
     switch (event) {
@@ -85,6 +89,7 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
   }
 
   Future<void> _getBilling() async {
+    emit(state.copyWith(clearFreezeCalendar: true));
     emit(
       state.copyWith(
         billing: state.billing.copyWith(
@@ -101,6 +106,17 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
 
     switch (result) {
       case ApiSuccessResult():
+        final subscriptionId = result.data.current.subscription?.subscriptionId;
+        if (subscriptionId != null && subscriptionId.isNotEmpty) {
+          final calendarResult = await _getCalendarUseCase(
+            subscriptionId: subscriptionId,
+            localeName: intl.Intl.getCurrentLocale(),
+          );
+          if (isClosed) return;
+          if (calendarResult case ApiSuccessResult(:final data)) {
+            emit(state.copyWith(freezeCalendar: data));
+          }
+        }
         emit(
           state.copyWith(
             billing: state.billing.copyWith(
@@ -137,6 +153,20 @@ class SubscriptionBillingViewModel extends Cubit<SubscriptionBillingState> {
     required String subscriptionId,
     required SubscriptionBillingFreezeRequestEntity request,
   }) async {
+    final subscription = state.billing.data?.current.subscription;
+    if (subscription?.subscriptionId != subscriptionId ||
+        subscription?.actions.canFreeze != true) {
+      return;
+    }
+    final calendar = state.freezeCalendar;
+    if (calendar?.subscriptionId != subscriptionId) return;
+    final start = DateTime.tryParse(request.startDate);
+    final end = DateTime.tryParse(request.endDate);
+    if (start == null || end == null) return;
+    if (calendar?.subscriptionId == subscriptionId &&
+        !calendar!.canFreezeRange(start, end)) {
+      return;
+    }
     emit(
       state.copyWith(
         billingAction: state.billingAction.copyWith(

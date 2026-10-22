@@ -23,7 +23,7 @@ class SubscriptionSuccessHeroHeader extends StatelessWidget {
         children: [
           Image.asset(
             Assets.subscriptionSuccessHero,
-            height: 150,
+            height: 100,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: Spacing.base),

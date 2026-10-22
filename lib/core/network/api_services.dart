@@ -2,6 +2,11 @@ import 'package:meal_meat_user/features/offers/data/models/request/get_customer_
 import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_flow_response_dto.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/eligible_start_dates_response_dto.dart';
+import 'package:meal_meat_user/features/compensations/data/models/response/compensation_response_dto.dart';
+import 'package:meal_meat_user/features/compensations/data/models/response/alternative_date_response_dto.dart';
+import 'package:meal_meat_user/features/compensations/data/models/response/compensation_choice_response_dto.dart';
+import 'package:meal_meat_user/features/compensations/data/models/request/choose_compensation_request_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/core/services/token_interceptor.dart';
@@ -63,9 +68,9 @@ import 'package:meal_meat_user/features/calendar/data/models/response/calendar_a
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_day_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/calendar/data/models/response/customer_delivery_response_dto.dart';
-import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
-import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/payment_method_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_status_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_readiness_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_restaurant_availability_response_dto.dart';
@@ -1125,6 +1130,27 @@ abstract class ApiServices {
 
   @GET(EndPoints.customerWallet)
   Future<CustomerWalletResponseDto> getCustomerWallet();
+
+  @GET(EndPoints.eligibleSubscriptionStartDates)
+  Future<EligibleStartDatesResponseDto> getEligibleSubscriptionStartDates(
+    @Query('includeFriday') bool includeFriday,
+    @Query('lookaheadDays') int lookaheadDays,
+  );
+
+  @GET(EndPoints.customerCompensations)
+  Future<List<CompensationResponseDto>> getCustomerCompensations();
+
+  @GET(EndPoints.compensationAlternativeDates)
+  Future<List<AlternativeDateResponseDto>> getCompensationAlternativeDates(
+    @Path('compensationId') String compensationId,
+    @Query('count') int count,
+  );
+
+  @POST(EndPoints.compensationChoose)
+  Future<CompensationChoiceResponseDto> chooseCustomerCompensation(
+    @Path('compensationId') String compensationId,
+    @Body() ChooseCompensationRequestDto request,
+  );
 
   @GET(EndPoints.customerWalletTransactions)
   Future<WalletTransactionsResponseDto> getCustomerWalletTransactions(

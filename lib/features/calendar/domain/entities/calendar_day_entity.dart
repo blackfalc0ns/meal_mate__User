@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_operational_clock.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_available_meals_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_nutrition_totals_entity.dart';
@@ -9,6 +10,14 @@ class CalendarDayEntity {
     this.status = '',
     this.uiStatus,
     this.canEdit,
+    this.operationalClock,
+    this.canSelectMeal,
+    this.canChangeAddress,
+    this.canFreeze,
+    this.mealSelectionClosesAt,
+    this.addressEditClosesAt,
+    this.freezeClosesAt,
+
     this.failureReasonCode,
     this.editBlockReason,
     this.selectionDeadlineUtc,
@@ -37,6 +46,14 @@ class CalendarDayEntity {
   final String status;
   final String? uiStatus;
   final bool? canEdit;
+  final CalendarOperationalClock? operationalClock;
+  final bool? canSelectMeal;
+  final bool? canChangeAddress;
+  final bool? canFreeze;
+  final DateTime? mealSelectionClosesAt;
+  final DateTime? addressEditClosesAt;
+  final DateTime? freezeClosesAt;
+
   final String? failureReasonCode;
   final String? editBlockReason;
   final DateTime? selectionDeadlineUtc;
@@ -67,7 +84,8 @@ class CalendarDayEntity {
         r == 'day_cancelled';
   }
 
-  bool get isLocked => _isLocked || canEdit == false || isLockedReason;
+  bool get isLocked =>
+      _isLocked || (canSelectMeal ?? canEdit) == false || isLockedReason;
 
   bool get isCustomerSelected {
     final s = status.toLowerCase();
@@ -124,13 +142,37 @@ class CalendarDayEntity {
   }
 
   /// Server is the single source of truth for editing permission.
-  bool get isEditable => canEdit == true && !isLocked;
+  bool get isEditable =>
+      (canSelectMeal ?? canEdit) == true &&
+      !isLocked &&
+      _beforeDeadline(mealSelectionClosesAt);
+
+  bool get canEditAddress =>
+      canChangeAddress == true && _beforeDeadline(addressEditClosesAt);
+  bool get canFreezeDay => canFreeze == true && _beforeDeadline(freezeClosesAt);
+  bool get hasOperationalRestriction =>
+      canSelectMeal == false ||
+      (mealSelectionClosesAt != null &&
+          !_beforeDeadline(mealSelectionClosesAt));
+
+  bool _beforeDeadline(DateTime? deadline) =>
+      deadline == null ||
+      operationalClock == null ||
+      operationalClock!.now.isBefore(deadline.toUtc());
 
   CalendarDayEntity copyWith({
     String? id,
     String? status,
     String? uiStatus,
     bool? canEdit,
+    CalendarOperationalClock? operationalClock,
+    bool? canSelectMeal,
+    bool? canChangeAddress,
+    bool? canFreeze,
+    DateTime? mealSelectionClosesAt,
+    DateTime? addressEditClosesAt,
+    DateTime? freezeClosesAt,
+
     String? failureReasonCode,
     String? editBlockReason,
     DateTime? selectionDeadlineUtc,
@@ -159,6 +201,15 @@ class CalendarDayEntity {
       status: status ?? this.status,
       uiStatus: uiStatus ?? this.uiStatus,
       canEdit: canEdit ?? this.canEdit,
+      operationalClock: operationalClock ?? this.operationalClock,
+      canSelectMeal: canSelectMeal ?? this.canSelectMeal,
+      canChangeAddress: canChangeAddress ?? this.canChangeAddress,
+      canFreeze: canFreeze ?? this.canFreeze,
+      mealSelectionClosesAt:
+          mealSelectionClosesAt ?? this.mealSelectionClosesAt,
+      addressEditClosesAt: addressEditClosesAt ?? this.addressEditClosesAt,
+      freezeClosesAt: freezeClosesAt ?? this.freezeClosesAt,
+
       failureReasonCode: failureReasonCode ?? this.failureReasonCode,
       editBlockReason: clearEditBlockReason
           ? null

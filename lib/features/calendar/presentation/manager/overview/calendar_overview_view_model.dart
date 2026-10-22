@@ -245,7 +245,10 @@ class CalendarOverviewViewModel extends Cubit<CalendarOverviewState> {
       final resolvedMeals = updatedDay.meals.isNotEmpty
           ? updatedDay.meals
           : day.meals;
-      return updatedDay.copyWith(meals: resolvedMeals);
+      return updatedDay.copyWith(
+        meals: resolvedMeals,
+        operationalClock: updatedDay.operationalClock ?? day.operationalClock,
+      );
     }).toList();
     emit(state.copyWith(days: updatedDays, isSelectedDayLoading: false));
   }

@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_subscription_button.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
@@ -34,6 +34,7 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
           BlocBuilder<SubscriptionSummaryViewModel, SubscriptionSummaryState>(
             buildWhen: (previous, current) =>
                 previous.isLoading != current.isLoading ||
+                previous.isSummaryRefreshing != current.isSummaryRefreshing ||
                 previous.isApplyingCoupon != current.isApplyingCoupon ||
                 previous.summary != current.summary ||
                 previous.activeRequest != current.activeRequest ||
@@ -55,16 +56,18 @@ class SubscriptionSummaryBottomBarSection extends StatelessWidget {
                 return const SubscriptionSummaryButtonLoadingSkeleton();
               }
 
-              final canProceed = hasSummary && state.canCheckout;
+              final canProceed =
+                  hasSummary && state.canCheckout && !state.isSummaryRefreshing;
 
               return AppSubscriptionButton(
                     price: hasSummary ? summary.finalPrice.formattedPrice : '',
                     currency: hasSummary ? summary.currencyCode : '',
+                    isLoading: state.isSummaryRefreshing,
                     onPressed: canProceed
                         ? () async {
                             final result = await context.pushNamed(
                               AppRoutes.payment,
-                              arguments: PaymentArgs(
+                              arguments: SubscriptionCheckoutArgs(
                                 summary: summary,
                                 summaryRequest: activeRequest,
                                 restaurantId:

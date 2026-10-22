@@ -121,9 +121,17 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
     return BlocSelector<
       CalendarOverviewViewModel,
       CalendarOverviewState,
-      ({List<CalendarDayEntity> days, DateTime? selectedDate})
+      ({
+        List<CalendarDayEntity> days,
+        DateTime? selectedDate,
+        bool includeFriday,
+      })
     >(
-      selector: (state) => (days: state.days, selectedDate: state.selectedDate),
+      selector: (state) => (
+        days: state.days,
+        selectedDate: state.selectedDate,
+        includeFriday: state.calendar?.includeFriday != false,
+      ),
       builder: (context, data) {
         final selectedDate = data.selectedDate;
         if (selectedDate != null &&
@@ -137,15 +145,18 @@ class _CalendarPickerSectionState extends State<CalendarPickerSection> {
                 focusedMonth: _focusedMonth,
                 selectedDate: selectedDate,
                 serviceDays: data.days,
+                includeFriday: data.includeFriday,
               )
             : CalendarDaysBuilder.serviceDays(
                 data.days,
+                includeFriday: data.includeFriday,
                 selectedDate: selectedDate,
               );
 
         return CalendarPickerPanel(
           monthTitle: DateFormat.yMMMM(locale.localeName).format(_focusedMonth),
           days: displayDays,
+          includeFriday: data.includeFriday,
           isExpanded: _isExpanded,
           onToggleExpanded: () => setState(() => _isExpanded = !_isExpanded),
           onMonthChanged: _changeMonth,

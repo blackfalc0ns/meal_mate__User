@@ -1,18 +1,18 @@
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/repo/subscription_checkout_repository.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/repo/payment_repository.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_restaurant_availability_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
@@ -21,12 +21,13 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/repo/subscr
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RecordingSummaryRepo implements SubscriptionSummaryRepository {
+  @override
+  Future<ApiResult<SubscriptionPricingPreviewResponseDto>> getPricingPreview(
+    SubscriptionSummaryRequestEntity request,
+  ) => throw UnimplementedError();
+
   Completer<ApiResult<SubscriptionSummaryEntity>>? nextCompleter;
   ApiResult<SubscriptionSummaryEntity>? immediateResult;
   final List<SubscriptionSummaryRequestEntity> recordedRequests = [];
@@ -82,12 +83,8 @@ class FakeCheckoutSubscriptionUseCase extends CheckoutSubscriptionUseCase {
   }
 }
 
-class _NoopPaymentRepo implements PaymentRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _NoopBillingRepo implements SubscriptionBillingRepository {
+class _NoopPaymentRepo
+    implements PaymentRepository, SubscriptionCheckoutRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -159,8 +156,8 @@ void main() {
       viewModel = SubscriptionSummaryViewModel(useCase);
     });
 
-    tearDown(() {
-      viewModel.close();
+    tearDown(() async {
+      await viewModel.close();
     });
 
     const testRequest = SubscriptionSummaryRequestEntity(
@@ -274,26 +271,18 @@ void main() {
     );
 
     test(
-      'PaymentViewModel guards against checkout when canCheckout is false',
+      'SubscriptionCheckoutViewModel guards against checkout when canCheckout is false',
       () async {
-        SharedPreferences.setMockInitialValues({});
-        final prefs = await SharedPreferences.getInstance();
-        final prefHelper = SharedPrefHelper(prefs);
-
         final fakeCheckout = FakeCheckoutSubscriptionUseCase();
         final fakeMethods = _FakeGetPaymentMethodsUseCase();
 
-        final paymentVm = PaymentViewModel(
+        final paymentVm = SubscriptionCheckoutViewModel(
           fakeMethods,
           fakeCheckout,
-          _FakeGetPaymentStatusUseCase(),
-          _FakeGetCalendarUseCase(),
-          _FakeGetCurrentSubscriptionUseCase(),
-          prefHelper,
         );
 
         // Load methods to select a valid payment method
-        final validMethod = const PaymentMethodEntity(
+        const validMethod = PaymentMethodEntity(
           id: 1,
           type: PaymentMethodType.payzah,
           title: 'KNet',
@@ -305,17 +294,17 @@ void main() {
         );
         fakeMethods.methodsToReturn = [validMethod];
 
-        paymentVm.doIntent(SelectPaymentMethodEvent(validMethod));
+        paymentVm.doIntent(const SelectCheckoutPaymentMethodEvent(validMethod));
         await pumpEventQueue();
 
         final blockedSummary = _buildSummary(canCheckout: false);
-        final paymentArgs = PaymentArgs(
+        final paymentArgs = SubscriptionCheckoutArgs(
           summary: blockedSummary,
           summaryRequest: testRequest,
           restaurantId: 'rest-1',
         );
 
-        paymentVm.doIntent(CheckoutPaymentEvent(paymentArgs));
+        paymentVm.doIntent(SubmitSubscriptionCheckoutEvent(paymentArgs));
         await pumpEventQueue();
 
         expect(fakeCheckout.checkoutCallCount, equals(0));
@@ -333,23 +322,4 @@ class _FakeGetPaymentMethodsUseCase extends GetPaymentMethodsUseCase {
   Future<ApiResult<List<PaymentMethodEntity>>> call({
     required double amount,
   }) async => ApiSuccessResult(data: methodsToReturn);
-}
-
-class _FakeGetPaymentStatusUseCase extends GetSubscriptionPaymentStatusUseCase {
-  _FakeGetPaymentStatusUseCase() : super(_NoopPaymentRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakeGetCalendarUseCase extends GetSubscriptionCalendarUseCase {
-  _FakeGetCalendarUseCase() : super(_NoopPaymentRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakeGetCurrentSubscriptionUseCase
-    extends GetCurrentCustomerSubscriptionUseCase {
-  _FakeGetCurrentSubscriptionUseCase() : super(_NoopBillingRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

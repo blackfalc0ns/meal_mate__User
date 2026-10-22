@@ -2252,7 +2252,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String subscription_restaurant_repetition_message(int limit) {
-    return 'You can choose the same restaurant for up to $limit days during the subscription.';
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'You can choose the same restaurant for up to $limit days during the subscription.',
+      one:
+          'You can choose the same restaurant for up to 1 day during the subscription.',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2269,6 +2277,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get checkout_start_date_invalid =>
       'The selected date is in the past. Please choose another date.';
+
+  @override
+  String get subscription_start_date_adjusted_notice =>
+      'Subscription start date was automatically adjusted to the earliest available date to match the delivery schedule.';
 
   @override
   String get subscription_flow_profile_incomplete =>
@@ -7751,4 +7763,160 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offer_checkout_storage_failed =>
       'Could not save payment recovery information. Please check your subscription status.';
+
+  @override
+  String get compensations_title => 'Compensations';
+
+  @override
+  String get compensations_subtitle => 'Refunds and replacement meal days';
+
+  @override
+  String get compensations_empty_title => 'No compensations';
+
+  @override
+  String get compensations_empty_description =>
+      'Your eligible meal compensations will appear here.';
+
+  @override
+  String get compensations_pending_notice =>
+      'You have compensations awaiting your choice. Review them before the deadline.';
+
+  @override
+  String get compensations_refund => 'Request refund';
+
+  @override
+  String get compensations_alternative => 'Choose a replacement day';
+
+  @override
+  String get compensations_confirm_day => 'Confirm replacement day';
+
+  @override
+  String get compensations_refund_confirm =>
+      'Return the amount to the original payment methods?';
+
+  @override
+  String get compensations_deadline_note =>
+      'If you do not choose before the deadline, an automatic refund to the original payment methods will begin.';
+
+  @override
+  String get compensations_waiting_update =>
+      'The choice is closed. Refresh to check the latest compensation status.';
+
+  @override
+  String get compensations_pending => 'Awaiting your choice';
+
+  @override
+  String get compensations_auto_refund => 'Automatic refund in progress';
+
+  @override
+  String get compensations_settled => 'Refund completed';
+
+  @override
+  String get compensations_alternative_chosen => 'Replacement day confirmed';
+
+  @override
+  String get compensations_other_status => 'Compensation is being processed';
+
+  @override
+  String get compensations_no_dates =>
+      'No replacement dates are currently available. You can request a refund or try again later.';
+
+  @override
+  String get compensations_capacity_error =>
+      'This date just filled up. Choose another available date.';
+
+  @override
+  String get compensations_expired_error =>
+      'The choice deadline has passed. Automatic refund is being processed.';
+
+  @override
+  String get compensations_ineligible_error =>
+      'This compensation is eligible for a refund only.';
+
+  @override
+  String get compensations_unavailable_amount =>
+      'Amount details are currently unavailable.';
+
+  @override
+  String get compensations_refresh => 'Refresh compensations';
+
+  @override
+  String compensations_failed_date(String date) {
+    return 'Missed delivery: $date';
+  }
+
+  @override
+  String compensations_total(String amount) {
+    return 'Compensation: $amount';
+  }
+
+  @override
+  String compensations_card_amount(String amount) {
+    return 'To card: $amount';
+  }
+
+  @override
+  String compensations_wallet_amount(String amount) {
+    return 'To wallet: $amount';
+  }
+
+  @override
+  String compensations_apology_amount(String amount) {
+    return 'Apology credit: $amount';
+  }
+
+  @override
+  String compensations_selected_date(String date) {
+    return 'Replacement date: $date';
+  }
+
+  @override
+  String compensations_remaining(String time) {
+    return 'Time remaining: $time';
+  }
+
+  @override
+  String payment_hold_remaining(String time) {
+    return '$time left to complete payment';
+  }
+
+  @override
+  String get payment_hold_expired => 'Payment session expired';
+
+  @override
+  String get payment_hold_expired_desc =>
+      'Your meal and seat reservation were temporarily released due to session timeout. Tap below to renew the reservation and continue payment.';
+
+  @override
+  String get payment_hold_renew => 'Renew reservation & pay';
+
+  @override
+  String get payment_hold_return_to_summary => 'Return to subscription summary';
+
+  @override
+  String calendar_operational_deadline_passed(int hours) {
+    return 'The editing deadline for this day has passed (changes close $hours hours before delivery).';
+  }
+
+  @override
+  String get calendar_operational_deadline_passed_generic =>
+      'The editing deadline for this day has passed.';
+
+  @override
+  String get start_dates_title => 'Choose your first delivery date';
+
+  @override
+  String get start_dates_unavailable => 'No start dates available';
+
+  @override
+  String get start_dates_unavailable_description =>
+      'Try again later to load the available delivery dates.';
+
+  @override
+  String get calendar_permissions_unavailable =>
+      'Day permissions are unavailable. Refresh and try again.';
+
+  @override
+  String get operational_friday_excluded =>
+      'Your plan does not include Fridays. Choose another available day.';
 }

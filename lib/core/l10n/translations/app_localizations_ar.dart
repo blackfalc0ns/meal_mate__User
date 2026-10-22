@@ -2213,7 +2213,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String subscription_restaurant_repetition_message(int limit) {
-    return 'يمكنك اختيار نفس المطعم حتى $limit يوم خلال الاشتراك.';
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other: 'يمكنك اختيار نفس المطعم حتى $limit يوم خلال الاشتراك.',
+      many: 'يمكنك اختيار نفس المطعم حتى $limit يومًا خلال الاشتراك.',
+      few: 'يمكنك اختيار نفس المطعم حتى $limit أيام خلال الاشتراك.',
+      two: 'يمكنك اختيار نفس المطعم حتى يومين خلال الاشتراك.',
+      one: 'يمكنك اختيار نفس المطعم ليوم واحد فقط خلال الاشتراك.',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2228,6 +2237,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get checkout_start_date_invalid =>
       'التاريخ المختار في الماضي. اختر تاريخًا آخر.';
+
+  @override
+  String get subscription_start_date_adjusted_notice =>
+      'تم تعديل تاريخ بدء الاشتراك تلقائيًا إلى أقرب موعد متاح لتوافق جدول التوصيل.';
 
   @override
   String get subscription_flow_profile_incomplete =>
@@ -7629,4 +7642,160 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get offer_checkout_storage_failed =>
       'تعذر حفظ بيانات استعادة الدفع. تحقق من حالة اشتراكك.';
+
+  @override
+  String get compensations_title => 'التعويضات';
+
+  @override
+  String get compensations_subtitle => 'الاسترداد المالي وأيام الوجبات البديلة';
+
+  @override
+  String get compensations_empty_title => 'لا توجد تعويضات';
+
+  @override
+  String get compensations_empty_description =>
+      'ستظهر هنا التعويضات المستحقة عن الوجبات المتعثرة.';
+
+  @override
+  String get compensations_pending_notice =>
+      'لديك تعويضات بانتظار اختيارك. راجعها قبل انتهاء المهلة.';
+
+  @override
+  String get compensations_refund => 'طلب استرداد المبلغ';
+
+  @override
+  String get compensations_alternative => 'اختيار يوم بديل';
+
+  @override
+  String get compensations_confirm_day => 'تأكيد اليوم البديل';
+
+  @override
+  String get compensations_refund_confirm =>
+      'تأكيد استرداد المبلغ إلى وسائل الدفع الأصلية؟';
+
+  @override
+  String get compensations_deadline_note =>
+      'إذا لم تختر قبل انتهاء المهلة، سيبدأ الاسترداد التلقائي إلى وسائل الدفع الأصلية.';
+
+  @override
+  String get compensations_waiting_update =>
+      'الاختيار مغلق. حدّث الصفحة لمعرفة آخر حالة للتعويض.';
+
+  @override
+  String get compensations_pending => 'بانتظار اختيارك';
+
+  @override
+  String get compensations_auto_refund => 'جاري تنفيذ الاسترداد التلقائي';
+
+  @override
+  String get compensations_settled => 'تم استرداد المبلغ';
+
+  @override
+  String get compensations_alternative_chosen => 'تم تأكيد اليوم البديل';
+
+  @override
+  String get compensations_other_status => 'التعويض قيد المعالجة';
+
+  @override
+  String get compensations_no_dates =>
+      'لا توجد مواعيد بديلة متاحة حاليًا. يمكنك طلب الاسترداد أو المحاولة لاحقًا.';
+
+  @override
+  String get compensations_capacity_error =>
+      'اكتملت سعة هذا اليوم. اختر موعدًا آخر من الأيام المتاحة.';
+
+  @override
+  String get compensations_expired_error =>
+      'انتهت مهلة الاختيار. جاري تنفيذ الاسترداد التلقائي.';
+
+  @override
+  String get compensations_ineligible_error =>
+      'هذا التعويض مؤهل للاسترداد المالي فقط.';
+
+  @override
+  String get compensations_unavailable_amount =>
+      'تفاصيل المبلغ غير متاحة حاليًا.';
+
+  @override
+  String get compensations_refresh => 'تحديث التعويضات';
+
+  @override
+  String compensations_failed_date(String date) {
+    return 'التوصيل المتعثر: $date';
+  }
+
+  @override
+  String compensations_total(String amount) {
+    return 'قيمة التعويض: $amount';
+  }
+
+  @override
+  String compensations_card_amount(String amount) {
+    return 'إلى البطاقة: $amount';
+  }
+
+  @override
+  String compensations_wallet_amount(String amount) {
+    return 'إلى المحفظة: $amount';
+  }
+
+  @override
+  String compensations_apology_amount(String amount) {
+    return 'رصيد اعتذار: $amount';
+  }
+
+  @override
+  String compensations_selected_date(String date) {
+    return 'موعد اليوم البديل: $date';
+  }
+
+  @override
+  String compensations_remaining(String time) {
+    return 'الوقت المتبقي: $time';
+  }
+
+  @override
+  String payment_hold_remaining(String time) {
+    return 'متبقي $time لإتمام الدفع';
+  }
+
+  @override
+  String get payment_hold_expired => 'انتهت مهلة إتمام الدفع';
+
+  @override
+  String get payment_hold_expired_desc =>
+      'تم إلغاء حجز وجباتك ومقعدك مؤقتاً لانتهاء وقت جلسة الدفع. اضغط بالأسفل لتجديد الحجز ومتابعة الدفع فوراً.';
+
+  @override
+  String get payment_hold_renew => 'تجديد الحجز ومتابعة الدفع';
+
+  @override
+  String get payment_hold_return_to_summary => 'العودة لملخص الاشتراك';
+
+  @override
+  String calendar_operational_deadline_passed(int hours) {
+    return 'انتهت مهلة التعديل لهذا اليوم (تُغلق التعديلات قبل التوصيل بـ $hours ساعة).';
+  }
+
+  @override
+  String get calendar_operational_deadline_passed_generic =>
+      'انتهت مهلة التعديل لهذا اليوم.';
+
+  @override
+  String get start_dates_title => 'اختيار أول يوم توصيل';
+
+  @override
+  String get start_dates_unavailable => 'لا توجد مواعيد بداية متاحة';
+
+  @override
+  String get start_dates_unavailable_description =>
+      'حاول لاحقًا لتحميل مواعيد التوصيل المتاحة.';
+
+  @override
+  String get calendar_permissions_unavailable =>
+      'صلاحيات تعديل الأيام غير متاحة. حدّث الصفحة وحاول مرة أخرى.';
+
+  @override
+  String get operational_friday_excluded =>
+      'باقتك لا تشمل أيام الجمعة. اختر يومًا آخر متاحًا.';
 }

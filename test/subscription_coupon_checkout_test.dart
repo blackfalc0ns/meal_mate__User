@@ -1,28 +1,23 @@
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_checkout_mapper.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
 import 'package:meal_meat_user/core/errors/api_exception.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
-import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
-import 'package:meal_meat_user/features/payment/data/mapper/payment_mapper.dart';
-import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_state.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FakeGetPaymentMethodsUseCase implements GetPaymentMethodsUseCase {
   double? lastRequestedAmount;
@@ -36,8 +31,8 @@ class FakeGetPaymentMethodsUseCase implements GetPaymentMethodsUseCase {
       return completer!.future;
     }
     return result ??
-        ApiSuccessResult(
-          data: const [
+        const ApiSuccessResult(
+          data: [
             PaymentMethodEntity(
               id: 1,
               type: PaymentMethodType.mada,
@@ -60,8 +55,8 @@ class FakeCheckoutSubscriptionUseCase implements CheckoutSubscriptionUseCase {
   ) async {
     lastRequest = request;
     return result ??
-        ApiSuccessResult(
-          data: const PaymentCheckoutEntity(
+        const ApiSuccessResult(
+          data: PaymentCheckoutEntity(
             subscriptionId: 'sub-123',
             paymentUrl: 'https://payment.gateway/pay',
             holdExpiresAtUtc: '2026-10-06T00:00:00Z',
@@ -76,69 +71,20 @@ class FakeCheckoutSubscriptionUseCase implements CheckoutSubscriptionUseCase {
   }
 }
 
-class FakeGetSubscriptionPaymentStatusUseCase
-    implements GetSubscriptionPaymentStatusUseCase {
-  @override
-  Future<ApiResult<PaymentStatusEntity>> call(String subscriptionId) async {
-    return ApiSuccessResult(
-      data: const PaymentStatusEntity(
-        paymentStatus: 'paid',
-        isPaid: true,
-        isFailed: false,
-        amount: 150,
-        currencyCode: 'SAR',
-      ),
-    );
-  }
-}
-
-class FakeGetSubscriptionCalendarUseCase
-    implements GetSubscriptionCalendarUseCase {
-  @override
-  Future<ApiResult<dynamic>> call(String subscriptionId) async {
-    return ApiSuccessResult(data: null);
-  }
-}
-
-class FakeGetCurrentCustomerSubscriptionUseCase
-    implements GetCurrentCustomerSubscriptionUseCase {
-  @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async {
-    return const ApiSuccessResult(
-      data: SubscriptionBillingCurrentEntity(emptyStateCode: ''),
-    );
-  }
-}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakeGetPaymentMethodsUseCase fakeMethodsUseCase;
   late FakeCheckoutSubscriptionUseCase fakeCheckoutUseCase;
-  late FakeGetSubscriptionPaymentStatusUseCase fakeStatusUseCase;
-  late FakeGetSubscriptionCalendarUseCase fakeCalendarUseCase;
-  late FakeGetCurrentCustomerSubscriptionUseCase fakeCurrentSubUseCase;
-  late SharedPrefHelper fakeSharedPrefs;
-  late PaymentViewModel viewModel;
+  late SubscriptionCheckoutViewModel viewModel;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = await SharedPreferences.getInstance();
-    fakeSharedPrefs = SharedPrefHelper(prefs);
-
     fakeMethodsUseCase = FakeGetPaymentMethodsUseCase();
     fakeCheckoutUseCase = FakeCheckoutSubscriptionUseCase();
-    fakeStatusUseCase = FakeGetSubscriptionPaymentStatusUseCase();
-    fakeCalendarUseCase = FakeGetSubscriptionCalendarUseCase();
-    fakeCurrentSubUseCase = FakeGetCurrentCustomerSubscriptionUseCase();
 
-    viewModel = PaymentViewModel(
+    viewModel = SubscriptionCheckoutViewModel(
       fakeMethodsUseCase,
       fakeCheckoutUseCase,
-      fakeStatusUseCase,
-      fakeCalendarUseCase,
-      fakeCurrentSubUseCase,
-      fakeSharedPrefs,
     );
   });
 
@@ -146,11 +92,11 @@ void main() {
     await viewModel.close();
   });
 
-  PaymentArgs buildPaymentArgs({
+  SubscriptionCheckoutArgs buildSubscriptionCheckoutArgs({
     double finalPrice = 200.0,
     String? promoCode = 'SAVE20',
   }) {
-    return PaymentArgs(
+    return SubscriptionCheckoutArgs(
       summary: SubscriptionSummaryEntity(
         programId: 'prog-1',
         programNameAr: 'برنامج',
@@ -266,10 +212,10 @@ void main() {
     );
 
     test(
-      'LoadPaymentEvent passes latest summary.finalPrice to GetPaymentMethodsUseCase',
+      'LoadSubscriptionCheckoutEvent passes latest summary.finalPrice to GetPaymentMethodsUseCase',
       () async {
-        final args = buildPaymentArgs(finalPrice: 175.5);
-        viewModel.doIntent(LoadPaymentEvent(args));
+        final args = buildSubscriptionCheckoutArgs(finalPrice: 175.5);
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
         await Future<void>.delayed(Duration.zero);
 
         expect(fakeMethodsUseCase.lastRequestedAmount, equals(175.5));
@@ -283,21 +229,21 @@ void main() {
         fakeMethodsUseCase.completer = completer1;
 
         // Start first load (generation 1)
-        final args1 = buildPaymentArgs(finalPrice: 200.0);
-        viewModel.doIntent(LoadPaymentEvent(args1));
+        final args1 = buildSubscriptionCheckoutArgs(finalPrice: 200.0);
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args1));
         await Future<void>.delayed(Duration.zero);
 
         // Start second load (generation 2) with different methods
         final completer2 = Completer<ApiResult<List<PaymentMethodEntity>>>();
         fakeMethodsUseCase.completer = completer2;
-        final args2 = buildPaymentArgs(finalPrice: 150.0);
-        viewModel.doIntent(LoadPaymentEvent(args2));
+        final args2 = buildSubscriptionCheckoutArgs(finalPrice: 150.0);
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args2));
         await Future<void>.delayed(Duration.zero);
 
         // Complete second load first
         completer2.complete(
-          ApiSuccessResult(
-            data: const [
+          const ApiSuccessResult(
+            data: [
               PaymentMethodEntity(
                 id: 2,
                 type: PaymentMethodType.visa,
@@ -313,8 +259,8 @@ void main() {
 
         // Now complete first (stale) load with old methods
         completer1.complete(
-          ApiSuccessResult(
-            data: const [
+          const ApiSuccessResult(
+            data: [
               PaymentMethodEntity(
                 id: 99,
                 type: PaymentMethodType.mada,
@@ -333,13 +279,16 @@ void main() {
     );
 
     test(
-      'CheckoutPaymentEvent propagates promoCode from summaryRequest',
+      'SubmitSubscriptionCheckoutEvent propagates promoCode from summaryRequest',
       () async {
-        final args = buildPaymentArgs(finalPrice: 180.0, promoCode: 'SUMMER30');
-        viewModel.doIntent(LoadPaymentEvent(args));
+        final args = buildSubscriptionCheckoutArgs(
+          finalPrice: 180.0,
+          promoCode: 'SUMMER30',
+        );
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
         await Future<void>.delayed(Duration.zero);
 
-        viewModel.doIntent(CheckoutPaymentEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await Future<void>.delayed(Duration.zero);
 
         expect(fakeCheckoutUseCase.lastRequest, isNotNull);
@@ -348,13 +297,16 @@ void main() {
     );
 
     test(
-      'CheckoutPaymentEvent blocks zero-amount checkout with couponFullDiscountUnsupported',
+      'SubmitSubscriptionCheckoutEvent blocks zero-amount checkout with couponFullDiscountUnsupported',
       () async {
-        final args = buildPaymentArgs(finalPrice: 0.0, promoCode: 'FREE100');
-        viewModel.doIntent(LoadPaymentEvent(args));
+        final args = buildSubscriptionCheckoutArgs(
+          finalPrice: 0.0,
+          promoCode: 'FREE100',
+        );
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
         await Future<void>.delayed(Duration.zero);
 
-        viewModel.doIntent(CheckoutPaymentEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await Future<void>.delayed(Duration.zero);
 
         // Checkout use case should NOT have been called
@@ -367,34 +319,39 @@ void main() {
       },
     );
 
-    test('PaymentState detects coupon rejection failures accurately', () {
-      final couponRejectedFailure = ServerFailure(
-        code: SubscriptionErrorCodes.couponRejected,
-        errorMessage: 'Coupon rejected',
-        exception: const ApiException(
-          message: 'Coupon rejected',
-          statusCode: 400,
-          errorType: ApiErrorType.badRequest,
-          backendErrorCode: SubscriptionErrorCodes.couponRejected,
-        ),
-      );
+    test(
+      'SubscriptionCheckoutState detects coupon rejection failures accurately',
+      () {
+        final couponRejectedFailure = ServerFailure(
+          code: SubscriptionErrorCodes.couponRejected,
+          errorMessage: 'Coupon rejected',
+          exception: const ApiException(
+            message: 'Coupon rejected',
+            statusCode: 400,
+            errorType: ApiErrorType.badRequest,
+            backendErrorCode: SubscriptionErrorCodes.couponRejected,
+          ),
+        );
 
-      final stateWithRejection = PaymentState(
-        checkoutFailure: couponRejectedFailure,
-      );
-      expect(stateWithRejection.isCouponCheckoutFailure, isTrue);
+        final stateWithRejection = SubscriptionCheckoutState(
+          checkoutFailure: couponRejectedFailure,
+        );
+        expect(stateWithRejection.isCouponCheckoutFailure, isTrue);
 
-      final networkFailure = ServerFailure(
-        code: 'network.timeout',
-        errorMessage: 'Timeout',
-        exception: const ApiException(
-          message: 'Timeout',
-          errorType: ApiErrorType.connectionTimeout,
-        ),
-      );
+        final networkFailure = ServerFailure(
+          code: 'network.timeout',
+          errorMessage: 'Timeout',
+          exception: const ApiException(
+            message: 'Timeout',
+            errorType: ApiErrorType.connectionTimeout,
+          ),
+        );
 
-      final stateWithNetwork = PaymentState(checkoutFailure: networkFailure);
-      expect(stateWithNetwork.isCouponCheckoutFailure, isFalse);
-    });
+        final stateWithNetwork = SubscriptionCheckoutState(
+          checkoutFailure: networkFailure,
+        );
+        expect(stateWithNetwork.isCouponCheckoutFailure, isFalse);
+      },
+    );
   });
 }

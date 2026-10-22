@@ -3,7 +3,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/offer_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/presentation/widgets/activation/activation_summary_item_row.dart';
 
 /// Card showing package, pricing, and discount details on the activation success screen.

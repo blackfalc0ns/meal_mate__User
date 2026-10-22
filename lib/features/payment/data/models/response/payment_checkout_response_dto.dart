@@ -20,6 +20,7 @@ class PaymentCheckoutResponseDto {
     this.menuPlanVersionId,
     this.paymentDate,
     this.paymentId,
+    this.serverTimeUtc,
   });
 
   final String? subscriptionId;
@@ -37,7 +38,30 @@ class PaymentCheckoutResponseDto {
   final String? menuPlanVersionId;
   final String? paymentDate;
   final String? paymentId;
+  final DateTime? serverTimeUtc;
 
-  factory PaymentCheckoutResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$PaymentCheckoutResponseDtoFromJson(json);
+  factory PaymentCheckoutResponseDto.fromJson(Map<String, dynamic> json) {
+    final serverTime = json['serverTimeUtc'] ?? json['eligibilityCheckedAtUtc'];
+    final dto = _$PaymentCheckoutResponseDtoFromJson(json);
+    return serverTime != null && dto.serverTimeUtc == null
+        ? PaymentCheckoutResponseDto(
+            subscriptionId: dto.subscriptionId,
+            paymentAnchorSubscriptionId: dto.paymentAnchorSubscriptionId,
+            familyGroupId: dto.familyGroupId,
+            paymentUrl: dto.paymentUrl,
+            holdExpiresAtUtc: dto.holdExpiresAtUtc,
+            chosenStartDate: dto.chosenStartDate,
+            startDate: dto.startDate,
+            finalPrice: dto.finalPrice,
+            priceSnapshotId: dto.priceSnapshotId,
+            restaurantPoolSnapshotId: dto.restaurantPoolSnapshotId,
+            paymentStatus: dto.paymentStatus,
+            fulfillmentStatus: dto.fulfillmentStatus,
+            menuPlanVersionId: dto.menuPlanVersionId,
+            paymentDate: dto.paymentDate,
+            paymentId: dto.paymentId,
+            serverTimeUtc: DateTime.tryParse(serverTime.toString()),
+          )
+        : dto;
+  }
 }

@@ -7,6 +7,7 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/app_date_picker.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/server_start_date_picker.dart';
 import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_event.dart';
 import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_state.dart';
 import 'package:meal_meat_user/features/family_summary/presentation/manager/family_summary_view_model.dart';
@@ -99,17 +100,22 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
                     dateText: formattedStartDate,
                     isEditable: true,
                     onTap: () {
-                      final initial =
-                          parsedStart ??
-                          DateUtils.dateOnly(
-                            DateTime.now().add(const Duration(days: 2)),
-                          );
                       unawaited(
                         _pickStartDate(
                           context,
                           activeMemberId,
-                          initial,
-                          parsedStart,
+                          rawFirstDelivery,
+                          activeState
+                                  .flowMember(activeMemberId)
+                                  ?.includeFriday ??
+                              (activeState.summary?.selectedMember?.memberId ==
+                                      activeMemberId
+                                  ? activeState
+                                        .summary
+                                        ?.selectedMember
+                                        ?.includeFriday
+                                  : null) ??
+                              false,
                         ),
                       );
                     },
@@ -133,20 +139,13 @@ class FamilySubscriptionScheduleSection extends StatelessWidget {
   Future<void> _pickStartDate(
     BuildContext context,
     String? activeMemberId,
-    DateTime currentStartDate,
-    DateTime? backendStartDate,
+    String? currentStartDate,
+    bool includeFriday,
   ) async {
-    final locale = context.localization;
-    final today = DateUtils.dateOnly(DateTime.now());
-    final earliestDate = backendStartDate ?? today.add(const Duration(days: 1));
-
-    final picked = await AppDatePicker.showFormatted(
+    final picked = await ServerStartDatePicker.show(
       context: context,
-      initialDate: currentStartDate.isBefore(earliestDate)
-          ? earliestDate
-          : currentStartDate,
-      firstDate: earliestDate,
-      helpText: locale.family_start_date_picker_help,
+      initialDate: currentStartDate,
+      includeFriday: includeFriday,
     );
 
     if (picked != null && activeMemberId != null && context.mounted) {

@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/repo/subscription_checkout_repository.dart';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
@@ -9,19 +10,18 @@ import 'package:meal_meat_user/features/calendar/data/models/response/calendar_d
 import 'package:meal_meat_user/features/calendar/data/models/response/calendar_response_dto.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/repo/payment_repository.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_subscription_billing_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class _NoopPaymentRepo implements PaymentRepository {
+class _NoopPaymentRepo
+    implements PaymentRepository, SubscriptionCheckoutRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -29,15 +29,6 @@ class _NoopPaymentRepo implements PaymentRepository {
 class _NoopBillingRepo implements SubscriptionBillingRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakePaymentMethodsUseCase extends GetPaymentMethodsUseCase {
-  _FakePaymentMethodsUseCase() : super(_NoopPaymentRepo());
-
-  @override
-  Future<ApiResult<List<PaymentMethodEntity>>> call({
-    required double amount,
-  }) async => const ApiSuccessResult(data: []);
 }
 
 class _RecordingCheckoutUseCase extends CheckoutSubscriptionUseCase {
@@ -106,17 +97,6 @@ class _FakeCalendarUseCase extends GetSubscriptionCalendarUseCase {
   }
 }
 
-class _FakeGetCurrentSubscriptionUseCase
-    extends GetCurrentCustomerSubscriptionUseCase {
-  _FakeGetCurrentSubscriptionUseCase() : super(_NoopBillingRepo());
-
-  @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async =>
-      const ApiSuccessResult(
-        data: SubscriptionBillingCurrentEntity(emptyStateCode: ''),
-      );
-}
-
 class _FakeBillingUseCase extends GetSubscriptionBillingUseCase {
   _FakeBillingUseCase() : super(_NoopBillingRepo());
 
@@ -155,11 +135,8 @@ void main() {
     calendarUseCase = _FakeCalendarUseCase();
 
     viewModel = PaymentViewModel(
-      _FakePaymentMethodsUseCase(),
-      checkoutUseCase,
       _FakeGetSubscriptionPaymentStatusUseCase(),
       calendarUseCase,
-      _FakeGetCurrentSubscriptionUseCase(),
       sharedPrefHelper,
       getSubscriptionBillingUseCase: _FakeBillingUseCase(),
       pollingBackoffOverride: () => [

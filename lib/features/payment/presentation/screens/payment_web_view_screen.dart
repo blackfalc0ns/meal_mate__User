@@ -1,3 +1,8 @@
+import 'package:meal_meat_user/features/payment/domain/entities/payment_hold_clock.dart';
+import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
+import 'package:meal_meat_user/features/payment/presentation/widgets/payment_hold_notice.dart';
+import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -29,11 +34,21 @@ class PaymentWebViewScreen extends StatefulWidget {
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final PaymentViewModel _viewModel;
 
-  bool get _holdExpired {
-    final expiry = DateTime.tryParse(
-      widget.args?.checkout.holdExpiresAtUtc ?? '',
-    );
-    return expiry != null && !expiry.isAfter(DateTime.now().toUtc());
+  PaymentHoldClock? _holdClock;
+  PaymentCheckoutEntity? _activeCheckout;
+  bool _canLaunch = false;
+  bool _gatewayLaunched = false;
+  final ValueNotifier<bool> _paymentBlocked = ValueNotifier(false);
+
+  void _anchorHold(PaymentCheckoutEntity checkout) {
+    _activeCheckout = checkout;
+    final expiry = DateTime.tryParse(checkout.holdExpiresAtUtc);
+    final server = checkout.serverTimeUtc ?? DateTime.now().toUtc();
+    _holdClock = expiry != null
+        ? PaymentHoldClock(expiresAtUtc: expiry, serverTimeUtc: server)
+        : null;
+    _canLaunch = _holdClock?.isExpired != true;
+    _paymentBlocked.value = !_canLaunch;
   }
 
   @override
@@ -42,6 +57,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
     _viewModel = getIt<PaymentViewModel>();
     final checkout = widget.args?.checkout;
     if (checkout != null) {
+      _anchorHold(checkout);
       _viewModel.doIntent(
         InitCheckoutSessionEvent(
           checkout,
@@ -50,28 +66,12 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
           batchVersion: widget.args?.batchVersion,
         ),
       );
-      if (checkout.paymentUrl.isEmpty || _holdExpired) {
-        if (checkout.subscriptionId.isNotEmpty) {
-          _viewModel.doIntent(
-            VerifyPaymentFulfillmentEvent(checkout.subscriptionId),
-          );
-        } else if (checkout.paymentId != null &&
-            checkout.paymentId!.isNotEmpty) {
-          _viewModel.doIntent(
-            HandlePaymentReturnEvent(
-              PaymentReturn(
-                destination: PaymentReturnDestination.pending,
-                paymentId: checkout.paymentId!,
-              ),
-            ),
-          );
-        }
-      }
     }
   }
 
   @override
   void dispose() {
+    _paymentBlocked.dispose();
     unawaited(_viewModel.close());
     super.dispose();
   }
@@ -100,22 +100,60 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       child: BlocConsumer<PaymentViewModel, PaymentState>(
         listenWhen: (previous, current) =>
             previous.isFulfillmentSuccess != current.isFulfillmentSuccess ||
-            previous.isPaymentFailed != current.isPaymentFailed,
+            previous.isPaymentFailed != current.isPaymentFailed ||
+            previous.checkout != current.checkout ||
+            previous.checkoutFailure != current.checkoutFailure ||
+            previous.isSessionReady != current.isSessionReady,
         listener: (context, state) {
+          if (state.checkout != null && state.checkout != _activeCheckout) {
+            _anchorHold(state.checkout!);
+            _gatewayLaunched = false;
+          }
+          if (state.isSessionReady &&
+              !state.isReviewRequired &&
+              !_gatewayLaunched &&
+              _canLaunch &&
+              (state.checkout?.paymentUrl.isNotEmpty ?? false)) {
+            _gatewayLaunched = true;
+            _viewModel.doIntent(const MarkPaymentLaunchedEvent());
+          }
+          if (state.checkoutFailure != null) {
+            final failure = state.checkoutFailure!;
+            final message =
+                failure.code == 'checkout.quote_changed' ||
+                    failure.exception.backendErrorCode ==
+                        'checkout.quote_changed'
+                ? locale.compensations_capacity_error
+                : ErrorMessagePresenter.fromFailure(context, failure);
+            if (state.isAvailabilityChangedFailure) {
+              Navigator.of(context).pop(message);
+              return;
+            }
+            CustomSnackbar.showError(context: context, message: message);
+          }
+
           if (state.isFulfillmentSuccess) {
             final checkout = args.checkout;
             final subId = state.checkout?.subscriptionId.isNotEmpty == true
                 ? state.checkout!.subscriptionId
                 : checkout.subscriptionId;
             final isFamily = args.isFamily || state.isFamily;
+            final conf = state.confirmation;
             final successArgs = PaymentSuccessArgs(
               subscriptionId: subId,
-              paymentDate: DateTime.now().toIso8601String().split('T').first,
-              startDate: checkout.startDate.isNotEmpty
-                  ? checkout.startDate
-                  : checkout.chosenStartDate,
+              packageName: conf?.bundleName(locale.localeName),
+              durationDays: conf?.durationDays,
+              restaurantTier: conf?.tierName(locale.localeName),
+              paymentDate: conf?.paymentDate ??
+                  DateTime.now().toIso8601String().split('T').first,
+              startDate: (conf?.startDate?.isNotEmpty == true)
+                  ? conf!.startDate!
+                  : (checkout.startDate.isNotEmpty
+                      ? checkout.startDate
+                      : checkout.chosenStartDate),
+              endDate: conf?.endDate,
               isFamily: isFamily,
-              confirmation: state.confirmation,
+              confirmation: conf,
             );
             unawaited(
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -128,10 +166,71 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
           }
 
           if (state.isPaymentFailed) {
-            unawaited(Navigator.maybePop(context));
+            unawaited(
+              Navigator.maybePop(context, PaymentSessionOutcome.failed),
+            );
           }
         },
         builder: (context, state) {
+          if (!state.isSessionReady) {
+            final failure = state.checkoutFailure;
+            return Scaffold(
+              appBar: CustomAppBar(title: locale.payment_title),
+              body: failure == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : ApiErrorWidget(
+                      exception: failure.exception,
+                      onRetry: () => _viewModel.doIntent(
+                        InitCheckoutSessionEvent(
+                          args.checkout,
+                          flowType: args.flowType,
+                          batchId: args.batchId,
+                          batchVersion: args.batchVersion,
+                        ),
+                      ),
+                    ),
+            );
+          }
+          final checkout = _activeCheckout ?? args.checkout;
+          final isExpired = _holdClock?.isExpired == true;
+          final holdNotice = _holdClock == null
+              ? null
+              : PaymentHoldNotice(
+                  key: ObjectKey(_holdClock),
+                  clock: _holdClock!,
+                  isRenewing: state.isHoldRenewing,
+                  isFullScreen: !_canLaunch || isExpired,
+                  onExpired: () {
+                    _paymentBlocked.value = true;
+                    if (mounted) setState(() {});
+                  },
+                  onCancel: () => Navigator.of(context).maybePop(),
+                  onRenew:
+                      state.isReviewRequired ||
+                          state.isFulfillmentLoading ||
+                          state.isPaidProcessing ||
+                          state.isPaymentPending
+                      ? null
+                      : () {
+                          if (args.isFamily && !_gatewayLaunched) {
+                            Navigator.of(context).pop();
+                          } else {
+                            _viewModel.doIntent(const RenewPaymentHoldEvent());
+                          }
+                        },
+                );
+          if ((!_canLaunch || isExpired) &&
+              !state.isFulfillmentLoading &&
+              !state.isReviewRequired &&
+              !state.isPaymentPending) {
+            return Scaffold(
+              appBar: CustomAppBar(
+                title: locale.payment_title,
+                onBackPressed: () => Navigator.of(context).maybePop(),
+              ),
+              body: holdNotice,
+            );
+          }
           final failure = state.fulfillmentFailure ?? state.calendarFailure;
           if (failure != null) {
             final subId = args.checkout.subscriptionId.isNotEmpty
@@ -152,8 +251,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
           if (state.isReviewRequired ||
               state.isPaymentPending ||
-              args.checkout.paymentUrl.isEmpty ||
-              _holdExpired) {
+              checkout.paymentUrl.isEmpty) {
             final subId = args.checkout.subscriptionId.isNotEmpty
                 ? args.checkout.subscriptionId
                 : (state.checkout?.subscriptionId ?? '');
@@ -186,19 +284,26 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
           return Scaffold(
             appBar: CustomAppBar(title: locale.payment_title),
-            body: PaymentRedirectWebView(
-              paymentUrl: args.checkout.paymentUrl,
-              isProcessing:
-                  state.isFulfillmentLoading ||
-                  state.isCalendarLoading ||
-                  state.isPaidProcessing,
-              processingMessage:
-                  (state.isCalendarLoading || state.isPaidProcessing)
-                  ? locale.payment_calendar_preparing
-                  : null,
-              onPaymentReturn: (paymentReturn) {
-                _viewModel.doIntent(HandlePaymentReturnEvent(paymentReturn));
-              },
+            bottomNavigationBar: holdNotice,
+            body: ValueListenableBuilder<bool>(
+              valueListenable: _paymentBlocked,
+              builder: (context, blocked, child) =>
+                  IgnorePointer(ignoring: blocked, child: child),
+              child: PaymentRedirectWebView(
+                key: ValueKey(checkout.paymentUrl),
+                paymentUrl: checkout.paymentUrl,
+                isProcessing:
+                    state.isFulfillmentLoading ||
+                    state.isCalendarLoading ||
+                    state.isPaidProcessing,
+                processingMessage:
+                    (state.isCalendarLoading || state.isPaidProcessing)
+                    ? locale.payment_calendar_preparing
+                    : null,
+                onPaymentReturn: (paymentReturn) {
+                  _viewModel.doIntent(HandlePaymentReturnEvent(paymentReturn));
+                },
+              ),
             ),
           );
         },

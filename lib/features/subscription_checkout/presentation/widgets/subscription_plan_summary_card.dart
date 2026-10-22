@@ -4,7 +4,6 @@ import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
-import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_included_feature_item.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/subscription_summary_tile.dart';
 
 class SubscriptionPlanSummaryCard extends StatelessWidget {
@@ -31,8 +30,24 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
               .join(' + ')
         : locale.subscription_meals_count_daily;
 
+    final includesLabel =
+        summary.includes.title(locale.localeName).trim().isNotEmpty
+        ? summary.includes.title(locale.localeName).trim()
+        : locale.subscription_summary_includes_label;
+
+    final firstInclude = summary.includes.items.firstOrNull;
+    final includesValue = firstInclude != null
+        ? firstInclude.text(locale.localeName).trim()
+        : dailyMealsTitle;
+    final includesSubvalue = firstInclude == null
+        ? locale.subscription_meals_breakdown
+        : null;
+    final includesIcon = firstInclude != null
+        ? _resolveIcon(firstInclude.code)
+        : Icons.restaurant_menu_rounded;
+
     return Container(
-      padding: const EdgeInsets.all(Spacing.base),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         border: Border.all(color: color.outlineVariant, width: Spacing.border),
@@ -107,165 +122,20 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
               size: Spacing.iconSm,
             ),
           ),
-          const SizedBox(height: Spacing.md),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.md,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: color.outlineVariant,
-                width: Spacing.border,
-              ),
-              borderRadius: BorderRadius.circular(Spacing.radiusMd),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: Spacing.avatarSm,
-                      height: Spacing.avatarSm,
-                      decoration: BoxDecoration(
-                        color: color.primaryContainer,
-                        borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                      ),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.restaurant_menu_rounded,
-                        color: color.primary,
-                        size: Spacing.iconSm,
-                      ),
-                    ),
-                    const SizedBox(width: Spacing.sm),
-                    Text(
-                      summary.includes
-                              .title(locale.localeName)
-                              .trim()
-                              .isNotEmpty
-                          ? summary.includes.title(locale.localeName)
-                          : locale.subscription_summary_includes_label,
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size14,
-                        color: color.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Spacing.md),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _buildFeatureItems(
-                    color: color,
-                    locale: locale,
-                    dailyMealsTitle: dailyMealsTitle,
-                  ),
-                ),
-              ],
+          const SizedBox(height: Spacing.sm),
+          SubscriptionSummaryTile(
+            label: includesLabel,
+            value: includesValue,
+            subvalue: includesSubvalue,
+            icon: Icon(
+              includesIcon,
+              color: color.primary,
+              size: Spacing.iconSm,
             ),
           ),
         ],
       ),
     );
-  }
-
-  List<Widget> _buildFeatureItems({
-    required ColorScheme color,
-    required dynamic locale,
-    required String dailyMealsTitle,
-  }) {
-    final dynamicItems = summary.includes.items;
-    final widgets = <Widget>[];
-
-    if (dynamicItems.isNotEmpty) {
-      for (var i = 0; i < dynamicItems.length; i++) {
-        final item = dynamicItems[i];
-        if (i > 0) {
-          widgets.add(
-            Container(
-              width: Spacing.border,
-              height: Spacing.xxl,
-              color: color.outlineVariant,
-            ),
-          );
-        }
-        widgets.add(
-          Expanded(
-            child: SubscriptionIncludedFeatureItem(
-              icon: Icon(
-                _resolveIcon(item.code),
-                color: color.primary,
-                size: Spacing.iconSm,
-              ),
-              title: item.text(locale.localeName),
-            ),
-          ),
-        );
-      }
-      return widgets;
-    }
-
-    final fallbackItems = [
-      SubscriptionIncludedFeatureItem(
-        icon: Icon(
-          Icons.dinner_dining_rounded,
-          color: color.primary,
-          size: Spacing.iconSm,
-        ),
-        title: dailyMealsTitle,
-        subtitle: locale.subscription_meals_breakdown,
-      ),
-      SubscriptionIncludedFeatureItem(
-        icon: Icon(
-          Icons.soup_kitchen_rounded,
-          color: color.primary,
-          size: Spacing.iconSm,
-        ),
-        title: locale.subscription_summary_restaurants,
-      ),
-      SubscriptionIncludedFeatureItem(
-        icon: Icon(
-          Icons.verified_rounded,
-          color: color.primary,
-          size: Spacing.iconSm,
-        ),
-        title: locale.subscription_summary_quality,
-      ),
-      SubscriptionIncludedFeatureItem(
-        icon: Icon(
-          Icons.eco_rounded,
-          color: color.primary,
-          size: Spacing.iconSm,
-        ),
-        title: locale.subscription_summary_variety,
-      ),
-      SubscriptionIncludedFeatureItem(
-        icon: Icon(
-          Icons.check_circle_outline_rounded,
-          color: color.primary,
-          size: Spacing.iconSm,
-        ),
-        title: locale.subscription_certified_meals,
-      ),
-    ];
-
-    for (var i = 0; i < fallbackItems.length; i++) {
-      if (i > 0) {
-        widgets.add(
-          Container(
-            width: Spacing.border,
-            height: Spacing.xxl,
-            color: color.outlineVariant,
-          ),
-        );
-      }
-      widgets.add(Expanded(child: fallbackItems[i]));
-    }
-
-    return widgets;
   }
 
   IconData _resolveIcon(String code) {
@@ -282,6 +152,6 @@ class SubscriptionPlanSummaryCard extends StatelessWidget {
     if (lower.contains('variety') || lower.contains('eco')) {
       return Icons.eco_rounded;
     }
-    return Icons.check_circle_outline_rounded;
+    return Icons.restaurant_menu_rounded;
   }
 }

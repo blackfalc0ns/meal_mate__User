@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_meat_user/features/compensations/presentation/widgets/home_compensations_notice.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/features/home/presentation/widgets/home_delivery_cards.dart';
@@ -47,6 +48,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: Spacing.base),
                   const HomeSearchField(),
+                  const HomeCompensationsNotice(),
                   const SizedBox(height: Spacing.base),
                   const HomePromotionCard(),
                   const SizedBox(height: Spacing.base),

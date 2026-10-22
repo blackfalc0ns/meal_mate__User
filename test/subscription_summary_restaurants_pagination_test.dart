@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
 import 'package:meal_meat_user/core/entities/pagination_entity.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_readiness_entity.dart';
@@ -18,6 +19,15 @@ class FakeSubscriptionSummaryRepository
   SubscriptionSummaryRequestEntity? lastRequest;
   Completer<ApiResult<SubscriptionSummaryEntity>>? nextResultCompleter;
   ApiResult<SubscriptionSummaryEntity>? immediateResult;
+
+  @override
+  Future<ApiResult<SubscriptionPricingPreviewResponseDto>> getPricingPreview(
+    SubscriptionSummaryRequestEntity request,
+  ) {
+    throw UnimplementedError(
+      'Pricing preview is outside this summary test fixture.',
+    );
+  }
 
   @override
   Future<ApiResult<SubscriptionSummaryEntity>> getSummary(

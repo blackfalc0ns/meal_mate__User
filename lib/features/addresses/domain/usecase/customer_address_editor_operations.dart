@@ -8,6 +8,7 @@ import 'package:meal_meat_user/features/addresses/domain/usecase/add_customer_ad
 import 'package:meal_meat_user/features/addresses/domain/usecase/confirm_set_default_address_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_existing_address_coverage_usecase.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/preview_new_address_coverage_usecase.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/features/addresses/domain/usecase/update_customer_address_usecase.dart';
 
 typedef PreviewNewAddressCoverageFn =
@@ -34,7 +35,27 @@ typedef UpdateCustomerAddressFn =
 typedef ConfirmSetDefaultAddressFn =
     Future<ApiResult<CustomerAddressEntity>> Function(String addressId);
 
+@injectable
 class CustomerAddressEditorOperations implements AddressEditorOperations {
+  @factoryMethod
+  factory CustomerAddressEditorOperations.create({
+    required PreviewNewAddressCoverageUseCase previewNewAddressCoverageUseCase,
+    required PreviewExistingAddressCoverageUseCase
+    previewExistingAddressCoverageUseCase,
+    required AddCustomerAddressUseCase addCustomerAddressUseCase,
+    required UpdateCustomerAddressUseCase updateCustomerAddressUseCase,
+    required ConfirmSetDefaultAddressUseCase confirmSetDefaultAddressUseCase,
+  }) {
+    return CustomerAddressEditorOperations(
+      previewNewAddressCoverageUseCase: previewNewAddressCoverageUseCase,
+      previewExistingAddressCoverageUseCase:
+          previewExistingAddressCoverageUseCase,
+      addCustomerAddressUseCase: addCustomerAddressUseCase,
+      updateCustomerAddressUseCase: updateCustomerAddressUseCase,
+      confirmSetDefaultAddressUseCase: confirmSetDefaultAddressUseCase,
+    );
+  }
+
   CustomerAddressEditorOperations({
     PreviewNewAddressCoverageUseCase? previewNewAddressCoverageUseCase,
     PreviewExistingAddressCoverageUseCase?

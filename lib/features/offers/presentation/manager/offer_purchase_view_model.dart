@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -14,8 +15,8 @@ import 'package:meal_meat_user/features/offers/domain/usecase/get_customer_offer
 import 'package:meal_meat_user/features/offers/domain/usecase/get_offer_purchase_options_usecase.dart';
 import 'package:meal_meat_user/features/offers/presentation/manager/offer_purchase_state.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart';
 

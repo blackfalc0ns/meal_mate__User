@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
 import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_action_type.dart';
@@ -5,18 +6,25 @@ import 'package:meal_meat_user/features/subscription_settings/presentation/manag
 class SubscriptionBillingState {
   const SubscriptionBillingState({
     this.billing = const SubscriptionBillingDataState(),
+    this.freezeCalendar,
     this.billingAction = const SubscriptionBillingActionState(),
   });
 
   final SubscriptionBillingDataState billing;
+  final CalendarSubscriptionEntity? freezeCalendar;
   final SubscriptionBillingActionState billingAction;
 
   SubscriptionBillingState copyWith({
     SubscriptionBillingDataState? billing,
+    CalendarSubscriptionEntity? freezeCalendar,
+    bool clearFreezeCalendar = false,
     SubscriptionBillingActionState? billingAction,
   }) {
     return SubscriptionBillingState(
       billing: billing ?? this.billing,
+      freezeCalendar: clearFreezeCalendar
+          ? null
+          : freezeCalendar ?? this.freezeCalendar,
       billingAction: billingAction ?? this.billingAction,
     );
   }

@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_deadline_builder.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,11 +42,13 @@ class CalendarSelectedDaySection extends StatelessWidget {
         CalendarDayEntity? selectedDay,
         bool isSelectedDayLoading,
         bool canConfirm,
+        int? operationalLeadHours,
         List<CustomerDeliveryItemEntity> deliveryItems,
       })
     >(
       selector: (state) => (
         selectedDay: state.selectedDay,
+        operationalLeadHours: state.calendar?.operationalLeadHours,
         isSelectedDayLoading: state.isSelectedDayLoading,
         canConfirm: state.canConfirmSelectedDayMeals,
         deliveryItems: state.deliveryItems,
@@ -54,46 +57,53 @@ class CalendarSelectedDaySection extends StatelessWidget {
         return BlocSelector<MealSelectionViewModel, MealSelectionState, bool>(
           selector: (mealState) => mealState.isConfirming,
           builder: (context, isConfirming) {
-            return CalendarDayContent(
-              selectedDay: overviewData.selectedDay,
-              deliveryItems: overviewData.deliveryItems,
-              showBottomSpace: showBottomSpace,
-              onSelectRestaurant: onSelectRestaurant,
-              onChangeMeal: onChangeMeal,
-              onMealTap: onMealTap,
-              onTrackDelivery: (deliveryItem) {
-                final subscriptionDayId = deliveryItem.subscriptionDayId ??
-                    overviewData.selectedDay?.id ??
-                    '';
-                if (subscriptionDayId.isNotEmpty) {
-                  unawaited(
-                    Navigator.of(context).pushNamed(
-                      AppRoutes.calendarDeliveryDetails,
-                      arguments: subscriptionDayId,
-                    ),
-                  );
-                }
-              },
-              onConfirmSelections:
-                  onConfirmSelections ??
-                  () {
-                    try {
-                      unawaited(
-                        context.read<CalendarFlowViewModel>().confirmMeals(
-                          localeName: locale.localeName,
-                        ),
-                      );
-                    } catch (_) {
-                      unawaited(
-                        context.read<MealSelectionViewModel>().confirm(
-                          localeName: locale.localeName,
-                        ),
-                      );
-                    }
-                  },
-              isConfirming: isConfirming,
-              canConfirm: overviewData.canConfirm,
-              isLoading: overviewData.isSelectedDayLoading,
+            return CalendarDeadlineBuilder(
+              day: overviewData.selectedDay,
+              builder: (context) => CalendarDayContent(
+                selectedDay: overviewData.selectedDay,
+                operationalLeadHours: overviewData.operationalLeadHours,
+                deliveryItems: overviewData.deliveryItems,
+                showBottomSpace: showBottomSpace,
+                onSelectRestaurant: onSelectRestaurant,
+                onChangeMeal: onChangeMeal,
+                onMealTap: onMealTap,
+                onTrackDelivery: (deliveryItem) {
+                  final subscriptionDayId =
+                      deliveryItem.subscriptionDayId ??
+                      overviewData.selectedDay?.id ??
+                      '';
+                  if (subscriptionDayId.isNotEmpty) {
+                    unawaited(
+                      Navigator.of(context).pushNamed(
+                        AppRoutes.calendarDeliveryDetails,
+                        arguments: subscriptionDayId,
+                      ),
+                    );
+                  }
+                },
+                onConfirmSelections:
+                    onConfirmSelections ??
+                    () {
+                      try {
+                        unawaited(
+                          context.read<CalendarFlowViewModel>().confirmMeals(
+                            localeName: locale.localeName,
+                          ),
+                        );
+                      } catch (_) {
+                        unawaited(
+                          context.read<MealSelectionViewModel>().confirm(
+                            localeName: locale.localeName,
+                          ),
+                        );
+                      }
+                    },
+                isConfirming: isConfirming,
+                canConfirm:
+                    overviewData.canConfirm &&
+                    overviewData.selectedDay?.isEditable == true,
+                isLoading: overviewData.isSelectedDayLoading,
+              ),
             );
           },
         );

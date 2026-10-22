@@ -1,4 +1,4 @@
-import 'package:meal_meat_user/features/payment/domain/entities/offer_checkout_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/offer_checkout_args.dart';
 
 class ActivationSuccessArgs {
   const ActivationSuccessArgs({

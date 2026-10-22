@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_eligible_start_dates_usecase.dart';
 import 'package:meal_meat_user/features/family_summary/domain/entities/family_summary_contract_constants.dart';
 import 'package:meal_meat_user/features/family_summary/domain/usecase/save_family_member_start_date_usecase.dart';
 import 'package:meal_meat_user/features/family_summary/domain/usecase/checkout_family_subscription_usecase.dart';
@@ -25,6 +27,7 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
     this._selectFamilyMemberSummaryUseCase,
     this._saveFamilyMemberStartDateUseCase, [
     this._retryFamilySubscriptionPaymentUseCase,
+    this._getEligibleStartDatesUseCase,
   ]) : super(const FamilySummaryState());
 
   final GetFamilyFlowCurrentUseCase _getFamilyFlowCurrentUseCase;
@@ -35,6 +38,7 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
   final SaveFamilyMemberStartDateUseCase _saveFamilyMemberStartDateUseCase;
   final RetryFamilySubscriptionPaymentUseCase?
   _retryFamilySubscriptionPaymentUseCase;
+  final GetEligibleStartDatesUseCase? _getEligibleStartDatesUseCase;
   final String correlationId =
       'family-pay-${DateTime.now().microsecondsSinceEpoch}';
 
@@ -190,6 +194,39 @@ class FamilySummaryViewModel extends Cubit<FamilySummaryState> {
     if (state.isStartDateSaving) return;
     _invalidateQuoteAndIdempotency();
     final reqId = ++_startDateRequestId;
+    final getDates = _getEligibleStartDatesUseCase;
+    if (getDates != null) {
+      final member = state.flowMember(memberId);
+      final summaryMember = state.summary?.selectedMember;
+      emit(state.copyWith(isStartDateSaving: true, clearFailure: true));
+      final result = await getDates(
+        includeFriday:
+            member?.includeFriday ??
+            (summaryMember?.memberId == memberId
+                ? summaryMember?.includeFriday
+                : null) ??
+            false,
+      );
+      if (isClosed || reqId != _startDateRequestId) return;
+      switch (result) {
+        case ApiSuccessResult(:final data):
+          if (!data.contains(startDate)) {
+            emit(
+              state.copyWith(
+                isStartDateSaving: false,
+                failure: Failure(
+                  errorMessage: 'subscription.start_dates_unavailable',
+                  code: 'subscription.start_dates_unavailable',
+                ),
+              ),
+            );
+            return;
+          }
+        case ApiErrorResult(:final failure):
+          emit(state.copyWith(isStartDateSaving: false, failure: failure));
+          return;
+      }
+    }
     final previousFlow = state.currentFlow;
     final updatedMembers = state.members.map((m) {
       if (m.memberId == memberId) {

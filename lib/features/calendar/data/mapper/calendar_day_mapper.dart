@@ -18,6 +18,16 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
       status: _firstNotEmpty([status, uiStatus]),
       uiStatus: uiStatus,
       canEdit: canEdit,
+      operationalClock: serverTimeUtc == null
+          ? null
+          : _clockFromServer(serverTimeUtc),
+      canSelectMeal: canSelectMeal,
+      canChangeAddress: canChangeAddress,
+      canFreeze: canFreeze,
+      mealSelectionClosesAt: _parseDateTime(mealSelectionClosesAt),
+      addressEditClosesAt: _parseDateTime(addressEditClosesAt),
+      freezeClosesAt: _parseDateTime(freezeClosesAt),
+
       failureReasonCode: failureReasonCode,
       editBlockReason: editBlockReason ?? failureReasonCode,
       selectionDeadlineUtc: _parseDateTime(selectionDeadlineUtc),
@@ -39,7 +49,7 @@ extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
                 requirement.slot.isNotEmpty && requirement.count > 0,
           )
           .toList(),
-      isLocked: isLocked ?? (canEdit == false),
+      isLocked: isLocked ?? ((canSelectMeal ?? canEdit) == false),
       editDeadlineUtc: _parseDateTime(
         selectionDeadlineUtc ?? editDeadlineUtc ?? lockAtUtc ?? lockedAtUtc,
       ),
@@ -268,18 +278,29 @@ extension CalendarResponseMapper on CalendarResponseDto {
     required String subscriptionId,
     required String localeName,
   }) {
+    final clock = _clockFromServer(serverTimeUtc);
     final globalSlotRequirements = slotRequirements ?? const [];
     final mappedDays =
         (days ?? const [])
             .map((day) => _withGlobalSlots(day, globalSlotRequirements))
-            .map((day) => day.toEntity(localeName))
+            .map(
+              (day) =>
+                  day.toEntity(localeName).copyWith(operationalClock: clock),
+            )
             .where((day) => day.date != null)
             .toList()
           ..sort((a, b) => a.date!.compareTo(b.date!));
 
     return CalendarSubscriptionEntity(
       subscriptionId: this.subscriptionId ?? subscriptionId,
-      days: mappedDays,
+      days: mappedDays
+          .where(
+            (day) =>
+                includeFriday != false || day.date?.weekday != DateTime.friday,
+          )
+          .toList(),
+      includeFriday: includeFriday,
+      operationalLeadHours: operationalLeadHours,
       hasUnreadNotifications: hasUnreadNotifications,
       unreadNotificationsCount: unreadNotificationsCount,
     );
@@ -295,6 +316,7 @@ extension CalendarResponseMapper on CalendarResponseDto {
 
     return CalendarDayResponseDto(
       id: day.id,
+      serverTimeUtc: day.serverTimeUtc,
       date: day.date,
       serviceDate: day.serviceDate,
       status: day.status,
@@ -315,6 +337,13 @@ extension CalendarResponseMapper on CalendarResponseDto {
       meals: day.meals,
       slotRequirements: globalSlotRequirements,
       canEdit: day.canEdit,
+      canSelectMeal: day.canSelectMeal,
+      canChangeAddress: day.canChangeAddress,
+      canFreeze: day.canFreeze,
+      mealSelectionClosesAt: day.mealSelectionClosesAt,
+      addressEditClosesAt: day.addressEditClosesAt,
+      freezeClosesAt: day.freezeClosesAt,
+
       selectionDeadlineUtc: day.selectionDeadlineUtc,
       lockAtUtc: day.lockAtUtc,
       lockRemainingSeconds: day.lockRemainingSeconds,
@@ -336,4 +365,9 @@ extension CalendarResponseMapper on CalendarResponseDto {
       programName: day.programName,
     );
   }
+}
+
+CalendarOperationalClock? _clockFromServer(String? value) {
+  final parsed = value == null ? null : DateTime.tryParse(value);
+  return parsed == null ? null : CalendarOperationalClock(parsed);
 }

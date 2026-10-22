@@ -777,7 +777,7 @@
   "subscription_chosen_start_date_label": "يوم البداية/الدفع",
   "subscription_first_delivery_date_label": "أول يوم توصيل",
   "subscription_restaurant_repetition_label": "تكرار المطعم",
-  "subscription_restaurant_repetition_message": "يمكنك اختيار نفس المطعم حتى {limit} يوم خلال الاشتراك.",
+  "subscription_restaurant_repetition_message": "{limit, plural, =1{يمكنك اختيار نفس المطعم ليوم واحد فقط خلال الاشتراك.} =2{يمكنك اختيار نفس المطعم حتى يومين خلال الاشتراك.} few{يمكنك اختيار نفس المطعم حتى {limit} أيام خلال الاشتراك.} many{يمكنك اختيار نفس المطعم حتى {limit} يومًا خلال الاشتراك.} other{يمكنك اختيار نفس المطعم حتى {limit} يوم خلال الاشتراك.}}",
   "@subscription_restaurant_repetition_message": {
     "placeholders": {
       "limit": {
@@ -789,6 +789,7 @@
   "subscription_continue_to_payment": "المتابعة للدفع",
   "checkout_start_date_required": "اختر تاريخ بداية الاشتراك.",
   "checkout_start_date_invalid": "التاريخ المختار في الماضي. اختر تاريخًا آخر.",
+  "subscription_start_date_adjusted_notice": "تم تعديل تاريخ بدء الاشتراك تلقائيًا إلى أقرب موعد متاح لتوافق جدول التوصيل.",
   "subscription_flow_profile_incomplete": "أكمل بيانات ملفك الشخصي قبل الدفع.",
   "checkout_address_required": "أضف عنوان توصيل قبل الدفع.",
   "checkout_allergies_required": "أكد تفضيلات الحساسية قبل الدفع.",
@@ -2956,5 +2957,109 @@
   "offer_checkout_selection_ineligible": "هذه الباقة لم تعد متاحة للتواريخ المختارة.",
   "offer_checkout_key_invalid": "تعذر تجهيز محاولة الدفع. حاول مرة أخرى.",
   "offer_checkout_key_conflict": "محاولة الدفع هذه تخص اختيارًا آخر. تحقق من حالة اشتراكك.",
-  "offer_checkout_storage_failed": "تعذر حفظ بيانات استعادة الدفع. تحقق من حالة اشتراكك."
+  "offer_checkout_storage_failed": "تعذر حفظ بيانات استعادة الدفع. تحقق من حالة اشتراكك.",
+  "compensations_title": "التعويضات",
+  "compensations_subtitle": "الاسترداد المالي وأيام الوجبات البديلة",
+  "compensations_empty_title": "لا توجد تعويضات",
+  "compensations_empty_description": "ستظهر هنا التعويضات المستحقة عن الوجبات المتعثرة.",
+  "compensations_pending_notice": "لديك تعويضات بانتظار اختيارك. راجعها قبل انتهاء المهلة.",
+  "compensations_refund": "طلب استرداد المبلغ",
+  "compensations_alternative": "اختيار يوم بديل",
+  "compensations_confirm_day": "تأكيد اليوم البديل",
+  "compensations_refund_confirm": "تأكيد استرداد المبلغ إلى وسائل الدفع الأصلية؟",
+  "compensations_deadline_note": "إذا لم تختر قبل انتهاء المهلة، سيبدأ الاسترداد التلقائي إلى وسائل الدفع الأصلية.",
+  "compensations_waiting_update": "الاختيار مغلق. حدّث الصفحة لمعرفة آخر حالة للتعويض.",
+  "compensations_pending": "بانتظار اختيارك",
+  "compensations_auto_refund": "جاري تنفيذ الاسترداد التلقائي",
+  "compensations_settled": "تم استرداد المبلغ",
+  "compensations_alternative_chosen": "تم تأكيد اليوم البديل",
+  "compensations_other_status": "التعويض قيد المعالجة",
+  "compensations_no_dates": "لا توجد مواعيد بديلة متاحة حاليًا. يمكنك طلب الاسترداد أو المحاولة لاحقًا.",
+  "compensations_capacity_error": "اكتملت سعة هذا اليوم. اختر موعدًا آخر من الأيام المتاحة.",
+  "compensations_expired_error": "انتهت مهلة الاختيار. جاري تنفيذ الاسترداد التلقائي.",
+  "compensations_ineligible_error": "هذا التعويض مؤهل للاسترداد المالي فقط.",
+  "compensations_unavailable_amount": "تفاصيل المبلغ غير متاحة حاليًا.",
+  "compensations_refresh": "تحديث التعويضات",
+  "compensations_failed_date": "التوصيل المتعثر: {date}",
+  "@compensations_failed_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_total": "قيمة التعويض: {amount}",
+  "@compensations_total": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_card_amount": "إلى البطاقة: {amount}",
+  "@compensations_card_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_wallet_amount": "إلى المحفظة: {amount}",
+  "@compensations_wallet_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_apology_amount": "رصيد اعتذار: {amount}",
+  "@compensations_apology_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_selected_date": "موعد اليوم البديل: {date}",
+  "@compensations_selected_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_remaining": "الوقت المتبقي: {time}",
+  "@compensations_remaining": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_hold_remaining": "متبقي {time} لإتمام الدفع",
+  "@payment_hold_remaining": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_hold_expired": "انتهت مهلة إتمام الدفع",
+  "payment_hold_expired_desc": "تم إلغاء حجز وجباتك ومقعدك مؤقتاً لانتهاء وقت جلسة الدفع. اضغط بالأسفل لتجديد الحجز ومتابعة الدفع فوراً.",
+  "payment_hold_renew": "تجديد الحجز ومتابعة الدفع",
+  "payment_hold_return_to_summary": "العودة لملخص الاشتراك",
+  "calendar_operational_deadline_passed": "انتهت مهلة التعديل لهذا اليوم (تُغلق التعديلات قبل التوصيل بـ {hours} ساعة).",
+  "@calendar_operational_deadline_passed": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_operational_deadline_passed_generic": "انتهت مهلة التعديل لهذا اليوم.",
+  "start_dates_title": "اختيار أول يوم توصيل",
+  "start_dates_unavailable": "لا توجد مواعيد بداية متاحة",
+  "start_dates_unavailable_description": "حاول لاحقًا لتحميل مواعيد التوصيل المتاحة.",
+  "calendar_permissions_unavailable": "صلاحيات تعديل الأيام غير متاحة. حدّث الصفحة وحاول مرة أخرى.",
+  "operational_friday_excluded": "باقتك لا تشمل أيام الجمعة. اختر يومًا آخر متاحًا."
 }

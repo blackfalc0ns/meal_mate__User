@@ -61,6 +61,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? subscriptionId,
     String? localeName,
   }) {
+    if (overviewViewModel.state.selectedDay?.isEditable != true) return;
     final targetDate =
         date ??
         overviewViewModel.state.selectedDate ??
@@ -96,6 +97,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? subscriptionId,
     String? localeName,
   }) async {
+    if (overviewViewModel.state.selectedDay?.isEditable != true) return;
     final targetDate =
         date ??
         overviewViewModel.state.selectedDate ??
@@ -164,6 +166,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? localeName,
   }) {
     final day = overviewViewModel.state.selectedDay;
+    if (overviewViewModel.state.selectedDay?.isEditable != true) return;
     final targetDate =
         date ?? overviewViewModel.state.selectedDate ?? day?.date;
     final targetSubId = (subscriptionId != null && subscriptionId.isNotEmpty)
@@ -205,6 +208,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
   }
 
   Future<void> saveMeals({String? localeName}) async {
+    if (overviewViewModel.state.selectedDay?.isEditable != true) return;
     final effectiveLocale = localeName ?? 'en';
     final result = await mealSelectionViewModel.save(
       localeName: effectiveLocale,
@@ -253,6 +257,7 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     String? subscriptionId,
   }) async {
     final day = overviewViewModel.state.selectedDay;
+    if (overviewViewModel.state.selectedDay?.isEditable != true) return;
     final targetDate =
         date ?? overviewViewModel.state.selectedDate ?? day?.date;
     final targetSubscriptionId =
@@ -309,7 +314,9 @@ class CalendarFlowViewModel extends Cubit<CalendarFlowState> {
     final subscriptionId = overviewViewModel.state.subscriptionId;
     final effectiveLocale = localeName ?? 'en';
 
-    if (date == null || subscriptionId.isEmpty) return;
+    if (date == null || subscriptionId.isEmpty || day?.isEditable != true) {
+      return;
+    }
 
     final result = await mealSelectionViewModel.autoSelect(
       localeName: effectiveLocale,

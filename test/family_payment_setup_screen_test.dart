@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

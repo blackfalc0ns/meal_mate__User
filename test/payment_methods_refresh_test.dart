@@ -1,19 +1,14 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CountingGetPaymentMethodsUseCase implements GetPaymentMethodsUseCase {
   int callCount = 0;
@@ -53,75 +48,28 @@ class SpyCheckoutSubscriptionUseCase implements CheckoutSubscriptionUseCase {
   }
 }
 
-class DummyStatusUseCase implements GetSubscriptionPaymentStatusUseCase {
-  @override
-  Future<ApiResult<PaymentStatusEntity>> call(String subscriptionId) async {
-    return const ApiSuccessResult(
-      data: PaymentStatusEntity(
-        paymentStatus: 'PendingPayment',
-        isPaid: false,
-        isFailed: false,
-        amount: 50.0,
-        currencyCode: 'KWD',
-      ),
-    );
-  }
-}
-
-class DummyCalendarUseCase implements GetSubscriptionCalendarUseCase {
-  @override
-  Future<ApiResult<dynamic>> call(String subscriptionId) async {
-    return const ApiSuccessResult(data: null);
-  }
-}
-
-class DummyCurrentSubUseCase implements GetCurrentCustomerSubscriptionUseCase {
-  @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async {
-    return const ApiSuccessResult(
-      data: SubscriptionBillingCurrentEntity(emptyStateCode: ''),
-    );
-  }
-}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late CountingGetPaymentMethodsUseCase methodsUseCase;
   late SpyCheckoutSubscriptionUseCase checkoutUseCase;
-  late DummyStatusUseCase statusUseCase;
-  late DummyCalendarUseCase calendarUseCase;
-  late DummyCurrentSubUseCase currentSubUseCase;
-  late SharedPrefHelper sharedPrefs;
-  late PaymentViewModel viewModel;
+  late SubscriptionCheckoutViewModel viewModel;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = await SharedPreferences.getInstance();
-    sharedPrefs = SharedPrefHelper(prefs);
-
     methodsUseCase = CountingGetPaymentMethodsUseCase();
     checkoutUseCase = SpyCheckoutSubscriptionUseCase();
-    statusUseCase = DummyStatusUseCase();
-    calendarUseCase = DummyCalendarUseCase();
-    currentSubUseCase = DummyCurrentSubUseCase();
 
-    viewModel = PaymentViewModel(
-      methodsUseCase,
-      checkoutUseCase,
-      statusUseCase,
-      calendarUseCase,
-      currentSubUseCase,
-      sharedPrefs,
-    );
+    viewModel = SubscriptionCheckoutViewModel(methodsUseCase, checkoutUseCase);
   });
 
   tearDown(() async {
     await viewModel.close();
   });
 
-  PaymentArgs createPaymentArgs({double price = 50.0}) {
-    return PaymentArgs(
+  SubscriptionCheckoutArgs createSubscriptionCheckoutArgs({
+    double price = 50.0,
+  }) {
+    return SubscriptionCheckoutArgs(
       summary: SubscriptionSummaryEntity(
         programId: 'prog-1',
         programNameAr: 'برنامج',
@@ -193,8 +141,8 @@ void main() {
 
         methodsUseCase.returnMethods = [walletMethod, payzahMethod];
 
-        final args = createPaymentArgs();
-        viewModel.doIntent(LoadPaymentEvent(args));
+        final args = createSubscriptionCheckoutArgs();
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
 
         await pumpEventQueue();
 
@@ -202,14 +150,16 @@ void main() {
         expect(viewModel.state.selectedMethod?.id, 7);
 
         // Attempt to select disabled wallet method
-        viewModel.doIntent(const SelectPaymentMethodEvent(walletMethod));
+        viewModel.doIntent(
+          const SelectCheckoutPaymentMethodEvent(walletMethod),
+        );
         await pumpEventQueue();
 
         // Selected method must remain Payzah
         expect(viewModel.state.selectedMethod?.id, 7);
 
         // Trigger checkout
-        viewModel.doIntent(CheckoutPaymentEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await pumpEventQueue();
 
         // Checkout called once with Payzah ID 7
@@ -230,8 +180,8 @@ void main() {
         );
         methodsUseCase.returnMethods = [initialMethod];
 
-        final args1 = createPaymentArgs();
-        viewModel.doIntent(LoadPaymentEvent(args1));
+        final args1 = createSubscriptionCheckoutArgs();
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args1));
         await pumpEventQueue();
 
         expect(methodsUseCase.callCount, 1);
@@ -247,8 +197,8 @@ void main() {
         );
         methodsUseCase.returnMethods = [newMethod];
 
-        final args2 = createPaymentArgs();
-        viewModel.doIntent(LoadPaymentEvent(args2));
+        final args2 = createSubscriptionCheckoutArgs();
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args2));
         await pumpEventQueue();
 
         expect(methodsUseCase.callCount, 2);
@@ -258,7 +208,51 @@ void main() {
     );
 
     test(
-      'rebuild/re-reading state without LoadPaymentEvent does not trigger extra calls',
+      'retained checkout prevents repost until terminal failure resets with fresh idempotency',
+      () async {
+        methodsUseCase.returnMethods = const [
+          PaymentMethodEntity(
+            id: 5,
+            type: PaymentMethodType.payzah,
+            title: 'Payzah',
+            subtitle: '',
+            isAvailable: true,
+          ),
+        ];
+        final args = createSubscriptionCheckoutArgs();
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
+        await pumpEventQueue();
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
+        await pumpEventQueue();
+        final retainedCheckout = viewModel.state.checkout;
+        final originalKey = checkoutUseCase.lastRequest?.idempotencyKey;
+        expect(retainedCheckout, isNotNull);
+        expect(originalKey, isNotEmpty);
+
+        // A plain return from the gateway retains the session for reopening.
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
+        await pumpEventQueue();
+        expect(checkoutUseCase.callCount, 1);
+        expect(viewModel.state.checkout, same(retainedCheckout));
+        expect(checkoutUseCase.lastRequest?.idempotencyKey, originalKey);
+
+        // Only the server-confirmed failure path releases the old checkout.
+        viewModel.doIntent(const ResetSubscriptionCheckoutAfterFailureEvent());
+        expect(viewModel.state.checkout, isNull);
+        expect(viewModel.state.pendingSubscriptionId, isNull);
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
+        await pumpEventQueue();
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
+        await pumpEventQueue();
+        expect(checkoutUseCase.callCount, 2);
+        expect(checkoutUseCase.lastRequest?.idempotencyKey, isNotEmpty);
+        expect(checkoutUseCase.lastRequest?.idempotencyKey, isNot(originalKey));
+      },
+    );
+
+    test(
+      'rebuild/re-reading state without LoadSubscriptionCheckoutEvent does not trigger extra calls',
       () async {
         methodsUseCase.returnMethods = [
           const PaymentMethodEntity(
@@ -270,8 +264,8 @@ void main() {
           ),
         ];
 
-        final args = createPaymentArgs();
-        viewModel.doIntent(LoadPaymentEvent(args));
+        final args = createSubscriptionCheckoutArgs();
+        viewModel.doIntent(LoadSubscriptionCheckoutEvent(args));
         await pumpEventQueue();
 
         expect(methodsUseCase.callCount, 1);

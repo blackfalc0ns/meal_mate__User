@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
 import 'package:meal_meat_user/features/family_summary/domain/entities/family_summary_entity.dart';
 import 'package:meal_meat_user/features/family_subscription_setup/domain/entities/family_conversion_draft_session.dart';

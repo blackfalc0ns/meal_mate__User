@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/errors/failures.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_eligible_start_dates_usecase.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_subscription_summary_usecase.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
@@ -11,16 +13,20 @@ import 'package:meal_meat_user/features/subscription_checkout/presentation/manag
 
 @injectable
 class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
-  SubscriptionSummaryViewModel(this._getSubscriptionSummaryUseCase)
-    : super(const SubscriptionSummaryState());
+  SubscriptionSummaryViewModel(
+    this._getSubscriptionSummaryUseCase, {
+    this.getEligibleStartDatesUseCase,
+  }) : super(const SubscriptionSummaryState());
 
   @visibleForTesting
   SubscriptionSummaryViewModel.withState(
     this._getSubscriptionSummaryUseCase, {
     SubscriptionSummaryState? initialState,
+    this.getEligibleStartDatesUseCase,
   }) : super(initialState ?? const SubscriptionSummaryState());
 
   final GetSubscriptionSummaryUseCase _getSubscriptionSummaryUseCase;
+  final GetEligibleStartDatesUseCase? getEligibleStartDatesUseCase;
 
   int _summaryGeneration = 0;
   int _restaurantsGeneration = 0;
@@ -60,26 +66,95 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
       promoCode: currentPromoCode,
       clearPromoCode: currentPromoCode == null || currentPromoCode.isEmpty,
     );
-    emit(state.copyWith(selectedStartDate: startDate));
-    await _getSummary(updatedRequest);
+    await _getSummary(updatedRequest, requireRequestedDate: true);
   }
 
-  Future<void> _getSummary(SubscriptionSummaryRequestEntity request) async {
+  Future<void> _getSummary(
+    SubscriptionSummaryRequestEntity request, {
+    bool requireRequestedDate = false,
+  }) async {
     final generation = ++_summaryGeneration;
     final isInitial = state.summary == null;
 
     emit(
       state.copyWith(
+        requiresEligibleStartDate: getEligibleStartDatesUseCase != null,
+        includeFriday: request.includeFriday,
         isLoading: isInitial,
         isSummaryRefreshing: !isInitial,
         clearSummary: isInitial,
         clearFailure: true,
-        selectedStartDate: request.startDate.isNotEmpty
+        selectedStartDate: !requireRequestedDate && request.startDate.isNotEmpty
             ? request.startDate
             : state.selectedStartDate,
       ),
     );
 
+    final getDates = getEligibleStartDatesUseCase;
+    if (getDates != null) {
+      final hasCached =
+          state.eligibleStartDates.isNotEmpty &&
+          state.includeFriday == request.includeFriday &&
+          (request.startDate.isEmpty ||
+              state.eligibleStartDates.contains(request.startDate));
+
+      if (hasCached) {
+        final effectiveStartDate = request.startDate.isNotEmpty
+            ? request.startDate
+            : (state.selectedStartDate.isNotEmpty
+                  ? state.selectedStartDate
+                  : (state.eligibleStartDates.firstOrNull ?? ''));
+        request = request.copyWith(startDate: effectiveStartDate);
+        emit(state.copyWith(selectedStartDate: effectiveStartDate));
+      } else {
+        final eligibility = await getDates(
+          includeFriday: request.includeFriday,
+        );
+        if (isClosed || generation != _summaryGeneration) return;
+        switch (eligibility) {
+          case ApiSuccessResult(:final data):
+            final first = data.earliestDate;
+            if (first == null ||
+                (requireRequestedDate && !data.contains(request.startDate))) {
+              emit(
+                state.copyWith(
+                  isLoading: false,
+                  isSummaryRefreshing: false,
+                  eligibleStartDates: data.dates,
+                  failure: Failure(
+                    errorMessage: 'subscription.start_dates_unavailable',
+                    code: 'subscription.start_dates_unavailable',
+                  ),
+                ),
+              );
+              return;
+            }
+            request = request.copyWith(
+              startDate: data.contains(request.startDate)
+                  ? request.startDate
+                  : first,
+            );
+            emit(
+              state.copyWith(
+                eligibleStartDates: data.dates,
+                earliestStartDate: first,
+                includeFriday: data.includeFriday,
+                selectedStartDate: request.startDate,
+              ),
+            );
+          case ApiErrorResult(:final failure):
+            emit(
+              state.copyWith(
+                isLoading: false,
+                isSummaryRefreshing: false,
+                eligibleStartDates: const [],
+                failure: failure,
+              ),
+            );
+            return;
+        }
+      }
+    }
     final result = await _getSubscriptionSummaryUseCase(request);
     if (isClosed || generation != _summaryGeneration) return;
 
@@ -90,7 +165,14 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
             ? coupon.code
             : null;
 
+        final effectiveStartDate = result.data.startDate.trim().isNotEmpty
+            ? result.data.startDate.trim()
+            : (request.startDate.trim().isNotEmpty
+                  ? request.startDate.trim()
+                  : state.selectedStartDate);
+
         final activeRequest = request.copyWith(
+          startDate: effectiveStartDate,
           promoCode: approvedPromoCode,
           clearPromoCode: approvedPromoCode == null,
           restaurantsPage: 1,
@@ -102,9 +184,11 @@ class SubscriptionSummaryViewModel extends Cubit<SubscriptionSummaryState> {
             isSummaryRefreshing: false,
             summary: result.data,
             activeRequest: activeRequest,
-            selectedStartDate: request.startDate.isNotEmpty
-                ? request.startDate
-                : state.selectedStartDate,
+            selectedStartDate: effectiveStartDate,
+            earliestStartDate:
+                result.data.earliestStartDate?.trim().isNotEmpty == true
+                ? result.data.earliestStartDate!.trim()
+                : state.earliestStartDate,
             couponDraft: coupon?.code ?? state.couponDraft,
             clearFailure: true,
             clearAppendFailure: true,

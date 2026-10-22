@@ -19,6 +19,11 @@ extension SubscriptionConfirmationResponseDtoMapper
       referralShareCode: referralShareCode,
       referralShareMessage: referralShareMessage,
       referralShareUrl: referralShareUrl,
+      durationDays: durationDays,
+      tier: tier,
+      tierNameAr: tierNameAr,
+      tierNameEn: tierNameEn,
+      paymentDate: paymentDate,
     );
   }
 }

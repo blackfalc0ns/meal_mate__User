@@ -23,15 +23,13 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
         ? address!.label.trim()
         : locale.subscription_address_title;
 
-    final namesLine =
-        address?.localizedNamesLine(locale.localeName).trim() ?? '';
     final userAddressLine = address?.addressLine.trim() ?? '';
-    final detailLine = userAddressLine.isNotEmpty
+    final addressLine = userAddressLine.isNotEmpty
         ? userAddressLine
         : (address?.formattedAddress.trim() ?? '');
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.base),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         border: Border.all(color: color.outlineVariant, width: Spacing.border),
@@ -69,30 +67,15 @@ class SubscriptionDeliveryAddressCard extends StatelessWidget {
                     color: color.onSurface,
                   ),
                 ),
-                if (namesLine.isNotEmpty && namesLine != title) ...[
+                if (addressLine.isNotEmpty && addressLine != title) ...[
                   const SizedBox(height: Spacing.xxs),
                   Text(
-                    namesLine,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: getMediumStyle(
-                      fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size12,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-                if (detailLine.isNotEmpty &&
-                    detailLine != namesLine &&
-                    detailLine != title) ...[
-                  const SizedBox(height: Spacing.xxs),
-                  Text(
-                    detailLine,
+                    addressLine,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size12,
                       color: color.onSurfaceVariant,
                     ),
                   ),

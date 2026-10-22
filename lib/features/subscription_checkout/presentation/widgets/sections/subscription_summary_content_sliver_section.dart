@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/api_error_widget.dart';
-import 'package:meal_meat_user/core/widget/app_date_picker.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/widgets/server_start_date_picker.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
@@ -71,6 +71,7 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
                           context: context,
                           currentStartDate: currentStartDate,
                           summaryArgs: summaryArgs,
+                          eligibleDates: state.eligibleStartDates,
                           earliestStartDate: state.earliestStartDate.isNotEmpty
                               ? state.earliestStartDate
                               : null,
@@ -88,12 +89,14 @@ class SubscriptionSummaryContentSliverSection extends StatelessWidget {
     required BuildContext context,
     required String currentStartDate,
     required SubscriptionSummaryArgs summaryArgs,
+    List<String>? eligibleDates,
     String? earliestStartDate,
   }) async {
-    final formattedDate = await AppDatePicker.showFormatted(
+    final formattedDate = await ServerStartDatePicker.show(
       context: context,
-      initialDateString: currentStartDate,
-      earliestDateString: earliestStartDate,
+      initialDate: currentStartDate,
+      includeFriday: summaryArgs.request.includeFriday,
+      eligibleDates: eligibleDates,
     );
 
     if (formattedDate == null || !context.mounted) {

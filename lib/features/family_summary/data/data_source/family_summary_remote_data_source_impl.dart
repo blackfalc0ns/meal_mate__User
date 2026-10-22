@@ -5,7 +5,7 @@ import 'package:meal_meat_user/features/family_summary/data/models/request/famil
 import 'package:meal_meat_user/features/family_summary/data/models/request/family_renewal_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/family_summary/data/models/response/family_summary_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
-import 'package:meal_meat_user/features/payment/data/models/response/payment_method_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/response/payment_method_response_dto.dart';
 
 import 'package:meal_meat_user/features/family_summary/data/models/request/family_checkout_selection_request_dto.dart';
 import 'package:meal_meat_user/features/family_summary/data/models/response/family_checkout_selection_response_dto.dart';

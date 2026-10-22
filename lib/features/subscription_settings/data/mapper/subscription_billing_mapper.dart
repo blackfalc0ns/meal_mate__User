@@ -92,6 +92,7 @@ extension SubscriptionBillingResumeResponseDtoMapper
       subscriptionId: subscriptionId ?? '',
       paymentUrl: paymentUrl ?? '',
       holdExpiresAtUtc: holdExpiresAtUtc,
+      serverTimeUtc: serverTimeUtc,
       finalPrice: finalPrice ?? 0,
       paymentStatus: paymentStatus ?? '',
     );

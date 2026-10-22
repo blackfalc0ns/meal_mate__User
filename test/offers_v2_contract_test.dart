@@ -6,11 +6,12 @@ import 'package:meal_meat_user/features/offers/data/models/response/offer_eligib
 import 'package:meal_meat_user/features/offers/data/models/response/offer_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offers_hub_response_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/validate_discount_response_dto.dart';
-import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/request/subscription_pricing_preview_request_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_confirmation_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_pricing_preview_response_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_confirmation_mapper.dart';
 import 'package:meal_meat_user/features/wallet/data/models/customer_referral_summary_response_dto.dart';
 import 'package:meal_meat_user/features/wallet/data/models/customer_wallet_response_dto.dart';
 import 'package:meal_meat_user/features/wallet/data/models/wallet_transactions_response_dto.dart';
@@ -273,6 +274,50 @@ void main() {
       expect(dto.paidAmount, equals(40.0));
       expect(dto.appliedDiscount, equals(15.0));
       expect(dto.referralShareCode, equals('REF123'));
+    });
+
+    test('SubscriptionConfirmationResponseDto parses real backend API response keys', () {
+      final json = {
+        'subscriptionId': '3c2ae58d-e4b1-4fad-8a2f-2681d5f61a8e',
+        'status': 'Scheduled',
+        'isPaid': true,
+        'isFailed': false,
+        'programId': 'dd12dfbc-3987-4e38-83af-664b6963c04c',
+        'programNameAr': 'خسارة الوزن',
+        'bundleId': 'ae827912-199d-49e8-b1fc-3390fc96b2e6',
+        'bundleNameAr': 'ريوق + غداء + سناك',
+        'tier': 'Basic',
+        'tierNameAr': 'أساسي',
+        'durationDays': 12,
+        'includeFriday': false,
+        'startDate': '2026-10-26',
+        'endDate': '2026-11-08',
+        'amountPaidKwd': 53.0,
+        'currencyCode': 'KWD',
+        'paymentVerifiedAtUtc': '2026-10-22T04:03:25.643272Z',
+        'discount': null,
+        'referralShare': null,
+        'programName': 'خسارة الوزن',
+        'bundleName': 'ريوق + غداء + سناك',
+        'tierName': 'أساسي',
+      };
+      final dto = SubscriptionConfirmationResponseDto.fromJson(json);
+      expect(dto.subscriptionId, equals('3c2ae58d-e4b1-4fad-8a2f-2681d5f61a8e'));
+      expect(dto.paidAmount, equals(53.0));
+      expect(dto.currency, equals('KWD'));
+      expect(dto.durationDays, equals(12));
+      expect(dto.tier, equals('Basic'));
+      expect(dto.tierNameAr, equals('أساسي'));
+      expect(dto.programNameAr, equals('خسارة الوزن'));
+      expect(dto.bundleNameAr, equals('ريوق + غداء + سناك'));
+      expect(dto.paymentDate, equals('2026-10-22'));
+
+      final entity = dto.toEntity();
+      expect(entity.paidAmount, equals(53.0));
+      expect(entity.durationDays, equals(12));
+      expect(entity.bundleName('ar'), equals('ريوق + غداء + سناك'));
+      expect(entity.tierName('ar'), equals('أساسي'));
+      expect(entity.tierName('en'), equals('Basic'));
     });
 
     test('CustomerWalletResponseDto and WalletTransactionsResponseDto contract', () {

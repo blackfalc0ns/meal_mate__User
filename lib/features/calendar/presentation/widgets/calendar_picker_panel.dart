@@ -30,6 +30,7 @@ class CalendarPickerPanel extends StatefulWidget {
     required this.onDaySelected,
     this.backgroundColor,
     this.showBottomBorder = true,
+    this.includeFriday = true,
   });
 
   final String monthTitle;
@@ -40,6 +41,7 @@ class CalendarPickerPanel extends StatefulWidget {
   final ValueChanged<CalendarDayEntity> onDaySelected;
   final Color? backgroundColor;
   final bool showBottomBorder;
+  final bool includeFriday;
 
   @override
   State<CalendarPickerPanel> createState() => CalendarPickerPanelState();
@@ -171,6 +173,7 @@ class CalendarPickerPanelState extends State<CalendarPickerPanel> {
                         ),
                         child: widget.isExpanded
                             ? CalendarMonthGrid(
+                                includeFriday: widget.includeFriday,
                                 key: ValueKey('month_${widget.monthTitle}'),
                                 days: widget.days,
                                 onDaySelected: widget.onDaySelected,

@@ -13,6 +13,8 @@ class FamilyCalendarState {
     this.selectedDate,
     this.selectedDay,
     this.days = const [],
+    this.includeFriday = true,
+    this.operationalLeadHours,
     this.isLoadingMembers = false,
     this.isLoadingCalendar = false,
     this.isLoadingDay = false,
@@ -29,6 +31,8 @@ class FamilyCalendarState {
   final DateTime? selectedDate;
   final CalendarDayEntity? selectedDay;
   final List<CalendarDayEntity> days;
+  final bool includeFriday;
+  final int? operationalLeadHours;
   final bool isLoadingMembers;
   final bool isLoadingCalendar;
   final bool isLoadingDay;
@@ -84,6 +88,8 @@ class FamilyCalendarState {
     DateTime? selectedDate,
     CalendarDayEntity? selectedDay,
     List<CalendarDayEntity>? days,
+    bool? includeFriday,
+    int? operationalLeadHours,
     bool? isLoadingMembers,
     bool? isLoadingCalendar,
     bool? isLoadingDay,
@@ -102,6 +108,8 @@ class FamilyCalendarState {
     selectedDate: selectedDate ?? this.selectedDate,
     selectedDay: clearSelectedDay ? null : selectedDay ?? this.selectedDay,
     days: days ?? this.days,
+    includeFriday: includeFriday ?? this.includeFriday,
+    operationalLeadHours: operationalLeadHours ?? this.operationalLeadHours,
     isLoadingMembers: isLoadingMembers ?? this.isLoadingMembers,
     isLoadingCalendar: isLoadingCalendar ?? this.isLoadingCalendar,
     isLoadingDay: isLoadingDay ?? this.isLoadingDay,

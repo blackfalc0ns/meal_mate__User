@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 sealed class FamilySummaryEvent {

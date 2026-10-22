@@ -7,14 +7,18 @@ import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/campaign_payment_screen_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
+@lazySingleton
 class PaymentDeepLinkCoordinator with WidgetsBindingObserver {
   PaymentDeepLinkCoordinator({
-    required this._tokenService,
-    required this._paymentAttemptStore,
-    required this._navigatorService,
-  });
+    required TokenService tokenService,
+    required PaymentAttemptStore paymentAttemptStore,
+    required AppNavigatorService navigatorService,
+  }) : _tokenService = tokenService,
+       _paymentAttemptStore = paymentAttemptStore,
+       _navigatorService = navigatorService;
 
   final TokenService _tokenService;
   final PaymentAttemptStore _paymentAttemptStore;

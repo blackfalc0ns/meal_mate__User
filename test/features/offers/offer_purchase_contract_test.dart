@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/mapper/subscription_summary_mapper.dart';
 import 'package:meal_meat_user/features/offers/presentation/manager/offer_purchase_state.dart';
 import 'package:meal_meat_user/features/offers/domain/entities/offer_purchase_options_entity.dart';
@@ -5,7 +6,7 @@ import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.d
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/features/offers/data/mapper/offer_purchase_options_mapper.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/offer_purchase_options_response_dto.dart';
-import 'package:meal_meat_user/features/payment/data/models/request/payment_checkout_request_dto.dart';
+import 'package:meal_meat_user/features/subscription_checkout/data/models/request/payment_checkout_request_dto.dart';
 import 'package:meal_meat_user/features/payment/data/models/response/payment_checkout_response_dto.dart';
 import 'package:meal_meat_user/features/payment/data/mapper/payment_mapper.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/subscription_summary_response_dto.dart';

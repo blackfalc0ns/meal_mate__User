@@ -62,6 +62,9 @@ class SubscriptionSummaryResponseDto {
     this.blockingReasonDetails,
     this.quoteId,
     this.paymentDate,
+    this.earliestStartDate,
+    this.requestedStartDate,
+    this.startDateAdjusted,
   });
 
   final String? programId;
@@ -118,6 +121,9 @@ class SubscriptionSummaryResponseDto {
   final String? serverNowUtc;
   final String? quoteId;
   final String? paymentDate;
+  final String? earliestStartDate;
+  final String? requestedStartDate;
+  final bool? startDateAdjusted;
   @JsonKey(fromJson: _parseStringList)
   final List<String>? blockingReasons;
   @JsonKey(includeFromJson: false)
@@ -192,6 +198,9 @@ class SubscriptionSummaryResponseDto {
       serverNowUtc: json['serverNowUtc'] as String?,
       quoteId: json['quoteId'] as String?,
       paymentDate: json['paymentDate'] as String?,
+      earliestStartDate: (json['earliestStartDate'] as String?) ?? dto.earliestStartDate,
+      requestedStartDate: (json['requestedStartDate'] as String?) ?? dto.requestedStartDate,
+      startDateAdjusted: (json['startDateAdjusted'] as bool?) ?? dto.startDateAdjusted,
       blockingReasons:
           _parseStringList(json['blockingReasons']) ??
           (dto.checkoutBlockReason != null ? [dto.checkoutBlockReason!] : null),

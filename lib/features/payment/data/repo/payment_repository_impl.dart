@@ -14,28 +14,6 @@ class PaymentRepositoryImpl implements PaymentRepository {
   final PaymentRemoteDataSource _remoteDataSource;
 
   @override
-  Future<ApiResult<List<PaymentMethodEntity>>> getPaymentMethods({
-    required double amount,
-  }) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.getPaymentMethods(
-        amount: amount,
-      );
-      return response.map((method) => method.toEntity()).toList();
-    });
-  }
-
-  @override
-  Future<ApiResult<PaymentCheckoutEntity>> checkout(
-    PaymentCheckoutRequestEntity request,
-  ) {
-    return safeApiCall(() async {
-      final response = await _remoteDataSource.checkout(request.toDto());
-      return response.toEntity();
-    });
-  }
-
-  @override
   Future<ApiResult<PaymentStatusEntity>> getSubscriptionPaymentStatus(
     String subscriptionId,
   ) {

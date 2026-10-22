@@ -322,12 +322,13 @@ void main() {
     });
 
     test(
-      '2. openRestaurantPicker triggers restaurant cubit and emits OpenRestaurantPickerEffect with monotonic id',
+      '2. openRestaurantPicker triggers restaurant cubit for editable day',
       () {
         overviewCubit.emit(
           CalendarOverviewState(
             subscriptionId: 'sub-1',
             selectedDate: testDate,
+            days: [createDay(testDate, isEditable: true)],
           ),
         );
 

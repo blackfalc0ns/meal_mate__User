@@ -777,7 +777,7 @@
   "subscription_chosen_start_date_label": "Start/payment day",
   "subscription_first_delivery_date_label": "First delivery day",
   "subscription_restaurant_repetition_label": "Restaurant repetition",
-  "subscription_restaurant_repetition_message": "You can choose the same restaurant for up to {limit} days during the subscription.",
+  "subscription_restaurant_repetition_message": "{limit, plural, =1{You can choose the same restaurant for up to 1 day during the subscription.} other{You can choose the same restaurant for up to {limit} days during the subscription.}}",
   "@subscription_restaurant_repetition_message": {
     "placeholders": {
       "limit": {
@@ -789,6 +789,7 @@
   "subscription_continue_to_payment": "Continue to payment",
   "checkout_start_date_required": "Please choose a subscription start date.",
   "checkout_start_date_invalid": "The selected date is in the past. Please choose another date.",
+  "subscription_start_date_adjusted_notice": "Subscription start date was automatically adjusted to the earliest available date to match the delivery schedule.",
   "subscription_flow_profile_incomplete": "Please complete your profile before checkout.",
   "checkout_address_required": "Please add a delivery address before checkout.",
   "checkout_allergies_required": "Please confirm your allergy preferences before checkout.",
@@ -3005,5 +3006,109 @@
   "offer_checkout_selection_ineligible": "This package is no longer available for the selected dates.",
   "offer_checkout_key_invalid": "The payment attempt could not be prepared. Please try again.",
   "offer_checkout_key_conflict": "This payment attempt belongs to another selection. Check your subscription status.",
-  "offer_checkout_storage_failed": "Could not save payment recovery information. Please check your subscription status."
+  "offer_checkout_storage_failed": "Could not save payment recovery information. Please check your subscription status.",
+  "compensations_title": "Compensations",
+  "compensations_subtitle": "Refunds and replacement meal days",
+  "compensations_empty_title": "No compensations",
+  "compensations_empty_description": "Your eligible meal compensations will appear here.",
+  "compensations_pending_notice": "You have compensations awaiting your choice. Review them before the deadline.",
+  "compensations_refund": "Request refund",
+  "compensations_alternative": "Choose a replacement day",
+  "compensations_confirm_day": "Confirm replacement day",
+  "compensations_refund_confirm": "Return the amount to the original payment methods?",
+  "compensations_deadline_note": "If you do not choose before the deadline, an automatic refund to the original payment methods will begin.",
+  "compensations_waiting_update": "The choice is closed. Refresh to check the latest compensation status.",
+  "compensations_pending": "Awaiting your choice",
+  "compensations_auto_refund": "Automatic refund in progress",
+  "compensations_settled": "Refund completed",
+  "compensations_alternative_chosen": "Replacement day confirmed",
+  "compensations_other_status": "Compensation is being processed",
+  "compensations_no_dates": "No replacement dates are currently available. You can request a refund or try again later.",
+  "compensations_capacity_error": "This date just filled up. Choose another available date.",
+  "compensations_expired_error": "The choice deadline has passed. Automatic refund is being processed.",
+  "compensations_ineligible_error": "This compensation is eligible for a refund only.",
+  "compensations_unavailable_amount": "Amount details are currently unavailable.",
+  "compensations_refresh": "Refresh compensations",
+  "compensations_failed_date": "Missed delivery: {date}",
+  "@compensations_failed_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_total": "Compensation: {amount}",
+  "@compensations_total": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_card_amount": "To card: {amount}",
+  "@compensations_card_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_wallet_amount": "To wallet: {amount}",
+  "@compensations_wallet_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_apology_amount": "Apology credit: {amount}",
+  "@compensations_apology_amount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_selected_date": "Replacement date: {date}",
+  "@compensations_selected_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "compensations_remaining": "Time remaining: {time}",
+  "@compensations_remaining": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_hold_remaining": "{time} left to complete payment",
+  "@payment_hold_remaining": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "payment_hold_expired": "Payment session expired",
+  "payment_hold_expired_desc": "Your meal and seat reservation were temporarily released due to session timeout. Tap below to renew the reservation and continue payment.",
+  "payment_hold_renew": "Renew reservation & pay",
+  "payment_hold_return_to_summary": "Return to subscription summary",
+  "calendar_operational_deadline_passed": "The editing deadline for this day has passed (changes close {hours} hours before delivery).",
+  "@calendar_operational_deadline_passed": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "calendar_operational_deadline_passed_generic": "The editing deadline for this day has passed.",
+  "start_dates_title": "Choose your first delivery date",
+  "start_dates_unavailable": "No start dates available",
+  "start_dates_unavailable_description": "Try again later to load the available delivery dates.",
+  "calendar_permissions_unavailable": "Day permissions are unavailable. Refresh and try again.",
+  "operational_friday_excluded": "Your plan does not include Fridays. Choose another available day."
 }

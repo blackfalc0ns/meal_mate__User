@@ -44,12 +44,18 @@ class _FamilyMemberCalendarPickerSectionState
     return BlocSelector<
       FamilyCalendarViewModel,
       FamilyCalendarState,
-      ({DateTime month, DateTime? date, List<CalendarDayEntity> days})
+      ({
+        DateTime month,
+        DateTime? date,
+        List<CalendarDayEntity> days,
+        bool includeFriday,
+      })
     >(
       selector: (state) => (
         month: state.visibleMonth ?? state.selectedDate ?? widget.fallbackDate,
         date: state.selectedDate,
         days: state.days,
+        includeFriday: state.includeFriday,
       ),
       builder: (context, data) {
         final daysChanged = !identical(_sourceDays, data.days);
@@ -89,9 +95,11 @@ class _FamilyMemberCalendarPickerSectionState
                   focusedMonth: data.month,
                   selectedDate: data.date,
                   serviceDays: data.days,
+                  includeFriday: data.includeFriday,
                 )
               : CalendarDaysBuilder.serviceDays(
                   data.days,
+                  includeFriday: data.includeFriday,
                   selectedDate: data.date,
                 );
         }
@@ -101,6 +109,7 @@ class _FamilyMemberCalendarPickerSectionState
             locale.localeName,
           ).format(data.month),
           days: _calendarDays,
+          includeFriday: data.includeFriday,
           isExpanded: _isExpanded,
           backgroundColor: color.surface,
           showBottomBorder: false,

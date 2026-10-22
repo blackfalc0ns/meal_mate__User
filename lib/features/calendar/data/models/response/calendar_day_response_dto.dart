@@ -6,6 +6,7 @@ part 'calendar_day_response_dto.g.dart';
 class CalendarDayResponseDto {
   const CalendarDayResponseDto({
     this.id,
+    this.serverTimeUtc,
     this.date,
     this.serviceDate,
     this.status,
@@ -26,6 +27,13 @@ class CalendarDayResponseDto {
     this.meals,
     this.slotRequirements,
     this.canEdit,
+    this.canSelectMeal,
+    this.canChangeAddress,
+    this.canFreeze,
+    this.mealSelectionClosesAt,
+    this.addressEditClosesAt,
+    this.freezeClosesAt,
+
     this.selectionDeadlineUtc,
     this.lockAtUtc,
     this.lockRemainingSeconds,
@@ -53,6 +61,7 @@ class CalendarDayResponseDto {
   });
 
   final String? id;
+  final String? serverTimeUtc;
   final String? date;
   final String? serviceDate;
   @JsonKey(fromJson: _statusFromJson)
@@ -76,6 +85,13 @@ class CalendarDayResponseDto {
   final List<CalendarMealResponseDto>? meals;
   final List<CalendarSlotRequirementResponseDto>? slotRequirements;
   final bool? canEdit;
+  final bool? canSelectMeal;
+  final bool? canChangeAddress;
+  final bool? canFreeze;
+  final String? mealSelectionClosesAt;
+  final String? addressEditClosesAt;
+  final String? freezeClosesAt;
+
   final String? selectionDeadlineUtc;
   final String? lockAtUtc;
   final int? lockRemainingSeconds;

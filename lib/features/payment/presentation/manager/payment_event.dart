@@ -1,27 +1,8 @@
 import 'package:meal_meat_user/core/payment/payment_return.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 
 sealed class PaymentEvent {
   const PaymentEvent();
-}
-
-class LoadPaymentEvent extends PaymentEvent {
-  const LoadPaymentEvent(this.args);
-
-  final PaymentArgs args;
-}
-
-class SelectPaymentMethodEvent extends PaymentEvent {
-  const SelectPaymentMethodEvent(this.method);
-
-  final PaymentMethodEntity method;
-}
-
-class CheckoutPaymentEvent extends PaymentEvent {
-  const CheckoutPaymentEvent(this.args);
-
-  final PaymentArgs args;
 }
 
 class VerifyPaymentFulfillmentEvent extends PaymentEvent {
@@ -58,4 +39,12 @@ class InitCheckoutSessionEvent extends PaymentEvent {
   final String flowType;
   final String? batchId;
   final int? batchVersion;
+}
+
+class RenewPaymentHoldEvent extends PaymentEvent {
+  const RenewPaymentHoldEvent();
+}
+
+class MarkPaymentLaunchedEvent extends PaymentEvent {
+  const MarkPaymentLaunchedEvent();
 }

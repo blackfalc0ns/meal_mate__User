@@ -1,22 +1,22 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/payment/payment_return.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/entities/subscription_billing_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'fixtures/payment_fixtures.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +25,9 @@ void main() {
   late _MockCheckoutSubscriptionUseCase mockCheckoutUseCase;
   late _MockGetSubscriptionPaymentStatusUseCase mockStatusUseCase;
   late _MockGetSubscriptionCalendarUseCase mockCalendarUseCase;
-  late _MockGetCurrentSubscriptionUseCase mockCurrentSubUseCase;
   late SharedPrefHelper mockSharedPrefHelper;
   late PaymentViewModel viewModel;
+  late SubscriptionCheckoutViewModel checkoutViewModel;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -38,24 +38,27 @@ void main() {
     mockCheckoutUseCase = _MockCheckoutSubscriptionUseCase();
     mockStatusUseCase = _MockGetSubscriptionPaymentStatusUseCase();
     mockCalendarUseCase = _MockGetSubscriptionCalendarUseCase();
-    mockCurrentSubUseCase = _MockGetCurrentSubscriptionUseCase();
 
-    viewModel = PaymentViewModel(
+    checkoutViewModel = SubscriptionCheckoutViewModel(
       mockPaymentMethodsUseCase,
       mockCheckoutUseCase,
+    );
+    viewModel = PaymentViewModel(
       mockStatusUseCase,
       mockCalendarUseCase,
-      mockCurrentSubUseCase,
       mockSharedPrefHelper,
     );
   });
 
   tearDown(() async {
+    await checkoutViewModel.close();
     await viewModel.close();
   });
 
-  PaymentArgs buildPaymentArgs({double finalPrice = 100.0}) {
-    return PaymentArgs(
+  SubscriptionCheckoutArgs buildSubscriptionCheckoutArgs({
+    double finalPrice = 100.0,
+  }) {
+    return SubscriptionCheckoutArgs(
       summary: SubscriptionSummaryEntity(
         programId: 'prog-1',
         programNameAr: 'برنامج',
@@ -105,6 +108,18 @@ void main() {
     );
   }
 
+  Future<void> submitCheckout() async {
+    checkoutViewModel.doIntent(
+      SubmitSubscriptionCheckoutEvent(buildSubscriptionCheckoutArgs()),
+    );
+    await pumpEventQueue();
+    final checkout = checkoutViewModel.state.checkout;
+    if (checkout != null) {
+      viewModel.doIntent(InitCheckoutSessionEvent(checkout));
+      await pumpEventQueue();
+    }
+  }
+
   group('Payment Return Security Tests', () {
     test(
       'spoofed success return link does not fulfill payment when server status is unpaid',
@@ -134,8 +149,8 @@ void main() {
           ),
         );
 
-        viewModel.doIntent(
-          const SelectPaymentMethodEvent(
+        checkoutViewModel.doIntent(
+          const SelectCheckoutPaymentMethodEvent(
             PaymentMethodEntity(
               id: 3,
               type: PaymentMethodType.payzah,
@@ -145,7 +160,7 @@ void main() {
             ),
           ),
         );
-        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await submitCheckout();
         await Future<void>.delayed(Duration.zero);
 
         // Incoming spoofed return
@@ -189,8 +204,8 @@ void main() {
           ),
         );
 
-        viewModel.doIntent(
-          const SelectPaymentMethodEvent(
+        checkoutViewModel.doIntent(
+          const SelectCheckoutPaymentMethodEvent(
             PaymentMethodEntity(
               id: 3,
               type: PaymentMethodType.payzah,
@@ -200,7 +215,7 @@ void main() {
             ),
           ),
         );
-        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await submitCheckout();
         await Future<void>.delayed(Duration.zero);
 
         const reviewReturn = PaymentReturn(
@@ -213,7 +228,7 @@ void main() {
         expect(viewModel.state.isReviewRequired, isTrue);
 
         final initialCalls = mockCheckoutUseCase.callCount;
-        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await submitCheckout();
         await Future<void>.delayed(Duration.zero);
         expect(mockCheckoutUseCase.callCount, equals(initialCalls));
       },
@@ -293,8 +308,8 @@ void main() {
       final completer = Completer<ApiResult<PaymentCheckoutEntity>>();
       mockCheckoutUseCase.futureOverride = completer.future;
 
-      viewModel.doIntent(
-        const SelectPaymentMethodEvent(
+      checkoutViewModel.doIntent(
+        const SelectCheckoutPaymentMethodEvent(
           PaymentMethodEntity(
             id: 3,
             type: PaymentMethodType.payzah,
@@ -305,9 +320,15 @@ void main() {
         ),
       );
 
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
-      viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+      checkoutViewModel.doIntent(
+        SubmitSubscriptionCheckoutEvent(buildSubscriptionCheckoutArgs()),
+      );
+      checkoutViewModel.doIntent(
+        SubmitSubscriptionCheckoutEvent(buildSubscriptionCheckoutArgs()),
+      );
+      checkoutViewModel.doIntent(
+        SubmitSubscriptionCheckoutEvent(buildSubscriptionCheckoutArgs()),
+      );
 
       expect(mockCheckoutUseCase.callCount, equals(1));
       completer.complete(
@@ -385,14 +406,4 @@ class _MockGetSubscriptionCalendarUseCase
   @override
   Future<ApiResult<dynamic>> call(String subscriptionId) async =>
       const ApiSuccessResult(data: true);
-}
-
-class _MockGetCurrentSubscriptionUseCase
-    implements GetCurrentCustomerSubscriptionUseCase {
-  ApiResult<SubscriptionBillingCurrentEntity> response = ApiSuccessResult(
-    data: PaymentFixtures.activeCurrentEntity(),
-  );
-
-  @override
-  Future<ApiResult<SubscriptionBillingCurrentEntity>> call() async => response;
 }

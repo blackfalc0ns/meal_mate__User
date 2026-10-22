@@ -1,3 +1,4 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';

@@ -157,8 +157,10 @@ class SubscriptionBillingResumeResponseDto {
     this.holdExpiresAtUtc,
     this.finalPrice,
     this.paymentStatus,
+    this.serverTimeUtc,
   });
 
+  final DateTime? serverTimeUtc;
   final String? subscriptionId;
   final String? paymentUrl;
   final DateTime? holdExpiresAtUtc;
@@ -167,7 +169,20 @@ class SubscriptionBillingResumeResponseDto {
 
   factory SubscriptionBillingResumeResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) => _$SubscriptionBillingResumeResponseDtoFromJson(json);
+  ) {
+    final serverTime = json['serverTimeUtc'] ?? json['eligibilityCheckedAtUtc'];
+    final dto = _$SubscriptionBillingResumeResponseDtoFromJson(json);
+    return serverTime != null && dto.serverTimeUtc == null
+        ? SubscriptionBillingResumeResponseDto(
+            subscriptionId: dto.subscriptionId,
+            paymentUrl: dto.paymentUrl,
+            holdExpiresAtUtc: dto.holdExpiresAtUtc,
+            finalPrice: dto.finalPrice,
+            paymentStatus: dto.paymentStatus,
+            serverTimeUtc: DateTime.tryParse(serverTime.toString()),
+          )
+        : dto;
+  }
 
   Map<String, dynamic> toJson() =>
       _$SubscriptionBillingResumeResponseDtoToJson(this);

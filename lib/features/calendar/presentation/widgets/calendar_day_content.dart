@@ -34,6 +34,7 @@ class CalendarDayContent extends StatelessWidget {
     this.isConfirming = false,
     this.canConfirm = false,
     this.isLoading = false,
+    this.operationalLeadHours,
   });
   final CalendarDayEntity? selectedDay;
   final CustomerDeliveryItemEntity? deliveryItem;
@@ -47,6 +48,7 @@ class CalendarDayContent extends StatelessWidget {
   final bool isConfirming;
   final bool canConfirm;
   final bool isLoading;
+  final int? operationalLeadHours;
 
   @override
   Widget build(BuildContext context) {
@@ -85,17 +87,35 @@ class CalendarDayContent extends StatelessWidget {
                   '${selectedDay?.date?.toIso8601String()}_${hasMeals}_${selectedDay?.isFrozen}',
                 ),
                 children: [
-                  for (final item in (deliveryItems.isNotEmpty
-                      ? deliveryItems
-                      : (deliveryItem != null ? [deliveryItem!] : const <CustomerDeliveryItemEntity>[]))) ...[
+                  if (selectedDay?.hasOperationalRestriction == true) ...[
+                    Text(
+                      operationalLeadHours == null
+                          ? locale.calendar_operational_deadline_passed_generic
+                          : locale.calendar_operational_deadline_passed(
+                              operationalLeadHours!,
+                            ),
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size13,
+                        color: color.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.sm),
+                  ],
+                  for (final item
+                      in (deliveryItems.isNotEmpty
+                          ? deliveryItems
+                          : (deliveryItem != null
+                                ? [deliveryItem!]
+                                : const <CustomerDeliveryItemEntity>[]))) ...[
                     if (item.shouldShowDeliveryCard) ...[
                       CalendarDeliveryCard(
-                        key: ValueKey(
-                          'delivery_${item.orderCode ?? item.subscriptionDayId ?? selectedDay?.date?.toIso8601String()}',
-                        ),
-                        deliveryItem: item,
-                        onTrackOrDetails: () => onTrackDelivery?.call(item),
-                      )
+                            key: ValueKey(
+                              'delivery_${item.orderCode ?? item.subscriptionDayId ?? selectedDay?.date?.toIso8601String()}',
+                            ),
+                            deliveryItem: item,
+                            onTrackOrDetails: () => onTrackDelivery?.call(item),
+                          )
                           .animate()
                           .fadeIn(duration: 250.ms)
                           .slideX(

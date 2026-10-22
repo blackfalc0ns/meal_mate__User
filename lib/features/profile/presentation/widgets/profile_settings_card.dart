@@ -61,6 +61,12 @@ class ProfileSettingsCard extends StatelessWidget {
         onTap: () => Navigator.of(context).pushNamed(AppRoutes.wallet),
       ),
       (
+        icon: Icons.redeem_rounded,
+        title: locale.compensations_title,
+        subtitle: locale.compensations_subtitle,
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.compensations),
+      ),
+      (
         icon: Icons.location_on_outlined,
         title: locale.profile_addresses,
         subtitle: locale.profile_addresses_subtitle,
@@ -75,7 +81,6 @@ class ProfileSettingsCard extends StatelessWidget {
     ];
 
     return Container(
-      height: Spacing.profileSettingsHeight,
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.profileCardRadius),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
+import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -28,6 +30,7 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final locale = context.localization;
 
     final repetitionLimit = summary.restaurantRepetition?.limit ?? 0;
@@ -43,8 +46,11 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
     final chosenDate = (chosenStartDate.trim().isNotEmpty)
         ? chosenStartDate
         : selectedStartDate;
+    final rawPaymentDate = summary.paymentDate?.trim();
     final paymentDateFormatted = _formatDisplayDate(
-      dateString: chosenDate,
+      dateString: (rawPaymentDate != null && rawPaymentDate.isNotEmpty)
+          ? rawPaymentDate
+          : chosenDate,
       localeName: locale.localeName,
     );
 
@@ -177,6 +183,43 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
                 duration: 350.ms,
                 curve: Curves.easeOutCubic,
               ),
+          if (summary.startDateAdjusted) ...[
+            const SizedBox(height: Spacing.sm),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.md,
+                vertical: Spacing.sm,
+              ),
+              decoration: BoxDecoration(
+                color: color.primaryContainer.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                border: Border.all(
+                  color: color.primary.withValues(alpha: 0.25),
+                  width: Spacing.border,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: Spacing.iconSm,
+                    color: color.primary,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Expanded(
+                    child: Text(
+                      locale.subscription_start_date_adjusted_notice,
+                      style: getRegularStyle(
+                        fontFamily: FontConstant.alexandria,
+                        fontSize: FontSize.size10,
+                        color: color.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );

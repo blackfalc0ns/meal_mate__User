@@ -5,8 +5,8 @@ import 'package:meal_meat_user/features/subscription_checkout/domain/entities/su
 
 class PaymentState {
   const PaymentState({
-    this.isMethodsLoading = false,
-    this.isCheckoutLoading = false,
+    this.isSessionInitializing = false,
+    this.isSessionReady = false,
     this.isFulfillmentLoading = false,
     this.isCalendarLoading = false,
     this.isFulfillmentSuccess = false,
@@ -16,22 +16,20 @@ class PaymentState {
     this.isPaymentPending = false,
     this.isPaidProcessing = false,
     this.attemptHandle,
-    this.methods = const [],
-    this.selectedMethod,
     this.checkout,
     this.pendingSubscriptionId,
     this.paymentStatus,
-    this.methodsFailure,
     this.checkoutFailure,
     this.fulfillmentFailure,
     this.calendarFailure,
     this.confirmation,
+    this.isHoldRenewing = false,
     this.flowType = 'individual',
   });
 
   final SubscriptionConfirmationEntity? confirmation;
-  final bool isMethodsLoading;
-  final bool isCheckoutLoading;
+  final bool isSessionInitializing;
+  final bool isSessionReady;
   final bool isFulfillmentLoading;
   final bool isCalendarLoading;
   final bool isFulfillmentSuccess;
@@ -41,39 +39,24 @@ class PaymentState {
   final bool isPaymentPending;
   final bool isPaidProcessing;
   final String? attemptHandle;
-  final List<PaymentMethodEntity> methods;
-  final PaymentMethodEntity? selectedMethod;
   final PaymentCheckoutEntity? checkout;
   final String? pendingSubscriptionId;
   final PaymentStatusEntity? paymentStatus;
-  final Failure? methodsFailure;
   final Failure? checkoutFailure;
   final Failure? fulfillmentFailure;
   final Failure? calendarFailure;
+  final bool isHoldRenewing;
   final String flowType;
 
   bool get isFamily => flowType == 'family';
 
-  bool get isLoading => isMethodsLoading;
-
-  bool get hasContent => methods.isNotEmpty;
-
-  bool get isCouponCheckoutFailure =>
-      checkoutFailure != null &&
-      (checkoutFailure!.code == SubscriptionErrorCodes.couponRejected ||
-          checkoutFailure!.code == SubscriptionErrorCodes.couponNoLongerValid ||
-          checkoutFailure!.code ==
-              SubscriptionErrorCodes.couponFullDiscountUnsupported ||
-          checkoutFailure!.exception.backendErrorCode ==
-              SubscriptionErrorCodes.couponRejected ||
-          checkoutFailure!.exception.backendErrorCode ==
-              SubscriptionErrorCodes.couponNoLongerValid ||
-          checkoutFailure!.exception.backendErrorCode ==
-              SubscriptionErrorCodes.couponFullDiscountUnsupported);
-
   bool get isAvailabilityChangedFailure =>
       checkoutFailure != null &&
-      (checkoutFailure!.code == SubscriptionErrorCodes.restaurantNotEligible ||
+      (checkoutFailure!.code == 'checkout.quote_changed' ||
+          checkoutFailure!.exception.backendErrorCode ==
+              'checkout.quote_changed' ||
+          checkoutFailure!.code ==
+              SubscriptionErrorCodes.restaurantNotEligible ||
           checkoutFailure!.code == 'restaurant.not_eligible' ||
           checkoutFailure!.code ==
               'subscription_flow.no_restaurants_for_selection' ||
@@ -89,8 +72,9 @@ class PaymentState {
               'calendar.fulfillment_not_ready');
 
   PaymentState copyWith({
-    bool? isMethodsLoading,
-    bool? isCheckoutLoading,
+    bool? isHoldRenewing,
+    bool? isSessionInitializing,
+    bool? isSessionReady,
     bool? isFulfillmentLoading,
     bool? isCalendarLoading,
     bool? isFulfillmentSuccess,
@@ -100,22 +84,17 @@ class PaymentState {
     bool? isPaymentPending,
     bool? isPaidProcessing,
     String? attemptHandle,
-    List<PaymentMethodEntity>? methods,
-    PaymentMethodEntity? selectedMethod,
     PaymentCheckoutEntity? checkout,
     String? pendingSubscriptionId,
     PaymentStatusEntity? paymentStatus,
-    Failure? methodsFailure,
     Failure? checkoutFailure,
     Failure? fulfillmentFailure,
     Failure? calendarFailure,
     SubscriptionConfirmationEntity? confirmation,
     String? flowType,
-    bool clearSelectedMethod = false,
     bool clearCheckout = false,
     bool clearPendingSubscriptionId = false,
     bool clearPaymentStatus = false,
-    bool clearMethodsFailure = false,
     bool clearCheckoutFailure = false,
     bool clearFulfillmentFailure = false,
     bool clearCalendarFailure = false,
@@ -123,8 +102,10 @@ class PaymentState {
     bool clearConfirmation = false,
   }) {
     return PaymentState(
-      isMethodsLoading: isMethodsLoading ?? this.isMethodsLoading,
-      isCheckoutLoading: isCheckoutLoading ?? this.isCheckoutLoading,
+      isHoldRenewing: isHoldRenewing ?? this.isHoldRenewing,
+      isSessionInitializing:
+          isSessionInitializing ?? this.isSessionInitializing,
+      isSessionReady: isSessionReady ?? this.isSessionReady,
       isFulfillmentLoading: isFulfillmentLoading ?? this.isFulfillmentLoading,
       isCalendarLoading: isCalendarLoading ?? this.isCalendarLoading,
       isFulfillmentSuccess: isFulfillmentSuccess ?? this.isFulfillmentSuccess,
@@ -136,10 +117,6 @@ class PaymentState {
       attemptHandle: clearAttemptHandle
           ? null
           : attemptHandle ?? this.attemptHandle,
-      methods: methods ?? this.methods,
-      selectedMethod: clearSelectedMethod
-          ? null
-          : selectedMethod ?? this.selectedMethod,
       checkout: clearCheckout ? null : checkout ?? this.checkout,
       pendingSubscriptionId: clearPendingSubscriptionId
           ? null
@@ -147,9 +124,6 @@ class PaymentState {
       paymentStatus: clearPaymentStatus
           ? null
           : paymentStatus ?? this.paymentStatus,
-      methodsFailure: clearMethodsFailure
-          ? null
-          : methodsFailure ?? this.methodsFailure,
       checkoutFailure: clearCheckoutFailure
           ? null
           : checkoutFailure ?? this.checkoutFailure,
@@ -171,8 +145,9 @@ class PaymentState {
       identical(this, other) ||
       other is PaymentState &&
           runtimeType == other.runtimeType &&
-          isMethodsLoading == other.isMethodsLoading &&
-          isCheckoutLoading == other.isCheckoutLoading &&
+          isHoldRenewing == other.isHoldRenewing &&
+          isSessionInitializing == other.isSessionInitializing &&
+          isSessionReady == other.isSessionReady &&
           isFulfillmentLoading == other.isFulfillmentLoading &&
           isCalendarLoading == other.isCalendarLoading &&
           isFulfillmentSuccess == other.isFulfillmentSuccess &&
@@ -182,20 +157,18 @@ class PaymentState {
           isPaymentPending == other.isPaymentPending &&
           isPaidProcessing == other.isPaidProcessing &&
           attemptHandle == other.attemptHandle &&
-          selectedMethod?.id == other.selectedMethod?.id &&
-          checkout?.subscriptionId == other.checkout?.subscriptionId &&
+          checkout == other.checkout &&
           pendingSubscriptionId == other.pendingSubscriptionId &&
           paymentStatus?.isPaid == other.paymentStatus?.isPaid &&
-          methodsFailure == other.methodsFailure &&
           checkoutFailure == other.checkoutFailure &&
           fulfillmentFailure == other.fulfillmentFailure &&
-          calendarFailure == other.calendarFailure &&
-          methods.length == other.methods.length;
+          calendarFailure == other.calendarFailure;
 
   @override
-  int get hashCode => Object.hash(
-    isMethodsLoading,
-    isCheckoutLoading,
+  int get hashCode => Object.hashAll([
+    isHoldRenewing,
+    isSessionInitializing,
+    isSessionReady,
     isFulfillmentLoading,
     isCalendarLoading,
     isFulfillmentSuccess,
@@ -205,14 +178,11 @@ class PaymentState {
     isPaymentPending,
     isPaidProcessing,
     attemptHandle,
-    selectedMethod?.id,
     checkout?.subscriptionId,
     pendingSubscriptionId,
     paymentStatus?.isPaid,
-    methodsFailure,
     checkoutFailure,
     fulfillmentFailure,
     calendarFailure,
-    methods.length,
-  );
+  ]);
 }

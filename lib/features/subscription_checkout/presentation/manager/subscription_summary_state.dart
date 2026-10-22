@@ -15,6 +15,9 @@ class SubscriptionSummaryState {
     this.isApplyingCoupon = false,
     this.isLoadingMoreRestaurants = false,
     this.restaurantsAppendFailure,
+    this.eligibleStartDates = const [],
+    this.requiresEligibleStartDate = false,
+    this.includeFriday = false,
   });
 
   final bool isLoading;
@@ -28,8 +31,15 @@ class SubscriptionSummaryState {
   final bool isApplyingCoupon;
   final bool isLoadingMoreRestaurants;
   final Failure? restaurantsAppendFailure;
+  final List<String> eligibleStartDates;
+  final bool requiresEligibleStartDate;
+  final bool includeFriday;
 
   bool get canCheckout {
+    if (requiresEligibleStartDate &&
+        !eligibleStartDates.contains(selectedStartDate)) {
+      return false;
+    }
     if (failure != null) return false;
     if (isSummaryRefreshing || isLoading || isApplyingCoupon) return false;
     final s = summary;
@@ -57,8 +67,15 @@ class SubscriptionSummaryState {
     bool clearAppendFailure = false,
     bool clearCouponDraft = false,
     bool clearActiveRequest = false,
+    List<String>? eligibleStartDates,
+    bool? requiresEligibleStartDate,
+    bool? includeFriday,
   }) {
     return SubscriptionSummaryState(
+      eligibleStartDates: eligibleStartDates ?? this.eligibleStartDates,
+      requiresEligibleStartDate:
+          requiresEligibleStartDate ?? this.requiresEligibleStartDate,
+      includeFriday: includeFriday ?? this.includeFriday,
       isLoading: isLoading ?? this.isLoading,
       isSummaryRefreshing: isSummaryRefreshing ?? this.isSummaryRefreshing,
       summary: clearSummary ? null : (summary ?? this.summary),

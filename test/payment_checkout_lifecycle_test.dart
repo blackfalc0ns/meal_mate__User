@@ -1,3 +1,7 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/api_error_type.dart';
@@ -9,10 +13,9 @@ import 'package:meal_meat_user/core/payment/payment_attempt.dart';
 import 'package:meal_meat_user/core/payment/payment_attempt_store.dart';
 import 'package:meal_meat_user/core/payment/payment_return.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
 import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
 import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
@@ -29,6 +32,7 @@ import 'fixtures/payment_fixtures.dart';
 class _FakeStore implements PaymentAttemptStore {
   PaymentAttempt? attempt;
   bool shouldThrow = false;
+  Completer<void>? saveGate;
 
   @override
   Future<PaymentAttempt?> readForCustomer(String customerId) async {
@@ -40,6 +44,7 @@ class _FakeStore implements PaymentAttemptStore {
   @override
   Future<void> save(PaymentAttempt attempt) async {
     if (shouldThrow) throw Exception('Storage write error');
+    if (saveGate != null) await saveGate!.future;
     this.attempt = attempt;
   }
 
@@ -169,6 +174,7 @@ void main() {
   late _FakeBillingUseCase fakeBillingUseCase;
   late SharedPrefHelper fakeSharedPrefHelper;
   late PaymentViewModel viewModel;
+  late SubscriptionCheckoutViewModel checkoutViewModel;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -184,12 +190,13 @@ void main() {
     fakeCurrentSubUseCase = _FakeCurrentSubUseCase();
     fakeBillingUseCase = _FakeBillingUseCase();
 
-    viewModel = PaymentViewModel(
+    checkoutViewModel = SubscriptionCheckoutViewModel(
       fakeMethodsUseCase,
       fakeCheckoutUseCase,
+    );
+    viewModel = PaymentViewModel(
       fakeStatusUseCase,
       fakeCalendarUseCase,
-      fakeCurrentSubUseCase,
       fakeSharedPrefHelper,
       paymentAttemptStore: fakeStore,
       tokenService: fakeTokenService,
@@ -198,11 +205,14 @@ void main() {
   });
 
   tearDown(() async {
+    await checkoutViewModel.close();
     await viewModel.close();
   });
 
-  PaymentArgs buildPaymentArgs({double finalPrice = 100.0}) {
-    return PaymentArgs(
+  SubscriptionCheckoutArgs buildSubscriptionCheckoutArgs({
+    double finalPrice = 100.0,
+  }) {
+    return SubscriptionCheckoutArgs(
       summary: SubscriptionSummaryEntity(
         programId: 'prog-1',
         programNameAr: 'برنامج',
@@ -252,12 +262,24 @@ void main() {
     );
   }
 
+  Future<void> submitCheckout() async {
+    checkoutViewModel.doIntent(
+      SubmitSubscriptionCheckoutEvent(buildSubscriptionCheckoutArgs()),
+    );
+    await pumpEventQueue();
+    final checkout = checkoutViewModel.state.checkout;
+    if (checkout != null) {
+      viewModel.doIntent(InitCheckoutSessionEvent(checkout));
+      await pumpEventQueue();
+    }
+  }
+
   group('Payment Checkout Lifecycle & State Machine Tests', () {
     test(
       'successful checkout stores PaymentAttempt before gateway navigation',
       () async {
-        viewModel.doIntent(
-          const SelectPaymentMethodEvent(
+        checkoutViewModel.doIntent(
+          const SelectCheckoutPaymentMethodEvent(
             PaymentMethodEntity(
               id: 3,
               type: PaymentMethodType.payzah,
@@ -268,7 +290,7 @@ void main() {
           ),
         );
 
-        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await submitCheckout();
         await Future<void>.delayed(Duration.zero);
 
         expect(viewModel.state.checkout, isNotNull);
@@ -281,12 +303,33 @@ void main() {
     );
 
     test(
+      'gateway session is ready only after recovery persistence completes',
+      () async {
+        fakeStore.saveGate = Completer<void>();
+        final response =
+            fakeCheckoutUseCase.response
+                as ApiSuccessResult<PaymentCheckoutEntity>;
+        viewModel.doIntent(InitCheckoutSessionEvent(response.data));
+        await pumpEventQueue();
+        expect(viewModel.state.isSessionInitializing, isTrue);
+        expect(viewModel.state.isSessionReady, isFalse);
+        expect(fakeStore.attempt, isNull);
+
+        fakeStore.saveGate!.complete();
+        await pumpEventQueue();
+        expect(viewModel.state.isSessionInitializing, isFalse);
+        expect(viewModel.state.isSessionReady, isTrue);
+        expect(fakeStore.attempt?.paymentId, 'pz-attempt-1');
+      },
+    );
+
+    test(
       'failure to store PaymentAttempt aborts checkout and reports error',
       () async {
         fakeStore.shouldThrow = true;
 
-        viewModel.doIntent(
-          const SelectPaymentMethodEvent(
+        checkoutViewModel.doIntent(
+          const SelectCheckoutPaymentMethodEvent(
             PaymentMethodEntity(
               id: 3,
               type: PaymentMethodType.payzah,
@@ -297,15 +340,146 @@ void main() {
           ),
         );
 
-        viewModel.doIntent(CheckoutPaymentEvent(buildPaymentArgs()));
+        await submitCheckout();
         await Future<void>.delayed(Duration.zero);
 
         expect(viewModel.state.checkout, isNull);
         expect(viewModel.state.checkoutFailure, isNotNull);
+        expect(viewModel.state.isSessionReady, isFalse);
         expect(
           viewModel.state.checkoutFailure!.code,
           equals('checkout.attempt_persistence_failed'),
         );
+      },
+    );
+
+    for (final missingOwner in [false, true]) {
+      test(
+        'gateway session rejects missing ${missingOwner ? "owner" : "payment handle"}',
+        () async {
+          fakeTokenService.userId = missingOwner ? null : 'cust-123';
+          final checkout = PaymentCheckoutEntity(
+            subscriptionId: 'sub-test-1',
+            paymentUrl: 'https://payzah.net/checkout/1',
+            holdExpiresAtUtc: '',
+            chosenStartDate: '',
+            startDate: '',
+            finalPrice: 100,
+            priceSnapshotId: '',
+            restaurantPoolSnapshotId: '',
+            paymentStatus: 'PendingPayment',
+            paymentId: missingOwner ? 'pz-attempt-1' : null,
+          );
+          viewModel.doIntent(InitCheckoutSessionEvent(checkout));
+          await pumpEventQueue();
+          expect(viewModel.state.isSessionReady, isFalse);
+          expect(viewModel.state.isSessionInitializing, isFalse);
+          expect(
+            viewModel.state.checkoutFailure?.code,
+            'checkout.attempt_persistence_failed',
+          );
+          expect(fakeStore.attempt, isNull);
+        },
+      );
+    }
+
+    for (final matching in [false, true]) {
+      test(
+        'session preserves review only for matching stored attempt ($matching)',
+        () async {
+          fakeStore.attempt = PaymentAttempt(
+            schemaVersion: 1,
+            ownerCustomerId: 'cust-123',
+            subscriptionId: matching ? 'sub-test-1' : 'unrelated-subscription',
+            paymentId: matching ? 'pz-attempt-1' : 'unrelated-payment',
+            createdAtUtc: DateTime.now().toUtc(),
+            reviewRequired: true,
+          );
+          final response =
+              fakeCheckoutUseCase.response
+                  as ApiSuccessResult<PaymentCheckoutEntity>;
+          viewModel.doIntent(InitCheckoutSessionEvent(response.data));
+          await pumpEventQueue();
+          expect(viewModel.state.isSessionReady, isTrue);
+          expect(viewModel.state.isReviewRequired, matching);
+          expect(fakeStore.attempt?.subscriptionId, 'sub-test-1');
+          expect(fakeStore.attempt?.paymentId, 'pz-attempt-1');
+          expect(fakeStore.attempt?.reviewRequired, matching);
+        },
+      );
+    }
+
+    for (final status in ['SuspendedForReview', 'PaymentFailed', 'Paid']) {
+      test(
+        'no-ID recovery for subscription B preserves unrelated attempt A on $status',
+        () async {
+          final unrelated = PaymentAttempt(
+            schemaVersion: 1,
+            ownerCustomerId: 'cust-123',
+            subscriptionId: 'subscription-A',
+            paymentId: 'payment-A',
+            createdAtUtc: DateTime.utc(2026, 10, 22),
+            reviewRequired: true,
+          );
+          fakeStore.attempt = unrelated;
+          fakeStatusUseCase.defaultResponse = ApiSuccessResult(
+            data: PaymentStatusEntity(
+              paymentStatus: status,
+              isPaid: status == 'Paid',
+              isFailed: status == 'PaymentFailed',
+              amount: 100,
+              currencyCode: 'KWD',
+            ),
+          );
+          viewModel.doIntent(
+            const InitCheckoutSessionEvent(
+              PaymentCheckoutEntity(
+                subscriptionId: 'subscription-B',
+                paymentUrl: '',
+                holdExpiresAtUtc: '',
+                chosenStartDate: '',
+                startDate: '',
+                finalPrice: 100,
+                priceSnapshotId: '',
+                restaurantPoolSnapshotId: '',
+                paymentStatus: 'PendingPayment',
+              ),
+            ),
+          );
+          await pumpEventQueue();
+          expect(viewModel.state.checkout?.subscriptionId, 'subscription-B');
+          expect(viewModel.state.paymentStatus?.paymentStatus, status);
+          expect(fakeStore.attempt, same(unrelated));
+          expect(fakeStore.attempt?.paymentId, 'payment-A');
+          expect(fakeStore.attempt?.reviewRequired, isTrue);
+          expect(fakeStore.attempt?.lastPresentedFinalStatus, isNull);
+        },
+      );
+    }
+
+    test(
+      'review callback cannot persist review on a different payment handle',
+      () async {
+        final unrelated = PaymentAttempt(
+          schemaVersion: 1,
+          ownerCustomerId: 'cust-123',
+          subscriptionId: 'subscription-A',
+          paymentId: 'payment-A',
+          createdAtUtc: DateTime.utc(2026, 10, 22),
+          reviewRequired: false,
+        );
+        fakeStore.attempt = unrelated;
+        viewModel.doIntent(
+          const HandlePaymentReturnEvent(
+            PaymentReturn(
+              destination: PaymentReturnDestination.review,
+              paymentId: 'payment-B',
+            ),
+          ),
+        );
+        await pumpEventQueue();
+        expect(fakeStore.attempt, same(unrelated));
+        expect(fakeStore.attempt?.reviewRequired, isFalse);
       },
     );
 

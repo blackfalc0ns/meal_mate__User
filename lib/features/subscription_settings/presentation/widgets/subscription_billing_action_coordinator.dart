@@ -1,3 +1,6 @@
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/features/subscription_settings/presentation/manager/subscription_billing_view_model.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
@@ -105,7 +108,7 @@ class SubscriptionBillingActionCoordinator {
         return;
       }
 
-      if (!context.mounted) return;
+      if (!context.mounted || !subscription.actions.canFreeze) return;
 
       final locale = context.localization;
       final isArabic = locale.localeName == 'ar';
@@ -143,24 +146,58 @@ class SubscriptionBillingActionCoordinator {
         return;
       }
 
-      final firstDate = SubscriptionBillingFreezeDatePolicy.minimumStartDate(
-        now: DateTime.now(),
-        freezeStartDelayDays: subscription.actions.freezeStartDelayDays,
-        earliestFreezeStartDate: subscription.actions.earliestFreezeStartDate,
-      );
-
+      CalendarSubscriptionEntity? calendar;
+      try {
+        calendar = context
+            .read<SubscriptionBillingViewModel>()
+            .state
+            .freezeCalendar;
+      } on ProviderNotFoundException {
+        calendar = null;
+      }
+      if (calendar?.subscriptionId != subscription.subscriptionId) {
+        CustomSnackbar.showWarning(
+          context: context,
+          message: locale.calendar_permissions_unavailable,
+        );
+        return;
+      }
+      bool canFreezeDate(DateTime date) => calendar!.canFreezeDate(date);
+      final selectableDates =
+          calendar!.days
+              .where((day) => day.date != null && canFreezeDate(day.date!))
+              .map((day) => DateUtils.dateOnly(day.date!))
+              .toList()
+            ..sort();
+      if (selectableDates.isEmpty) {
+        CustomSnackbar.showWarning(
+          context: context,
+          message: locale.calendar_operational_deadline_passed_generic,
+        );
+        return;
+      }
+      final firstDate = selectableDates.first;
       final pickedRange = await context.showAppDateRangePicker(
+        selectableDayPredicate: canFreezeDate,
+        rangeDayPredicate: calendar.canFreezeInteriorDate,
         title: locale.billing_pick_freeze_dates,
         cancelText: locale.billing_dismiss,
         confirmText: locale.billing_confirm,
         firstDate: firstDate,
-        lastDate: firstDate.add(const Duration(days: 365)),
+        lastDate: selectableDates.last,
       );
 
       if (!context.mounted || pickedRange == null) {
         return;
       }
 
+      if (!calendar.canFreezeRange(pickedRange.start, pickedRange.end)) {
+        CustomSnackbar.showWarning(
+          context: context,
+          message: locale.calendar_operational_deadline_passed_generic,
+        );
+        return;
+      }
       final freezeDays =
           pickedRange.end.difference(pickedRange.start).inDays + 1;
       if (freezeDays > subscription.actions.maximumFreezeDays) {
@@ -537,6 +574,7 @@ class SubscriptionBillingActionCoordinator {
                 checkout: PaymentCheckoutEntity(
                   subscriptionId: result.subscriptionId,
                   paymentUrl: result.paymentUrl,
+                  serverTimeUtc: result.serverTimeUtc,
                   holdExpiresAtUtc:
                       result.holdExpiresAtUtc?.toIso8601String() ?? '',
                   chosenStartDate: '',

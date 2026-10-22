@@ -53,6 +53,9 @@ class SubscriptionSummaryEntity {
     this.blockingReasonDetails = const [],
     this.quoteId,
     this.paymentDate,
+    this.earliestStartDate,
+    this.requestedStartDate,
+    this.startDateAdjusted = false,
   });
 
   final String programId;
@@ -104,6 +107,9 @@ class SubscriptionSummaryEntity {
   final List<SubscriptionSummaryBlockingReasonEntity> blockingReasonDetails;
   final String? quoteId;
   final String? paymentDate;
+  final String? earliestStartDate;
+  final String? requestedStartDate;
+  final bool startDateAdjusted;
 
   /// Enforce subtotal = basePrice
   double get subtotal => basePrice;

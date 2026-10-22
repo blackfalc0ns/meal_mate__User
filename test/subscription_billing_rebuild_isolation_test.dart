@@ -1,3 +1,5 @@
+import 'package:meal_meat_user/features/calendar/domain/usecase/get_calendar_usecase.dart';
+import 'package:meal_meat_user/features/calendar/domain/entities/calendar_subscription_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/theme/app_theme.dart';
@@ -217,6 +219,7 @@ void main() {
       DeleteUncompletedSubscriptionUseCase(fakeUncompletedRepo),
       GetSubscriptionResumePreviewUseCase(fakeUncompletedRepo),
       ResumeSubscriptionUseCase(fakeUncompletedRepo),
+      _FakeCalendarUseCase(),
     );
 
     if (getIt.isRegistered<SubscriptionBillingViewModel>()) {
@@ -277,5 +280,18 @@ void main() {
         findsOneWidget,
       );
     },
+  );
+}
+
+class _FakeCalendarUseCase implements GetCalendarUseCase {
+  @override
+  Future<ApiResult<CalendarSubscriptionEntity>> call({
+    required String subscriptionId,
+    required String localeName,
+  }) async => ApiSuccessResult(
+    data: CalendarSubscriptionEntity(
+      subscriptionId: subscriptionId,
+      days: const [],
+    ),
   );
 }

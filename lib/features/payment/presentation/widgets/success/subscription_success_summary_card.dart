@@ -17,16 +17,33 @@ class SubscriptionSuccessSummaryCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final packageName = args.packageName ?? '';
+    final conf = args.confirmation;
+    final packageName =
+        (args.packageName != null && args.packageName!.isNotEmpty)
+            ? args.packageName!
+            : (conf != null ? conf.bundleName(locale.localeName) : '');
+    final durationDays = args.durationDays ?? conf?.durationDays;
     final duration =
         args.durationLabel ??
-        (args.durationDays != null
-            ? '${args.durationDays} ${locale.health_goals_days}'
+        (durationDays != null
+            ? '$durationDays ${locale.health_goals_days}'
             : '');
-    final restaurantTier = args.restaurantTier ?? '';
-    final paymentDate = args.paymentDate ?? '';
-    final startDate = args.startDate ?? '';
-    final endDate = args.endDate ?? '';
+    final restaurantTier =
+        (args.restaurantTier != null && args.restaurantTier!.isNotEmpty)
+            ? args.restaurantTier!
+            : (conf != null ? conf.tierName(locale.localeName) : '');
+    final paymentDate =
+        (args.paymentDate != null && args.paymentDate!.isNotEmpty)
+            ? args.paymentDate!
+            : (conf?.paymentDate ?? '');
+    final startDate =
+        (args.startDate != null && args.startDate!.isNotEmpty)
+            ? args.startDate!
+            : (conf?.startDate ?? '');
+    final endDate =
+        (args.endDate != null && args.endDate!.isNotEmpty)
+            ? args.endDate!
+            : (conf?.endDate ?? '');
 
     return Container(
       margin: const EdgeInsets.symmetric(

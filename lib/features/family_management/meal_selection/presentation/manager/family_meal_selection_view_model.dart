@@ -232,6 +232,7 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
     CalendarRestaurantOptionEntity restaurant,
     String localeName,
   ) async {
+    if (calendar.state.selectedDay?.isEditable != true) return;
     final subId = state.activeSubscriptionId;
     final date = state.selectedDate ?? DateTime.now();
     final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
@@ -370,6 +371,7 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
   }
 
   Future<void> _saveDayMeals(String localeName) async {
+    if (calendar.state.selectedDay?.isEditable != true) return;
     final subId = state.activeSubscriptionId;
     final date = state.selectedDate ?? DateTime.now();
     final formattedDate = intl.DateFormat('yyyy-MM-dd').format(date);
@@ -427,6 +429,7 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
   }
 
   Future<void> _confirmDayMeals(String localeName) async {
+    if (calendar.state.selectedDay?.isEditable != true) return;
     if (state.isSavingMeals) return;
     final subId = state.activeSubscriptionId;
     final date = state.selectedDate ?? DateTime.now();
@@ -500,6 +503,7 @@ class FamilyMealSelectionViewModel extends Cubit<FamilyMealSelectionState> {
   }
 
   Future<void> _autoSelectDayMeals(String localeName) async {
+    if (calendar.state.selectedDay?.isEditable != true) return;
     if (state.isSavingMeals) return;
     final subId = state.activeSubscriptionId;
     final date = state.selectedDate ?? DateTime.now();

@@ -1,25 +1,20 @@
+import 'package:meal_meat_user/features/subscription_checkout/domain/repo/subscription_checkout_repository.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_entity.dart';
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/core/errors/subscription_error_codes.dart';
-import 'package:meal_meat_user/core/helpers/shared_pref.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/errors/failures.dart';
-import 'package:meal_meat_user/features/payment/domain/entities/payment_args.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_checkout_args.dart';
 import 'package:meal_meat_user/features/payment/domain/entities/payment_entity.dart';
 import 'package:meal_meat_user/features/payment/domain/repo/payment_repository.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/checkout_subscription_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_payment_methods_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_calendar_usecase.dart';
-import 'package:meal_meat_user/features/payment/domain/usecase/get_subscription_payment_status_usecase.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_event.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_state.dart';
-import 'package:meal_meat_user/features/payment/presentation/manager/payment_view_model.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/checkout_subscription_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/domain/usecase/get_payment_methods_usecase.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_event.dart';
+import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_checkout_view_model.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_request_entity.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/repo/subscription_billing_repository.dart';
-import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get_current_customer_subscription_usecase.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CountingCheckoutUseCase extends CheckoutSubscriptionUseCase {
   CountingCheckoutUseCase() : super(_NoopPaymentRepo());
@@ -42,12 +37,8 @@ class CountingCheckoutUseCase extends CheckoutSubscriptionUseCase {
   }
 }
 
-class _NoopPaymentRepo implements PaymentRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _NoopBillingRepo implements SubscriptionBillingRepository {
+class _NoopPaymentRepo
+    implements PaymentRepository, SubscriptionCheckoutRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -106,27 +97,15 @@ SubscriptionSummaryEntity _buildSummary({
 void main() {
   group('Payment Availability Changed & Non-Replay Tests (Task 5)', () {
     late CountingCheckoutUseCase fakeCheckout;
-    late PaymentViewModel viewModel;
-    late SharedPrefHelper prefHelper;
+    late SubscriptionCheckoutViewModel viewModel;
 
     setUp(() async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      prefHelper = SharedPrefHelper(prefs);
-
       fakeCheckout = CountingCheckoutUseCase();
       final methodsUseCase = _FakeMethodsUseCase();
 
-      viewModel = PaymentViewModel(
-        methodsUseCase,
-        fakeCheckout,
-        _FakeStatusUseCase(),
-        _FakeCalendarUseCase(),
-        _FakeCurrentSubUseCase(),
-        prefHelper,
-      );
+      viewModel = SubscriptionCheckoutViewModel(methodsUseCase, fakeCheckout);
 
-      final validMethod = const PaymentMethodEntity(
+      const validMethod = PaymentMethodEntity(
         id: 3,
         type: PaymentMethodType.payzah,
         title: 'Payzah',
@@ -137,12 +116,12 @@ void main() {
         isAvailable: true,
       );
       methodsUseCase.methods = [validMethod];
-      viewModel.doIntent(SelectPaymentMethodEvent(validMethod));
+      viewModel.doIntent(const SelectCheckoutPaymentMethodEvent(validMethod));
       await pumpEventQueue();
     });
 
-    tearDown(() {
-      viewModel.close();
+    tearDown(() async {
+      await viewModel.close();
     });
 
     const summaryRequest = SubscriptionSummaryRequestEntity(
@@ -165,13 +144,13 @@ void main() {
           ),
         );
 
-        final args = PaymentArgs(
+        final args = SubscriptionCheckoutArgs(
           summary: _buildSummary(canCheckout: true),
           summaryRequest: summaryRequest,
           restaurantId: 'rest-1',
         );
 
-        viewModel.doIntent(CheckoutPaymentEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await pumpEventQueue();
 
         // Exactly 1 POST made
@@ -191,34 +170,30 @@ void main() {
         final completer = Completer<ApiResult<PaymentCheckoutEntity>>();
         final slowCheckout = _SlowCheckoutUseCase(completer);
 
-        final vm = PaymentViewModel(
+        final vm = SubscriptionCheckoutViewModel(
           _FakeMethodsUseCase(),
           slowCheckout,
-          _FakeStatusUseCase(),
-          _FakeCalendarUseCase(),
-          _FakeCurrentSubUseCase(),
-          prefHelper,
         );
 
-        final method = const PaymentMethodEntity(
+        const method = PaymentMethodEntity(
           id: 1,
           type: PaymentMethodType.payzah,
           title: 'Payzah',
           subtitle: '',
           isAvailable: true,
         );
-        vm.doIntent(SelectPaymentMethodEvent(method));
+        vm.doIntent(const SelectCheckoutPaymentMethodEvent(method));
         await pumpEventQueue();
 
-        final args = PaymentArgs(
+        final args = SubscriptionCheckoutArgs(
           summary: _buildSummary(canCheckout: true),
           summaryRequest: summaryRequest,
           restaurantId: 'rest-1',
         );
 
         // Trigger twice immediately
-        vm.doIntent(CheckoutPaymentEvent(args));
-        vm.doIntent(CheckoutPaymentEvent(args));
+        vm.doIntent(SubmitSubscriptionCheckoutEvent(args));
+        vm.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await pumpEventQueue();
 
         expect(slowCheckout.callCount, equals(1));
@@ -251,13 +226,13 @@ void main() {
           failure: Failure(errorMessage: 'Gateway timeout', code: 'timeout'),
         );
 
-        final args = PaymentArgs(
+        final args = SubscriptionCheckoutArgs(
           summary: _buildSummary(canCheckout: true),
           summaryRequest: summaryRequest,
           restaurantId: 'rest-1',
         );
 
-        viewModel.doIntent(CheckoutPaymentEvent(args));
+        viewModel.doIntent(SubmitSubscriptionCheckoutEvent(args));
         await pumpEventQueue();
 
         expect(fakeCheckout.checkoutCallCount, equals(1));
@@ -290,22 +265,4 @@ class _FakeMethodsUseCase extends GetPaymentMethodsUseCase {
   Future<ApiResult<List<PaymentMethodEntity>>> call({
     required double amount,
   }) async => ApiSuccessResult(data: methods);
-}
-
-class _FakeStatusUseCase extends GetSubscriptionPaymentStatusUseCase {
-  _FakeStatusUseCase() : super(_NoopPaymentRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakeCalendarUseCase extends GetSubscriptionCalendarUseCase {
-  _FakeCalendarUseCase() : super(_NoopPaymentRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakeCurrentSubUseCase extends GetCurrentCustomerSubscriptionUseCase {
-  _FakeCurrentSubUseCase() : super(_NoopBillingRepo());
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

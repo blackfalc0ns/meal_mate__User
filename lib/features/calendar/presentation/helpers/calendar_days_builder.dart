@@ -4,8 +4,10 @@ abstract final class CalendarDaysBuilder {
   static List<CalendarDayEntity> serviceDays(
     List<CalendarDayEntity> days, {
     required DateTime? selectedDate,
+    bool includeFriday = true,
   }) {
     return days
+        .where((day) => includeFriday || day.date?.weekday != DateTime.friday)
         .map(
           (day) => day.copyWith(
             isSelected: _isSameDay(day.date, selectedDate),
@@ -18,6 +20,7 @@ abstract final class CalendarDaysBuilder {
   static List<CalendarDayEntity> monthDays({
     required DateTime focusedMonth,
     required DateTime? selectedDate,
+    bool includeFriday = true,
     required List<CalendarDayEntity> serviceDays,
   }) {
     final firstDay = DateTime(focusedMonth.year, focusedMonth.month);
@@ -31,28 +34,30 @@ abstract final class CalendarDaysBuilder {
     final totalCells = ((leadingDays + daysInMonth + 6) ~/ 7) * 7;
 
     return List.generate(totalCells, (index) {
-      final date = DateTime(
-        gridStart.year,
-        gridStart.month,
-        gridStart.day + index,
-      );
-      final serviceDay = serviceDays
-          .where((day) => _isSameDay(day.date, date))
-          .firstOrNull;
-      if (serviceDay != null) {
-        return serviceDay.copyWith(
-          isSelected: _isSameDay(serviceDay.date, selectedDate),
-          isMuted: false,
-        );
-      }
-      return CalendarDayEntity(
-        dayNumber: date.day,
-        weekday: '',
-        date: date,
-        isMuted: true,
-        hasMeals: false,
-      );
-    });
+          final date = DateTime(
+            gridStart.year,
+            gridStart.month,
+            gridStart.day + index,
+          );
+          final serviceDay = serviceDays
+              .where((day) => _isSameDay(day.date, date))
+              .firstOrNull;
+          if (serviceDay != null) {
+            return serviceDay.copyWith(
+              isSelected: _isSameDay(serviceDay.date, selectedDate),
+              isMuted: false,
+            );
+          }
+          return CalendarDayEntity(
+            dayNumber: date.day,
+            weekday: '',
+            date: date,
+            isMuted: true,
+            hasMeals: false,
+          );
+        })
+        .where((day) => includeFriday || day.date?.weekday != DateTime.friday)
+        .toList();
   }
 
   static bool _isSameDay(DateTime? a, DateTime? b) {

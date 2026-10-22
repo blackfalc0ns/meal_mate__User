@@ -21,9 +21,11 @@ import 'package:meal_meat_user/features/subscription_settings/domain/usecase/get
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/features/family_context/presentation/manager/family_context_view_model.dart';
 import 'package:meal_meat_user/features/family_context/domain/usecase/get_my_family_contexts_usecase.dart';
+import 'package:injectable/injectable.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
+@injectable
 class LoginViewModel extends Cubit<LoginState> {
   LoginViewModel(
     this._loginUseCase,
