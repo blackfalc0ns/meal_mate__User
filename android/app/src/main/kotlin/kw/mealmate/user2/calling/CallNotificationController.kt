@@ -16,6 +16,7 @@ import androidx.core.app.Person
 class CallNotificationController(private val context: Context) {
     private var foregroundRingtone: Ringtone? = null
     private var ringingCallId: String? = null
+    private var foregroundActivityCallId: String? = null
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -71,6 +72,14 @@ class CallNotificationController(private val context: Context) {
 
     fun showIncomingCall(snapshot: NativeCallSnapshot): Boolean {
         if (isAppInForeground()) {
+            if (foregroundActivityCallId != snapshot.callId) {
+                foregroundActivityCallId = snapshot.callId
+                context.startActivity(Intent(context, kw.mealmate.user2.calling.ui.IncomingCallActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    putExtra("callId", snapshot.callId)
+                    putExtra("lifecycleId", snapshot.lifecycleId)
+                })
+            }
             if (ringingCallId != snapshot.callId) {
                 stopForegroundRingtone()
                 val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
@@ -198,6 +207,7 @@ class CallNotificationController(private val context: Context) {
 
     fun dismiss(callId: String?) {
         stopForegroundRingtone()
+        if (foregroundActivityCallId == callId) foregroundActivityCallId = null
         notificationManager.cancel(NOTIFICATION_ID_CALL)
     }
 

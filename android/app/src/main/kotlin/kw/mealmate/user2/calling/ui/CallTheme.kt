@@ -1,9 +1,22 @@
 package kw.mealmate.user2.calling.ui
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import kw.mealmate.user2.R
+
+val Alexandria = FontFamily(
+    Font(R.font.alexandria_regular, FontWeight.Normal),
+    Font(R.font.alexandria_medium, FontWeight.Medium),
+    Font(R.font.alexandria_semibold, FontWeight.SemiBold),
+    Font(R.font.alexandria_bold, FontWeight.Bold)
+)
 
 val CallBrandGreen = Color(0xFF218232)
 val CallBrandDarkGreen = Color(0xFF125519)
@@ -36,10 +49,24 @@ private val CallColorScheme = lightColorScheme(
     onSurface = CallTextPrimary
 )
 
+private val CallTypography = Typography(
+    bodyLarge = TextStyle(fontFamily = Alexandria),
+    bodyMedium = TextStyle(fontFamily = Alexandria),
+    bodySmall = TextStyle(fontFamily = Alexandria),
+    titleLarge = TextStyle(fontFamily = Alexandria),
+    titleMedium = TextStyle(fontFamily = Alexandria),
+    titleSmall = TextStyle(fontFamily = Alexandria),
+    labelLarge = TextStyle(fontFamily = Alexandria),
+    labelMedium = TextStyle(fontFamily = Alexandria),
+    labelSmall = TextStyle(fontFamily = Alexandria)
+)
+
 @Composable
 fun CallTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = CallColorScheme,
+        typography = CallTypography,
         content = content
     )
 }
+

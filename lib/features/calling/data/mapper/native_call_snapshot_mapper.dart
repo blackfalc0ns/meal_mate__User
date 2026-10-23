@@ -8,6 +8,8 @@ extension NativeCallerDisplayDtoMapper on NativeCallerDisplayDto {
       callerRole: callerRole,
       avatarUrl: avatarUrl,
       orderNumber: orderNumber,
+      deliveryAddress: deliveryAddress,
+      addressTitle: addressTitle,
     );
   }
 }

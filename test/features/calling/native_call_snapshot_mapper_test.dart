@@ -66,6 +66,8 @@ void main() {
           'callerRole': 'driver',
           'avatarUrl': 'https://cdn.trymealmate.com/avatars/driver_1.png',
           'orderNumber': '#1024',
+          'deliveryAddress': 'Al-Shuhada, Block 2, St 15, Bldg 4',
+          'addressTitle': 'Home',
         },
       };
 
@@ -82,6 +84,36 @@ void main() {
       expect(entity.elapsedSeconds, 42);
       expect(entity.callerDisplay?.callerName, 'Mohamed Delivery');
       expect(entity.callerDisplay?.orderNumber, '#1024');
+      expect(entity.callerDisplay?.deliveryAddress, 'Al-Shuhada, Block 2, St 15, Bldg 4');
+      expect(entity.callerDisplay?.addressTitle, 'Home');
+    });
+
+    test('missing or null fields in callerDisplay fallback cleanly without error', () {
+      final json = {
+        'schemaVersion': 1,
+        'engineInstanceId': 'engine-test-1',
+        'revision': 5,
+        'callId': 'call-sparse',
+        'phase': 'ringing',
+        'callerDisplay': {
+          'callerName': null,
+          'callerRole': null,
+          'avatarUrl': null,
+          'orderNumber': null,
+          'deliveryAddress': null,
+          'addressTitle': null,
+        },
+      };
+
+      final dto = NativeCallSnapshotDto.fromJson(json);
+      final entity = dto.toEntity();
+
+      expect(entity.callerDisplay?.callerName, '');
+      expect(entity.callerDisplay?.callerRole, isNull);
+      expect(entity.callerDisplay?.avatarUrl, isNull);
+      expect(entity.callerDisplay?.orderNumber, isNull);
+      expect(entity.callerDisplay?.deliveryAddress, isNull);
+      expect(entity.callerDisplay?.addressTitle, isNull);
     });
 
     test('non-idle phase missing callId throws FormatException', () {

@@ -161,7 +161,9 @@ public final class NativeCallCoordinator {
             let callerRole = data["driverRole"] as? String ?? data["callerRole"] as? String ?? "مندوب التوصيل"
             let avatarUrl = data["avatarUrl"] as? String ?? data["driverImageUrl"] as? String
             let orderNumber = data["orderNumber"] as? String ?? data["orderCode"] as? String
-            let display = CallerDisplay(callerName: callerName, callerRole: callerRole, avatarUrl: avatarUrl, orderNumber: orderNumber)
+            let deliveryAddress = data["deliveryAddress"] as? String ?? data["addressDetails"] as? String ?? data["address"] as? String
+            let addressTitle = data["addressTitle"] as? String
+            let display = CallerDisplay(callerName: callerName, callerRole: callerRole, avatarUrl: avatarUrl, orderNumber: orderNumber, deliveryAddress: deliveryAddress, addressTitle: addressTitle)
             self.handleIncomingPush(callId: id, callerDisplay: display, sequence: sequence)
         }
     }

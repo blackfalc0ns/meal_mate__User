@@ -30,13 +30,17 @@ data class CallerDisplay(
     val callerName: String,
     val callerRole: String? = null,
     val avatarUrl: String? = null,
-    val orderNumber: String? = null
+    val orderNumber: String? = null,
+    val deliveryAddress: String? = null,
+    val addressTitle: String? = null
 ) {
     fun toMap(): Map<String, Any?> = mapOf(
         "callerName" to callerName,
         "callerRole" to callerRole,
         "avatarUrl" to avatarUrl,
-        "orderNumber" to orderNumber
+        "orderNumber" to orderNumber,
+        "deliveryAddress" to deliveryAddress,
+        "addressTitle" to addressTitle
     )
 }
 

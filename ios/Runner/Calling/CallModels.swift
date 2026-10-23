@@ -25,12 +25,23 @@ public struct CallerDisplay {
     public let callerRole: String?
     public let avatarUrl: String?
     public let orderNumber: String?
+    public let deliveryAddress: String?
+    public let addressTitle: String?
 
-    public init(callerName: String, callerRole: String? = nil, avatarUrl: String? = nil, orderNumber: String? = nil) {
+    public init(
+        callerName: String,
+        callerRole: String? = nil,
+        avatarUrl: String? = nil,
+        orderNumber: String? = nil,
+        deliveryAddress: String? = nil,
+        addressTitle: String? = nil
+    ) {
         self.callerName = callerName
         self.callerRole = callerRole
         self.avatarUrl = avatarUrl
         self.orderNumber = orderNumber
+        self.deliveryAddress = deliveryAddress
+        self.addressTitle = addressTitle
     }
 
     public func toDictionary() -> [String: Any?] {
@@ -38,7 +49,9 @@ public struct CallerDisplay {
             "callerName": callerName,
             "callerRole": callerRole,
             "avatarUrl": avatarUrl,
-            "orderNumber": orderNumber
+            "orderNumber": orderNumber,
+            "deliveryAddress": deliveryAddress,
+            "addressTitle": addressTitle
         ]
     }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -108,9 +109,10 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
               Navigator.of(context).pushReplacementNamed(AppRoutes.home),
             );
           }
-        } else if (state.status == VoiceCallStatus.accepted ||
-            state.status == VoiceCallStatus.connecting ||
-            state.status == VoiceCallStatus.active) {
+        } else if ((state.status == VoiceCallStatus.accepted ||
+                state.status == VoiceCallStatus.connecting ||
+                state.status == VoiceCallStatus.active) &&
+            state.nativeSnapshot == null) {
           unawaited(
             context.pushReplacementNamed(
               AppRoutes.activeCall,
@@ -131,9 +133,17 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
           NetworkConstants.baseUrl,
         );
 
-        return Scaffold(
-          backgroundColor: color.surface,
-          body: Stack(
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            backgroundColor: color.surface,
+            body: Stack(
             children: [
               const CallingBackgroundDecoration(),
               SafeArea(
@@ -222,8 +232,9 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
               ),
             ],
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 }

@@ -130,7 +130,9 @@ class NativeCallCoordinator(val context: Context, val stateMachine: CallStateMac
    val resolvedRole = payload.optString("callerRole").ifBlank { payload.optString("driverRole").ifBlank { event.optString("callerRole").ifBlank { event.optString("driverRole", "مندوب التوصيل") } } }
    val resolvedAvatar = payload.optString("avatarUrl").ifBlank { payload.optString("driverImageUrl").ifBlank { event.optString("avatarUrl").ifBlank { event.optString("driverImageUrl", "") } } }.ifBlank { null }
    val resolvedOrder = payload.optString("orderNumber").ifBlank { payload.optString("orderCode").ifBlank { event.optString("orderNumber").ifBlank { event.optString("orderCode", "") } } }.ifBlank { null }
-   handleIncomingInvite(id, callerDisplay = CallerDisplay(resolvedName, resolvedRole, resolvedAvatar, resolvedOrder), sequence = sequence.coerceAtLeast(1))
+   val resolvedAddress = payload.optString("deliveryAddress").ifBlank { payload.optString("addressDetails").ifBlank { payload.optString("address").ifBlank { event.optString("deliveryAddress").ifBlank { event.optString("addressDetails", "") } } } }.ifBlank { null }
+   val resolvedAddressTitle = payload.optString("addressTitle").ifBlank { event.optString("addressTitle", "") }.ifBlank { null }
+   handleIncomingInvite(id, callerDisplay = CallerDisplay(resolvedName, resolvedRole, resolvedAvatar, resolvedOrder, resolvedAddress, resolvedAddressTitle), sequence = sequence.coerceAtLeast(1))
   }
  }
  fun handleIncomingInvite(callId: String, tripStopId: String? = null, callerDisplay: CallerDisplay? = null, sequence: Int = 1) {

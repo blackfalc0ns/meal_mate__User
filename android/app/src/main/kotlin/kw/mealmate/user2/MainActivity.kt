@@ -16,6 +16,36 @@ class MainActivity : FlutterFragmentActivity() {
     private val RECORD_AUDIO_REQUEST_CODE = 1001
     private var pendingResult: MethodChannel.Result? = null
 
+    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+        super.onCreate(savedInstanceState)
+        handleCallIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleCallIntent(intent)
+    }
+
+    private fun handleCallIntent(intent: Intent?) {
+        val callId = intent?.getStringExtra("callId")
+        val coordinator = kw.mealmate.user2.calling.NativeCallCoordinator.getInstance(this)
+        if (!callId.isNullOrBlank() || coordinator.currentSnapshot.phase !in listOf(kw.mealmate.user2.calling.CallPhase.IDLE, kw.mealmate.user2.calling.CallPhase.ENDED)) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1) {
+                setShowWhenLocked(true)
+                setTurnScreenOn(true)
+            } else {
+                @Suppress("DEPRECATION")
+                window.addFlags(
+                    android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                    android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                )
+            }
+            coordinator.resume()
+        }
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 

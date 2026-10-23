@@ -24,12 +24,16 @@ class NativeCallerDisplayEntity {
   final String? callerRole;
   final String? avatarUrl;
   final String? orderNumber;
+  final String? deliveryAddress;
+  final String? addressTitle;
 
   const NativeCallerDisplayEntity({
     required this.callerName,
     this.callerRole,
     this.avatarUrl,
     this.orderNumber,
+    this.deliveryAddress,
+    this.addressTitle,
   });
 
   @override
@@ -40,14 +44,18 @@ class NativeCallerDisplayEntity {
           callerName == other.callerName &&
           callerRole == other.callerRole &&
           avatarUrl == other.avatarUrl &&
-          orderNumber == other.orderNumber;
+          orderNumber == other.orderNumber &&
+          deliveryAddress == other.deliveryAddress &&
+          addressTitle == other.addressTitle;
 
   @override
   int get hashCode =>
       callerName.hashCode ^
       callerRole.hashCode ^
       avatarUrl.hashCode ^
-      orderNumber.hashCode;
+      orderNumber.hashCode ^
+      deliveryAddress.hashCode ^
+      addressTitle.hashCode;
 }
 
 class NativeCallSnapshotEntity {

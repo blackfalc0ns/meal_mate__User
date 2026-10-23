@@ -51,6 +51,21 @@ class NativeVoiceBridge(
             "getSnapshot" -> {
                 result.success(coordinator.currentSnapshot.toMap())
             }
+            "setPresentationContext" -> {
+                val appVisible = call.argument<Boolean>("appVisible") ?: true
+                isFlutterPresenting = appVisible
+                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                    flutterReadyListener?.invoke(appVisible)
+                }
+                result.success(null)
+            }
+            "getMicrophonePermission" -> {
+                val granted = androidx.core.content.ContextCompat.checkSelfPermission(
+                    context,
+                    android.Manifest.permission.RECORD_AUDIO
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                result.success(if (granted) "granted" else "denied")
+            }
             "getCapabilities" -> {
                 val caps = mapOf(
                     "supported" to true,
@@ -134,5 +149,9 @@ class NativeVoiceBridge(
     companion object {
         const val METHOD_CHANNEL = "kw.mealmate.user/voice_calls/methods"
         const val EVENT_CHANNEL = "kw.mealmate.user/voice_calls/events"
+
+        @Volatile
+        var isFlutterPresenting: Boolean = false
+        var flutterReadyListener: ((Boolean) -> Unit)? = null
     }
 }

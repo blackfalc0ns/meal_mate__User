@@ -371,7 +371,7 @@ class CallingViewModel extends Cubit<CallingState> {
           isNativeCall) {
         await _runNativeCommand(
           callId,
-          (snapshot) => _answerNativeCallUseCase!(
+          (snapshot) => _answerNativeCallUseCase(
             callId: callId,
             lifecycleId: snapshot.lifecycleId!,
             requestId: _generateRequestId(),
@@ -444,7 +444,7 @@ class CallingViewModel extends Cubit<CallingState> {
           isNativeCall) {
         await _runNativeCommand(
           callId,
-          (snapshot) => _rejectNativeCallUseCase!(
+          (snapshot) => _rejectNativeCallUseCase(
             callId: callId,
             lifecycleId: snapshot.lifecycleId!,
             requestId: _generateRequestId(),
@@ -533,7 +533,7 @@ class CallingViewModel extends Cubit<CallingState> {
           isNativeCall) {
         await _runNativeCommand(
           callId,
-          (snapshot) => _endNativeCallUseCase!(
+          (snapshot) => _endNativeCallUseCase(
             callId: callId,
             lifecycleId: snapshot.lifecycleId!,
             requestId: _generateRequestId(),

@@ -1,8 +1,12 @@
 package kw.mealmate.user2.calling.ui
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -15,12 +19,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -37,7 +45,6 @@ fun ActiveCallScreen(
     onToggleSpeaker: () -> Unit,
     onEndCall: () -> Unit
 ) {
-    // Problem 2: Ensure local counter ticks smoothly every second without jumping
     var currentElapsed by remember { mutableIntStateOf(elapsedSeconds) }
 
     LaunchedEffect(elapsedSeconds) {
@@ -57,140 +64,145 @@ fun ActiveCallScreen(
     val seconds = currentElapsed % 60
     val timeFormatted = String.format("%02d:%02d", minutes, seconds)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CallBackground)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Column(
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .background(CallBackground)
+                .statusBarsPadding()
+                .navigationBarsPadding()
         ) {
-            // Header Brand
+            // Calling Background Doodle Decoration matching Figma 3056:13662
+            Image(
+                painter = painterResource(id = R.drawable.ic_calling_bg_doodle),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .offset(x = (-88).dp, y = (-20).dp)
+                    .size(width = 546.dp, height = 221.dp)
+                    .alpha(0.35f),
+                contentScale = ContentScale.Fit
+            )
+
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_mealmate_logo),
-                    contentDescription = "MealMate Logo",
-                    modifier = Modifier.size(width = 63.dp, height = 62.dp),
-                    tint = Color.Unspecified
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "مكالمة جارية",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = CallBrandGreen
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "MealMate",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = CallBrandDarkGreen
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = timeFormatted,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = CallBrandGreen
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Concentric Rings and Avatar
-            Box(
-                modifier = Modifier.size(258.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                // Ripple 4
-                Box(
-                    modifier = Modifier
-                        .size(258.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                // Ripple 3
-                Box(
-                    modifier = Modifier
-                        .size(222.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                // Ripple 2
-                Box(
-                    modifier = Modifier
-                        .size(203.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                // Ripple 1
-                Box(
-                    modifier = Modifier
-                        .size(169.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                // Inner Avatar Circle
-                Box(
-                    modifier = Modifier
-                        .size(133.dp)
-                        .clip(CircleShape)
-                        .background(CallActionBackground),
-                    contentAlignment = Alignment.Center
+                // CallingHeaderBrand matching Figma
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    val initialLetter = (callerDisplay?.callerName?.trim()?.take(1) ?: "D").uppercase()
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_mealmate_logo),
+                        contentDescription = "MealMate Logo",
+                        modifier = Modifier.size(width = 63.dp, height = 62.4.dp),
+                        tint = Color.Unspecified
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Text(
-                        text = initialLetter,
-                        fontSize = 54.sp,
+                        text = "مكالمة جارية",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = Alexandria,
+                        color = CallBrandGreen,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = "MealMate",
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = CallActionIcon
+                        fontFamily = Alexandria,
+                        color = CallBrandDarkGreen,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = timeFormatted,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = Alexandria,
+                        color = CallBrandGreen,
+                        textAlign = TextAlign.Center
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-            // Driver Name & Role Badge
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+                // Concentric Rings with Driver Avatar (Figma exact)
+                Box(
+                    modifier = Modifier.size(258.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(258.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(222.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(203.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(169.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    // Real Driver Avatar image from Figma
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_call_driver_avatar_default),
+                        contentDescription = "Driver Avatar",
+                        modifier = Modifier
+                            .size(133.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 val displayName = if (!callerDisplay?.callerName.isNullOrBlank()) {
-                    callerDisplay!!.callerName
+                    callerDisplay.callerName
                 } else {
-                    "يحيى سواق"
+                    "محمد علي"
                 }
 
                 Text(
                     text = displayName,
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = Alexandria,
                     color = CallDriverNameGreen,
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 val displayRole = if (!callerDisplay?.callerRole.isNullOrBlank()) {
-                    callerDisplay!!.callerRole!!
+                    callerDisplay.callerRole
                 } else {
-                    "سائق التوصيل"
+                    "مندوب التوصيل"
                 }
 
+                // Role Badge matching Figma
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(18.dp))
@@ -201,7 +213,7 @@ fun ActiveCallScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_call_driver_badge),
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(22.dp),
                         tint = CallBadgeIcon
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -209,167 +221,211 @@ fun ActiveCallScreen(
                         text = displayRole,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = Alexandria,
                         color = CallBadgeText
                     )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Address / Delivery Card
-            Card(
-                modifier = Modifier
-                    .width(304.dp)
-                    .shadow(elevation = 3.dp, shape = RoundedCornerShape(17.dp)),
-                shape = RoundedCornerShape(17.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                border = androidx.compose.foundation.BorderStroke(1.dp, CallCardBorder)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "طلب توصيل",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = CallActionIcon
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_call_location_pin),
-                            contentDescription = null,
-                            modifier = Modifier.size(15.dp),
-                            tint = CallActionIcon
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    val orderDetails = if (!callerDisplay?.orderNumber.isNullOrBlank()) {
-                        "طلب رقم #${callerDisplay!!.orderNumber}"
-                    } else {
-                        "طلب توصيل وجبة نشط"
-                    }
-                    Text(
-                        text = orderDetails,
-                        fontSize = 13.sp,
-                        color = CallTextPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Action Controls
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Mute Button
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .clickable(onClick = onToggleMute)
-                            .padding(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(66.dp)
-                                .clip(CircleShape)
-                                .background(if (isMuted) CallActionIcon else CallActionBackground),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_call_mic_mute),
-                                contentDescription = "كتم المايك",
-                                modifier = Modifier.size(28.dp),
-                                tint = if (isMuted) Color.White else CallActionIcon
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = if (isMuted) "المايك مغلق" else "كتم المايك",
-                            fontSize = 11.sp,
-                            color = CallTextPrimary
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(40.dp))
-
-                    // Speaker Button
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .clickable(onClick = onToggleSpeaker)
-                            .padding(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(66.dp)
-                                .clip(CircleShape)
-                                .background(if (isSpeaker) CallActionIcon else CallActionBackground),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_call_speaker),
-                                contentDescription = "مكبر الصوت",
-                                modifier = Modifier.size(28.dp),
-                                tint = if (isSpeaker) Color.White else CallActionIcon
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = if (isSpeaker) "المكبر يعمل" else "مكبر الصوت",
-                            fontSize = 11.sp,
-                            color = CallTextPrimary
-                        )
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // End Call Button
+                // Address Card matching Figma 3056:13662
+                val addressTitle = if (!callerDisplay?.addressTitle.isNullOrBlank()) {
+                    callerDisplay.addressTitle
+                } else {
+                    "عنوان التوصيل"
+                }
+                val deliveryAddress = if (!callerDisplay?.deliveryAddress.isNullOrBlank()) {
+                    callerDisplay.deliveryAddress
+                } else if (!callerDisplay?.orderNumber.isNullOrBlank()) {
+                    "طلب رقم #${callerDisplay.orderNumber}"
+                } else {
+                    "الكويت، الروضة، قطعة 1، شارع 10، مبنى 5"
+                }
+
+                Card(
+                    modifier = Modifier
+                        .width(304.dp)
+                        .defaultMinSize(minHeight = 100.dp)
+                        .shadow(elevation = 3.dp, shape = RoundedCornerShape(17.dp)),
+                    shape = RoundedCornerShape(17.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, CallCardBorder)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = addressTitle,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Alexandria,
+                                color = CallActionIcon
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_call_location_pin),
+                                contentDescription = null,
+                                modifier = Modifier.size(15.dp),
+                                tint = CallActionIcon
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        Text(
+                            text = deliveryAddress,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = Alexandria,
+                            color = CallTextPrimary,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Active Call Controls matching Figma 3056:13662
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .clickable(onClick = onEndCall)
-                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .padding(bottom = 28.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(83.dp)
-                            .shadow(elevation = 6.dp, shape = CircleShape)
-                            .clip(CircleShape)
-                            .background(CallEndRed),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_call_end),
-                            contentDescription = "إنهاء المكالمة",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.White
+                        // Mute Button matching Figma
+                        val muteBg by animateColorAsState(
+                            targetValue = if (isMuted) CallActionIcon else CallActionBackground,
+                            animationSpec = tween(200)
+                        )
+                        val muteIconTint by animateColorAsState(
+                            targetValue = if (isMuted) Color.White else CallActionIcon,
+                            animationSpec = tween(200)
+                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = onToggleMute
+                            )
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(66.dp)
+                                    .clip(CircleShape)
+                                    .background(muteBg),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_call_mic_mute),
+                                    contentDescription = "كتم المايك",
+                                    modifier = Modifier.size(27.3.dp),
+                                    tint = muteIconTint
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = if (isMuted) "المايك مغلق" else "كتم المايك",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Normal,
+                                fontFamily = Alexandria,
+                                color = Color.Black,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(40.dp))
+
+                        // Speaker Button matching Figma
+                        val speakerBg by animateColorAsState(
+                            targetValue = if (isSpeaker) CallActionIcon else CallActionBackground,
+                            animationSpec = tween(200)
+                        )
+                        val speakerIconTint by animateColorAsState(
+                            targetValue = if (isSpeaker) Color.White else CallActionIcon,
+                            animationSpec = tween(200)
+                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = onToggleSpeaker
+                            )
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(66.dp)
+                                    .clip(CircleShape)
+                                    .background(speakerBg),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_call_speaker),
+                                    contentDescription = "مكبر الصوت",
+                                    modifier = Modifier.size(27.3.dp),
+                                    tint = speakerIconTint
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = if (isSpeaker) "المكبر يعمل" else "مكبر الصوت",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Normal,
+                                fontFamily = Alexandria,
+                                color = Color.Black,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // End Call Button matching Figma
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onEndCall
+                        )
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(83.dp)
+                                .clip(CircleShape)
+                                .background(CallEndRed),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_call_end),
+                                contentDescription = "إنهاء المكالمة",
+                                modifier = Modifier.size(36.dp),
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "إنهاء المكالمة",
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = Alexandria,
+                            color = CallEndRed,
+                            textAlign = TextAlign.Center
                         )
                     }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "إنهاء المكالمة",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = CallEndRed
-                    )
                 }
             }
         }

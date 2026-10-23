@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
@@ -128,9 +129,17 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
           activeDriver?.addressDetails ?? '',
         );
 
-        return Scaffold(
-          backgroundColor: color.surface,
-          body: Stack(
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            backgroundColor: color.surface,
+            body: Stack(
             children: [
               const CallingBackgroundDecoration(),
               SafeArea(
@@ -233,10 +242,11 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                             ),
                             const SizedBox(height: Spacing.xs),
                             CallingActiveAddressCard(
-                              title:
-                                  activeDriver?.addressTitle.isNotEmpty == true
-                                  ? activeDriver!.addressTitle
-                                  : locale.calling_delivery_request,
+                              title: state.resolvedAddressTitle(
+                                activeDriver?.addressTitle.isNotEmpty == true
+                                    ? activeDriver!.addressTitle
+                                    : locale.calling_delivery_request,
+                              ),
                               addressDetails: addressDetails.isNotEmpty
                                   ? addressDetails
                                   : locale.calling_delivery_request,
@@ -271,8 +281,9 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
               ),
             ],
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 }

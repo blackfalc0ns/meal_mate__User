@@ -27,10 +27,11 @@ public final class NativeVoiceBridge: NSObject, FlutterStreamHandler {
         coordinator.stateMachine.addListener { [weak self] snapshot in
             DispatchQueue.main.async {
                 self?.eventSink?(snapshot.toDictionary())
-                if [.connected, .connecting].contains(snapshot.phase) {
-                    ActiveCallPresenter.shared.presentIfActive()
-                } else if [.ended, .idle].contains(snapshot.phase) {
+                if [.ended, .idle].contains(snapshot.phase) {
                     ActiveCallPresenter.shared.dismiss()
+                } else if [.ringing, .connecting, .connected, .reconnecting].contains(snapshot.phase),
+                          UIApplication.shared.applicationState == .active {
+                    ActiveCallPresenter.shared.presentIfActive()
                 }
             }
         }
@@ -47,6 +48,15 @@ public final class NativeVoiceBridge: NSObject, FlutterStreamHandler {
             result(nil)
         case "getSnapshot":
             result(coordinator.currentSnapshot.toDictionary())
+        case "setPresentationContext":
+            result(nil)
+        case "getMicrophonePermission":
+            let perm = AVAudioSession.sharedInstance().recordPermission
+            switch perm {
+            case .granted: result("granted")
+            case .denied: result("denied")
+            default: result("notDetermined")
+            }
         case "getCapabilities":
             result([
                 "supported": true,

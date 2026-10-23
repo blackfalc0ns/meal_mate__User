@@ -1,26 +1,29 @@
 package kw.mealmate.user2.calling.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kw.mealmate.user2.R
@@ -32,126 +35,134 @@ fun IncomingCallScreen(
     onAnswer: () -> Unit,
     onDecline: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CallBackground)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Column(
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .background(CallBackground)
+                .statusBarsPadding()
+                .navigationBarsPadding()
         ) {
-            // Header Brand
+            // Calling Background Doodle Decoration matching Figma 3056:13617
+            Image(
+                painter = painterResource(id = R.drawable.ic_calling_bg_doodle),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .offset(x = (-88).dp, y = (-20).dp)
+                    .size(width = 546.dp, height = 221.dp)
+                    .alpha(0.35f),
+                contentScale = ContentScale.Fit
+            )
+
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_mealmate_logo),
-                    contentDescription = "MealMate Logo",
-                    modifier = Modifier.size(width = 63.dp, height = 62.dp),
-                    tint = Color.Unspecified
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "مكالمة واردة",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = CallBrandGreen
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "MealMate",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = CallBrandDarkGreen
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Concentric Rings and Avatar
-            Box(
-                modifier = Modifier.size(258.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(258.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                Box(
-                    modifier = Modifier
-                        .size(222.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                Box(
-                    modifier = Modifier
-                        .size(203.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                Box(
-                    modifier = Modifier
-                        .size(169.dp)
-                        .border(1.dp, CallRippleStroke, CircleShape)
-                )
-                Box(
-                    modifier = Modifier
-                        .size(133.dp)
-                        .clip(CircleShape)
-                        .background(CallActionBackground),
-                    contentAlignment = Alignment.Center
+                // CallingHeaderBrand matching Figma
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    val initialLetter = (callerDisplay?.callerName?.trim()?.take(1) ?: "D").uppercase()
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_mealmate_logo),
+                        contentDescription = "MealMate Logo",
+                        modifier = Modifier.size(width = 63.dp, height = 62.4.dp),
+                        tint = Color.Unspecified
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Text(
-                        text = initialLetter,
-                        fontSize = 54.sp,
+                        text = "مكالمة واردة",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = Alexandria,
+                        color = CallBrandGreen,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = "MealMate",
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = CallActionIcon
+                        fontFamily = Alexandria,
+                        color = CallBrandDarkGreen,
+                        textAlign = TextAlign.Center
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.weight(1f))
 
-            // Driver Name & Role Badge
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+                // Concentric Ripple Rings with Driver Avatar (Figma exact: Avatar 133dp, Rings up to 258dp)
+                Box(
+                    modifier = Modifier.size(258.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(258.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(222.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(203.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(169.dp)
+                            .border(1.dp, CallRippleStroke, CircleShape)
+                    )
+                    // Real Driver Avatar image from Figma
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_call_driver_avatar_default),
+                        contentDescription = "Driver Avatar",
+                        modifier = Modifier
+                            .size(133.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                // Spacing below the rings to place Driver Name cleanly outside the circles
+                Spacer(modifier = Modifier.height(16.dp))
+
                 val displayName = if (!callerDisplay?.callerName.isNullOrBlank()) {
-                    callerDisplay!!.callerName
+                    callerDisplay.callerName
                 } else {
-                    "يحيى سواق"
+                    "محمد علي"
                 }
 
                 Text(
                     text = displayName,
-                    fontSize = 26.sp,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = Alexandria,
                     color = CallDriverNameGreen,
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 val displayRole = if (!callerDisplay?.callerRole.isNullOrBlank()) {
-                    callerDisplay!!.callerRole!!
+                    callerDisplay.callerRole
                 } else {
-                    "سائق التوصيل"
+                    "مندوب التوصيل"
                 }
 
+                // Driver Role Badge matching Figma
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(18.dp))
@@ -162,7 +173,7 @@ fun IncomingCallScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_call_driver_badge),
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(22.dp),
                         tint = CallBadgeIcon
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -170,132 +181,97 @@ fun IncomingCallScreen(
                         text = displayRole,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = Alexandria,
                         color = CallBadgeText
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            // Address / Delivery Card
-            Card(
-                modifier = Modifier
-                    .width(304.dp)
-                    .shadow(elevation = 3.dp, shape = RoundedCornerShape(17.dp)),
-                shape = RoundedCornerShape(17.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                border = androidx.compose.foundation.BorderStroke(1.dp, CallCardBorder)
-            ) {
-                Column(
+                Text(
+                    text = "يتصل الآن...",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = Alexandria,
+                    color = CallSubtitleGrey,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.weight(1.2f))
+
+                // Action Buttons: Accept on right (first in RTL), Decline on left (second in RTL)
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(bottom = 36.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    // Accept Button (Right in RTL)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onAnswer
+                        )
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .size(86.dp)
+                                .clip(CircleShape)
+                                .background(CallAcceptGreen),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_call_accept),
+                                contentDescription = "قبول",
+                                modifier = Modifier.size(42.dp),
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "طلب توصيل",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = CallActionIcon
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_call_location_pin),
-                            contentDescription = null,
-                            modifier = Modifier.size(15.dp),
-                            tint = CallActionIcon
+                            text = "قبول",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = Alexandria,
+                            color = CallAcceptGreen
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    val orderDetails = if (!callerDisplay?.orderNumber.isNullOrBlank()) {
-                        "طلب رقم #${callerDisplay!!.orderNumber}"
-                    } else {
-                        "طلب توصيل وجبة نشط"
-                    }
-                    Text(
-                        text = orderDetails,
-                        fontSize = 13.sp,
-                        color = CallTextPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
 
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Action Buttons: Decline and Answer
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Decline Button
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .clickable(onClick = onDecline)
-                        .padding(8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(83.dp)
-                            .shadow(elevation = 6.dp, shape = CircleShape)
-                            .clip(CircleShape)
-                            .background(CallDeclineRed),
-                        contentAlignment = Alignment.Center
+                    // Decline Button (Left in RTL)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onDecline
+                        )
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_call_end),
-                            contentDescription = "رفض",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.White
+                        Box(
+                            modifier = Modifier
+                                .size(86.dp)
+                                .clip(CircleShape)
+                                .background(CallDeclineRed),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_call_end),
+                                contentDescription = "رفض",
+                                modifier = Modifier.size(42.dp),
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "رفض",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = Alexandria,
+                            color = CallDeclineRed
                         )
                     }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "رفض",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = CallDeclineRed
-                    )
-                }
-
-                // Answer Button
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .clickable(onClick = onAnswer)
-                        .padding(8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(83.dp)
-                            .shadow(elevation = 6.dp, shape = CircleShape)
-                            .clip(CircleShape)
-                            .background(CallAcceptGreen),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_call_accept),
-                            contentDescription = "قبول",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.White
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "قبول",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = CallAcceptGreen
-                    )
                 }
             }
         }

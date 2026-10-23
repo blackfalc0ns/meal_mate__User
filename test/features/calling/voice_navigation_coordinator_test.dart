@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
@@ -31,6 +32,12 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
       StreamController<NativeCallSnapshotEntity>.broadcast();
 
   bool? lastAppVisible;
+  NativeCallSnapshotEntity snapshotToReturn = const NativeCallSnapshotEntity(
+    schemaVersion: 1,
+    engineInstanceId: 'eng_nav',
+    revision: 1,
+    phase: NativeCallPhase.idle,
+  );
 
   void emitSnapshot(NativeCallSnapshotEntity snapshot) {
     _controller.add(snapshot);
@@ -38,14 +45,7 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
 
   @override
   Future<ApiResult<NativeCallSnapshotEntity>> getSnapshot() async {
-    return const ApiSuccessResult(
-      data: NativeCallSnapshotEntity(
-        schemaVersion: 1,
-        engineInstanceId: 'eng_nav',
-        revision: 1,
-        phase: NativeCallPhase.idle,
-      ),
-    );
+    return ApiSuccessResult(data: snapshotToReturn);
   }
 
   @override
@@ -63,19 +63,18 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
     required String callId,
     required String lifecycleId,
     required String requestId,
-  }) async =>
-      const ApiSuccessResult(data: null);
+  }) async => const ApiSuccessResult(data: null);
 
   @override
   Future<ApiResult<void>> end({
     required String callId,
     required String lifecycleId,
     required String requestId,
-  }) async =>
-      const ApiSuccessResult(data: null);
+  }) async => const ApiSuccessResult(data: null);
 
   @override
-  Future<ApiResult<NativeMicrophonePermission>> getMicrophonePermission() async =>
+  Future<ApiResult<NativeMicrophonePermission>>
+  getMicrophonePermission() async =>
       const ApiSuccessResult(data: NativeMicrophonePermission.granted);
 
   @override
@@ -87,11 +86,11 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
     required String callId,
     required String lifecycleId,
     required String requestId,
-  }) async =>
-      const ApiSuccessResult(data: null);
+  }) async => const ApiSuccessResult(data: null);
 
   @override
-  Future<ApiResult<NativeMicrophonePermission>> requestMicrophonePermission() async =>
+  Future<ApiResult<NativeMicrophonePermission>>
+  requestMicrophonePermission() async =>
       const ApiSuccessResult(data: NativeMicrophonePermission.granted);
 
   @override
@@ -100,8 +99,7 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
     required String lifecycleId,
     required String requestId,
     required String routeId,
-  }) async =>
-      const ApiSuccessResult(data: null);
+  }) async => const ApiSuccessResult(data: null);
 
   @override
   Future<ApiResult<void>> setMuted({
@@ -109,8 +107,7 @@ class FakeNativeRepoForNav implements NativeVoiceRepository {
     required String lifecycleId,
     required String requestId,
     required bool muted,
-  }) async =>
-      const ApiSuccessResult(data: null);
+  }) async => const ApiSuccessResult(data: null);
 
   @override
   Stream<NativeCallSnapshotEntity> get snapshotStream => _controller.stream;
@@ -147,9 +144,38 @@ void main() {
 
     await pumpEventQueue();
 
-    expect(fakeNav.pushedRoutes, contains(AppRoutes.incomingCall));
-    expect(fakeNav.currentRoute, AppRoutes.incomingCall);
+    expect(fakeNav.pushedRoutes, isEmpty);
   });
+
+  test(
+    'Duplicate ringing snapshot does not trigger duplicate route push',
+    () async {
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 2,
+          callId: 'call_nav_1',
+          phase: NativeCallPhase.ringing,
+        ),
+      );
+      await pumpEventQueue();
+
+      // Duplicate snapshot
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 3,
+          callId: 'call_nav_1',
+          phase: NativeCallPhase.ringing,
+        ),
+      );
+      await pumpEventQueue();
+
+      expect(fakeNav.pushedRoutes, isEmpty);
+    },
+  );
 
   test('Routes to activeCall when snapshot phase is connected', () async {
     fakeRepo.emitSnapshot(
@@ -164,7 +190,89 @@ void main() {
 
     await pumpEventQueue();
 
-    expect(fakeNav.pushedRoutes, contains(AppRoutes.activeCall));
-    expect(fakeNav.currentRoute, AppRoutes.activeCall);
+    expect(fakeNav.pushedRoutes, isEmpty);
   });
+
+  test(
+    'Transition from ringing to answering/connected triggers exactly one route change',
+    () async {
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 1,
+          callId: 'call_nav_3',
+          phase: NativeCallPhase.ringing,
+        ),
+      );
+      await pumpEventQueue();
+      expect(fakeNav.pushedRoutes, isEmpty);
+
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 2,
+          callId: 'call_nav_3',
+          phase: NativeCallPhase.answering,
+        ),
+      );
+      await pumpEventQueue();
+      expect(fakeNav.pushedRoutes, isEmpty);
+
+      // Subsequent connected event does not push activeCall again
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 3,
+          callId: 'call_nav_3',
+          phase: NativeCallPhase.connected,
+        ),
+      );
+      await pumpEventQueue();
+      expect(fakeNav.pushedRoutes, isEmpty);
+    },
+  );
+
+  test(
+    'App resume lifecycle reconciles native snapshot and routes to activeCall if active',
+    () async {
+      fakeRepo.snapshotToReturn = const NativeCallSnapshotEntity(
+        schemaVersion: 1,
+        engineInstanceId: 'eng_nav',
+        revision: 10,
+        callId: 'call_resumed_1',
+        phase: NativeCallPhase.connected,
+      );
+
+      coordinator.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      await pumpEventQueue();
+
+      expect(fakeRepo.lastAppVisible, isTrue);
+      expect(fakeNav.pushedRoutes, isEmpty);
+    },
+  );
+
+  test(
+    'Cancellation or timeout ended phase triggers call ending cleanup',
+    () async {
+      fakeNav.currentRoute = AppRoutes.incomingCall;
+
+      fakeRepo.emitSnapshot(
+        const NativeCallSnapshotEntity(
+          schemaVersion: 1,
+          engineInstanceId: 'eng_nav',
+          revision: 4,
+          callId: 'call_nav_4',
+          phase: NativeCallPhase.ended,
+          errorCode: 'timeout',
+        ),
+      );
+      await pumpEventQueue();
+
+      // Ended phase handled
+      expect(coordinator.lastHandledPhase, NativeCallPhase.ended);
+    },
+  );
 }

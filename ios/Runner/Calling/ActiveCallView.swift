@@ -12,7 +12,7 @@ public struct ActiveCallView: View {
 
     @State private var timerSubscription: Cancellable?
 
-    // Color Palette matching Flutter
+    // Color Palette matching Figma 3056:13662
     private let callBrandGreen = Color(red: 33/255, green: 130/255, blue: 50/255)
     private let callBrandDarkGreen = Color(red: 18/255, green: 85/255, blue: 25/255)
     private let callDriverNameGreen = Color(red: 7/255, green: 136/255, blue: 71/255)
@@ -54,15 +54,29 @@ public struct ActiveCallView: View {
             Color.white
                 .edgesIgnoringSafeArea(.all)
 
+            // Background Doodle Decoration matching Figma 3056:13662
+            VStack {
+                Spacer()
+                HStack {
+                    Image("CallingBgDoodle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 546, height: 221)
+                        .opacity(0.35)
+                        .offset(x: -88, y: -20)
+                    Spacer()
+                }
+            }
+            .edgesIgnoringSafeArea(.all)
+
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 20) {
-                    // Header Brand
+                    // Header Brand matching Figma
                     VStack(spacing: 6) {
-                        Image(systemName: "fork.knife.circle.fill")
+                        Image("MealMateLogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 58, height: 58)
-                            .foregroundColor(callActionIcon)
+                            .frame(width: 63, height: 62.4)
 
                         Text("مكالمة جارية")
                             .font(.system(size: 14, weight: .medium))
@@ -78,7 +92,7 @@ public struct ActiveCallView: View {
                     }
                     .padding(.top, 16)
 
-                    // Concentric Rings and Avatar
+                    // Concentric Rings and Avatar (Figma exact layout: Rings 258, Avatar 133)
                     ZStack {
                         Circle()
                             .stroke(callRippleStroke, lineWidth: 1)
@@ -93,20 +107,17 @@ public struct ActiveCallView: View {
                             .stroke(callRippleStroke, lineWidth: 1)
                             .frame(width: 169, height: 169)
 
-                        Circle()
-                            .fill(callActionBackground)
+                        Image("DriverAvatar")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 133, height: 133)
-
-                        let initialLetter = String((callerDisplay?.callerName.trimmingCharacters(in: .whitespacesAndNewlines).first ?? "D")).uppercased()
-                        Text(initialLetter)
-                            .font(.system(size: 54, weight: .bold))
-                            .foregroundColor(callActionIcon)
+                            .clipShape(Circle())
                     }
                     .frame(height: 258)
 
-                    // Driver Name & Role Badge
+                    // Driver Name & Role Badge (cleanly outside and below rings)
                     VStack(spacing: 8) {
-                        Text(callerDisplay?.callerName ?? "يحيى سواق")
+                        Text(callerDisplay?.callerName ?? "محمد علي")
                             .font(.system(size: 26, weight: .bold))
                             .foregroundColor(callDriverNameGreen)
                             .multilineTextAlignment(.center)
@@ -116,7 +127,7 @@ public struct ActiveCallView: View {
                                 .font(.system(size: 16))
                                 .foregroundColor(callBadgeIcon)
 
-                            Text(callerDisplay?.callerRole ?? "سائق التوصيل")
+                            Text(callerDisplay?.callerRole ?? "مندوب التوصيل")
                                 .font(.system(size: 12, weight: .bold))
                                 .foregroundColor(callBadgeText)
                         }
@@ -126,10 +137,13 @@ public struct ActiveCallView: View {
                         .clipShape(Capsule())
                     }
 
-                    // Delivery / Order Card
+                    // Delivery / Order Card matching Figma 3056:13662
+                    let addressTitle = callerDisplay?.addressTitle ?? "عنوان التوصيل"
+                    let deliveryAddress = callerDisplay?.deliveryAddress ?? (callerDisplay?.orderNumber?.isEmpty == false ? "طلب رقم #\(callerDisplay!.orderNumber!)" : "الكويت، الروضة، قطعة 1، شارع 10، مبنى 5")
+
                     VStack(spacing: 6) {
                         HStack(spacing: 6) {
-                            Text("طلب توصيل")
+                            Text(addressTitle)
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(callActionIcon)
 
@@ -138,8 +152,7 @@ public struct ActiveCallView: View {
                                 .foregroundColor(callActionIcon)
                         }
 
-                        let orderDetails = (callerDisplay?.orderNumber?.isEmpty == false) ? "طلب رقم #\(callerDisplay!.orderNumber!)" : "مبنى 12، شارع فهد الأحمد، الكويت"
-                        Text(orderDetails)
+                        Text(deliveryAddress)
                             .font(.system(size: 13))
                             .foregroundColor(Color(red: 23/255, green: 21/255, blue: 28/255))
                             .multilineTextAlignment(.center)
@@ -155,7 +168,7 @@ public struct ActiveCallView: View {
                     )
                     .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 3)
 
-                    // Action Buttons
+                    // Action Buttons matching Figma
                     VStack(spacing: 16) {
                         HStack(spacing: 40) {
                             // Mute Button
@@ -230,7 +243,6 @@ public struct ActiveCallView: View {
             }
         }
         .onAppear {
-            // Problem 2: Live second-by-second ticker
             timerSubscription = Timer.publish(every: 1.0, on: .main, in: .common)
                 .autoconnect()
                 .sink { _ in
@@ -240,5 +252,6 @@ public struct ActiveCallView: View {
         .onDisappear {
             timerSubscription?.cancel()
         }
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }

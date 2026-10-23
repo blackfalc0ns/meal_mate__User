@@ -55,6 +55,20 @@ class CallingState {
   }
 
   String resolvedDeliveryAddress(String fallback) {
+    if (nativeSnapshot?.callerDisplay?.deliveryAddress?.trim().isNotEmpty == true &&
+        nativeSnapshot!.callerDisplay!.deliveryAddress!.trim().toLowerCase() !=
+            'null') {
+      return nativeSnapshot!.callerDisplay!.deliveryAddress!.trim();
+    }
+    return fallback;
+  }
+
+  String resolvedAddressTitle(String fallback) {
+    if (nativeSnapshot?.callerDisplay?.addressTitle?.trim().isNotEmpty == true &&
+        nativeSnapshot!.callerDisplay!.addressTitle!.trim().toLowerCase() !=
+            'null') {
+      return nativeSnapshot!.callerDisplay!.addressTitle!.trim();
+    }
     return fallback;
   }
 

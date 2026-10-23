@@ -3,12 +3,16 @@ class NativeCallerDisplayDto {
   final String? callerRole;
   final String? avatarUrl;
   final String? orderNumber;
+  final String? deliveryAddress;
+  final String? addressTitle;
 
   const NativeCallerDisplayDto({
     this.callerName,
     this.callerRole,
     this.avatarUrl,
     this.orderNumber,
+    this.deliveryAddress,
+    this.addressTitle,
   });
 
   factory NativeCallerDisplayDto.fromJson(Map<String, dynamic> json) {
@@ -17,6 +21,8 @@ class NativeCallerDisplayDto {
       callerRole: json['callerRole']?.toString(),
       avatarUrl: json['avatarUrl']?.toString(),
       orderNumber: json['orderNumber']?.toString(),
+      deliveryAddress: json['deliveryAddress']?.toString(),
+      addressTitle: json['addressTitle']?.toString(),
     );
   }
 
@@ -25,6 +31,8 @@ class NativeCallerDisplayDto {
         'callerRole': callerRole,
         'avatarUrl': avatarUrl,
         'orderNumber': orderNumber,
+        'deliveryAddress': deliveryAddress,
+        'addressTitle': addressTitle,
       };
 }
 

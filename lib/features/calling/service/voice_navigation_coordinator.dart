@@ -17,10 +17,7 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
   String? _lastCallId;
   bool _isInitialized = false;
 
-  VoiceNavigationCoordinator(
-    this._repository,
-    this._navigatorService,
-  );
+  VoiceNavigationCoordinator(this._repository, this._navigatorService);
 
   void initialize() {
     if (_isInitialized) return;
@@ -28,11 +25,7 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     // Initial presentation context
-    unawaited(
-      _repository.setPresentationContext(
-        appVisible: true,
-      ),
-    );
+    unawaited(_repository.setPresentationContext(appVisible: true));
 
     // Listen to snapshot stream
     _snapshotSubscription = _repository.snapshotStream.listen(
@@ -46,11 +39,17 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
     unawaited(_reconcileInitialSnapshot());
   }
 
-  Future<void> _reconcileInitialSnapshot() async {
+  NativeCallPhase get lastHandledPhase => _lastPhase;
+
+  Future<void> reconcile([String? launchedCallId]) async {
     final result = await _repository.getSnapshot();
     if (result is ApiSuccessResult<NativeCallSnapshotEntity>) {
       _handleSnapshot(result.data);
     }
+  }
+
+  Future<void> _reconcileInitialSnapshot() async {
+    await reconcile();
   }
 
   void _handleSnapshot(NativeCallSnapshotEntity snapshot) {
@@ -65,13 +64,11 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
 
     switch (phase) {
       case NativeCallPhase.ringing:
-        _navigateToIncomingCall();
         break;
       case NativeCallPhase.answering:
       case NativeCallPhase.connecting:
       case NativeCallPhase.connected:
       case NativeCallPhase.reconnecting:
-        _navigateToActiveCall();
         break;
       case NativeCallPhase.ended:
       case NativeCallPhase.idle:
@@ -82,27 +79,6 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
       case NativeCallPhase.unknown:
         break;
     }
-  }
-
-  void _navigateToIncomingCall() {
-    if (_navigatorService.isCurrentRoute(AppRoutes.incomingCall)) {
-      return;
-    }
-    unawaited(_navigatorService.pushNamedWhenReady(AppRoutes.incomingCall));
-  }
-
-  void _navigateToActiveCall() {
-    if (_navigatorService.isCurrentRoute(AppRoutes.activeCall)) {
-      return;
-    }
-    if (_navigatorService.isCurrentRoute(AppRoutes.incomingCall)) {
-      final nav = _navigatorService.navigator;
-      if (nav != null) {
-        unawaited(nav.pushReplacementNamed(AppRoutes.activeCall));
-        return;
-      }
-    }
-    unawaited(_navigatorService.pushNamedWhenReady(AppRoutes.activeCall));
   }
 
   void _handleCallEnded() {
@@ -122,11 +98,10 @@ class VoiceNavigationCoordinator with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final isVisible = state == AppLifecycleState.resumed;
-    unawaited(
-      _repository.setPresentationContext(
-        appVisible: isVisible,
-      ),
-    );
+    unawaited(_repository.setPresentationContext(appVisible: isVisible));
+    if (isVisible) {
+      unawaited(reconcile());
+    }
   }
 
   void dispose() {
