@@ -23,11 +23,7 @@ import 'package:meal_meat_user/features/calling/presentation/widgets/calling_hea
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_incoming_actions.dart';
 
 class IncomingCallScreen extends StatelessWidget {
-  const IncomingCallScreen({
-    super.key,
-    this.driver,
-    this.viewModel,
-  });
+  const IncomingCallScreen({super.key, this.driver, this.viewModel});
 
   final CallDriverEntity? driver;
   final CallingViewModel? viewModel;
@@ -70,13 +66,26 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
   String? _lastLanguageCode;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final vm = context.read<CallingViewModel>();
+        if (vm.state.status == VoiceCallStatus.unknown) {
+          vm.emit(vm.state.copyWith(status: VoiceCallStatus.ringing));
+        }
+      }
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final currentLang = Localizations.localeOf(context).languageCode;
     if (_lastLanguageCode != null && _lastLanguageCode != currentLang) {
       context.read<CallingViewModel>().doIntent(
-            RefreshCallDisplayEvent(language: currentLang),
-          );
+        RefreshCallDisplayEvent(language: currentLang),
+      );
     }
     _lastLanguageCode = currentLang;
   }
@@ -89,7 +98,9 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
     return BlocConsumer<CallingViewModel, CallingState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
+        if ((state.status.isTerminal ||
+                state.status == VoiceCallStatus.ended) &&
+            state.nativeSnapshot == null) {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           } else {
@@ -100,21 +111,25 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
         } else if (state.status == VoiceCallStatus.accepted ||
             state.status == VoiceCallStatus.connecting ||
             state.status == VoiceCallStatus.active) {
-          if (ModalRoute.of(context)?.isCurrent == true) {
-            unawaited(
-              context.pushReplacementNamed(
-                AppRoutes.activeCall,
-                arguments: state.driver ?? widget.driver,
-              ),
-            );
-          }
+          unawaited(
+            context.pushReplacementNamed(
+              AppRoutes.activeCall,
+              arguments: state.driver ?? widget.driver,
+            ),
+          );
         }
       },
       builder: (context, state) {
         final activeDriver = state.driver ?? widget.driver;
-        final displayName = state.resolvedDriverName(locale.calling_driver_role);
-        final displayRole = state.resolvedDriverRole(locale.calling_driver_role);
-        final avatarUrl = state.resolvedDriverImageUrl(NetworkConstants.baseUrl);
+        final displayName = state.resolvedDriverName(
+          locale.calling_driver_role,
+        );
+        final displayRole = state.resolvedDriverRole(
+          locale.calling_driver_role,
+        );
+        final avatarUrl = state.resolvedDriverImageUrl(
+          NetworkConstants.baseUrl,
+        );
 
         return Scaffold(
           backgroundColor: color.surface,
@@ -139,7 +154,8 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   CallingDriverAvatarRings(
-                                    avatarAsset: activeDriver?.avatarAsset ??
+                                    avatarAsset:
+                                        activeDriver?.avatarAsset ??
                                         Assets.profileAvatar,
                                     avatarUrl: avatarUrl,
                                   ),
@@ -189,15 +205,15 @@ class _IncomingCallViewState extends State<_IncomingCallView> {
                       isLoading: state.isLoading,
                       onAccept: () {
                         if (state.isLoading) return;
-                        context
-                            .read<CallingViewModel>()
-                            .doIntent(const AnswerCallEvent());
+                        context.read<CallingViewModel>().doIntent(
+                          const AnswerCallEvent(),
+                        );
                       },
                       onDecline: () {
                         if (state.isLoading) return;
-                        context
-                            .read<CallingViewModel>()
-                            .doIntent(const RejectCallEvent());
+                        context.read<CallingViewModel>().doIntent(
+                          const RejectCallEvent(),
+                        );
                       },
                     ),
                     const SizedBox(height: Spacing.xl),

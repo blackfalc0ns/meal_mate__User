@@ -413,10 +413,14 @@ class VoiceCallManager with WidgetsBindingObserver {
     }
 
     if (snapshot == null) return;
-    await _applySnapshot(snapshot);
+    final combinedRaw = <String, dynamic>{...envelope, ...payload};
+    await _applySnapshot(snapshot, rawData: combinedRaw);
   }
 
-  Future<void> _applySnapshot(VoiceCallSnapshotEntity snapshot) async {
+  Future<void> _applySnapshot(
+    VoiceCallSnapshotEntity snapshot, {
+    Map<String, dynamic>? rawData,
+  }) async {
     debugPrint(
       '[VoiceCallManager] Applying snapshot: callId=${snapshot.callId}, status=${snapshot.status}, seq=${snapshot.sequence}',
     );
@@ -465,7 +469,30 @@ class VoiceCallManager with WidgetsBindingObserver {
     if (snapshot.callId.isNotEmpty &&
         (_currentDisplay == null ||
             _currentDisplay?.callId != snapshot.callId)) {
-      unawaited(fetchCallDisplay(snapshot.callId));
+      final name =
+          rawData?['driverName']?.toString() ??
+          rawData?['callerName']?.toString();
+      if (name != null && name.trim().isNotEmpty) {
+        final role =
+            rawData?['driverRole']?.toString() ??
+            rawData?['callerRole']?.toString() ??
+            'مندوب التوصيل';
+        final avatar =
+            rawData?['avatarUrl']?.toString() ??
+            rawData?['driverImageUrl']?.toString();
+        final order =
+            rawData?['orderCode']?.toString() ??
+            rawData?['orderNumber']?.toString();
+        _currentDisplay = VoiceCallDisplayEntity(
+          callId: snapshot.callId,
+          tripStopId: snapshot.tripStopId,
+          driverName: name.trim(),
+          driverRole: role,
+          driverImageUrl: avatar,
+          orderCode: order,
+        );
+        _displayController.add(_currentDisplay);
+      }
     }
 
     final mySessionId = _currentDeviceSession?.deviceSessionId;

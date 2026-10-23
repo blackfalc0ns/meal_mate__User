@@ -50,7 +50,7 @@ class _RtcParsedEnvelope {
 class VoiceCallSignalRService {
   VoiceCallSignalRService(
     this._tokenService, {
-    @visibleForTesting HubConnectionFactory? hubConnectionFactory,
+    HubConnectionFactory? hubConnectionFactory,
   }) : _hubConnectionFactory =
            hubConnectionFactory ?? defaultHubConnectionFactory;
 

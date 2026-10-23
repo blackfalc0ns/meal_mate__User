@@ -103,21 +103,21 @@ class _AppShellView extends StatelessWidget {
             ),
             body: _AnimatedShellBody(
               selectedIndex: state.selectedTabIndex,
-              children: [
-                _EmptyShellTab(title: l10n.nav_home),
-                _EmptyShellTab(title: l10n.nav_meals),
-                _EmptyShellTab(title: l10n.nav_offers),
-                _EmptyShellTab(title: l10n.nav_subscription),
-                _EmptyShellTab(title: l10n.nav_profile),
-              ],
 
-              //    const [
-              //    HomeScreen(),
-              //  CalendarScreen(showBottomSpace: true),
-              //  OffersScreen(),
-              //   SubscriptionsScreen(showBottomSpace: true),
-              //  ProfileScreen(),
-              //   ],
+              // children: [
+              //   _EmptyShellTab(title: l10n.nav_home),
+              //   _EmptyShellTab(title: l10n.nav_meals),
+              //   _EmptyShellTab(title: l10n.nav_offers),
+              //   _EmptyShellTab(title: l10n.nav_subscription),
+              //   _EmptyShellTab(title: l10n.nav_profile),
+              // ],
+              children: const [
+                HomeScreen(),
+                CalendarScreen(showBottomSpace: true),
+                OffersScreen(),
+                SubscriptionsScreen(showBottomSpace: true),
+                ProfileScreen(),
+              ],
             ),
           ),
         );

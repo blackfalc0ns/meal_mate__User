@@ -19,6 +19,12 @@ class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
+        val voiceBridge = kw.mealmate.user2.calling.NativeVoiceBridge(this)
+        voiceBridge.register(flutterEngine)
+
+        val sessionBridge = kw.mealmate.user2.calling.NativeVoiceSessionBridge(this)
+        sessionBridge.register(flutterEngine)
+
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "checkMicrophonePermission" -> {

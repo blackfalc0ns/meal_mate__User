@@ -56,7 +56,8 @@ void main() {
         },
       );
 
-      expect(log, contains('[REDACTED_ENVELOPE]'));
+      expect(log, contains('"callId":"call-1"'));
+      expect(log, isNot(contains('[REDACTED_ENVELOPE]')));
       expect(log, isNot(contains('secret-proof-123')));
       expect(log, isNot(contains('super-secret-proof-9999')));
       expect(log, isNot(contains('token-secret-auth-8888')));

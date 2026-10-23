@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
+import 'package:meal_meat_user/core/services/voice_permission_service.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_meal_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_entity.dart';
 import 'package:meal_meat_user/features/calendar/domain/entities/calendar_restaurant_option_entity.dart';
@@ -14,6 +15,7 @@ import 'package:meal_meat_user/features/calendar/presentation/manager/restaurant
 import 'package:meal_meat_user/features/calendar/presentation/screens/calendar_meal_selection_screen.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_meals_confirmation_sheet.dart';
 import 'package:meal_meat_user/features/calendar/presentation/widgets/calendar_restaurant_selection_sheet.dart';
+import 'package:meal_meat_user/features/calling/presentation/widgets/voice_permission_setup_sheet.dart';
 import 'package:meal_meat_user/features/meal_details/presentation/mapper/calendar_meal_details_mapper.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
@@ -153,6 +155,18 @@ class CalendarNavigationCoordinator {
       onBackToCalendar: onBackToCalendar,
       onViewMeals: onViewMeals,
     );
+
+    if (!context.mounted) return;
+    final granted =
+        await VoicePermissionService.instance.isMicrophoneGranted();
+    final hasShown =
+        await VoicePermissionService.instance.hasShownExplainer();
+    if (!granted && !hasShown && context.mounted) {
+      await VoicePermissionService.instance.markExplainerShown();
+      if (context.mounted) {
+        await VoicePermissionSetupSheet.show(context);
+      }
+    }
   }
 
   void showSuccessSnackBar(BuildContext context, String message) {

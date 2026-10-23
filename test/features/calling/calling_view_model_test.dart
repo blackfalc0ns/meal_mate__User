@@ -98,7 +98,7 @@ void main() {
   setUp(() {
     fakeManager = FakeVoiceCallManagerForVm();
     fakeWebRtc = FakeWebRtcServiceForVm();
-    viewModel = CallingViewModel(fakeManager, fakeWebRtc);
+    viewModel = CallingViewModel.legacy(fakeManager, fakeWebRtc);
   });
 
   tearDown(() async {

@@ -6696,6 +6696,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get calling_end_call => 'إنهاء المكالمة';
 
   @override
+  String get calling_permission_title => 'إذن الميكروفون';
+
+  @override
+  String get calling_permission_desc =>
+      'نحتاج إذن الميكروفون لتتمكن من التحدث مع مندوب التوصيل عند وصول وجبتك.';
+
+  @override
+  String get calling_permission_enable => 'تفعيل الميكروفون';
+
+  @override
+  String get calling_permission_later => 'لاحقاً';
+
+  @override
+  String get calling_permission_settings => 'فتح الإعدادات';
+
+  @override
+  String get calling_permission_required =>
+      'يلزم إذن الميكروفون للتحدث مع المندوب.';
+
+  @override
   String get payment_method_unavailable_wallet =>
       'الدفع بالمحفظة غير متوفر حالياً';
 

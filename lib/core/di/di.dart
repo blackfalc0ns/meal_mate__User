@@ -43,6 +43,25 @@ import '../services/app_navigator_service.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/token_service.dart';
 import '../../features/calling/service/voice_call_signalr_service.dart';
+import '../../features/calling/service/voice_navigation_coordinator.dart';
+import '../../features/calling/domain/repo/native_voice_repository.dart';
+import '../../features/calling/data/data_source/native_voice_data_source.dart';
+import '../../features/calling/data/data_source/native_voice_data_source_impl.dart';
+import '../../features/calling/data/repo/native_voice_repository_impl.dart';
+import '../../features/calling/domain/usecase/answer_native_call_usecase.dart';
+import '../../features/calling/domain/usecase/reject_native_call_usecase.dart';
+import '../../features/calling/domain/usecase/end_native_call_usecase.dart';
+import '../../features/calling/domain/usecase/set_native_call_muted_usecase.dart';
+import '../../features/calling/domain/usecase/set_native_call_audio_route_usecase.dart';
+import '../../features/calling/presentation/manager/calling_view_model.dart';
+import '../../features/calling/presentation/manager/voice_permission_setup_view_model.dart';
+import '../services/native_voice_session_bridge.dart';
+import '../services/native_voice_provisioner.dart';
+import '../../features/calling/data/data_source/voice_device_session_storage.dart';
+import '../../features/calling/domain/usecase/register_voice_device_usecase.dart';
+import '../../features/calling/domain/usecase/revoke_voice_device_usecase.dart';
+import '../../features/calling/domain/usecase/get_voice_call_display_usecase.dart';
+import '../services/voice_permission_service.dart';
 import 'di.config.dart';
 
 final getIt = GetIt.instance;
@@ -108,8 +127,8 @@ Future<void> configureDependencies() async {
         getIt<BiometricService>(),
         getCurrentCustomerSubscriptionUseCase:
             getIt.isRegistered<GetCurrentCustomerSubscriptionUseCase>()
-                ? getIt<GetCurrentCustomerSubscriptionUseCase>()
-                : null,
+            ? getIt<GetCurrentCustomerSubscriptionUseCase>()
+            : null,
         sharedPrefHelper: getIt.isRegistered<SharedPrefHelper>()
             ? getIt<SharedPrefHelper>()
             : null,
@@ -161,8 +180,8 @@ Future<void> configureDependencies() async {
             : null,
         getSubscriptionBillingUseCase:
             getIt.isRegistered<GetSubscriptionBillingUseCase>()
-                ? getIt<GetSubscriptionBillingUseCase>()
-                : null,
+            ? getIt<GetSubscriptionBillingUseCase>()
+            : null,
       ),
     );
   }
@@ -175,5 +194,89 @@ Future<void> configureDependencies() async {
       ),
     );
   }
-}
 
+  // 🔹 Native Voice Calling Registrations
+  if (!getIt.isRegistered<NativeVoiceDataSource>()) {
+    getIt.registerLazySingleton<NativeVoiceDataSource>(
+      NativeVoiceDataSourceImpl.create,
+    );
+  }
+  if (!getIt.isRegistered<NativeVoiceRepository>()) {
+    getIt.registerLazySingleton<NativeVoiceRepository>(
+      () => NativeVoiceRepositoryImpl(getIt<NativeVoiceDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<NativeVoiceSessionBridge>()) {
+    getIt.registerLazySingleton<NativeVoiceSessionBridge>(
+      NativeVoiceSessionBridge.create,
+    );
+  }
+  if (!getIt.isRegistered<VoicePermissionService>()) {
+    getIt.registerLazySingleton<VoicePermissionService>(
+      () => const VoicePermissionService.create(),
+    );
+  }
+  if (!getIt.isRegistered<NativeVoiceProvisioner>()) {
+    getIt.registerLazySingleton<NativeVoiceProvisioner>(
+      () => NativeVoiceProvisioner(
+        getIt<RegisterVoiceDeviceUseCase>(),
+        getIt<RevokeVoiceDeviceUseCase>(),
+        getIt<TokenService>(),
+        getIt<VoiceDeviceSessionStorage>(),
+        getIt<NativeVoiceSessionBridge>(),
+        getIt<NativeVoiceRepository>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<AnswerNativeCallUseCase>()) {
+    getIt.registerFactory<AnswerNativeCallUseCase>(
+      () => AnswerNativeCallUseCase(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<RejectNativeCallUseCase>()) {
+    getIt.registerFactory<RejectNativeCallUseCase>(
+      () => RejectNativeCallUseCase(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<EndNativeCallUseCase>()) {
+    getIt.registerFactory<EndNativeCallUseCase>(
+      () => EndNativeCallUseCase(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<SetNativeCallMutedUseCase>()) {
+    getIt.registerFactory<SetNativeCallMutedUseCase>(
+      () => SetNativeCallMutedUseCase(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<SetNativeCallAudioRouteUseCase>()) {
+    getIt.registerFactory<SetNativeCallAudioRouteUseCase>(
+      () => SetNativeCallAudioRouteUseCase(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<VoiceNavigationCoordinator>()) {
+    getIt.registerLazySingleton<VoiceNavigationCoordinator>(
+      () => VoiceNavigationCoordinator(
+        getIt<NativeVoiceRepository>(),
+        getIt<AppNavigatorService>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<VoicePermissionSetupViewModel>()) {
+    getIt.registerFactory<VoicePermissionSetupViewModel>(
+      () => VoicePermissionSetupViewModel(getIt<NativeVoiceRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<CallingViewModel>()) {
+    getIt.registerFactory<CallingViewModel>(
+      () => CallingViewModel(
+        getIt<AnswerNativeCallUseCase>(),
+        getIt<RejectNativeCallUseCase>(),
+        getIt<EndNativeCallUseCase>(),
+        getIt<SetNativeCallMutedUseCase>(),
+        getIt<SetNativeCallAudioRouteUseCase>(),
+        getIt<NativeVoiceRepository>(),
+        getIt<GetVoiceCallDisplayUseCase>(),
+      ),
+    );
+  }
+}

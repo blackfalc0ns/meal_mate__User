@@ -13,7 +13,7 @@ import 'package:meal_meat_user/features/notifications/presentation/manager/notif
 typedef AuthRefreshServiceProvider = AuthRefreshService Function();
 
 @lazySingleton
-class TokenInterceptor extends QueuedInterceptor {
+class TokenInterceptor extends Interceptor {
   TokenInterceptor({
     required this._tokenService,
     required this._navigatorService,
@@ -81,7 +81,8 @@ class TokenInterceptor extends QueuedInterceptor {
     final isUnauthorized = err.response?.statusCode == 401;
     final shouldSkipAuth = options.extra[skipAuthKey] == true;
     final alreadyRetried = options.extra[_refreshRetryKey] == true;
-    final isCheckout = options.path.contains('/subscriptions/checkout') ||
+    final isCheckout =
+        options.path.contains('/subscriptions/checkout') ||
         options.extra[noAutoRetryKey] == true;
 
     if (!isUnauthorized || shouldSkipAuth) {

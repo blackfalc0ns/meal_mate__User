@@ -1,4 +1,5 @@
 import '../../domain/entities/call_driver_entity.dart';
+import '../../domain/entities/native_call_snapshot_entity.dart';
 import '../../domain/entities/voice_call_display_entity.dart';
 import '../../domain/entities/voice_call_snapshot_entity.dart';
 import '../../domain/entities/voice_call_status.dart';
@@ -6,6 +7,7 @@ import '../../domain/entities/voice_call_status.dart';
 class CallingState {
   const CallingState({
     this.snapshot,
+    this.nativeSnapshot,
     this.driver,
     this.display,
     this.status = VoiceCallStatus.unknown,
@@ -18,6 +20,7 @@ class CallingState {
   });
 
   final VoiceCallSnapshotEntity? snapshot;
+  final NativeCallSnapshotEntity? nativeSnapshot;
   final CallDriverEntity? driver;
   final VoiceCallDisplayEntity? display;
   final VoiceCallStatus status;
@@ -35,43 +38,39 @@ class CallingState {
   }
 
   String resolvedDriverName(String fallback) {
-    if (display != null && display!.resolvedDriverName.isNotEmpty) {
-      return display!.resolvedDriverName;
-    }
-    if (driver != null && driver!.name.isNotEmpty) {
-      return driver!.name;
+    if (nativeSnapshot?.callerDisplay?.callerName.isNotEmpty == true &&
+        nativeSnapshot!.callerDisplay!.callerName.toLowerCase() != 'null') {
+      return nativeSnapshot!.callerDisplay!.callerName;
     }
     return fallback;
   }
 
   String resolvedDriverRole(String fallback) {
-    if (display != null &&
-        display!.driverRole != null &&
-        display!.driverRole!.trim().isNotEmpty) {
-      return display!.driverRole!.trim();
-    }
-    if (driver != null && driver!.role.isNotEmpty) {
-      return driver!.role;
+    if (nativeSnapshot?.callerDisplay?.callerRole?.trim().isNotEmpty == true &&
+        nativeSnapshot!.callerDisplay!.callerRole!.trim().toLowerCase() !=
+            'null') {
+      return nativeSnapshot!.callerDisplay!.callerRole!.trim();
     }
     return fallback;
   }
 
   String resolvedDeliveryAddress(String fallback) {
-    if (display != null && display!.resolvedAddress.isNotEmpty) {
-      return display!.resolvedAddress;
-    }
-    if (driver != null && driver!.addressDetails.isNotEmpty) {
-      return driver!.addressDetails;
-    }
     return fallback;
   }
 
   String? resolvedDriverImageUrl(String baseUrl) {
-    return display?.resolveDriverImageUrl(baseUrl);
+    if (nativeSnapshot?.callerDisplay?.avatarUrl != null &&
+        nativeSnapshot!.callerDisplay!.avatarUrl!.trim().isNotEmpty) {
+      final url = nativeSnapshot!.callerDisplay!.avatarUrl!.trim();
+      if (url.toLowerCase() == 'null') return null;
+      return Uri.parse(baseUrl).resolve(url).toString();
+    }
+    return null;
   }
 
   CallingState copyWith({
     VoiceCallSnapshotEntity? Function()? snapshot,
+    NativeCallSnapshotEntity? Function()? nativeSnapshot,
     CallDriverEntity? Function()? driver,
     VoiceCallDisplayEntity? Function()? display,
     VoiceCallStatus? status,
@@ -84,6 +83,9 @@ class CallingState {
   }) {
     return CallingState(
       snapshot: snapshot != null ? snapshot() : this.snapshot,
+      nativeSnapshot: nativeSnapshot != null
+          ? nativeSnapshot()
+          : this.nativeSnapshot,
       driver: driver != null ? driver() : this.driver,
       display: display != null ? display() : this.display,
       status: status ?? this.status,

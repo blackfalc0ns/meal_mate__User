@@ -24,11 +24,7 @@ import 'package:meal_meat_user/features/calling/presentation/widgets/calling_dri
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_header_brand.dart';
 
 class ActiveCallScreen extends StatelessWidget {
-  const ActiveCallScreen({
-    super.key,
-    this.driver,
-    this.viewModel,
-  });
+  const ActiveCallScreen({super.key, this.driver, this.viewModel});
 
   final CallDriverEntity? driver;
   final CallingViewModel? viewModel;
@@ -76,8 +72,8 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final vm = context.read<CallingViewModel>();
       if (vm.state.hasAudioPermissionError) {
-        final granted =
-            await VoicePermissionService.instance.requestMicrophone();
+        final granted = await VoicePermissionService.instance
+            .requestMicrophone();
         if (granted && mounted) {
           unawaited(vm.retryMicrophonePermission());
         }
@@ -105,7 +101,9 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
     return BlocConsumer<CallingViewModel, CallingState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
+        if ((state.status.isTerminal ||
+                state.status == VoiceCallStatus.ended) &&
+            state.nativeSnapshot == null) {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           } else {
@@ -149,9 +147,9 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                         const SizedBox(height: Spacing.xs),
                         GestureDetector(
                           onTap: () async {
-                            final granted =
-                                await VoicePermissionService.instance
-                                    .requestMicrophone();
+                            final granted = await VoicePermissionService
+                                .instance
+                                .requestMicrophone();
                             if (granted && context.mounted) {
                               unawaited(
                                 context
@@ -184,7 +182,9 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                                 ),
                                 const SizedBox(width: Spacing.xs),
                                 Text(
-                                  Localizations.localeOf(context).languageCode ==
+                                  Localizations.localeOf(
+                                            context,
+                                          ).languageCode ==
                                           'ar'
                                       ? 'يرجى تفعيل إذن الميكروفون للتحدث (اضغط هنا)'
                                       : 'Tap to grant microphone permission to speak',
@@ -207,7 +207,8 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: CallingDriverAvatarRings(
-                                  avatarAsset: activeDriver?.avatarAsset ??
+                                  avatarAsset:
+                                      activeDriver?.avatarAsset ??
                                       Assets.profileAvatar,
                                   avatarUrl: avatarUrl,
                                 ),
@@ -234,8 +235,8 @@ class _ActiveCallViewState extends State<_ActiveCallView> {
                             CallingActiveAddressCard(
                               title:
                                   activeDriver?.addressTitle.isNotEmpty == true
-                                      ? activeDriver!.addressTitle
-                                      : locale.calling_delivery_request,
+                                  ? activeDriver!.addressTitle
+                                  : locale.calling_delivery_request,
                               addressDetails: addressDetails.isNotEmpty
                                   ? addressDetails
                                   : locale.calling_delivery_request,

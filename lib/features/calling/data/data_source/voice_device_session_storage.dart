@@ -2,17 +2,23 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../core/services/native_voice_session_bridge.dart';
+import '../../../../core/services/token_service.dart';
 import '../../domain/entities/voice_device_session_entity.dart';
 
 @lazySingleton
 class VoiceDeviceSessionStorage {
   VoiceDeviceSessionStorage(
     this._secureStorage,
-    this._sharedPreferences,
-  );
+    this._sharedPreferences, [
+    this._nativeSessionBridge,
+    this._tokenService,
+  ]);
 
   final FlutterSecureStorage _secureStorage;
   final SharedPreferences _sharedPreferences;
+  final NativeVoiceSessionBridge? _nativeSessionBridge;
+  final TokenService? _tokenService;
 
   static const String _sessionKey = 'voice_device_session_id';
   static const String _proofKey = 'voice_device_control_proof';
@@ -20,7 +26,10 @@ class VoiceDeviceSessionStorage {
   static const String _fcmTokenIdKey = 'voice_device_fcm_token_id';
 
   Future<void> saveSession(VoiceDeviceSessionEntity session) async {
-    await _secureStorage.write(key: _sessionKey, value: session.deviceSessionId);
+    await _secureStorage.write(
+      key: _sessionKey,
+      value: session.deviceSessionId,
+    );
     await _secureStorage.write(key: _proofKey, value: session.controlProof);
     await _sharedPreferences.setString(
       _expiryKey,
@@ -34,13 +43,61 @@ class VoiceDeviceSessionStorage {
     }
   }
 
+  /// Called by the authenticated provisioner only after checking account/lifecycle.
+  Future<void> syncNativeSession(
+    VoiceDeviceSessionEntity session, {
+    bool Function()? isCurrent,
+  }) async {
+    final bridge = _nativeSessionBridge;
+    if (bridge != null) {
+      try {
+        final meta = await bridge.getSessionMetadata();
+        final accountId =
+            await _tokenService?.getCurrentUserId() ?? meta.accountId;
+        final token = _tokenService != null
+            ? await _tokenService.getToken()
+            : await bridge.readAccessToken(meta.sessionRevision);
+        if (accountId == null ||
+            accountId.isEmpty ||
+            token == null ||
+            token.isEmpty) {
+          throw StateError(
+            'Authenticated credentials are required for native voice',
+          );
+        }
+        final refreshToken = await _tokenService?.getRefreshToken();
+        if (isCurrent != null && !isCurrent()) return;
+        final result = await bridge.installSession(
+          expectedRevision: meta.sessionRevision,
+          accountId: accountId,
+          voiceDeviceSessionId: session.deviceSessionId,
+          controlProof: session.controlProof,
+          expiresAtUtc: session.expiresAtUtc.toUtc().toIso8601String(),
+          accessToken: token,
+          refreshToken: refreshToken,
+        );
+        if (!result.isSuccess) {
+          throw StateError(
+            result.errorCode ?? 'Native voice session install failed',
+          );
+        }
+      } catch (_) {
+        rethrow;
+      }
+    }
+  }
+
   Future<VoiceDeviceSessionEntity?> getSession() async {
     final sessionId = await _secureStorage.read(key: _sessionKey);
     final proof = await _secureStorage.read(key: _proofKey);
     final expiryIso = _sharedPreferences.getString(_expiryKey);
     final fcmTokenId = _sharedPreferences.getString(_fcmTokenIdKey);
 
-    if (sessionId == null || sessionId.isEmpty || proof == null || proof.isEmpty || expiryIso == null) {
+    if (sessionId == null ||
+        sessionId.isEmpty ||
+        proof == null ||
+        proof.isEmpty ||
+        expiryIso == null) {
       return null;
     }
 
@@ -80,7 +137,8 @@ class VoiceDeviceSessionStorage {
   }
 
   Set<String> getTerminalCallIds() {
-    return (_sharedPreferences.getStringList(_terminalCallIdsKey) ?? []).toSet();
+    return (_sharedPreferences.getStringList(_terminalCallIdsKey) ?? [])
+        .toSet();
   }
 
   Future<void> saveLastSequence(String callId, int sequence) async {
@@ -88,7 +146,9 @@ class VoiceDeviceSessionStorage {
     Map<String, dynamic> map = {};
     if (raw != null) {
       try {
-        map = Map<String, dynamic>.from(const JsonDecoder().convert(raw) as Map);
+        map = Map<String, dynamic>.from(
+          const JsonDecoder().convert(raw) as Map,
+        );
       } catch (_) {}
     }
     map[callId] = sequence;
@@ -122,11 +182,13 @@ class VoiceDeviceSessionStorage {
   }
 
   Set<String> getProcessedEventIds() {
-    return (_sharedPreferences.getStringList(_processedEventIdsKey) ?? []).toSet();
+    return (_sharedPreferences.getStringList(_processedEventIdsKey) ?? [])
+        .toSet();
   }
 
   Future<void> saveProcessedMessageId(String messageId) async {
-    final list = _sharedPreferences.getStringList(_processedMessageIdsKey) ?? [];
+    final list =
+        _sharedPreferences.getStringList(_processedMessageIdsKey) ?? [];
     if (!list.contains(messageId)) {
       list.add(messageId);
       if (list.length > 200) list.removeAt(0);
@@ -135,7 +197,8 @@ class VoiceDeviceSessionStorage {
   }
 
   Set<String> getProcessedMessageIds() {
-    return (_sharedPreferences.getStringList(_processedMessageIdsKey) ?? []).toSet();
+    return (_sharedPreferences.getStringList(_processedMessageIdsKey) ?? [])
+        .toSet();
   }
 
   Future<void> clearSession() async {
@@ -151,6 +214,15 @@ class VoiceDeviceSessionStorage {
     await _sharedPreferences.remove(_lastSequencesKey);
     await _sharedPreferences.remove(_processedEventIdsKey);
     await _sharedPreferences.remove(_processedMessageIdsKey);
+    final bridge = _nativeSessionBridge;
+    if (bridge != null) {
+      try {
+        final meta = await bridge.getSessionMetadata();
+        await bridge.clearSession(
+          expectedRevision: meta.sessionRevision,
+          reason: 'logout',
+        );
+      } catch (_) {}
+    }
   }
 }
-

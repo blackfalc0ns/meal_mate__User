@@ -107,19 +107,31 @@ import '../../features/calendar/presentation/manager/overview/calendar_overview_
     as _i568;
 import '../../features/calendar/presentation/manager/restaurant_picker/restaurant_picker_view_model.dart'
     as _i154;
+import '../../features/calling/data/data_source/native_voice_data_source.dart'
+    as _i1072;
+import '../../features/calling/data/data_source/native_voice_data_source_impl.dart'
+    as _i706;
 import '../../features/calling/data/data_source/voice_call_remote_data_source.dart'
     as _i712;
 import '../../features/calling/data/data_source/voice_call_remote_data_source_impl.dart'
     as _i71;
 import '../../features/calling/data/data_source/voice_device_session_storage.dart'
     as _i827;
+import '../../features/calling/data/repo/native_voice_repository_impl.dart'
+    as _i180;
 import '../../features/calling/data/repo/voice_call_repository_impl.dart'
     as _i435;
+import '../../features/calling/domain/repo/native_voice_repository.dart'
+    as _i224;
 import '../../features/calling/domain/repo/voice_call_repository.dart' as _i937;
 import '../../features/calling/domain/usecase/ack_voice_call_ringing_usecase.dart'
     as _i494;
+import '../../features/calling/domain/usecase/answer_native_call_usecase.dart'
+    as _i454;
 import '../../features/calling/domain/usecase/answer_voice_call_usecase.dart'
     as _i614;
+import '../../features/calling/domain/usecase/end_native_call_usecase.dart'
+    as _i278;
 import '../../features/calling/domain/usecase/end_voice_call_usecase.dart'
     as _i329;
 import '../../features/calling/domain/usecase/get_active_voice_call_usecase.dart'
@@ -134,6 +146,8 @@ import '../../features/calling/domain/usecase/get_voice_ice_servers_usecase.dart
     as _i518;
 import '../../features/calling/domain/usecase/register_voice_device_usecase.dart'
     as _i923;
+import '../../features/calling/domain/usecase/reject_native_call_usecase.dart'
+    as _i620;
 import '../../features/calling/domain/usecase/reject_voice_call_usecase.dart'
     as _i1059;
 import '../../features/calling/domain/usecase/report_voice_connected_usecase.dart'
@@ -144,12 +158,20 @@ import '../../features/calling/domain/usecase/revoke_voice_device_usecase.dart'
     as _i938;
 import '../../features/calling/domain/usecase/send_voice_heartbeat_usecase.dart'
     as _i17;
+import '../../features/calling/domain/usecase/set_native_call_audio_route_usecase.dart'
+    as _i980;
+import '../../features/calling/domain/usecase/set_native_call_muted_usecase.dart'
+    as _i904;
 import '../../features/calling/presentation/manager/calling_view_model.dart'
     as _i653;
+import '../../features/calling/presentation/manager/voice_permission_setup_view_model.dart'
+    as _i880;
 import '../../features/calling/service/voice_call_manager.dart' as _i613;
 import '../../features/calling/service/voice_call_signalr_service.dart'
     as _i493;
 import '../../features/calling/service/voice_callkit_service.dart' as _i1045;
+import '../../features/calling/service/voice_navigation_coordinator.dart'
+    as _i402;
 import '../../features/calling/service/voice_webrtc_service.dart' as _i698;
 import '../../features/change_password/data/data_source/change_password_remote_data_source.dart'
     as _i263;
@@ -264,7 +286,7 @@ import '../../features/family_subscription_setup/domain/usecase/abandon_family_d
 import '../../features/family_subscription_setup/domain/usecase/add_family_member_usecase.dart'
     as _i843;
 import '../../features/family_subscription_setup/domain/usecase/delete_family_member_usecase.dart'
-    as _i880;
+    as _i881;
 import '../../features/family_subscription_setup/domain/usecase/get_family_flow_current_usecase.dart'
     as _i34;
 import '../../features/family_subscription_setup/domain/usecase/get_family_relationships_usecase.dart'
@@ -374,7 +396,7 @@ import '../../features/influencer/wallet/domain/usecase/get_influencer_withdrawa
 import '../../features/influencer/wallet/domain/usecase/get_influencer_withdrawals_usecase.dart'
     as _i411;
 import '../../features/influencer/wallet/presentation/manager/influencer_wallet_view_model.dart'
-    as _i224;
+    as _i225;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source.dart'
     as _i559;
 import '../../features/meal_details/data/data_source/meal_details_remote_data_source_impl.dart'
@@ -469,7 +491,7 @@ import '../../features/profile/data/data_source/profile_remote_data_source_impl.
     as _i531;
 import '../../features/profile/data/repo/profile_repository_impl.dart'
     as _i1015;
-import '../../features/profile/domain/repo/profile_repository.dart' as _i311;
+import '../../features/profile/domain/repo/profile_repository.dart' as _i312;
 import '../../features/profile/domain/usecase/delete_customer_profile_image_usecase.dart'
     as _i186;
 import '../../features/profile/domain/usecase/get_customer_profile_usecase.dart'
@@ -637,6 +659,7 @@ import '../services/device_id_service.dart' as _i148;
 import '../services/language_interceptor.dart' as _i32;
 import '../services/language_service.dart' as _i819;
 import '../services/location_service.dart' as _i669;
+import '../services/native_voice_session_bridge.dart' as _i311;
 import '../services/push_notification_service.dart' as _i65;
 import '../services/retry_interceptor.dart' as _i844;
 import '../services/server_time_interceptor.dart' as _i605;
@@ -698,11 +721,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i669.LocationService>(
       () => const _i669.LocationService(),
     );
+    gh.lazySingleton<_i311.NativeVoiceSessionBridge>(
+      () => _i311.NativeVoiceSessionBridge.create(),
+    );
     gh.lazySingleton<_i1039.ServerTimeService>(
       () => _i1039.ServerTimeService(),
     );
     gh.lazySingleton<_i161.VoicePermissionService>(
-      () => const _i161.VoicePermissionService(),
+      () => const _i161.VoicePermissionService.create(),
     );
     gh.lazySingleton<_i1045.VoiceCallKitService>(
       () => _i1045.VoiceCallKitService(),
@@ -727,16 +753,35 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i42.SharedPrefHelper>(
       () => _i42.SharedPrefHelper(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i1072.NativeVoiceDataSource>(
+      () => _i706.NativeVoiceDataSourceImpl.create(),
+    );
     gh.factory<_i605.ServerTimeInterceptor>(
       () => _i605.ServerTimeInterceptor(gh<_i1039.ServerTimeService>()),
     );
     gh.lazySingleton<_i1028.PaymentAttemptStore>(
       () => _i1028.PaymentAttemptStoreImpl(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.factory<_i653.CallingViewModel>(
+      () => _i653.CallingViewModel(
+        gh<_i454.AnswerNativeCallUseCase>(),
+        gh<_i620.RejectNativeCallUseCase>(),
+        gh<_i278.EndNativeCallUseCase>(),
+        gh<_i904.SetNativeCallMutedUseCase>(),
+        gh<_i980.SetNativeCallAudioRouteUseCase>(),
+        gh<_i224.NativeVoiceRepository>(),
+        gh<_i343.GetVoiceCallDisplayUseCase>(),
+      ),
+    );
+    gh.lazySingleton<_i224.NativeVoiceRepository>(
+      () => _i180.NativeVoiceRepositoryImpl(gh<_i1072.NativeVoiceDataSource>()),
+    );
     gh.lazySingleton<_i827.VoiceDeviceSessionStorage>(
       () => _i827.VoiceDeviceSessionStorage(
         gh<_i558.FlutterSecureStorage>(),
         gh<_i460.SharedPreferences>(),
+        gh<_i311.NativeVoiceSessionBridge>(),
+        gh<_i227.TokenService>(),
       ),
     );
     gh.lazySingleton<_i227.TokenService>(
@@ -745,11 +790,39 @@ extension GetItInjectableX on _i174.GetIt {
         sharedPreferences: gh<_i460.SharedPreferences>(),
       ),
     );
+    gh.factory<_i454.AnswerNativeCallUseCase>(
+      () => _i454.AnswerNativeCallUseCase(gh<_i224.NativeVoiceRepository>()),
+    );
+    gh.factory<_i278.EndNativeCallUseCase>(
+      () => _i278.EndNativeCallUseCase(gh<_i224.NativeVoiceRepository>()),
+    );
+    gh.factory<_i620.RejectNativeCallUseCase>(
+      () => _i620.RejectNativeCallUseCase(gh<_i224.NativeVoiceRepository>()),
+    );
+    gh.factory<_i980.SetNativeCallAudioRouteUseCase>(
+      () => _i980.SetNativeCallAudioRouteUseCase(
+        gh<_i224.NativeVoiceRepository>(),
+      ),
+    );
+    gh.factory<_i904.SetNativeCallMutedUseCase>(
+      () => _i904.SetNativeCallMutedUseCase(gh<_i224.NativeVoiceRepository>()),
+    );
+    gh.factory<_i880.VoicePermissionSetupViewModel>(
+      () => _i880.VoicePermissionSetupViewModel(
+        gh<_i224.NativeVoiceRepository>(),
+      ),
+    );
     gh.lazySingleton<_i148.DeviceIdService>(
       () => _i148.DeviceIdService(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i819.LanguageService>(
       () => _i819.LanguageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i402.VoiceNavigationCoordinator>(
+      () => _i402.VoiceNavigationCoordinator(
+        gh<_i224.NativeVoiceRepository>(),
+        gh<_i179.AppNavigatorService>(),
+      ),
     );
     gh.factory<_i807.CalendarFlowViewModel>(
       () => _i807.CalendarFlowViewModel(
@@ -1153,8 +1226,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i986.FamilyPackagesRemoteDataSource>(),
       ),
     );
-    gh.factory<_i224.InfluencerWalletViewModel>(
-      () => _i224.InfluencerWalletViewModel(
+    gh.factory<_i225.InfluencerWalletViewModel>(
+      () => _i225.InfluencerWalletViewModel(
         gh<_i882.GetInfluencerWalletUseCase>(),
         gh<_i411.GetInfluencerWithdrawalsUseCase>(),
         gh<_i82.CreateInfluencerWithdrawalUseCase>(),
@@ -1241,7 +1314,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i62.FoodPreferencesRepository>(),
       ),
     );
-    gh.factory<_i311.ProfileRepository>(
+    gh.factory<_i312.ProfileRepository>(
       () => _i1015.ProfileRepositoryImpl(gh<_i998.ProfileRemoteDataSource>()),
     );
     gh.factory<_i801.GetFamilySizePackagesUseCase>(
@@ -1499,8 +1572,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
-    gh.factory<_i880.DeleteFamilyMemberUseCase>(
-      () => _i880.DeleteFamilyMemberUseCase(
+    gh.factory<_i881.DeleteFamilyMemberUseCase>(
+      () => _i881.DeleteFamilyMemberUseCase(
         gh<_i925.FamilySubscriptionSetupRepository>(),
       ),
     );
@@ -1536,19 +1609,19 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i186.DeleteCustomerProfileImageUseCase>(
       () => _i186.DeleteCustomerProfileImageUseCase(
-        gh<_i311.ProfileRepository>(),
+        gh<_i312.ProfileRepository>(),
       ),
     );
     gh.factory<_i994.GetCustomerProfileUseCase>(
-      () => _i994.GetCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+      () => _i994.GetCustomerProfileUseCase(gh<_i312.ProfileRepository>()),
     );
     gh.factory<_i399.UpdateCustomerProfileImageUseCase>(
       () => _i399.UpdateCustomerProfileImageUseCase(
-        gh<_i311.ProfileRepository>(),
+        gh<_i312.ProfileRepository>(),
       ),
     );
     gh.factory<_i857.UpdateCustomerProfileUseCase>(
-      () => _i857.UpdateCustomerProfileUseCase(gh<_i311.ProfileRepository>()),
+      () => _i857.UpdateCustomerProfileUseCase(gh<_i312.ProfileRepository>()),
     );
     gh.factory<_i421.SubscriptionProgramsViewModel>(
       () => _i421.SubscriptionProgramsViewModel(
@@ -1582,12 +1655,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i832.GetSubscriptionMealDetailsUseCase>(
       () => _i832.GetSubscriptionMealDetailsUseCase(
         gh<_i63.MealDetailsRepository>(),
-      ),
-    );
-    gh.factory<_i653.CallingViewModel>(
-      () => _i653.CallingViewModel(
-        gh<_i613.VoiceCallManager>(),
-        gh<_i698.VoiceWebRtcService>(),
       ),
     );
     gh.factory<_i490.CreateSubscriptionCancellationRequestUseCase>(
@@ -1888,7 +1955,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i805.GetFamilyRelationshipsUseCase>(),
         gh<_i843.AddFamilyMemberUseCase>(),
         gh<_i237.UpdateFamilyMemberUseCase>(),
-        gh<_i880.DeleteFamilyMemberUseCase>(),
+        gh<_i881.DeleteFamilyMemberUseCase>(),
         gh<_i873.AbandonFamilyDraftUseCase>(),
         gh<_i945.GetCustomerAddressesUseCase>(),
         gh<_i973.LookupFamilyMemberUseCase>(),

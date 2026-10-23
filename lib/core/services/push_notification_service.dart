@@ -7,15 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/device_id_service.dart';
 import 'package:meal_meat_user/core/services/push_notification_payload.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
-import 'package:flutter_callkit_incoming/entities/entities.dart';
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:meal_meat_user/features/calling/service/voice_call_manager.dart';
+import 'native_voice_provisioner.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_response_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_unregister_request_entity.dart';
@@ -30,105 +27,15 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   if (message.data.containsKey('envelope') ||
       message.data['type'] == 'voice-call') {
-    final envelopeStr = message.data['envelope']?.toString();
-    if (envelopeStr != null) {
-      try {
-        final decoded = jsonDecode(envelopeStr);
-        if (decoded is Map<String, dynamic>) {
-          final callId = decoded['callId']?.toString();
-          final eventType = decoded['eventType']?.toString().toLowerCase();
-          final payload = decoded['payload'] is Map
-              ? decoded['payload'] as Map
-              : null;
-          final status = payload?['status']?.toString().toLowerCase();
-
-          if (callId != null && callId.isNotEmpty) {
-            if (eventType == 'call:ringing' ||
-                status == 'ringing' ||
-                eventType == 'call:created') {
-              final deadlineStr = payload?['deadlineAtUtc']?.toString();
-              int durationMs = 30000;
-              if (deadlineStr != null && deadlineStr.isNotEmpty) {
-                final deadline = DateTime.tryParse(deadlineStr)?.toUtc();
-                if (deadline != null) {
-                  int serverOffsetMs = 0;
-                  try {
-                    final prefs = await SharedPreferences.getInstance();
-                    serverOffsetMs = prefs.getInt('server_time_offset_ms') ?? 0;
-                  } catch (e) {
-                    debugPrint(
-                      '[PushNotification] Failed reading server offset in bg: $e',
-                    );
-                  }
-                  final nowServer = DateTime.now().toUtc().add(
-                    Duration(milliseconds: serverOffsetMs),
-                  );
-                  final diff = deadline.difference(nowServer);
-                  if (diff.isNegative || diff.inMilliseconds <= 0) {
-                    debugPrint(
-                      '[PushNotification] Call ring deadline already expired: $deadline vs serverNow: $nowServer',
-                    );
-                    return; // already expired
-                  }
-                  durationMs = diff.inMilliseconds;
-                }
-              }
-
-              final params = CallKitParams(
-                id: callId,
-                nameCaller: 'مندوب التوصيل',
-                appName: 'MealMate',
-                handle: 'مندوب التوصيل',
-                type: 0,
-                duration: durationMs,
-                extra: <String, dynamic>{'callId': callId},
-                android: const AndroidParams(
-                  isCustomNotification: true,
-                  isShowLogo: false,
-                  ringtonePath: 'system_ringtone_default',
-                  backgroundColor: '#090909',
-                  actionColor: '#078847',
-                  textColor: '#ffffff',
-                  textAccept: 'Accept',
-                  textDecline: 'Decline',
-                ),
-                ios: const IOSParams(
-                  iconName: 'AppIcon',
-                  handleType: 'generic',
-                  supportsVideo: false,
-                  maximumCallGroups: 1,
-                  maximumCallsPerCallGroup: 1,
-                  audioSessionMode: 'voiceChat',
-                  audioSessionActive: true,
-                  audioSessionPreferredSampleRate: 44100.0,
-                  audioSessionPreferredIOBufferDuration: 0.005,
-                  supportsDTMF: false,
-                  supportsHolding: false,
-                  supportsGrouping: false,
-                  supportsUngrouping: false,
-                ),
-              );
-              await FlutterCallkitIncoming.showCallkitIncoming(params);
-            } else if (status == 'rejected' ||
-                status == 'cancelled' ||
-                status == 'missed' ||
-                status == 'failed' ||
-                status == 'ended') {
-              await FlutterCallkitIncoming.endCall(callId);
-            }
-          }
-        }
-      } catch (e) {
-        debugPrint(
-          '[PushNotification] Error processing background voice envelope: $e',
-        );
-      }
-    }
+    debugPrint(
+      '[PushNotification] Voice call push received in Dart background handler; native calling engine handles ringing independently.',
+    );
     return;
   }
 }
 
 void logPushNotificationMessage(String source, RemoteMessage message) {
+  if (!kDebugMode) return;
   debugPrint(
     formatPushNotificationDebugLog(
       source: source,
@@ -179,7 +86,14 @@ Map<String, dynamic> _sanitizePushNotificationData(Map<String, dynamic> data) {
 
 Object? _sanitizeDebugValue(String key, Object? value) {
   if (key.toLowerCase() == 'envelope') {
-    return '[REDACTED_ENVELOPE]';
+    if (value is String) {
+      try {
+        return _sanitizeDebugValue('payload', jsonDecode(value));
+      } on FormatException {
+        return '[INVALID_ENVELOPE]';
+      }
+    }
+    return _sanitizeDebugValue('payload', value);
   }
 
   if (value is Map) {
@@ -284,7 +198,7 @@ class PushNotificationService {
     final token = await _messaging.getToken();
     await registerCurrentToken(token: token);
     try {
-      unawaited(GetIt.instance<VoiceCallManager>().initialize());
+      GetIt.instance<NativeVoiceProvisioner>().initialize();
     } catch (_) {}
     return token;
   }
@@ -316,20 +230,10 @@ class PushNotificationService {
       if (regResult is ApiSuccessResult<DeviceTokenRegisterResponseEntity>) {
         final fcmDeviceTokenId = regResult.data.fcmDeviceTokenId;
         if (fcmDeviceTokenId != null && fcmDeviceTokenId.isNotEmpty) {
-          String? voipToken;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
-            try {
-              voipToken = await FlutterCallkitIncoming.getDevicePushTokenVoIP();
-            } catch (_) {}
-          }
-          if (GetIt.instance.isRegistered<VoiceCallManager>()) {
-            await GetIt.instance<VoiceCallManager>().ensureDeviceRegistered(
+          if (GetIt.instance.isRegistered<NativeVoiceProvisioner>()) {
+            await GetIt.instance<NativeVoiceProvisioner>().ensureRegistered(
               fcmDeviceTokenId: fcmDeviceTokenId,
-              apnsVoipToken: voipToken,
-              // The app can create an anonymous voice session during startup
-              // before authentication. Once the FCM registry ID is available
-              // after login/token refresh, re-register so the voice session is
-              // associated with the authenticated account and this token.
+              // Refresh the native registration after login or FCM rotation.
               force: true,
             );
           }
@@ -345,6 +249,9 @@ class PushNotificationService {
 
   Future<void> unregisterCurrentToken() async {
     try {
+      if (GetIt.instance.isRegistered<NativeVoiceProvisioner>()) {
+        await GetIt.instance<NativeVoiceProvisioner>().onLogout();
+      }
       if (!_tokenService.isAccessTokenSaved) {
         return;
       }
@@ -352,10 +259,6 @@ class PushNotificationService {
       final fcmToken = await _messaging.getToken();
       if (fcmToken == null || fcmToken.isEmpty) {
         return;
-      }
-
-      if (GetIt.instance.isRegistered<VoiceCallManager>()) {
-        await GetIt.instance<VoiceCallManager>().onLogout();
       }
 
       await _unregisterDeviceTokenUseCase(
@@ -407,9 +310,7 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(
-          message.data,
-        );
+        await GetIt.instance<NativeVoiceProvisioner>().handlePush(message.data);
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push: $e');
       }
@@ -453,9 +354,7 @@ class PushNotificationService {
     if (message.data.containsKey('envelope') ||
         message.data['type'] == 'voice-call') {
       try {
-        await GetIt.instance<VoiceCallManager>().handleFcmPushMessage(
-          message.data,
-        );
+        await GetIt.instance<NativeVoiceProvisioner>().handlePush(message.data);
       } catch (e) {
         debugPrint('[PushNotification] Error handling voice call push tap: $e');
       }

@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": 1,
+  "description": "Lifecycle transition and deduplication test fixtures for Voice Calls v2",
+  "cases": [
+    {
+      "case": "duplicate_push_hub",
+      "description": "Duplicate incoming ringing invite from push and hub must yield exactly 1 platform call and 0 answer requests",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "hub_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        }
+      ],
+      "expected": {
+        "platformCallsCreated": 1,
+        "answerRequests": 0,
+        "phase": "ringing"
+      }
+    },
+    {
+      "case": "answer_twice",
+      "description": "User tapping answer twice or simultaneous answer actions must dispatch only 1 answer request to backend",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "user_answer",
+          "callId": "call-a",
+          "requestId": "req-1"
+        },
+        {
+          "type": "user_answer",
+          "callId": "call-a",
+          "requestId": "req-1"
+        }
+      ],
+      "expected": {
+        "answerRequests": 1,
+        "phase": "answering"
+      }
+    },
+    {
+      "case": "terminal_then_old_ringing",
+      "description": "Late ringing push after a call was ended must be discarded and cannot revive the call",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "hub_ended",
+          "callId": "call-a",
+          "sequence": 4
+        },
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        }
+      ],
+      "expected": {
+        "phase": "ended",
+        "platformCallsCreatedAfterEnd": 0
+      }
+    },
+    {
+      "case": "old_callback_after_new_call",
+      "description": "Media callback from call A returning after call B rings must only clean call A resources without touching call B",
+      "input": [
+        {
+          "type": "end_call",
+          "callId": "call-a"
+        },
+        {
+          "type": "push_ringing",
+          "callId": "call-b",
+          "sequence": 1
+        },
+        {
+          "type": "async_media_ready",
+          "callId": "call-a"
+        }
+      ],
+      "expected": {
+        "activeCallId": "call-b",
+        "phase": "ringing",
+        "closedMediaCallId": "call-a"
+      }
+    },
+    {
+      "case": "server_answer_rejected",
+      "description": "Server returning HTTP 409 terminal to answer request must transition to ended and release microphone",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "user_answer",
+          "callId": "call-a",
+          "requestId": "req-1"
+        },
+        {
+          "type": "http_answer_response",
+          "callId": "call-a",
+          "statusCode": 409,
+          "body": {
+            "status": "ended",
+            "reason": "cancelled_by_caller"
+          }
+        }
+      ],
+      "expected": {
+        "phase": "ended",
+        "microphoneOpen": false,
+        "platformCallsEnded": 1
+      }
+    },
+    {
+      "case": "answer_loss_reconciliation",
+      "description": "Lost HTTP response for answer reconciles against active snapshot; winner matches current device, so media continues without secondary answer",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "user_answer",
+          "callId": "call-a",
+          "requestId": "req-1"
+        },
+        {
+          "type": "http_timeout",
+          "callId": "call-a"
+        },
+        {
+          "type": "reconcile_active_snapshot",
+          "callId": "call-a",
+          "status": "accepted",
+          "winningDeviceSessionId": "current-device-session"
+        }
+      ],
+      "expected": {
+        "phase": "connecting",
+        "answerRequestsTotal": 1
+      }
+    },
+    {
+      "case": "ice_before_offer",
+      "description": "Incoming ICE candidates before offer is set must be queued and drained once offer SDP is applied",
+      "input": [
+        {
+          "type": "ice_candidate",
+          "callId": "call-a",
+          "generation": 0,
+          "candidate": "candidate:1 1 UDP 2130706431 192.168.1.100 50000 typ host"
+        },
+        {
+          "type": "offer",
+          "callId": "call-a",
+          "generation": 0,
+          "sdp": "v=0\r\n..."
+        }
+      ],
+      "expected": {
+        "queuedCandidatesApplied": 1,
+        "droppedCandidates": 0
+      }
+    },
+    {
+      "case": "multi_device_winning_session",
+      "description": "If another device accepted the call (winningDeviceSessionId differs), local UI terminates without sending HTTP end against winning device",
+      "input": [
+        {
+          "type": "push_ringing",
+          "callId": "call-a",
+          "sequence": 1
+        },
+        {
+          "type": "reconcile_active_snapshot",
+          "callId": "call-a",
+          "status": "accepted",
+          "winningDeviceSessionId": "other-device-session"
+        }
+      ],
+      "expected": {
+        "phase": "ended",
+        "httpEndDispatched": false,
+        "reason": "answered_on_another_device"
+      }
+    }
+  ]
+}
