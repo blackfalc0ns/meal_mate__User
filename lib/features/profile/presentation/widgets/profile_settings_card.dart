@@ -42,6 +42,12 @@ class ProfileSettingsCard extends StatelessWidget {
             Navigator.of(context).pushNamed(AppRoutes.dietaryPreferences),
       ),
       (
+        icon: Icons.inventory_2_outlined,
+        title: locale.customer_orders_title,
+        subtitle: locale.customer_orders_delivered_only,
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.customerOrders),
+      ),
+      (
         icon: Icons.credit_card_rounded,
         title: locale.profile_billing,
         subtitle: locale.profile_billing_subtitle,

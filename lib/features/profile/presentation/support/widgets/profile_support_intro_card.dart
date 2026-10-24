@@ -21,7 +21,6 @@ class ProfileSupportIntroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return Container(
       width: double.infinity,
@@ -56,24 +55,25 @@ class ProfileSupportIntroCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
-                  vertical: Spacing.xxs,
-                ),
-                decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                ),
-                child: Text(
-                  badgeText ?? locale.profile_support_demo_tag,
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size9,
-                    color: color.primary,
+              if (badgeText != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                    vertical: Spacing.xxs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.secondaryContainer,
+                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  ),
+                  child: Text(
+                    badgeText!,
+                    style: getMediumStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size9,
+                      color: color.primary,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: Spacing.sm),

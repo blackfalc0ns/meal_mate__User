@@ -2,6 +2,11 @@ import 'package:meal_meat_user/features/offers/data/models/request/get_customer_
 import 'package:meal_meat_user/features/offers/data/models/request/campaign_quote_request_dto.dart';
 import 'package:meal_meat_user/features/offers/data/models/response/campaign_flow_response_dto.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:meal_meat_user/features/customer_support/data/models/request/create_customer_issue_request_dto.dart';
+import 'package:meal_meat_user/features/customer_support/data/models/request/reply_customer_issue_request_dto.dart';
+import 'package:meal_meat_user/features/customer_support/data/models/response/customer_support_options_response_dto.dart';
+import 'package:meal_meat_user/features/customer_support/data/models/response/customer_issue_response_dto.dart';
+import 'package:meal_meat_user/features/customer_orders/data/models/response/delivered_boxes_response_dto.dart';
 import 'package:meal_meat_user/features/subscription_checkout/data/models/response/eligible_start_dates_response_dto.dart';
 import 'package:meal_meat_user/features/compensations/data/models/response/compensation_response_dto.dart';
 import 'package:meal_meat_user/features/compensations/data/models/response/alternative_date_response_dto.dart';
@@ -146,6 +151,42 @@ part 'api_services.g.dart';
 abstract class ApiServices {
   @factoryMethod
   factory ApiServices(Dio dio) = _ApiServices;
+
+  @GET(EndPoints.customerSupportOptions)
+  Future<CustomerSupportOptionsResponseDto> getCustomerSupportOptions();
+
+  @GET(EndPoints.supportDeliveredBoxes)
+  Future<DeliveredBoxesResponseDto> getSupportDeliveredBoxes(
+    @Query('pageNumber') int pageNumber,
+    @Query('pageSize') int pageSize,
+    @Query('fromDate') String? fromDate,
+    @Query('toDate') String? toDate,
+    @Query('subscriptionId') String? subscriptionId,
+  );
+
+  @POST(EndPoints.customerSupportIssues)
+  Future<CustomerIssueResponseDto> createCustomerIssue(
+    @Body() CreateCustomerIssueRequestDto request,
+  );
+
+  @GET(EndPoints.customerSupportIssues)
+  Future<CustomerIssuesPageDto> getCustomerIssues(
+    @Query('pageNumber') int pageNumber,
+    @Query('pageSize') int pageSize,
+    @Query('status') String? status,
+    @Query('typeCode') String? typeCode,
+  );
+
+  @GET(EndPoints.customerSupportIssue)
+  Future<CustomerIssueResponseDto> getCustomerIssue(
+    @Path('caseId') String caseId,
+  );
+
+  @POST(EndPoints.customerSupportIssueMessages)
+  Future<void> replyCustomerIssue(
+    @Path('caseId') String caseId,
+    @Body() ReplyCustomerIssueRequestDto request,
+  );
 
   @POST(EndPoints.login)
   @Extra({TokenInterceptor.skipAuthKey: true})

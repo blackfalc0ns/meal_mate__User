@@ -81,6 +81,12 @@ class _NotificationsScreenState extends State<NotificationsScreen>
   void _navigateForNotification(NotificationItemEntity notification) {
     final link = notification.deepLink;
     if (link != null && link.isNotEmpty) {
+      final uri = Uri.tryParse(link);
+      if (uri != null &&
+          uri.path.startsWith(AppRoutes.customerSupportCasePrefix)) {
+        unawaited(Navigator.of(context).pushNamed(uri.path));
+        return;
+      }
       if (link.contains('calendar')) {
         unawaited(Navigator.of(context).pushNamed(AppRoutes.calendar));
         return;

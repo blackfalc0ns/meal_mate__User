@@ -6,7 +6,6 @@ import 'package:meal_meat_user/features/profile/data/repo/profile_support_fake_r
 import 'package:meal_meat_user/features/profile/domain/entities/profile_support_message_entity.dart';
 import 'package:meal_meat_user/features/profile/domain/usecase/submit_profile_support_message_usecase.dart';
 import 'package:meal_meat_user/features/profile/presentation/support/manager/profile_support_form_view_model.dart';
-import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_complaints_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_contact_us_screen.dart';
 
 void main() {
@@ -34,17 +33,16 @@ void main() {
 
         final result = await usecase(
           const ProfileSupportMessageEntity(
-            kind: ProfileSupportMessageKind.complaint,
+            kind: ProfileSupportMessageKind.contact,
             subject: 'Late delivery',
             message: 'My food was delayed by 30 mins',
-            category: 'delivery',
           ),
         );
 
         expect(result, isA<ApiSuccessResult<dynamic>>());
         final success = result as ApiSuccessResult;
         expect(success.data.isDemoOnly, isTrue);
-        expect(success.data.messageKind, ProfileSupportMessageKind.complaint);
+        expect(success.data.messageKind, ProfileSupportMessageKind.contact);
       },
     );
   });
@@ -94,22 +92,13 @@ void main() {
     });
   });
 
-  group('ProfileContactUsScreen and ProfileComplaintsScreen widgets', () {
+  group('ProfileContactUsScreen widgets', () {
     Widget buildContactWidget() {
       return const MaterialApp(
         locale: Locale('en'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: ProfileContactUsScreen(),
-      );
-    }
-
-    Widget buildComplaintsWidget() {
-      return const MaterialApp(
-        locale: Locale('en'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: ProfileComplaintsScreen(),
       );
     }
 
@@ -145,17 +134,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Please enter a valid email address'), findsOneWidget);
-    });
-
-    testWidgets('complaints screen displays category chips', (tester) async {
-      await tester.pumpWidget(buildComplaintsWidget());
-      await tester.pumpAndSettle();
-
-      expect(find.text('Complaint category'), findsOneWidget);
-      expect(find.text('Delivery'), findsOneWidget);
-      expect(find.text('Meals quality'), findsOneWidget);
-      expect(find.text('Payment & Invoices'), findsOneWidget);
-      expect(find.text('Other'), findsOneWidget);
     });
   });
 }

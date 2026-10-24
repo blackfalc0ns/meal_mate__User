@@ -7505,7 +7505,7 @@ abstract class AppLocalizations {
   /// No description provided for @profile_support_complaints_intro.
   ///
   /// In en, this message translates to:
-  /// **'We care about your experience. Submit your complaint below for local demonstration review.'**
+  /// **'Tell us what happened. You can link a delivered box or send a general complaint.'**
   String get profile_support_complaints_intro;
 
   /// No description provided for @profile_support_subject_label.
@@ -7633,6 +7633,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Understood'**
   String get profile_support_result_confirm;
+
+  /// No description provided for @customer_support_my_issues.
+  ///
+  /// In en, this message translates to:
+  /// **'My complaints'**
+  String get customer_support_my_issues;
+
+  /// No description provided for @customer_orders_title.
+  ///
+  /// In en, this message translates to:
+  /// **'My Orders'**
+  String get customer_orders_title;
+
+  /// No description provided for @customer_orders_delivered_only.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered orders available for reporting'**
+  String get customer_orders_delivered_only;
+
+  /// No description provided for @customer_orders_delivered_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered box'**
+  String get customer_orders_delivered_box;
+
+  /// No description provided for @customer_orders_view_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get customer_orders_view_details;
+
+  /// No description provided for @customer_orders_status_delivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get customer_orders_status_delivered;
+
+  /// No description provided for @customer_orders_box_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} box(es)'**
+  String customer_orders_box_count(int count);
+
+  /// No description provided for @customer_orders_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivered orders yet'**
+  String get customer_orders_empty_title;
+
+  /// No description provided for @customer_orders_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your delivered meal boxes and order history will appear here once received.'**
+  String get customer_orders_empty_subtitle;
+
+  /// No description provided for @customer_orders_info_banner.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recent delivered meal boxes. You can view each order\'s details or get support.'**
+  String get customer_orders_info_banner;
+
+  /// No description provided for @customer_support_choose_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Related delivery (optional)'**
+  String get customer_support_choose_delivery;
+
+  /// No description provided for @customer_support_linked_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked Order'**
+  String get customer_support_linked_order;
+
+  /// No description provided for @customer_support_choose_category_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select complaint category'**
+  String get customer_support_choose_category_hint;
+
+  /// No description provided for @customer_support_category_sheet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint Category'**
+  String get customer_support_category_sheet_title;
+
+  /// No description provided for @profile_support_remove_linked_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink order'**
+  String get profile_support_remove_linked_delivery;
+
+  /// No description provided for @customer_support_category_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a complaint category'**
+  String get customer_support_category_error;
+
+  /// No description provided for @customer_support_general_issue.
+  ///
+  /// In en, this message translates to:
+  /// **'General complaint'**
+  String get customer_support_general_issue;
+
+  /// No description provided for @customer_support_load_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get customer_support_load_more;
+
+  /// No description provided for @customer_support_no_deliveries.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivered boxes found'**
+  String get customer_support_no_deliveries;
+
+  /// No description provided for @customer_support_no_issues.
+  ///
+  /// In en, this message translates to:
+  /// **'No complaints yet'**
+  String get customer_support_no_issues;
+
+  /// No description provided for @customer_support_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Your complaint was sent successfully'**
+  String get customer_support_created;
+
+  /// No description provided for @customer_support_reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get customer_support_reply;
+
+  /// No description provided for @customer_support_reply_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply was sent'**
+  String get customer_support_reply_sent;
+
+  /// No description provided for @customer_support_reply_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your reply'**
+  String get customer_support_reply_hint;
+
+  /// No description provided for @customer_support_new_general_issue.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit general complaint'**
+  String get customer_support_new_general_issue;
+
+  /// No description provided for @customer_support_general_complaint_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit General Complaint'**
+  String get customer_support_general_complaint_title;
+
+  /// No description provided for @customer_support_order_complaint_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Order Issue'**
+  String get customer_support_order_complaint_title;
+
+  /// No description provided for @customer_support_general_complaint_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what happened regarding the service or account and our support team will follow up.'**
+  String get customer_support_general_complaint_desc;
+
+  /// No description provided for @customer_support_order_complaint_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Report any issue with this order and our team will follow up immediately.'**
+  String get customer_support_order_complaint_desc;
+
+  /// No description provided for @customer_support_no_issues_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t submitted any complaints yet. We are always here to help.'**
+  String get customer_support_no_issues_subtitle;
+
+  /// No description provided for @customer_support_ticket_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket ID'**
+  String get customer_support_ticket_id;
+
+  /// No description provided for @customer_support_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get customer_support_status;
+
+  /// No description provided for @customer_support_first_response_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'First response by'**
+  String get customer_support_first_response_deadline;
+
+  /// No description provided for @customer_support_resolution_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution by'**
+  String get customer_support_resolution_deadline;
+
+  /// No description provided for @customer_support_escalation_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Escalation by'**
+  String get customer_support_escalation_deadline;
+
+  /// No description provided for @customer_support_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get customer_support_retry;
+
+  /// No description provided for @customer_support_load_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load support information'**
+  String get customer_support_load_error;
+
+  /// No description provided for @customer_support_status_resolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get customer_support_status_resolved;
+
+  /// No description provided for @customer_support_status_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get customer_support_status_in_progress;
+
+  /// No description provided for @customer_support_status_open.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get customer_support_status_open;
+
+  /// No description provided for @customer_support_status_closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get customer_support_status_closed;
+
+  /// No description provided for @customer_support_status_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get customer_support_status_cancelled;
+
+  /// No description provided for @customer_support_view_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get customer_support_view_details;
+
+  /// No description provided for @customer_support_category_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account issue'**
+  String get customer_support_category_account;
+
+  /// No description provided for @customer_support_category_wrong_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong items'**
+  String get customer_support_category_wrong_items;
+
+  /// No description provided for @customer_support_category_food_quality.
+  ///
+  /// In en, this message translates to:
+  /// **'Food quality'**
+  String get customer_support_category_food_quality;
+
+  /// No description provided for @customer_support_category_late_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Late delivery'**
+  String get customer_support_category_late_delivery;
+
+  /// No description provided for @customer_support_category_packaging.
+  ///
+  /// In en, this message translates to:
+  /// **'Packaging'**
+  String get customer_support_category_packaging;
+
+  /// No description provided for @customer_support_category_missing_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing items'**
+  String get customer_support_category_missing_items;
+
+  /// No description provided for @customer_support_category_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get customer_support_category_other;
+
+  /// No description provided for @customer_support_filter_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get customer_support_filter_all;
+
+  /// No description provided for @customer_support_filter_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get customer_support_filter_in_progress;
+
+  /// No description provided for @customer_support_filter_resolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get customer_support_filter_resolved;
+
+  /// No description provided for @customer_support_issue_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Details'**
+  String get customer_support_issue_details_title;
+
+  /// No description provided for @customer_support_replies_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Replies & Updates'**
+  String get customer_support_replies_title;
+
+  /// No description provided for @customer_support_no_replies.
+  ///
+  /// In en, this message translates to:
+  /// **'No replies yet from the support team'**
+  String get customer_support_no_replies;
+
+  /// No description provided for @customer_support_issue_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue details & notes'**
+  String get customer_support_issue_description;
+
+  /// No description provided for @customer_support_sender_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Team'**
+  String get customer_support_sender_support;
+
+  /// No description provided for @customer_support_sender_you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get customer_support_sender_you;
+
+  /// No description provided for @customer_support_issue_closed_banner.
+  ///
+  /// In en, this message translates to:
+  /// **'This issue has been resolved and closed.'**
+  String get customer_support_issue_closed_banner;
+
+  /// No description provided for @customer_support_created_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get customer_support_created_at;
 
   /// No description provided for @profile_about_title.
   ///

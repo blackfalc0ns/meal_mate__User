@@ -50,7 +50,9 @@ import 'package:meal_meat_user/features/profile/presentation/screens/security_pr
 import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_about_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_privacy_policy_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/information/screens/profile_terms_screen.dart';
-import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_complaints_screen.dart';
+import 'package:meal_meat_user/features/customer_support/presentation/screens/customer_issues_screen.dart';
+import 'package:meal_meat_user/features/customer_support/presentation/screens/customer_issue_details_screen.dart';
+import 'package:meal_meat_user/features/customer_orders/presentation/screens/delivered_orders_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_contact_us_screen.dart';
 import 'package:meal_meat_user/features/profile/presentation/support/screens/profile_help_center_screen.dart';
 import 'package:meal_meat_user/features/search/presentation/screens/search_screen.dart';
@@ -107,6 +109,17 @@ import 'package:meal_meat_user/features/notifications/presentation/screens/notif
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     final routeName = settings.name ?? '';
+    if (routeName.startsWith(AppRoutes.customerSupportCasePrefix)) {
+      final caseId = routeName.substring(
+        AppRoutes.customerSupportCasePrefix.length,
+      );
+      if (caseId.isNotEmpty && !caseId.contains('/')) {
+        return _buildRoute(
+          settings: settings,
+          page: CustomerIssueDetailsScreen(caseId: caseId),
+        );
+      }
+    }
     if (routeName.startsWith('/family/members/') &&
         routeName.endsWith('/capabilities')) {
       final memberId = routeName
@@ -664,7 +677,12 @@ class RouteGenerator {
       case AppRoutes.profileComplaints:
         return _buildRoute(
           settings: settings,
-          page: const ProfileComplaintsScreen(),
+          page: const CustomerIssuesScreen(),
+        );
+      case AppRoutes.customerOrders:
+        return _buildRoute(
+          settings: settings,
+          page: const DeliveredOrdersScreen(),
         );
       case AppRoutes.profileAbout:
         return _buildRoute(

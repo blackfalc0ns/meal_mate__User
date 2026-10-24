@@ -4039,7 +4039,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_support_complaints_intro =>
-      'We care about your experience. Submit your complaint below for local demonstration review.';
+      'Tell us what happened. You can link a delivered box or send a general complaint.';
 
   @override
   String get profile_support_subject_label => 'Subject';
@@ -4106,6 +4106,203 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_support_result_confirm => 'Understood';
+
+  @override
+  String get customer_support_my_issues => 'My complaints';
+
+  @override
+  String get customer_orders_title => 'My Orders';
+
+  @override
+  String get customer_orders_delivered_only =>
+      'Delivered orders available for reporting';
+
+  @override
+  String get customer_orders_delivered_box => 'Delivered box';
+
+  @override
+  String get customer_orders_view_details => 'View details';
+
+  @override
+  String get customer_orders_status_delivered => 'Delivered';
+
+  @override
+  String customer_orders_box_count(int count) {
+    return '$count box(es)';
+  }
+
+  @override
+  String get customer_orders_empty_title => 'No delivered orders yet';
+
+  @override
+  String get customer_orders_empty_subtitle =>
+      'Your delivered meal boxes and order history will appear here once received.';
+
+  @override
+  String get customer_orders_info_banner =>
+      'Your recent delivered meal boxes. You can view each order\'s details or get support.';
+
+  @override
+  String get customer_support_choose_delivery => 'Related delivery (optional)';
+
+  @override
+  String get customer_support_linked_order => 'Linked Order';
+
+  @override
+  String get customer_support_choose_category_hint =>
+      'Select complaint category';
+
+  @override
+  String get customer_support_category_sheet_title => 'Complaint Category';
+
+  @override
+  String get profile_support_remove_linked_delivery => 'Unlink order';
+
+  @override
+  String get customer_support_category_error =>
+      'Please select a complaint category';
+
+  @override
+  String get customer_support_general_issue => 'General complaint';
+
+  @override
+  String get customer_support_load_more => 'Load more';
+
+  @override
+  String get customer_support_no_deliveries => 'No delivered boxes found';
+
+  @override
+  String get customer_support_no_issues => 'No complaints yet';
+
+  @override
+  String get customer_support_created => 'Your complaint was sent successfully';
+
+  @override
+  String get customer_support_reply => 'Reply';
+
+  @override
+  String get customer_support_reply_sent => 'Your reply was sent';
+
+  @override
+  String get customer_support_reply_hint => 'Write your reply';
+
+  @override
+  String get customer_support_new_general_issue => 'Submit general complaint';
+
+  @override
+  String get customer_support_general_complaint_title =>
+      'Submit General Complaint';
+
+  @override
+  String get customer_support_order_complaint_title => 'Report Order Issue';
+
+  @override
+  String get customer_support_general_complaint_desc =>
+      'Tell us what happened regarding the service or account and our support team will follow up.';
+
+  @override
+  String get customer_support_order_complaint_desc =>
+      'Report any issue with this order and our team will follow up immediately.';
+
+  @override
+  String get customer_support_no_issues_subtitle =>
+      'You haven\'t submitted any complaints yet. We are always here to help.';
+
+  @override
+  String get customer_support_ticket_id => 'Ticket ID';
+
+  @override
+  String get customer_support_status => 'Status';
+
+  @override
+  String get customer_support_first_response_deadline => 'First response by';
+
+  @override
+  String get customer_support_resolution_deadline => 'Resolution by';
+
+  @override
+  String get customer_support_escalation_deadline => 'Escalation by';
+
+  @override
+  String get customer_support_retry => 'Retry';
+
+  @override
+  String get customer_support_load_error =>
+      'Could not load support information';
+
+  @override
+  String get customer_support_status_resolved => 'Resolved';
+
+  @override
+  String get customer_support_status_in_progress => 'In Progress';
+
+  @override
+  String get customer_support_status_open => 'Under Review';
+
+  @override
+  String get customer_support_status_closed => 'Closed';
+
+  @override
+  String get customer_support_status_cancelled => 'Cancelled';
+
+  @override
+  String get customer_support_view_details => 'View details';
+
+  @override
+  String get customer_support_category_account => 'Account issue';
+
+  @override
+  String get customer_support_category_wrong_items => 'Wrong items';
+
+  @override
+  String get customer_support_category_food_quality => 'Food quality';
+
+  @override
+  String get customer_support_category_late_delivery => 'Late delivery';
+
+  @override
+  String get customer_support_category_packaging => 'Packaging';
+
+  @override
+  String get customer_support_category_missing_items => 'Missing items';
+
+  @override
+  String get customer_support_category_other => 'Other';
+
+  @override
+  String get customer_support_filter_all => 'All';
+
+  @override
+  String get customer_support_filter_in_progress => 'In Progress';
+
+  @override
+  String get customer_support_filter_resolved => 'Resolved';
+
+  @override
+  String get customer_support_issue_details_title => 'Issue Details';
+
+  @override
+  String get customer_support_replies_title => 'Replies & Updates';
+
+  @override
+  String get customer_support_no_replies =>
+      'No replies yet from the support team';
+
+  @override
+  String get customer_support_issue_description => 'Issue details & notes';
+
+  @override
+  String get customer_support_sender_support => 'Support Team';
+
+  @override
+  String get customer_support_sender_you => 'You';
+
+  @override
+  String get customer_support_issue_closed_banner =>
+      'This issue has been resolved and closed.';
+
+  @override
+  String get customer_support_created_at => 'Created at';
 
   @override
   String get profile_about_title => 'About MealMate';

@@ -74,6 +74,8 @@ abstract class AppRoutes {
   static const String profileHelpCenter = '/profile-help-center';
   static const String profileContactUs = '/profile-contact-us';
   static const String profileComplaints = '/profile-complaints';
+  static const String customerOrders = '/customer-orders';
+  static const String customerSupportCasePrefix = '/support/cases/';
   static const String profileAbout = '/profile-about';
   static const String profilePrivacyPolicy = '/profile-privacy-policy';
   static const String profileTerms = '/profile-terms';

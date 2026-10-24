@@ -152,6 +152,38 @@ import '../../features/compensations/domain/usecase/get_compensations_usecase.da
     as _i654;
 import '../../features/compensations/presentation/manager/compensations_view_model.dart'
     as _i78;
+import '../../features/customer_orders/data/data_source/customer_orders_remote_data_source.dart'
+    as _i140;
+import '../../features/customer_orders/data/data_source/customer_orders_remote_data_source_impl.dart'
+    as _i840;
+import '../../features/customer_orders/data/repo/customer_orders_repository_impl.dart'
+    as _i165;
+import '../../features/customer_orders/domain/repo/customer_orders_repository.dart'
+    as _i188;
+import '../../features/customer_orders/domain/usecase/get_delivered_boxes_usecase.dart'
+    as _i335;
+import '../../features/customer_orders/presentation/manager/customer_orders_view_model.dart'
+    as _i946;
+import '../../features/customer_support/data/data_source/customer_support_remote_data_source.dart'
+    as _i365;
+import '../../features/customer_support/data/data_source/customer_support_remote_data_source_impl.dart'
+    as _i13;
+import '../../features/customer_support/data/repo/customer_support_repository_impl.dart'
+    as _i877;
+import '../../features/customer_support/domain/repo/customer_support_repository.dart'
+    as _i648;
+import '../../features/customer_support/domain/usecase/create_customer_issue_usecase.dart'
+    as _i265;
+import '../../features/customer_support/domain/usecase/get_customer_issue_options_usecase.dart'
+    as _i669;
+import '../../features/customer_support/domain/usecase/get_customer_issue_usecase.dart'
+    as _i52;
+import '../../features/customer_support/domain/usecase/get_customer_issues_usecase.dart'
+    as _i392;
+import '../../features/customer_support/domain/usecase/reply_customer_issue_usecase.dart'
+    as _i1061;
+import '../../features/customer_support/presentation/manager/customer_support_view_model.dart'
+    as _i507;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source.dart'
     as _i1040;
 import '../../features/family_addresses/data/data_source/family_addresses_remote_data_source_impl.dart'
@@ -928,6 +960,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i798.InfluencerWalletRemoteDataSource>(
       () => _i149.InfluencerWalletRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i140.CustomerOrdersRemoteDataSource>(
+      () => _i840.CustomerOrdersRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
     gh.factory<_i596.FamilyMemberRemoteDataSource>(
       () => _i544.FamilyMemberRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
@@ -941,6 +976,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i986.FamilyPackagesRemoteDataSource>(
       () => _i854.FamilyPackagesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
+    );
+    gh.factory<_i365.CustomerSupportRemoteDataSource>(
+      () => _i13.CustomerSupportRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
     gh.lazySingleton<_i706.EligibleStartDatesRemoteDataSource>(
       () =>
@@ -1031,6 +1069,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i650.SubscriptionProgramsRepository>(
       () => _i1010.SubscriptionProgramsRepositoryImpl(
         gh<_i96.SubscriptionProgramsRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i648.CustomerSupportRepository>(
+      () => _i877.CustomerSupportRepositoryImpl(
+        gh<_i365.CustomerSupportRemoteDataSource>(),
       ),
     );
     gh.factory<_i897.InfluencerSocialLinksRepository>(
@@ -1185,6 +1228,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1040.FamilyAddressesRemoteDataSource>(
       () => _i517.FamilyAddressesRemoteDataSourceImpl(gh<_i804.ApiServices>()),
     );
+    gh.factory<_i188.CustomerOrdersRepository>(
+      () => _i165.CustomerOrdersRepositoryImpl(
+        gh<_i140.CustomerOrdersRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i515.SaveFamilyMemberAllergiesUseCase>(
       () => _i515.SaveFamilyMemberAllergiesUseCase(
         gh<_i223.FamilyAllergiesRepository>(),
@@ -1251,6 +1299,28 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i804.ApiServices>(),
       ),
     );
+    gh.factory<_i265.CreateCustomerIssueUseCase>(
+      () => _i265.CreateCustomerIssueUseCase(
+        gh<_i648.CustomerSupportRepository>(),
+      ),
+    );
+    gh.factory<_i669.GetCustomerIssueOptionsUseCase>(
+      () => _i669.GetCustomerIssueOptionsUseCase(
+        gh<_i648.CustomerSupportRepository>(),
+      ),
+    );
+    gh.factory<_i52.GetCustomerIssueUseCase>(
+      () => _i52.GetCustomerIssueUseCase(gh<_i648.CustomerSupportRepository>()),
+    );
+    gh.factory<_i392.GetCustomerIssuesUseCase>(
+      () =>
+          _i392.GetCustomerIssuesUseCase(gh<_i648.CustomerSupportRepository>()),
+    );
+    gh.factory<_i1061.ReplyCustomerIssueUseCase>(
+      () => _i1061.ReplyCustomerIssueUseCase(
+        gh<_i648.CustomerSupportRepository>(),
+      ),
+    );
     gh.factory<_i887.InfluencerAnalyticsRemoteDataSource>(
       () => _i467.InfluencerAnalyticsRemoteDataSourceImpl(
         gh<_i804.ApiServices>(),
@@ -1290,6 +1360,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i845.ChangeCustomerPasswordUseCase>(
       () => _i845.ChangeCustomerPasswordUseCase(
         gh<_i229.ChangePasswordRepository>(),
+      ),
+    );
+    gh.factory<_i335.GetDeliveredBoxesUseCase>(
+      () =>
+          _i335.GetDeliveredBoxesUseCase(gh<_i188.CustomerOrdersRepository>()),
+    );
+    gh.factory<_i507.CustomerSupportViewModel>(
+      () => _i507.CustomerSupportViewModel(
+        gh<_i669.GetCustomerIssueOptionsUseCase>(),
+        gh<_i335.GetDeliveredBoxesUseCase>(),
+        gh<_i265.CreateCustomerIssueUseCase>(),
+        gh<_i392.GetCustomerIssuesUseCase>(),
+        gh<_i52.GetCustomerIssueUseCase>(),
+        gh<_i1061.ReplyCustomerIssueUseCase>(),
       ),
     );
     gh.factory<_i480.ChangePasswordViewModel>(
@@ -1348,6 +1432,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i173.GetSubscriptionPaymentStatusUseCase(
         gh<_i996.PaymentRepository>(),
       ),
+    );
+    gh.factory<_i946.CustomerOrdersViewModel>(
+      () => _i946.CustomerOrdersViewModel(gh<_i335.GetDeliveredBoxesUseCase>()),
     );
     gh.factory<_i32.GetFoodPreferencesCatalogUseCase>(
       () => _i32.GetFoodPreferencesCatalogUseCase(

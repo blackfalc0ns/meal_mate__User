@@ -3974,7 +3974,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profile_support_complaints_intro =>
-      'يهمنا رضاك عن تجربتنا. قدّم شكواك أدناه للمراجعة التجريبية المحلية.';
+      'احكِ لنا ما حدث. يمكنك ربط صندوق مسلّم أو إرسال شكوى عامة.';
 
   @override
   String get profile_support_subject_label => 'الموضوع';
@@ -4039,6 +4039,199 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profile_support_result_confirm => 'فهمت ذلك';
+
+  @override
+  String get customer_support_my_issues => 'شكاواي';
+
+  @override
+  String get customer_orders_title => 'أوردراتي';
+
+  @override
+  String get customer_orders_delivered_only =>
+      'الطلبات المسلّمة المتاحة للإبلاغ';
+
+  @override
+  String get customer_orders_delivered_box => 'صندوق مسلّم';
+
+  @override
+  String get customer_orders_view_details => 'عرض التفاصيل';
+
+  @override
+  String get customer_orders_status_delivered => 'تم التوصيل';
+
+  @override
+  String customer_orders_box_count(int count) {
+    return '$count بوكس';
+  }
+
+  @override
+  String get customer_orders_empty_title => 'لا توجد طلبات مسلّمة بعد';
+
+  @override
+  String get customer_orders_empty_subtitle =>
+      'ستظهر هنا سجلات طلباتك وبوكساتك المسلّمة بمجرد استلامها.';
+
+  @override
+  String get customer_orders_info_banner =>
+      'سجل بوكساتك المسلّمة مؤخراً؛ يمكنك مراجعة طلباتك أو المساعدة بخصوصها.';
+
+  @override
+  String get customer_support_choose_delivery => 'التوصيل المرتبط (اختياري)';
+
+  @override
+  String get customer_support_linked_order => 'الطلب المرتبط';
+
+  @override
+  String get customer_support_choose_category_hint => 'اختر تصنيف الشكوى';
+
+  @override
+  String get customer_support_category_sheet_title => 'تصنيف الشكوى';
+
+  @override
+  String get profile_support_remove_linked_delivery => 'إلغاء ربط الطلب';
+
+  @override
+  String get customer_support_category_error => 'يرجى اختيار تصنيف الشكوى';
+
+  @override
+  String get customer_support_general_issue => 'شكوى عامة';
+
+  @override
+  String get customer_support_load_more => 'عرض المزيد';
+
+  @override
+  String get customer_support_no_deliveries => 'لا توجد صناديق مسلّمة';
+
+  @override
+  String get customer_support_no_issues => 'لا توجد شكاوى بعد';
+
+  @override
+  String get customer_support_created => 'تم إرسال الشكوى بنجاح';
+
+  @override
+  String get customer_support_reply => 'رد';
+
+  @override
+  String get customer_support_reply_sent => 'تم إرسال ردك';
+
+  @override
+  String get customer_support_reply_hint => 'اكتب ردك';
+
+  @override
+  String get customer_support_new_general_issue => 'إرسال شكوى عامة';
+
+  @override
+  String get customer_support_general_complaint_title => 'إرسال شكوى عامة';
+
+  @override
+  String get customer_support_order_complaint_title =>
+      'إبلاغ عن مشكلة في الطلب';
+
+  @override
+  String get customer_support_general_complaint_desc =>
+      'احكِ لنا ما حدث بخصوص الخدمة أو الحساب وسيقوم فريق الدعم بمتابعتها.';
+
+  @override
+  String get customer_support_order_complaint_desc =>
+      'أبلغنا بأي ملاحظة على هذا الطلب وسنقوم بمتابعة المشكلة فوراً.';
+
+  @override
+  String get customer_support_no_issues_subtitle =>
+      'لم تقم بتقديم أي شكاوى حتى الآن. فريقنا دائماً جاهز لمساعدتك.';
+
+  @override
+  String get customer_support_ticket_id => 'رقم الشكوى';
+
+  @override
+  String get customer_support_status => 'الحالة';
+
+  @override
+  String get customer_support_first_response_deadline => 'موعد الرد الأول';
+
+  @override
+  String get customer_support_resolution_deadline => 'موعد الحل';
+
+  @override
+  String get customer_support_escalation_deadline => 'موعد التصعيد';
+
+  @override
+  String get customer_support_retry => 'إعادة المحاولة';
+
+  @override
+  String get customer_support_load_error => 'تعذر تحميل بيانات الدعم';
+
+  @override
+  String get customer_support_status_resolved => 'تم الحل';
+
+  @override
+  String get customer_support_status_in_progress => 'قيد المعالجة';
+
+  @override
+  String get customer_support_status_open => 'قيد المراجعة';
+
+  @override
+  String get customer_support_status_closed => 'مغلقة';
+
+  @override
+  String get customer_support_status_cancelled => 'ملغاة';
+
+  @override
+  String get customer_support_view_details => 'عرض التفاصيل';
+
+  @override
+  String get customer_support_category_account => 'مشكلة في الحساب';
+
+  @override
+  String get customer_support_category_wrong_items => 'أصناف خاطئة';
+
+  @override
+  String get customer_support_category_food_quality => 'جودة الطعام';
+
+  @override
+  String get customer_support_category_late_delivery => 'تأخير في التوصيل';
+
+  @override
+  String get customer_support_category_packaging => 'التغليف والتعبئة';
+
+  @override
+  String get customer_support_category_missing_items => 'أصناف ناقصة';
+
+  @override
+  String get customer_support_category_other => 'أخرى';
+
+  @override
+  String get customer_support_filter_all => 'الكل';
+
+  @override
+  String get customer_support_filter_in_progress => 'قيد المعالجة';
+
+  @override
+  String get customer_support_filter_resolved => 'تم الحل';
+
+  @override
+  String get customer_support_issue_details_title => 'تفاصيل الشكوى';
+
+  @override
+  String get customer_support_replies_title => 'الردود والتحديثات';
+
+  @override
+  String get customer_support_no_replies => 'لا توجد ردود بعد من فريق الدعم';
+
+  @override
+  String get customer_support_issue_description => 'نص وملاحظات الشكوى';
+
+  @override
+  String get customer_support_sender_support => 'فريق الدعم';
+
+  @override
+  String get customer_support_sender_you => 'أنت';
+
+  @override
+  String get customer_support_issue_closed_banner =>
+      'تم حل هذه الشكوى وإغلاقها.';
+
+  @override
+  String get customer_support_created_at => 'تاريخ الإنشاء';
 
   @override
   String get profile_about_title => 'عن MealMate';

@@ -104,7 +104,12 @@ class MealMateDrawerSectionsList extends StatelessWidget {
           items: [
             MealMateDrawerItemData(
               icon: Icons.assignment_outlined,
-              label: l10n.drawer_previous_orders,
+              label: l10n.customer_orders_title,
+              onTap: () {
+                unawaited(
+                  Navigator.of(context).pushNamed(AppRoutes.customerOrders),
+                );
+              },
             ),
             MealMateDrawerItemData(
               icon: Icons.delivery_dining_rounded,

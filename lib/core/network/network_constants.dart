@@ -5,7 +5,15 @@ abstract class NetworkConstants {
 }
 
 abstract class EndPoints {
-  static const String eligibleSubscriptionStartDates = '/api/v1/customer/subscription-flow/eligible-start-dates';
+  static const String customerSupportOptions =
+      '/api/v1/customer/support/options';
+  static const String customerSupportIssues = '/api/v1/customer/support/issues';
+  static const String customerSupportIssue = '$customerSupportIssues/{caseId}';
+  static const String customerSupportIssueMessages =
+      '$customerSupportIssue/messages';
+  static const String supportDeliveredBoxes = '/api/v1/support/delivered-boxes';
+  static const String eligibleSubscriptionStartDates =
+      '/api/v1/customer/subscription-flow/eligible-start-dates';
   static const String customerCompensations = '/api/v1/customer/compensations';
   static const String compensationAlternativeDates =
       '$customerCompensations/{compensationId}/alternative-dates';
