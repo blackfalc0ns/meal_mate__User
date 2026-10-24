@@ -200,11 +200,7 @@ class _BrowseOffersContent extends StatelessWidget {
         );
       case OfferPurchaseMode.couponOnly:
         if (offer.promoCode != null && offer.promoCode!.isNotEmpty) {
-          unawaited(
-            Navigator.of(
-              context,
-            ).pushNamed(AppRoutes.promoCodeInput, arguments: offer.promoCode),
-          );
+          _openQuickSheet(context, offer);
         }
       case OfferPurchaseMode.unknown:
         // No navigation: neither an offer ID nor a coupon flow is guaranteed.

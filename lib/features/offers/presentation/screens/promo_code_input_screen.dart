@@ -10,6 +10,7 @@ import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/promo_code_session.dart';
 import 'package:meal_meat_user/core/widget/app_button.dart';
 import 'package:meal_meat_user/core/widget/custom_app_bar.dart';
 import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
@@ -86,11 +87,12 @@ class _PromoCodeInputScreenState extends State<PromoCodeInputScreen> {
               data.message(lang) ?? context.localization.coupon_applied_label;
           CustomSnackbar.showSuccess(context: context, message: msg);
 
+          PromoCodeSession.setActivePromoCode(code);
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop(code);
           } else {
             Navigator.of(context).pushReplacementNamed(
-              AppRoutes.subscriptions,
+              AppRoutes.subscriptionProgramSelection,
               arguments: code,
             );
           }

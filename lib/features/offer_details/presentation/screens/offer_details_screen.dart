@@ -2,7 +2,10 @@ import 'package:meal_meat_user/core/errors/error_message_presenter.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/core/services/promo_code_session.dart';
+import 'package:meal_meat_user/core/widget/custom_snak_bar.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
@@ -301,10 +304,18 @@ class _OfferDetailsContentState extends State<_OfferDetailsContent> {
         );
       case OfferPurchaseMode.couponOnly:
         if (offer.promoCode != null && offer.promoCode!.isNotEmpty) {
+          PromoCodeSession.setActivePromoCode(offer.promoCode);
+          unawaited(
+            Clipboard.setData(ClipboardData(text: offer.promoCode!)),
+          );
+          CustomSnackbar.showSuccess(
+            context: context,
+            message: context.localization.offer_details_copy_code,
+          );
           unawaited(
             Navigator.of(
               context,
-            ).pushNamed(AppRoutes.promoCodeInput, arguments: offer.promoCode),
+            ).pushNamed(AppRoutes.subscriptionProgramSelection),
           );
         }
       case OfferPurchaseMode.unknown:

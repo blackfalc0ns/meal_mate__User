@@ -22,6 +22,7 @@ import 'package:meal_meat_user/features/offers/presentation/manager/offers_view_
 import 'package:meal_meat_user/features/offers/presentation/widgets/animated_offer_row.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/campaign_banner_card.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offer_deal_card.dart';
+import 'package:meal_meat_user/features/offers/presentation/widgets/offer_quick_preview_sheet.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_coupon_banner.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_filter_strip.dart';
 import 'package:meal_meat_user/features/offers/presentation/widgets/offers_hero_card.dart';
@@ -80,15 +81,23 @@ class _OffersContentState extends State<_OffersContent> {
         );
       case OfferPurchaseMode.couponOnly:
         if (offer.promoCode?.trim().isNotEmpty != true) return;
-        unawaited(
-          Navigator.of(
-            context,
-          ).pushNamed(AppRoutes.promoCodeInput, arguments: offer.promoCode),
-        );
+        _openQuickSheet(context, offer);
       case OfferPurchaseMode.unknown:
         // No navigation: neither an offer ID nor a coupon flow is guaranteed.
         break;
     }
+  }
+
+  void _openQuickSheet(BuildContext context, OfferEntity offer) {
+    if (offer.purchaseMode == OfferPurchaseMode.unknown) return;
+    unawaited(
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => OfferQuickPreviewSheet(offer: offer),
+      ),
+    );
   }
 
   Widget _buildSectionEmpty(BuildContext context, String message) {

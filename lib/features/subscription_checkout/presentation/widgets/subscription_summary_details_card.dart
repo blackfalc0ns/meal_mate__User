@@ -157,6 +157,15 @@ class SubscriptionSummaryDetailsCard extends StatelessWidget {
           SubscriptionTotalPriceCard(
                 price: summary.finalPrice.formattedPrice,
                 currency: summary.currencyCode,
+                originalPrice: summary.basePrice > summary.finalPrice
+                    ? summary.basePrice.formattedPrice
+                    : null,
+                discountAmount: (summary.basePrice > summary.finalPrice)
+                    ? (summary.basePrice - summary.finalPrice).formattedPrice
+                    : (summary.coupon?.discountAmount != null &&
+                            summary.coupon!.discountAmount > 0
+                        ? summary.coupon!.discountAmount.formattedPrice
+                        : null),
               )
               .animate()
               .fadeIn(delay: 220.ms, duration: 350.ms, curve: Curves.easeOut)

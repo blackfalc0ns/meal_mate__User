@@ -4,6 +4,7 @@ import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/services/promo_code_session.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_coupon_entity.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_state.dart';
@@ -30,7 +31,10 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.coupon?.code ?? '');
+    final initial = widget.coupon?.code.trim().isNotEmpty == true
+        ? widget.coupon!.code
+        : (PromoCodeSession.activePromoCode ?? '');
+    _controller = TextEditingController(text: initial);
     _focusNode = FocusNode();
   }
 
@@ -41,6 +45,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
       final newText = widget.coupon?.code ?? '';
       if (_controller.text != newText && widget.coupon?.isValid == true) {
         _controller.text = newText;
+        PromoCodeSession.setActivePromoCode(newText);
       }
     }
   }
@@ -56,6 +61,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
     _focusNode.unfocus();
     final code = _controller.text.trim();
     if (code.isNotEmpty) {
+      PromoCodeSession.setActivePromoCode(code);
       try {
         context.read<SubscriptionSummaryViewModel>().doIntent(
           ApplySubscriptionPromoCodeEvent(code),
@@ -67,6 +73,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
   void _onRemove() {
     _focusNode.unfocus();
     _controller.clear();
+    PromoCodeSession.clear();
     try {
       context.read<SubscriptionSummaryViewModel>().doIntent(
         const RemoveSubscriptionPromoCodeEvent(),
@@ -117,20 +124,25 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final effectiveCurrency =
+        (widget.currencyCode.isEmpty || widget.currencyCode == 'KWD')
+            ? locale.currency_kwd
+            : widget.currencyCode;
+
     final isValid = coupon?.isValid == true;
     final isRejected = coupon != null && !isValid && coupon.code.isNotEmpty;
 
     if (isValid) {
       return Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.md,
+          horizontal: Spacing.md,
+          vertical: Spacing.sm + 2,
         ),
         decoration: BoxDecoration(
-          color: color.primaryContainer.withValues(alpha: 0.4),
+          color: color.primaryContainer.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(Spacing.radiusLg),
           border: Border.all(
-            color: color.primary.withValues(alpha: 0.3),
+            color: color.primary.withValues(alpha: 0.28),
             width: Spacing.border,
           ),
         ),
@@ -142,11 +154,18 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
               decoration: BoxDecoration(
                 color: color.primary,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.primary.withValues(alpha: 0.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               alignment: Alignment.center,
-              child: const Icon(
+              child: Icon(
                 Icons.confirmation_number_outlined,
-                color: Colors.white,
+                color: color.onPrimary,
                 size: Spacing.iconSm,
               ),
             ),
@@ -157,16 +176,20 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
-                        child: Text(
-                          coupon!.code,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size14,
-                            color: color.onSurface,
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            coupon!.code,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size14,
+                              color: color.onSurface,
+                            ),
                           ),
                         ),
                       ),
@@ -187,7 +210,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                           style: getMediumStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size10,
-                            color: Colors.white,
+                            color: color.onPrimary,
                           ),
                         ),
                       ),
@@ -196,7 +219,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                   if (coupon.discountAmount > 0) ...[
                     const SizedBox(height: Spacing.xxs),
                     Text(
-                      '- ${coupon.discountAmount.formattedPrice} ${widget.currencyCode}',
+                      '- ${coupon.discountAmount.formattedPrice} $effectiveCurrency',
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size12,
@@ -207,15 +230,51 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                 ],
               ),
             ),
-            TextButton(
-              onPressed: isApplying ? null : _onRemove,
-              child: Text(
-                locale.coupon_remove_button,
-                style: getSemiBoldStyle(
-                  fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
-                  color: color.error,
+            const SizedBox(width: Spacing.xs),
+            InkWell(
+              onTap: isApplying ? null : _onRemove,
+              borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.sm,
+                  vertical: Spacing.xs,
                 ),
+                decoration: BoxDecoration(
+                  color: color.error.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  border: Border.all(
+                    color: color.error.withValues(alpha: 0.2),
+                    width: Spacing.border,
+                  ),
+                ),
+                child: isApplying
+                    ? SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: color.error,
+                        ),
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.close_rounded,
+                            size: 14,
+                            color: color.error,
+                          ),
+                          const SizedBox(width: Spacing.xxs),
+                          Text(
+                            locale.coupon_remove_button,
+                            style: getSemiBoldStyle(
+                              fontFamily: FontConstant.alexandria,
+                              fontSize: FontSize.size11,
+                              color: color.error,
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ),
           ],
@@ -325,12 +384,12 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                     padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
                   ),
                   child: isApplying
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: color.onPrimary,
                           ),
                         )
                       : Text(
@@ -338,7 +397,7 @@ class _SubscriptionCouponCardState extends State<SubscriptionCouponCard> {
                           style: getBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size13,
-                            color: Colors.white,
+                            color: color.onPrimary,
                           ),
                         ),
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_meat_user/core/di/di.dart';
 import 'package:meal_meat_user/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
+import 'package:meal_meat_user/core/services/promo_code_session.dart';
 import 'package:meal_meat_user/core/widget/custom_progress_indecator.dart';
 import 'package:meal_meat_user/features/subscription_checkout/domain/entities/subscription_summary_args.dart';
 import 'package:meal_meat_user/features/subscription_checkout/presentation/manager/subscription_summary_event.dart';
@@ -34,13 +35,19 @@ class SubscriptionSummaryScreen extends StatelessWidget {
         ),
       );
     }
-
     final initialStartDate = summaryArgs.request.startDate.trim().isNotEmpty
         ? summaryArgs.request.startDate.trim()
         : '';
 
+    final savedPromoCode = PromoCodeSession.activePromoCode;
+    final promoCode =
+        (summaryArgs.request.promoCode?.trim().isNotEmpty == true)
+            ? summaryArgs.request.promoCode
+            : savedPromoCode;
+
     final initialRequest = summaryArgs.request.copyWith(
       startDate: initialStartDate,
+      promoCode: promoCode,
     );
 
     return BlocProvider<SubscriptionSummaryViewModel>(

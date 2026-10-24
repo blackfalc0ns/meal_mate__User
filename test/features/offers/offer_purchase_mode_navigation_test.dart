@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_meat_user/config/routing/app_routes.dart';
 import 'package:meal_meat_user/core/l10n/translations/app_localizations.dart';
 import 'package:meal_meat_user/core/network/api_results.dart';
+import 'package:meal_meat_user/core/services/promo_code_session.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_event.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/manager/offer_details_view_model.dart';
 import 'package:meal_meat_user/features/offer_details/presentation/screens/offer_details_screen.dart';
@@ -251,9 +252,10 @@ void main() {
       expect(pushed.first.settings.arguments, directOffer);
     });
 
-    testWidgets('routes coupon-only offer to promoCodeInput with promoCode', (
+    testWidgets('routes coupon-only offer to subscriptionProgramSelection with promoCode in session', (
       tester,
     ) async {
+      PromoCodeSession.clear();
       final observer = TestNavigatorObserver();
       await tester.pumpWidget(
         buildWrapper(
@@ -267,10 +269,10 @@ void main() {
       await tester.pumpAndSettle();
 
       final pushed = observer.pushedRoutes
-          .where((r) => r.settings.name == AppRoutes.promoCodeInput)
+          .where((r) => r.settings.name == AppRoutes.subscriptionProgramSelection)
           .toList();
       expect(pushed, hasLength(1));
-      expect(pushed.first.settings.arguments, 'DISCOUNT50');
+      expect(PromoCodeSession.activePromoCode, 'DISCOUNT50');
 
       final redeemPushed = observer.pushedRoutes
           .where((r) => r.settings.name == AppRoutes.redeemPackage)
@@ -281,6 +283,7 @@ void main() {
     testWidgets(
       'campaign projection never passes campaignId to offerDetails or redeemPackage',
       (tester) async {
+        PromoCodeSession.clear();
         final observer = TestNavigatorObserver();
         await tester.pumpWidget(
           buildWrapper(
@@ -298,15 +301,11 @@ void main() {
             .toList();
         expect(detailsPushed, isEmpty);
 
-        final promoPushed = observer.pushedRoutes
-            .where((r) => r.settings.name == AppRoutes.promoCodeInput)
+        final pushed = observer.pushedRoutes
+            .where((r) => r.settings.name == AppRoutes.subscriptionProgramSelection)
             .toList();
-        expect(promoPushed, hasLength(1));
-        expect(promoPushed.first.settings.arguments, 'CAMP50');
-        expect(
-          promoPushed.first.settings.arguments,
-          isNot('campaign-exclusive-99'),
-        );
+        expect(pushed, hasLength(1));
+        expect(PromoCodeSession.activePromoCode, 'CAMP50');
       },
     );
 
@@ -369,7 +368,7 @@ void main() {
       expect(pushed.first.settings.arguments, 'direct-offer-1');
     });
 
-    testWidgets('tapping coupon card routes to promoCodeInput', (tester) async {
+    testWidgets('tapping coupon card opens preview sheet', (tester) async {
       repository.availableOffers = [couponOffer];
       viewModel = OffersViewModel(
         GetAvailableOffersUseCase(repository),
@@ -395,11 +394,7 @@ void main() {
       await tester.tap(couponCard);
       await tester.pumpAndSettle();
 
-      final pushed = observer.pushedRoutes
-          .where((r) => r.settings.name == AppRoutes.promoCodeInput)
-          .toList();
-      expect(pushed, hasLength(1));
-      expect(pushed.first.settings.arguments, 'DISCOUNT50');
+      expect(find.byType(OfferQuickPreviewSheet), findsOneWidget);
     });
   });
 
@@ -451,12 +446,11 @@ void main() {
         // Tap coupon offer
         await tester.tap(find.text('Coupon Offer'));
         await tester.pumpAndSettle();
-        expect(
-          observer.pushedRoutes.where(
-            (r) => r.settings.name == AppRoutes.promoCodeInput,
-          ),
-          hasLength(1),
-        );
+        expect(find.byType(OfferQuickPreviewSheet), findsOneWidget);
+
+        // Dismiss the sheet
+        Navigator.of(tester.element(find.byType(OfferQuickPreviewSheet))).pop();
+        await tester.pumpAndSettle();
 
         // Tap unknown offer - should not push any new route
         final routeCountBefore = observer.pushedRoutes.length;
@@ -514,9 +508,10 @@ void main() {
       expect(pushed, hasLength(1));
     });
 
-    testWidgets('coupon-only offer CTA routes to promoCodeInput', (
+    testWidgets('coupon-only offer CTA routes to subscriptionProgramSelection with promoCode', (
       tester,
     ) async {
+      PromoCodeSession.clear();
       repository.singleOffer = couponOffer;
       detailsVm = OfferDetailsViewModel(
         GetCustomerOfferDetailsUseCase(repository),
@@ -546,10 +541,10 @@ void main() {
       await tester.pumpAndSettle();
 
       final pushed = observer.pushedRoutes
-          .where((r) => r.settings.name == AppRoutes.promoCodeInput)
+          .where((r) => r.settings.name == AppRoutes.subscriptionProgramSelection)
           .toList();
       expect(pushed, hasLength(1));
-      expect(pushed.first.settings.arguments, 'DISCOUNT50');
+      expect(PromoCodeSession.activePromoCode, 'DISCOUNT50');
 
       expect(
         observer.pushedRoutes.where(
