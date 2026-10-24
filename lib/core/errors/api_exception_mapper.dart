@@ -69,9 +69,8 @@ class ApiExceptionMapper {
         return _translationKeyException(ApiErrorType.unknown);
       case DioExceptionType.badResponse:
         return fromResponse(dioException.response);
-      // ignore: unreachable_switch_default
-      default:
-        return _translationKeyException(ApiErrorType.unknown);
+      case DioExceptionType.transformTimeout:
+        return _translationKeyException(ApiErrorType.requestTimeout);
     }
   }
 
@@ -122,6 +121,10 @@ class ApiExceptionMapper {
       return unwrapped;
     }
 
+    if (unwrapped is Failure) {
+      return fromFailure(unwrapped);
+    }
+
     if (unwrapped is DioException) {
       return fromDioException(unwrapped);
     }
@@ -147,7 +150,8 @@ class ApiExceptionMapper {
     ApiErrorType errorType, {
     ApiErrorAdvice? advice,
   }) {
-    final defaultAdvice = advice ??
+    final defaultAdvice =
+        advice ??
         switch (errorType) {
           ApiErrorType.connectionTimeout ||
           ApiErrorType.sendTimeout ||
@@ -155,8 +159,7 @@ class ApiExceptionMapper {
           ApiErrorType.noInternetConnection ||
           ApiErrorType.badGateway ||
           ApiErrorType.serviceUnavailable ||
-          ApiErrorType.gatewayTimeout =>
-            const ApiErrorAdvice(retryable: true),
+          ApiErrorType.gatewayTimeout => const ApiErrorAdvice(retryable: true),
           _ => const ApiErrorAdvice(),
         };
 
@@ -282,6 +285,20 @@ class ApiExceptionMapper {
             return value.trim();
           }
         }
+      } else if (errors is List && errors.isNotEmpty) {
+        final first = errors.first;
+        if (first is String && first.trim().isNotEmpty && !_isHtml(first)) {
+          return first.trim();
+        } else if (first is Map) {
+          final msg = _extractMessageFromMap(first);
+          if (msg != null) return msg;
+        }
+      }
+
+      final errorObj = data['error'];
+      if (errorObj is Map) {
+        final msg = _extractMessageFromMap(errorObj);
+        if (msg != null) return msg;
       }
 
       // 2. Check standard keys
@@ -290,6 +307,10 @@ class ApiExceptionMapper {
         'message',
         'message_en',
         'message_ar',
+        'errorMessage',
+        'error_description',
+        'description',
+        'msg',
         'error',
         'title',
       ]) {

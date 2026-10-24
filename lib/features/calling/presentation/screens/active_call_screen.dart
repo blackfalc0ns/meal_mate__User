@@ -1,12 +1,22 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:meal_meat_user/config/routing/app_routes.dart';
+import 'package:meal_meat_user/core/services/voice_permission_service.dart';
 import 'package:meal_meat_user/config/theme/colors.dart';
 import 'package:meal_meat_user/config/theme/font_manager.dart';
 import 'package:meal_meat_user/config/theme/spacing.dart';
 import 'package:meal_meat_user/config/theme/styles_manager.dart';
+import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
-import 'package:meal_meat_user/features/calling/data/fake/calling_fake_data.dart';
+import 'package:meal_meat_user/core/network/network_constants.dart';
 import 'package:meal_meat_user/features/calling/domain/entities/call_driver_entity.dart';
+import 'package:meal_meat_user/features/calling/domain/entities/voice_call_status.dart';
+import 'package:meal_meat_user/features/calling/presentation/manager/calling_event.dart';
+import 'package:meal_meat_user/features/calling/presentation/manager/calling_state.dart';
+import 'package:meal_meat_user/features/calling/presentation/manager/calling_view_model.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_active_address_card.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_active_controls.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_background_decoration.dart';
@@ -14,68 +24,74 @@ import 'package:meal_meat_user/features/calling/presentation/widgets/calling_dri
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_driver_role_badge.dart';
 import 'package:meal_meat_user/features/calling/presentation/widgets/calling_header_brand.dart';
 
-class ActiveCallScreen extends StatefulWidget {
-  const ActiveCallScreen({
-    super.key,
-    this.driver = CallingFakeData.defaultDriver,
-  });
+class ActiveCallScreen extends StatelessWidget {
+  const ActiveCallScreen({super.key, this.driver, this.viewModel});
 
-  final CallDriverEntity driver;
+  final CallDriverEntity? driver;
+  final CallingViewModel? viewModel;
 
   @override
-  State<ActiveCallScreen> createState() => _ActiveCallScreenState();
+  Widget build(BuildContext context) {
+    if (viewModel != null) {
+      return BlocProvider.value(
+        value: viewModel!,
+        child: _ActiveCallView(driver: driver),
+      );
+    }
+
+    return BlocProvider(
+      create: (_) {
+        if (GetIt.instance.isRegistered<CallingViewModel>()) {
+          final vm = GetIt.instance<CallingViewModel>();
+          if (driver != null) {
+            vm.setDriver(driver);
+          }
+          return vm;
+        }
+        return CallingViewModel.preview(driver: driver);
+      },
+      child: _ActiveCallView(driver: driver),
+    );
+  }
 }
 
-class _ActiveCallScreenState extends State<ActiveCallScreen> {
-  Timer? _timer;
-  int _secondsElapsed = 24;
-  bool _isMuted = false;
-  bool _isSpeakerOn = false;
+class _ActiveCallView extends StatefulWidget {
+  const _ActiveCallView({this.driver});
+
+  final CallDriverEntity? driver;
+
+  @override
+  State<_ActiveCallView> createState() => _ActiveCallViewState();
+}
+
+class _ActiveCallViewState extends State<_ActiveCallView> {
+  String? _lastLanguageCode;
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {
-          _secondsElapsed++;
-        });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final vm = context.read<CallingViewModel>();
+      if (vm.state.hasAudioPermissionError) {
+        final granted = await VoicePermissionService.instance
+            .requestMicrophone();
+        if (granted && mounted) {
+          unawaited(vm.retryMicrophonePermission());
+        }
       }
     });
   }
 
   @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  String get _formattedTime {
-    final minutes = (_secondsElapsed ~/ 60).toString().padLeft(2, '0');
-    final seconds = (_secondsElapsed % 60).toString().padLeft(2, '0');
-    return '$minutes:$seconds';
-  }
-
-  void _toggleMute() {
-    setState(() {
-      _isMuted = !_isMuted;
-    });
-  }
-
-  void _toggleSpeaker() {
-    setState(() {
-      _isSpeakerOn = !_isSpeakerOn;
-    });
-  }
-
-  void _endCall() {
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final currentLang = Localizations.localeOf(context).languageCode;
+    if (_lastLanguageCode != null && _lastLanguageCode != currentLang) {
+      context.read<CallingViewModel>().doIntent(
+        RefreshCallDisplayEvent(language: currentLang),
+      );
     }
+    _lastLanguageCode = currentLang;
   }
 
   @override
@@ -83,73 +99,191 @@ class _ActiveCallScreenState extends State<ActiveCallScreen> {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      body: Stack(
-        children: [
-          const CallingBackgroundDecoration(),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
-              child: Column(
-                children: [
-                  const SizedBox(height: Spacing.xs),
-                  CallingHeaderBrand(
-                    title: locale.calling_active_title,
-                    timerText: _formattedTime,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: CallingDriverAvatarRings(
-                              avatarAsset: widget.driver.avatarAsset,
+    return BlocConsumer<CallingViewModel, CallingState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if ((state.status.isTerminal ||
+                state.status == VoiceCallStatus.ended) &&
+            state.nativeSnapshot == null) {
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          } else {
+            unawaited(
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home),
+            );
+          }
+        }
+      },
+      builder: (context, state) {
+        final activeDriver = state.driver ?? widget.driver;
+        final displayName = state.resolvedDriverName(
+          locale.calling_driver_role,
+        );
+        final displayRole = state.resolvedDriverRole(
+          locale.calling_driver_role,
+        );
+        final avatarUrl = state.resolvedDriverImageUrl(
+          NetworkConstants.baseUrl,
+        );
+        final addressDetails = state.resolvedDeliveryAddress(
+          activeDriver?.addressDetails ?? '',
+        );
+
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            backgroundColor: color.surface,
+            body: Stack(
+            children: [
+              const CallingBackgroundDecoration(),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: Spacing.xs),
+                      CallingHeaderBrand(
+                        title: locale.calling_active_title,
+                        timerText: state.formattedDuration,
+                      ),
+                      if (state.hasAudioPermissionError) ...[
+                        const SizedBox(height: Spacing.xs),
+                        GestureDetector(
+                          onTap: () async {
+                            final granted = await VoicePermissionService
+                                .instance
+                                .requestMicrophone();
+                            if (granted && context.mounted) {
+                              unawaited(
+                                context
+                                    .read<CallingViewModel>()
+                                    .retryMicrophonePermission(),
+                              );
+                            } else {
+                              unawaited(
+                                VoicePermissionService.instance
+                                    .openAppSettings(),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Spacing.md,
+                              vertical: Spacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: color.error.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(Spacing.sm),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.mic_off,
+                                  size: 16,
+                                  color: color.error,
+                                ),
+                                const SizedBox(width: Spacing.xs),
+                                Text(
+                                  Localizations.localeOf(
+                                            context,
+                                          ).languageCode ==
+                                          'ar'
+                                      ? 'يرجى تفعيل إذن الميكروفون للتحدث (اضغط هنا)'
+                                      : 'Tap to grant microphone permission to speak',
+                                  style: getMediumStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size12,
+                                    color: color.error,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
+                      ],
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
-                              widget.driver.name,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size26,
-                                color: color.callDriverNameGreen,
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: CallingDriverAvatarRings(
+                                  avatarAsset:
+                                      activeDriver?.avatarAsset ??
+                                      Assets.profileAvatar,
+                                  avatarUrl: avatarUrl,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: Spacing.xs),
-                            CallingDriverRoleBadge(role: widget.driver.role),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  displayName,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size26,
+                                    color: color.callDriverNameGreen,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: Spacing.xs),
+                                CallingDriverRoleBadge(role: displayRole),
+                              ],
+                            ),
+                            const SizedBox(height: Spacing.xs),
+                            CallingActiveAddressCard(
+                              title: state.resolvedAddressTitle(
+                                activeDriver?.addressTitle.isNotEmpty == true
+                                    ? activeDriver!.addressTitle
+                                    : locale.calling_delivery_request,
+                              ),
+                              addressDetails: addressDetails.isNotEmpty
+                                  ? addressDetails
+                                  : locale.calling_delivery_request,
+                            ),
                           ],
                         ),
-                        const SizedBox(height: Spacing.xs),
-                        CallingActiveAddressCard(
-                          title: widget.driver.addressTitle,
-                          addressDetails: widget.driver.addressDetails,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      CallingActiveControls(
+                        isMuted: state.isMuted,
+                        isSpeakerOn: state.isSpeakerOn,
+                        onToggleMute: () {
+                          context.read<CallingViewModel>().doIntent(
+                            const ToggleMuteEvent(),
+                          );
+                        },
+                        onToggleSpeaker: () {
+                          context.read<CallingViewModel>().doIntent(
+                            const ToggleSpeakerEvent(),
+                          );
+                        },
+                        onEndCall: () {
+                          context.read<CallingViewModel>().doIntent(
+                            const EndCallEvent(),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: Spacing.base),
+                    ],
                   ),
-                  const SizedBox(height: Spacing.xs),
-                  CallingActiveControls(
-                    isMuted: _isMuted,
-                    isSpeakerOn: _isSpeakerOn,
-                    onToggleMute: _toggleMute,
-                    onToggleSpeaker: _toggleSpeaker,
-                    onEndCall: _endCall,
-                  ),
-                  const SizedBox(height: Spacing.base),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      );
+    },
     );
   }
 }

@@ -13694,6 +13694,42 @@ abstract class AppLocalizations {
   /// **'End Call'**
   String get calling_end_call;
 
+  /// No description provided for @calling_permission_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone Permission'**
+  String get calling_permission_title;
+
+  /// No description provided for @calling_permission_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'We need microphone access so you can speak with your delivery driver when your meal arrives.'**
+  String get calling_permission_desc;
+
+  /// No description provided for @calling_permission_enable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Microphone'**
+  String get calling_permission_enable;
+
+  /// No description provided for @calling_permission_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get calling_permission_later;
+
+  /// No description provided for @calling_permission_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get calling_permission_settings;
+
+  /// No description provided for @calling_permission_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is required to speak with the driver.'**
+  String get calling_permission_required;
+
   /// No description provided for @payment_method_unavailable_wallet.
   ///
   /// In en, this message translates to:

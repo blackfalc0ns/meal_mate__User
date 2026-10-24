@@ -5,12 +5,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meal_meat_user/core/network/api_results.dart';
 import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/device_id_service.dart';
 import 'package:meal_meat_user/core/services/push_notification_payload.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
+import 'native_voice_provisioner.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_request_entity.dart';
+import 'package:meal_meat_user/features/notifications/domain/entities/device_token_register_response_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/entities/device_token_unregister_request_entity.dart';
 import 'package:meal_meat_user/features/notifications/domain/usecase/register_device_token_usecase.dart';
 import 'package:meal_meat_user/features/notifications/domain/usecase/unregister_device_token_usecase.dart';
@@ -20,9 +24,18 @@ import 'package:meal_meat_user/firebase_options.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   logPushNotificationMessage('background', message);
+
+  if (message.data.containsKey('envelope') ||
+      message.data['type'] == 'voice-call') {
+    debugPrint(
+      '[PushNotification] Voice call push received in Dart background handler; native calling engine handles ringing independently.',
+    );
+    return;
+  }
 }
 
 void logPushNotificationMessage(String source, RemoteMessage message) {
+  if (!kDebugMode) return;
   debugPrint(
     formatPushNotificationDebugLog(
       source: source,
@@ -72,6 +85,17 @@ Map<String, dynamic> _sanitizePushNotificationData(Map<String, dynamic> data) {
 }
 
 Object? _sanitizeDebugValue(String key, Object? value) {
+  if (key.toLowerCase() == 'envelope') {
+    if (value is String) {
+      try {
+        return _sanitizeDebugValue('payload', jsonDecode(value));
+      } on FormatException {
+        return '[INVALID_ENVELOPE]';
+      }
+    }
+    return _sanitizeDebugValue('payload', value);
+  }
+
   if (value is Map) {
     return value.map(
       (nestedKey, nestedValue) => MapEntry(
@@ -98,7 +122,12 @@ bool _looksSensitivePushKey(String key) {
   final normalized = key.toLowerCase();
   return normalized.contains('token') ||
       normalized.contains('secret') ||
-      normalized.contains('password');
+      normalized.contains('password') ||
+      normalized.contains('authorization') ||
+      normalized.contains('controlproof') ||
+      normalized.contains('sdp') ||
+      normalized.contains('ice') ||
+      normalized.contains('address');
 }
 
 String _maskDebugValue(String value) {
@@ -168,6 +197,9 @@ class PushNotificationService {
 
     final token = await _messaging.getToken();
     await registerCurrentToken(token: token);
+    try {
+      GetIt.instance<NativeVoiceProvisioner>().initialize();
+    } catch (_) {}
     return token;
   }
 
@@ -187,13 +219,26 @@ class PushNotificationService {
         return;
       }
 
-      await _registerDeviceTokenUseCase(
+      final regResult = await _registerDeviceTokenUseCase(
         DeviceTokenRegisterRequestEntity(
           token: fcmToken,
           platform: platform,
           deviceId: await _deviceIdService.getOrCreateDeviceId(),
         ),
       );
+
+      if (regResult is ApiSuccessResult<DeviceTokenRegisterResponseEntity>) {
+        final fcmDeviceTokenId = regResult.data.fcmDeviceTokenId;
+        if (fcmDeviceTokenId != null && fcmDeviceTokenId.isNotEmpty) {
+          if (GetIt.instance.isRegistered<NativeVoiceProvisioner>()) {
+            await GetIt.instance<NativeVoiceProvisioner>().ensureRegistered(
+              fcmDeviceTokenId: fcmDeviceTokenId,
+              // Refresh the native registration after login or FCM rotation.
+              force: true,
+            );
+          }
+        }
+      }
     } catch (error, stackTrace) {
       debugPrintStack(
         label: 'Failed to register push notification token: $error',
@@ -204,6 +249,9 @@ class PushNotificationService {
 
   Future<void> unregisterCurrentToken() async {
     try {
+      if (GetIt.instance.isRegistered<NativeVoiceProvisioner>()) {
+        await GetIt.instance<NativeVoiceProvisioner>().onLogout();
+      }
       if (!_tokenService.isAccessTokenSaved) {
         return;
       }
@@ -259,6 +307,16 @@ class PushNotificationService {
   Future<void> _showForegroundNotification(RemoteMessage message) async {
     logPushNotificationMessage('foreground', message);
 
+    if (message.data.containsKey('envelope') ||
+        message.data['type'] == 'voice-call') {
+      try {
+        await GetIt.instance<NativeVoiceProvisioner>().handlePush(message.data);
+      } catch (e) {
+        debugPrint('[PushNotification] Error handling voice call push: $e');
+      }
+      return;
+    }
+
     final notification = message.notification;
     if (defaultTargetPlatform == TargetPlatform.iOS && notification != null) {
       return;
@@ -291,8 +349,17 @@ class PushNotificationService {
     );
   }
 
-  Future<void> _handleMessageTap(RemoteMessage message) {
+  Future<void> _handleMessageTap(RemoteMessage message) async {
     logPushNotificationMessage('opened', message);
+    if (message.data.containsKey('envelope') ||
+        message.data['type'] == 'voice-call') {
+      try {
+        await GetIt.instance<NativeVoiceProvisioner>().handlePush(message.data);
+      } catch (e) {
+        debugPrint('[PushNotification] Error handling voice call push tap: $e');
+      }
+      return;
+    }
     return _navigateFromData(message.data);
   }
 

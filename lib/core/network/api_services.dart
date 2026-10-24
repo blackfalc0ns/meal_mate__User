@@ -142,6 +142,15 @@ import 'package:meal_meat_user/features/subscription_checkout/data/models/respon
 import 'package:meal_meat_user/features/wallet/data/models/customer_wallet_response_dto.dart';
 import 'package:meal_meat_user/features/wallet/data/models/wallet_transactions_response_dto.dart';
 import 'package:meal_meat_user/features/wallet/data/models/customer_referral_summary_response_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/request/voice_device_register_request_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/request/voice_media_report_request_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_call_event_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_call_history_page_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_call_snapshot_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_device_register_response_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_ice_servers_response_dto.dart';
+import 'package:meal_meat_user/features/calling/data/models/response/voice_call_display_dto.dart';
+import 'package:meal_meat_user/features/notifications/data/models/response/device_token_register_response_dto.dart';
 
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -1015,7 +1024,7 @@ abstract class ApiServices {
   );
 
   @PUT(EndPoints.customerDeviceTokens)
-  Future<void> registerDeviceToken(
+  Future<DeviceTokenRegisterResponseDto> registerDeviceToken(
     @Body() DeviceTokenRegisterRequestDto request,
   );
 
@@ -1243,5 +1252,112 @@ abstract class ApiServices {
   @GET(EndPoints.customerCampaignPayment)
   Future<CampaignPaymentResponseDto> getCampaignPaymentStatus(
     @Path('sessionId') String sessionId,
+  );
+
+  // Voice Calls v2
+  @POST(EndPoints.voiceDevicesRegister)
+  Future<VoiceDeviceRegisterResponseDto> registerVoiceDevice(
+    @Body() VoiceDeviceRegisterRequestDto request,
+  );
+
+  @POST(EndPoints.voiceDeviceRevoke)
+  Future<void> revokeVoiceDevice(
+    @Path('deviceSessionId') String deviceSessionId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceActiveCall)
+  Future<HttpResponse<VoiceCallSnapshotDto?>> getActiveVoiceCall(
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceCallDetails)
+  Future<VoiceCallSnapshotDto> getVoiceCallDetails(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceCallHistory)
+  Future<VoiceCallHistoryPageDto> getVoiceCallHistory(
+    @Path('tripStopId') String tripStopId,
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceCallEvents)
+  Future<List<VoiceCallEventDto>> getVoiceCallEvents(
+    @Path('callId') String callId,
+    @Query('afterSequence') int afterSequence,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @POST(EndPoints.voiceCallRingingAck)
+  Future<void> ackVoiceCallRinging(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @POST(EndPoints.voiceCallAnswer)
+  Future<void> answerVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @POST(EndPoints.voiceCallReject)
+  Future<void> rejectVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @POST(EndPoints.voiceCallEnd)
+  Future<void> endVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceCallIceServers)
+  Future<VoiceIceServersResponseDto> getVoiceIceServers(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @POST(EndPoints.voiceCallReportConnecting)
+  Future<void> reportVoiceConnecting(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+    @Body() VoiceMediaReportRequestDto? report,
+  );
+
+  @POST(EndPoints.voiceCallReportConnected)
+  Future<void> reportVoiceConnected(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+    @Body() VoiceMediaReportRequestDto? report,
+  );
+
+  @POST(EndPoints.voiceCallHeartbeat)
+  Future<void> sendVoiceHeartbeat(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.voiceDeviceSessionHeader) String session,
+    @Header(NetworkConstants.voiceDeviceProofHeader) String proof,
+  );
+
+  @GET(EndPoints.voiceCallDisplay)
+  Future<VoiceCallDisplayDto> getVoiceCallDisplay(
+    @Path('callId') String callId,
+    @Header('Accept-Language') String? language,
   );
 }

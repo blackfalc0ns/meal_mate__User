@@ -13,9 +13,7 @@ class FamilyProgramGridLoadingSkeleton extends StatelessWidget {
     final color = context.colorScheme;
 
     return GridView.builder(
-      key: itemCount == 6
-          ? const ValueKey('family-program-grid-loading')
-          : ValueKey('family-program-grid-loading-$itemCount'),
+      key: const ValueKey('family-program-grid-loading'),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

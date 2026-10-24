@@ -468,6 +468,34 @@ void main() {
       },
     );
 
+    test(
+      'FamilySummaryResponseDto safely parses string gender ("Male" / "Female") from response',
+      () {
+        final dto = FamilySummaryResponseDto.fromJson({
+          'subtotal': 115.0,
+          'finalPrice': 105.8,
+          'members': [
+            {
+              'memberId': 'm-1',
+              'displayName': 'John',
+              'gender': 'Male',
+              'setupStatus': 'Ready',
+            },
+            {
+              'memberId': 'm-2',
+              'displayName': 'Jane',
+              'gender': 'Female',
+              'setupStatus': 'Ready',
+            },
+          ],
+        });
+
+        expect(dto.members, isNotNull);
+        expect(dto.members!.first.gender, 1);
+        expect(dto.members!.last.gender, 2);
+      },
+    );
+
     testWidgets(
       'FamilyPaymentScheduleSection renders placeholder when dates and duration are missing',
       (tester) async {

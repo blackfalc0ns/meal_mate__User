@@ -36,6 +36,8 @@
 	<string>MealMate uses Face ID to securely and quickly authenticate your session.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MealMate needs your location to set your delivery address on the map.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MealMate needs microphone access for voice calls with delivery drivers.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -62,6 +64,8 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>voip</string>
+		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

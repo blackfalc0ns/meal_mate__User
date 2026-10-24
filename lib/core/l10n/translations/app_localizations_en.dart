@@ -7467,6 +7467,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calling_end_call => 'End Call';
 
   @override
+  String get calling_permission_title => 'Microphone Permission';
+
+  @override
+  String get calling_permission_desc =>
+      'We need microphone access so you can speak with your delivery driver when your meal arrives.';
+
+  @override
+  String get calling_permission_enable => 'Enable Microphone';
+
+  @override
+  String get calling_permission_later => 'Later';
+
+  @override
+  String get calling_permission_settings => 'Open Settings';
+
+  @override
+  String get calling_permission_required =>
+      'Microphone permission is required to speak with the driver.';
+
+  @override
   String get payment_method_unavailable_wallet =>
       'Wallet payment is currently not available';
 

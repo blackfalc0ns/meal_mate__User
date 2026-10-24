@@ -80,6 +80,12 @@ class _FakeNavigationCoordinator implements CalendarNavigationCoordinator {
     dynamic meal,
     dynamic restaurant,
   ) {}
+
+  @override
+  void openNotifications(BuildContext context) {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _TestFlowCubit extends Cubit<CalendarFlowState>

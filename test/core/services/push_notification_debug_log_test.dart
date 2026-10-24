@@ -35,5 +35,34 @@ void main() {
       expect(log, contains('***3456'));
       expect(log, contains('***4321'));
     });
+
+    test('redacts raw envelope, authorization, controlProof, sdp, ice, and address', () {
+      final receivedAt = DateTime.utc(2026, 9, 1, 10, 30, 45);
+
+      final log = formatPushNotificationDebugLog(
+        source: 'background',
+        receivedAt: receivedAt,
+        messageId: 'message-voice-1',
+        sentTime: DateTime.utc(2026, 9, 1, 10, 30),
+        title: 'Voice Call',
+        body: 'Incoming call',
+        channelId: null,
+        data: const {
+          'envelope': '{"callId":"call-1","controlProof":"secret-proof-123","sdp":"v=0..."}',
+          'controlProof': 'super-secret-proof-9999',
+          'authorization': 'Bearer token-secret-auth-8888',
+          'ice': 'candidate:123456789',
+          'address': 'Secret Street 42',
+        },
+      );
+
+      expect(log, contains('"callId":"call-1"'));
+      expect(log, isNot(contains('[REDACTED_ENVELOPE]')));
+      expect(log, isNot(contains('secret-proof-123')));
+      expect(log, isNot(contains('super-secret-proof-9999')));
+      expect(log, isNot(contains('token-secret-auth-8888')));
+      expect(log, isNot(contains('candidate:123456789')));
+      expect(log, isNot(contains('Secret Street 42')));
+    });
   });
 }

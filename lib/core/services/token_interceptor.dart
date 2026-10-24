@@ -13,7 +13,7 @@ import 'package:meal_meat_user/features/notifications/presentation/manager/notif
 typedef AuthRefreshServiceProvider = AuthRefreshService Function();
 
 @lazySingleton
-class TokenInterceptor extends QueuedInterceptor {
+class TokenInterceptor extends Interceptor {
   TokenInterceptor({
     required this._tokenService,
     required this._navigatorService,

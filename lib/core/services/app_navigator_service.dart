@@ -31,6 +31,17 @@ class AppNavigatorService {
     return navigatorState.pushNamed<T>(routeName, arguments: arguments);
   }
 
+  bool isCurrentRoute(String routeName) {
+    bool isCurrent = false;
+    navigator?.popUntil((route) {
+      if (route.settings.name == routeName) {
+        isCurrent = true;
+      }
+      return true;
+    });
+    return isCurrent;
+  }
+
   Future<T?> pushNamedWhenReady<T extends Object?>(
     String routeName, {
     Object? arguments,
@@ -38,6 +49,9 @@ class AppNavigatorService {
     for (var attempt = 0; attempt < _retryAttempts; attempt++) {
       final navigatorState = navigator;
       if (navigatorState != null) {
+        if (isCurrentRoute(routeName)) {
+          return null;
+        }
         return navigatorState.pushNamed<T>(routeName, arguments: arguments);
       }
 

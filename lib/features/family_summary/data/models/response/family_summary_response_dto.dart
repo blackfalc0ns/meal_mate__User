@@ -36,11 +36,24 @@ class FamilySummaryMemberDto {
   final String? startDate;
 
   factory FamilySummaryMemberDto.fromJson(Map<String, dynamic> json) {
-    final generated = _$FamilySummaryMemberDtoFromJson(json);
     final genderRaw = json['gender'];
-    final gender = genderRaw is int
-        ? genderRaw
-        : (genderRaw == 'Female' ? 2 : 1);
+    final int? gender = genderRaw == null
+        ? null
+        : (genderRaw is int
+            ? genderRaw
+            : (genderRaw.toString().trim().toLowerCase() == 'female' ||
+                    genderRaw.toString().trim() == '2'
+                ? 2
+                : (genderRaw.toString().trim().toLowerCase() == 'male' ||
+                        genderRaw.toString().trim() == '1'
+                    ? 1
+                    : int.tryParse(genderRaw.toString()))));
+
+    final sanitizedJson = Map<String, dynamic>.from(json);
+    sanitizedJson['gender'] = gender;
+    sanitizedJson['durationDays'] = _nullableIntFromJson(json['durationDays']);
+
+    final generated = _$FamilySummaryMemberDtoFromJson(sanitizedJson);
     return FamilySummaryMemberDto(
       memberId: generated.memberId,
       displayName: generated.displayName,

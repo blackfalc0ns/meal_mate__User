@@ -16,6 +16,18 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		AA2000000000000000000000 /* CallKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000000 /* CallKitController.swift */; };
+		AA2000000000000000000001 /* CallModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000001 /* CallModels.swift */; };
+		AA2000000000000000000002 /* CallStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000002 /* CallStateMachine.swift */; };
+		AA2000000000000000000003 /* NativeCallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000003 /* NativeCallCoordinator.swift */; };
+		AA2000000000000000000004 /* NativeVoiceBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000004 /* NativeVoiceBridge.swift */; };
+		AA2000000000000000000005 /* NativeVoiceSessionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000005 /* NativeVoiceSessionBridge.swift */; };
+		AA2000000000000000000006 /* VoiceApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000006 /* VoiceApiClient.swift */; };
+		AA2000000000000000000007 /* VoiceMediaEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000007 /* VoiceMediaEngine.swift */; };
+		AA2000000000000000000008 /* VoiceSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000008 /* VoiceSessionStore.swift */; };
+		AA2000000000000000000009 /* VoiceSignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000009 /* VoiceSignalingClient.swift */; };
+		AA200000000000000000000A /* VoipPushRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100000000000000000000A /* VoipPushRegistry.swift */; };
+		AA3000000000000000000001 /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = AA3000000000000000000002 /* WebRTC */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +72,17 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA1000000000000000000000 /* CallKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallKitController.swift; sourceTree = "<group>"; };
+		AA1000000000000000000001 /* CallModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallModels.swift; sourceTree = "<group>"; };
+		AA1000000000000000000002 /* CallStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStateMachine.swift; sourceTree = "<group>"; };
+		AA1000000000000000000003 /* NativeCallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeCallCoordinator.swift; sourceTree = "<group>"; };
+		AA1000000000000000000004 /* NativeVoiceBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeVoiceBridge.swift; sourceTree = "<group>"; };
+		AA1000000000000000000005 /* NativeVoiceSessionBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeVoiceSessionBridge.swift; sourceTree = "<group>"; };
+		AA1000000000000000000006 /* VoiceApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceApiClient.swift; sourceTree = "<group>"; };
+		AA1000000000000000000007 /* VoiceMediaEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceMediaEngine.swift; sourceTree = "<group>"; };
+		AA1000000000000000000008 /* VoiceSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSessionStore.swift; sourceTree = "<group>"; };
+		AA1000000000000000000009 /* VoiceSignalingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSignalingClient.swift; sourceTree = "<group>"; };
+		AA100000000000000000000A /* VoipPushRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPushRegistry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,12 +91,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
+                AA3000000000000000000001 /* WebRTC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+        AA3000000000000000000003 /* Calling */ = {
+            isa = PBXGroup;
+            children = (
+				AA1000000000000000000000 /* CallKitController.swift */,
+				AA1000000000000000000001 /* CallModels.swift */,
+				AA1000000000000000000002 /* CallStateMachine.swift */,
+				AA1000000000000000000003 /* NativeCallCoordinator.swift */,
+				AA1000000000000000000004 /* NativeVoiceBridge.swift */,
+				AA1000000000000000000005 /* NativeVoiceSessionBridge.swift */,
+				AA1000000000000000000006 /* VoiceApiClient.swift */,
+				AA1000000000000000000007 /* VoiceMediaEngine.swift */,
+				AA1000000000000000000008 /* VoiceSessionStore.swift */,
+				AA1000000000000000000009 /* VoiceSignalingClient.swift */,
+				AA100000000000000000000A /* VoipPushRegistry.swift */,
+            );
+            path = Calling;
+            sourceTree = "<group>";
+        };
+
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +159,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+                AA3000000000000000000003 /* Calling */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -168,6 +212,7 @@
 			name = Runner;
 			packageProductDependencies = (
 				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
+                AA3000000000000000000002 /* WebRTC */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -203,6 +248,7 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
+                AA3000000000000000000004 /* flutter_webrtc */,
 				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -286,6 +332,17 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
+				AA2000000000000000000000 /* CallKitController.swift in Sources */,
+				AA2000000000000000000001 /* CallModels.swift in Sources */,
+				AA2000000000000000000002 /* CallStateMachine.swift in Sources */,
+				AA2000000000000000000003 /* NativeCallCoordinator.swift in Sources */,
+				AA2000000000000000000004 /* NativeVoiceBridge.swift in Sources */,
+				AA2000000000000000000005 /* NativeVoiceSessionBridge.swift in Sources */,
+				AA2000000000000000000006 /* VoiceApiClient.swift in Sources */,
+				AA2000000000000000000007 /* VoiceMediaEngine.swift in Sources */,
+				AA2000000000000000000008 /* VoiceSessionStore.swift in Sources */,
+				AA2000000000000000000009 /* VoiceSignalingClient.swift in Sources */,
+				AA200000000000000000000A /* VoipPushRegistry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,6 +693,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
 		};
+        AA3000000000000000000004 /* flutter_webrtc */ = {
+            isa = XCLocalSwiftPackageReference;
+            relativePath = "Flutter/ephemeral/Packages/.packages/flutter_webrtc-1.6.2+hotfix.4";
+        };
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -643,6 +704,11 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = FlutterGeneratedPluginSwiftPackage;
 		};
+        AA3000000000000000000002 /* WebRTC */ = {
+            isa = XCSwiftPackageProductDependency;
+            package = AA3000000000000000000004 /* flutter_webrtc */;
+            productName = WebRTC;
+        };
 /* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;

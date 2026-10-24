@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": 1,
+  "description": "Sanitized contract fixtures for MealMate Voice Calls v2 protocol across Android, iOS, and Flutter",
+  "fixtures": {
+    "incoming_call_push_android": {
+      "type": "voice-call",
+      "callId": "call-fixed-101",
+      "tripStopId": "trip-stop-202",
+      "orderId": "order-303",
+      "driverName": "Mohamed Delivery",
+      "driverPhone": "+96590000000",
+      "driverAvatar": "https://cdn.trymealmate.com/avatars/driver_1.png",
+      "sequence": 1,
+      "timestampUtc": "2026-10-22T18:00:00.000Z",
+      "priority": "high"
+    },
+    "incoming_call_push_ios": {
+      "aps": {
+        "alert": {
+          "title": "Incoming Delivery Call",
+          "body": "Mohamed Delivery is calling regarding your meal delivery."
+        },
+        "sound": "ringtone.caf"
+      },
+      "type": "voice-call",
+      "callId": "call-fixed-101",
+      "tripStopId": "trip-stop-202",
+      "orderId": "order-303",
+      "driverName": "Mohamed Delivery",
+      "sequence": 1,
+      "timestampUtc": "2026-10-22T18:00:00.000Z"
+    },
+    "rest_snapshot_ringing": {
+      "callId": "call-fixed-101",
+      "status": "ringing",
+      "sequence": 1,
+      "tripStopId": "trip-stop-202",
+      "orderId": "order-303",
+      "callerRole": "driver",
+      "callerName": "Mohamed Delivery",
+      "callerAvatarUrl": "https://cdn.trymealmate.com/avatars/driver_1.png",
+      "ringingExpiresAtUtc": "2026-10-22T18:00:45.000Z",
+      "connectedAtUtc": null,
+      "endedAtUtc": null,
+      "durationSeconds": 0
+    },
+    "rest_snapshot_accepted": {
+      "callId": "call-fixed-101",
+      "status": "accepted",
+      "sequence": 2,
+      "tripStopId": "trip-stop-202",
+      "orderId": "order-303",
+      "callerRole": "driver",
+      "callerName": "Mohamed Delivery",
+      "callerAvatarUrl": "https://cdn.trymealmate.com/avatars/driver_1.png",
+      "ringingExpiresAtUtc": null,
+      "connectedAtUtc": "2026-10-22T18:00:08.000Z",
+      "endedAtUtc": null,
+      "durationSeconds": 0
+    },
+    "rest_snapshot_ended": {
+      "callId": "call-fixed-101",
+      "status": "ended",
+      "sequence": 6,
+      "tripStopId": "trip-stop-202",
+      "orderId": "order-303",
+      "callerRole": "driver",
+      "callerName": "Mohamed Delivery",
+      "callerAvatarUrl": "https://cdn.trymealmate.com/avatars/driver_1.png",
+      "ringingExpiresAtUtc": null,
+      "connectedAtUtc": "2026-10-22T18:00:08.000Z",
+      "endedAtUtc": "2026-10-22T18:01:25.000Z",
+      "durationSeconds": 77
+    },
+    "hub_call_event_ringing": {
+      "eventId": "evt-hub-01",
+      "callId": "call-fixed-101",
+      "sequence": 1,
+      "timestampUtc": "2026-10-22T18:00:00.000Z",
+      "payload": {
+        "status": "ringing",
+        "tripStopId": "trip-stop-202",
+        "callerName": "Mohamed Delivery"
+      }
+    },
+    "hub_rtc_offer": {
+      "callId": "call-fixed-101",
+      "messageId": "msg-offer-1",
+      "negotiationGeneration": 0,
+      "payload": {
+        "type": "offer",
+        "sdp": "v=0\r\no=- 123456789 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\nc=IN IP4 0.0.0.0\r\na=rtpmap:111 opus/48000/2\r\n"
+      }
+    },
+    "hub_rtc_ice": {
+      "callId": "call-fixed-101",
+      "messageId": "msg-ice-1",
+      "negotiationGeneration": 0,
+      "payload": {
+        "candidate": "candidate:1 1 UDP 2130706431 192.168.1.100 50000 typ host",
+        "sdpMid": "0",
+        "sdpMLineIndex": 0
+      }
+    },
+    "ice_servers_response": {
+      "iceServers": [
+        {
+          "urls": [
+            "stun:stun.l.google.com:19302"
+          ],
+          "username": null,
+          "credential": null
+        },
+        {
+          "urls": [
+            "turn:turn.trymealmate.com:3478"
+          ],
+          "username": "user-voice",
+          "credential": "turn-password-safe"
+        }
+      ],
+      "ttlSeconds": 3600
+    }
+  }
+}

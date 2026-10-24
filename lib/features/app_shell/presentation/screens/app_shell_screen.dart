@@ -1,6 +1,9 @@
+// ignore_for_file: unused_import
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_meat_user/config/theme/font_manager.dart';
+import 'package:meal_meat_user/config/theme/styles_manager.dart';
 import 'package:meal_meat_user/core/constants/assets.dart';
 import 'package:meal_meat_user/core/extensions/extensions.dart';
 import 'package:meal_meat_user/core/widget/bottom_nav_bar.dart';
@@ -100,6 +103,14 @@ class _AppShellView extends StatelessWidget {
             ),
             body: _AnimatedShellBody(
               selectedIndex: state.selectedTabIndex,
+
+              // children: [
+              //   _EmptyShellTab(title: l10n.nav_home),
+              //   _EmptyShellTab(title: l10n.nav_meals),
+              //   _EmptyShellTab(title: l10n.nav_offers),
+              //   _EmptyShellTab(title: l10n.nav_subscription),
+              //   _EmptyShellTab(title: l10n.nav_profile),
+              // ],
               children: const [
                 HomeScreen(),
                 CalendarScreen(showBottomSpace: true),
@@ -206,6 +217,31 @@ class _AnimatedShellBodyState extends State<_AnimatedShellBody>
           ),
         );
       }),
+    );
+  }
+}
+
+class _EmptyShellTab extends StatelessWidget {
+  const _EmptyShellTab({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: Text(
+          title,
+          style: getBoldStyle(
+            fontFamily: FontConstant.alexandria,
+            fontSize: FontSize.size20,
+            color: color.onSurface,
+          ),
+        ),
+      ),
     );
   }
 }

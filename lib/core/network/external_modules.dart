@@ -10,9 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meal_meat_user/core/services/auth_refresh_service.dart';
 import 'package:meal_meat_user/core/services/language_interceptor.dart';
+import 'package:meal_meat_user/core/services/server_time_interceptor.dart';
 import 'package:meal_meat_user/core/services/token_service.dart';
 import 'package:meal_meat_user/features/auth/domain/usecase/refresh_token_usecase.dart';
-
+import '../di/di.dart';
+import '../services/server_time_service.dart';
 import '../services/token_interceptor.dart';
 import 'network_constants.dart';
 
@@ -26,7 +28,7 @@ abstract class ExternalModules {
   ) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: NetworkConstants.baseUrl,
+        baseUrl: NetworkConstants.baseUrl.trim(),
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
@@ -42,6 +44,11 @@ abstract class ExternalModules {
     dio.interceptors.add(languageInterceptor);
 
     dio.interceptors.add(tokenInterceptor);
+
+    final serverTime = getIt.isRegistered<ServerTimeService>()
+        ? getIt<ServerTimeService>()
+        : ServerTimeService();
+    dio.interceptors.add(ServerTimeInterceptor(serverTime));
 
     dio.interceptors.add(prettyDioLogger);
 
@@ -73,7 +80,9 @@ abstract class ExternalModules {
 
   @lazySingleton
   FlutterSecureStorage flutterSecureStorage() {
-    return const FlutterSecureStorage();
+    return const FlutterSecureStorage(
+      aOptions: AndroidOptions(resetOnError: true),
+    );
   }
 
   @lazySingleton

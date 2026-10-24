@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:device_preview/device_preview.dart';
@@ -11,6 +13,7 @@ import 'package:meal_meat_user/core/services/app_navigator_service.dart';
 import 'package:meal_meat_user/core/services/language_service.dart';
 import 'package:meal_meat_user/core/payment/payment_deep_link_coordinator.dart';
 import 'package:meal_meat_user/core/services/push_notification_service.dart';
+import 'package:meal_meat_user/features/calling/service/voice_navigation_coordinator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meal_meat_user/firebase_options.dart';
 
@@ -19,8 +22,18 @@ Future<void> main() async {
   await configureDependencies();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await getIt<PushNotificationService>().initialize();
+  // Push registration may need network access and refresh the session.
+  // It must not hold the first app frame while that work completes.
+  unawaited(
+    getIt<PushNotificationService>().initialize().catchError((Object error) {
+      debugPrint('Push notification initialization failed: $error');
+      return null;
+    }),
+  );
   getIt<PaymentDeepLinkCoordinator>().initialize();
+  if (getIt.isRegistered<VoiceNavigationCoordinator>()) {
+    getIt<VoiceNavigationCoordinator>().initialize();
+  }
   appLocaleNotifier.value = Locale(getIt<LanguageService>().getLanguageCode());
   debugPaintBaselinesEnabled = false;
 
